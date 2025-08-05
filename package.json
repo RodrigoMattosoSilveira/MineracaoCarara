@@ -1,0 +1,25 @@
+{
+  "name": "mineracaocarara",
+  "version": "1.0.0",
+  "description": "Mineracao Carara Contas Correntes",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/RodrigoMattosoSilveira/MineracaoCarara.git"
+  },
+  "keywords": [
+    "javascript"
+  ],
+  "author": "Rodrigo Silveira",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RodrigoMattosoSilveira/MineracaoCarara/issues"
+  },
+  "homepage": "https://github.com/RodrigoMattosoSilveira/MineracaoCarara#readme"
+}
