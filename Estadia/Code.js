@@ -1,5 +1,6 @@
 const estadiaID = "1cBWZwZ8JPJARGNFmjFAFzKIaPApeO5kN8jencYUVki4";
-const estadiaDados = "Dados!A:H"
+const estadiaDadosSheet = "Dados"
+const estadiaDadosRange = "A:H";
 const nomeCol = 0;
 const comecoCol = 1;
 const fechadaCol = 2;
@@ -15,19 +16,19 @@ const comentariosCol = 8;
 // ****************************************************************************
 
 function getEstadiaComeco(nome) {
-	return getRegistro(nome,comecoCol)
+	return getRegister(nome,comecoCol)
 }
 function getEstadiaArea(nome) {
-	return getRegistro(nome, areaCol);
+	return getRegister(nome, areaCol);
 }
 function getEstadiaLocal(nome) {
-	return getRegistro(nome, localCol);
+	return getRegister(nome, localCol);
 }
 function getEstadiaTabelaTarefa(nome) {
-	return getRegistro(nome, tarefaCol);	
+	return getRegister(nome, tarefaCol);	
 }
 function getEstadiaComentarios(nome) {
-	return getRegistro(nome, comentariosCol);
+	return getRegister(nome, comentariosCol);
 }
 function setEstadiaComeco(nome, comeco) {
 	return setRegistro(nome, comecoCol, comeco);
@@ -55,31 +56,37 @@ function setEstadiaComentarios(nome, comentarios) {
 }	
 
 function setRegistro(chave, coluna, valor) {
- 	const dados = getDados();
-	const registro = getRegistro(chave, coluna);
-	if (registro) {
-		registro[coluna] = valor;
-		return true;
+	var valorRange =[[valor]]
+
+	const ss = SpreadsheetApp.openById(estadiaID);
+	const sheet = ss.getSheetByName(estadiaDados);
+	const dataRange = sheet.getRange(estadiaDadosRange);
+	for (let i = 0; i < dataRange.length; i++) {
+		if (dataRange[i][nomeCol] === chave) {
+			var rangeString = "R" + (i + 1) + "C" + (coluna + 1);
+			sheet.getRange(rangeString ).setValues(valorRange);
+			return true
+		}
 	}
-	// If the name is not found, return null
+  // If the name is not found, return null
   	return null;
 }													
 
-function getRegistro(chave, coluna) {
-	const dados = getDados();
-	for (let i = 0; i < dados.length; i++) {
-		if (dados[i][nomeCol] === chave) {
-			return dados[i]
+function getRegister(chave, coluna) {
+	const dataRange = getDataRange();
+	const dataRangeValues = dataRange.getValues();
+	for (let i = 0; i < dataRangeValues.length; i++) {
+		if (dataRangeValues[i][nomeCol] === chave) {
+			return dataRangeValues[i][coluna]
 		}
 	}
   // If the name is not found, return null
   	return null;
 }
 
-function getDados() {
+function getDataRange() {
 	const ss = SpreadsheetApp.openById(estadiaID);
 	const sheet = ss.getSheetByName("Dados");
 	const dataRange = sheet.getRange(estadiaDados);
-	const data = dataRange.getValues();
-	return data;
+	return dataRange;
 }
