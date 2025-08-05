@@ -1,4 +1,4 @@
-function testSetRegistro() {
+function testSetValue() {
   // Arrange
   const chave = 'Bernardo Francisco Almeida';
   const coluna = 'testColumn';
@@ -9,8 +9,22 @@ function testSetRegistro() {
   
   // Assert
   if (result) {
-	Logger.log('setRegistro passed');
+	Logger.log('testSetValue passed');
   } else {
-	Logger.error('setRegistro failed');
+	Logger.log('testSetValue failed');
+  }
+}
+function tesGetValue() {
+  // Arrange
+  const chave = 'Bernardo Francisco Almeida';
+  
+  // Act
+  const result = getEstdiaDisponibilidade(chave);
+  
+  // Assert
+  if (isNaN(result)) {
+	Logger.log('tesGetValue passed: ' + result);
+  } else {
+	Logger.log('tesGetValue failed');
   }
 }
