@@ -56,7 +56,7 @@ function setEstadiaComentarios(nome, comentarios) {
 
 function setRegistro(chave, coluna, valor) {
  	const dados = getDados();
-	const registro = getRegistro(dados, chave);
+	const registro = getRegistro(chave, coluna);
 	if (registro) {
 		registro[coluna] = valor;
 		return true;
