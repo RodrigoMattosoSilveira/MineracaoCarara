@@ -31,7 +31,7 @@ function updateGoldPriceInSheet(){
   const rangeValue = [[goldValue]]
   const masterSS = SpreadsheetApp.openById(masterId);
   masterSS.getRangeByName("OuroUsdOnca").setValues(rangeValue);
-  return goldPrice;
+  return goldValue;
 }
 
 function updateDolarParaReal() {
