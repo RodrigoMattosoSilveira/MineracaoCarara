@@ -30,12 +30,18 @@ function updateGoldPriceInSheet(){
   const goldValue = getOneOzGoldPriceUsd()
   const rangeValue = [[goldValue]]
   const masterSS = SpreadsheetApp.openById(masterId);
-  masterSS.getRangeByName("GoldUsdOz").setValues(rangeValue);
+  masterSS.getRangeByName("OuroUsdOnca").setValues(rangeValue);
+  return goldPrice;
 }
 
 function updateDolarParaReal() {
-  const goldValue = GOOGLEFINANCE("CURRENCY:USDBRL")
-  const rangeValue = [[goldValue]]
+  var rangeValue = []
   const masterSS = SpreadsheetApp.openById(masterId);
-  masterSS.getRangeByName("GoldUsdOz").setValues(rangeValue);
+  rangeValue = [['']]
+  masterSS.getRangeByName("UsdToBrl").setValues(rangeValue);
+  const currency = "CURRENCY:USDBRL";
+  const formula = `=GOOGLEFINANCE("${currency}")`; // GOOGLEFINANCE function to get the current exchange rate from USD to BRL
+  // rangeValue = [[formula]]
+  rangeValue[0][0] = formula; // Assign the formula to the first cell of the range
+  masterSS.getRangeByName("UsdToBrl").setValues(rangeValue);
 }
