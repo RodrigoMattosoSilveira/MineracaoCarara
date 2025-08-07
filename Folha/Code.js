@@ -294,6 +294,7 @@ function executeTurnoDiario() {
       contaCorrenteRegistro = [];
       contaCorrenteRegistro[contasCorrenteDataCol] = new Date(turnHojeDiaData[0]);
       contaCorrenteRegistro[contasCorrenteNomeCol] = nome;
+      contaCorrenteRegistro[contasCorrenteMetodoCol] = metodo;
       contaCorrenteRegistro[contasCorrenteItemCol] = area + "/" + local + "/" + tarefa
       switch (metodo) { 
         case "Diária":
@@ -302,6 +303,7 @@ function executeTurnoDiario() {
           contaCorrenteRegistro[contasCorrenteValorUnitarioOuroCol] = 0;
           contaCorrenteRegistro[contasCorrenteQtdCol] = 1;
           contaCorrenteRegistro[contasCorrenteValorTotaloBRLCol] = remuneracaoObj[metodo][tarefa];
+          contaCorrenteRegistro[contasCorrenteValorTotalOuroCol] = 0;
           break;
         case "Salário":
           contaCorrenteRegistro[contasCorrenteModedaCol] = "BRL";
@@ -313,6 +315,7 @@ function executeTurnoDiario() {
               contaCorrenteRegistro[contasCorrenteQtdCol] = 1;
               contaCorrenteRegistro[contasCorrenteValorTotaloBRLCol] = remuneracaoObj[metodo][tarefa];
           }
+          contaCorrenteRegistro[contasCorrenteValorTotalOuroCol] = 0; 
           break;
         case "Porcentagem":
         case  "Meio_A_Meio":
