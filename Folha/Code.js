@@ -21,7 +21,7 @@ const estadiaRangeTarefaCol = 7;
 const estadiaRangeComentariosCol = 8;
 
 const folhaID = "1T1uTdxSNuxSBuUVVLBoJxiME3HrTtNC3bgb69PThduY";
-const turnoHojeDiaRange = "TurnoHojeDia!A6:H1001"
+const turnoHojeDiaRange = "TurnoHojeDia!A6:G1001"
 const turnoHojeDiaRangeFirstRow = 6;
 const turnoHojeDiaRangeFirstCell= 1;
 const turnoHojeNomeCol = 0;
@@ -71,16 +71,18 @@ const producaoPosAssociadosGramasCol  = 6;
 const producaoPosAssociadosBrCol  = 7; 
 
 const contasCorrentesId = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
-const contasCorrentesRange = "Dados!A:H";
+const contasCorrentesRange = "Dados!A:K";
 const contasCorrenteDataCol = 0;
 const contasCorrenteNomeCol = 1;
-const contasCorrenteItemCol = 2; 
-const contasCorrenteMetodoCol = 3; 
-const contasCorrenteValorCreditoCol = 4;
-const contasCorrentePesoCreditoCol = 5;
-const contasCorrenteValorDebitoCol = 6;
-const contasCorrentePesoDebitoCol = 7;
-const contasCorrenteComentariosCol = 8;
+const contasCorrenteMetodoCol = 2; 
+const contasCorrenteItemCol = 3; 
+const contasCorrenteModedaCol = 4; 
+const contasCorrenteValorUnitarioBRLCol = 5;
+const contasCorrenteValorUnitarioOuroCol = 6
+const contasCorrenteQtdCol = 7;
+const contasCorrenteValorTotaloBRLCol = 8;
+const contasCorrenteValorTotalOuroCol = 9
+const contasCorrenteComentariosCol = 10;
 
 /* ********************************************************************************************************************* */
 // prepareTurnoDiario
@@ -121,7 +123,7 @@ function prepareTurnoDiario() {
   const estadiaVals = estadiaRng.getValues();
 
   const turnoHojeDiaRng = folhaIDSS.getRange(turnoHojeDiaRange);
-  const turnoHojeDiaVals = turnoHojeDiaRng.getValues();
+  turnoHojeDiaRng.clear(); // Limpa a gama antes de inserir os novos valores
   
   var turnoHojeDiaGama = [];
   var turnoHojeDiaRegistro = [];
@@ -177,9 +179,8 @@ function prepareTurnoDiario() {
   });
 
   turnoHojeDiaGama = removeAtributosDuplicados("TurnoHojeDia", turnoHojeDiaGama)
-
   turnoHojeDiaRng.clear();
-  var sheet = SpreadsheetApp.getActiveSheet();
+  var sheet = folhaIDSS.getSheetByName('TurnoHojeDia');
   sheet.getRange(6, 1, turnoHojeDiaGama.length, turnoHojeDiaGama[0].length).setValues(turnoHojeDiaGama);
 }
 
@@ -209,7 +210,7 @@ function removeAtributosDuplicados(tabela, gamaCandidata) {
         message += "Chave Duplicada: " + chaveCandidata
         message += "\n"
         message += "\Na Tabela:       " + tabela
-        ui.alert(message);
+        Logger.log(message);
         // Logger.log("Chave Duplicada (" + chaveCandidata + ") na tabela " + tabela);
         // console.log("Chave Duplicada (" + chaveCandidata + ") na tabela " + tabela);
     }
@@ -291,40 +292,46 @@ function executeTurnoDiario() {
     var ignoreRegister = false;
     if (metodo != "") {
       contaCorrenteRegistro = [];
-      contaCorrenteRegistro.push(new Date(turnHojeDiaData[0]));
-      contaCorrenteRegistro.push(nome);
-      contaCorrenteRegistro.push(area + "/" + local + "/" + tarefa);
-      contaCorrenteRegistro.push(metodo);
-      contaCorrenteRegistro.push(0);    // valor credito
-      contaCorrenteRegistro.push(0);    // peso credito
-      contaCorrenteRegistro.push(0);    // valor debito
-      contaCorrenteRegistro.push(0);    // peso debito    
-      contaCorrenteRegistro.push(comentarios);
-      var simpleObj = remuneracaoObj[metodo]
-      switch (metodo) {
+      contaCorrenteRegistro[contasCorrenteDataCol] = new Date(turnHojeDiaData[0]);
+      contaCorrenteRegistro[contasCorrenteNomeCol] = nome;
+      contaCorrenteRegistro[contasCorrenteItemCol] = area + "/" + local + "/" + tarefa
+      switch (metodo) { 
         case "Diária":
-          contaCorrenteRegistro[contasCorrenteValorCreditoCol] = simpleObj[tarefa]
+          contaCorrenteRegistro[contasCorrenteModedaCol] = "BRL";
+          contaCorrenteRegistro[contasCorrenteValorUnitarioBRLCol] = remuneracaoObj[metodo][tarefa];
+          contaCorrenteRegistro[contasCorrenteValorUnitarioOuroCol] = 0;
+          contaCorrenteRegistro[contasCorrenteQtdCol] = 1;
+          contaCorrenteRegistro[contasCorrenteValorTotaloBRLCol] = remuneracaoObj[metodo][tarefa];
           break;
         case "Salário":
+          contaCorrenteRegistro[contasCorrenteModedaCol] = "BRL";
+          contaCorrenteRegistro[contasCorrenteValorUnitarioBRLCol] = remuneracaoObj[metodo][tarefa];
+          contaCorrenteRegistro[contasCorrenteValorUnitarioOuroCol] = 0;
+          contaCorrenteRegistro[contasCorrenteQtdCol] = 0
+          contaCorrenteRegistro[contasCorrenteValorTotaloBRLCol] = 0;
           if (isLastDayOfMonth(new Date(turnHojeDiaData[0]))) {
-            contaCorrenteRegistro[contasCorrenteValorCreditoCol] = simpleObj[tarefa]
+              contaCorrenteRegistro[contasCorrenteQtdCol] = 1;
+              contaCorrenteRegistro[contasCorrenteValorTotaloBRLCol] = remuneracaoObj[metodo][tarefa];
           }
           break;
         case "Porcentagem":
-          contaCorrenteRegistro[contasCorrentePesoCreditoCol] = goldProduction[producaoPosAssociadosGramasCol] * simpleObj[tarefa]
-          break;
-        case "Meio_A_Meio":
-          contaCorrenteRegistro[contasCorrentePesoCreditoCol] = goldProduction[producaoPosAssociadosGramasCol] * simpleObj[tarefa]
-          contaCorrenteRegistro[contasCorrenteMetodoCol] = "Porcentagem";
+        case  "Meio_A_Meio":
+          contaCorrenteRegistro[contasCorrenteModedaCol] = "AU";
+          contaCorrenteRegistro[contasCorrenteValorUnitarioOuroCol] = remuneracaoObj[metodo][tarefa];
+          contaCorrenteRegistro[contasCorrenteValorUnitarioBRLCol] = 0;
+          contaCorrenteRegistro[contasCorrenteQtdCol] = 1;
+          contaCorrenteRegistro[contasCorrenteValorTotaloBRLCol] = 0;
+          contaCorrenteRegistro[contasCorrenteValorTotalOuroCol] = goldProduction[producaoPosAssociadosGramasCol] * remuneracaoObj[metodo][tarefa];
           break;
         default:
           var message = ""
           message += "Metodo de pagamento invalido: " + metodo
           Logger.log(message);
           ignoreRegister = true;
-          break;
+          break;  
       }
       if (!ignoreRegister) {
+        contaCorrenteRegistro[contasCorrenteComentariosCol] = comentarios;
         contasCorrentesRangeDados.push(contaCorrenteRegistro) 
       }
     }
