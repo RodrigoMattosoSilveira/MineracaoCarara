@@ -87,8 +87,8 @@ function calculateCreditsAndDebts (nome, estadia, trasactions) {
 		return null;
 	}
 
-	for (i=0; i < filteredTransactions.length; i++) {
-    var creditoDebito = trasactions[i][contasCorrentesCreditDebitCol]
+	for (var i=0; i < filteredTransactions.length; i++) {
+    var creditoDebito = filteredTransactions[i][contasCorrentesCreditDebitCol]
 		switch (creditoDebito) {
 			// Caso o valor do atributo Credito/Debito seja Credito, some o valor	
 			// do atributo TotalReal e TotalOuro, de acordo com o valor do atributo
