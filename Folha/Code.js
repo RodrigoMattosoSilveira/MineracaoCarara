@@ -5,19 +5,19 @@
 //
 // const ui = SpreadsheetApp.getUi();
 const estadiaID = "1cBWZwZ8JPJARGNFmjFAFzKIaPApeO5kN8jencYUVki4";
-const estadiaRange = "Dados!A2:I100"; // Adjust the range as needed
+const estadiaRange = "Dados"; // 
 const estadiaRangeNomeCol = 0;
 const estadiaRangeComecoCol = 1;
 const estadiaRangeFechadaCol = 2;
 const estadiaRangeDisponibilidadeCol = 3;
 const estadiaRangeMetodoCol = 4;	
 const estadiaRangeAreaCol = 5;	
-const estadiaRangeLocalCol = 6;	
+const estadiaRangeLocalCol = 6;
 const estadiaRangeTarefaCol = 7;	
 const estadiaRangeComentariosCol = 8;
 
 const contasCorrentesId = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
-const contasCorrentesRange = "Dados!A:H";
+const contasCorrentesRange = "Dados";
 const contasCorrentesDataCol              = 0;
 const contasCorrentesNomeCol              = 1;
 const contasCorrentesEstadiaCol           = 2;
@@ -84,6 +84,15 @@ const producaoPosEmpresaBrCol  = 5;
 const producaoPosAssociadosGramasCol  = 6; 
 const producaoPosAssociadosBrCol  = 7; 
 
+function onOpen() {
+  var ui = SpreadsheetApp.getUi();
+
+  // Or DocumentApp, SlidesApp or FormApp.
+		ui.createMenu('Cronograma')
+			.addItem('Planeje', 'prepareTurnoDiario')
+			.addItem('Execute', 'executeTurnoDiario')
+      .addToUi();
+}
 /* ********************************************************************************************************************* */
 // prepareTurnoDiario
 // Trabalhe com três gamas: 
@@ -183,7 +192,8 @@ function prepareTurnoDiario() {
   turnoHojeDiaGama = removeAtributosDuplicados("TurnoHojeDia", turnoHojeDiaGama)
   turnoHojeDiaRng.clear();
   var sheet = folhaIDSS.getSheetByName('TurnoHojeDia');
-  sheet.getRange(6, 1, turnoHojeDiaGama.length, turnoHojeDiaGama[0].length).setValues(turnoHojeDiaGama);
+  sheet.getRange("TurnoHojeDia").clear();
+  sheet.getRange(4, 1, turnoHojeDiaGama.length, turnoHojeDiaGama[0].length).setValues(turnoHojeDiaGama);
 }
 
 //* ********************************************************************************************************************* */
@@ -344,6 +354,7 @@ function executeTurnoDiario() {
           contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] = remuneracaoObj[metodo][tarefa];
           // Quantidade de items
           contaCorrenteRegistro[contasCorrentesItemQtdCol] = 1;
+           // Credito / Debito em Reais
           contaCorrenteRegistro[contasCorrentesTotalRealCol] = 0;
           // Credito / Debito em Gramas de Ouro
           contaCorrenteRegistro[contasCorrentesTotalOuroCol] = goldProduction[producaoPosAssociadosGramasCol] * remuneracaoObj[metodo][tarefa];

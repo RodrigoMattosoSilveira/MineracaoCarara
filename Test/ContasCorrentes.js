@@ -1,16 +1,14 @@
 const obj = {};
-obj.calculateCreditsAndDebts = (trasactions) => {
-	const nomeCol = 0;
-	const estadiaCol = 1;
-	const transactionType = 2; // Diaria, Salario, Porcentagem, Cantina, PIX, Diversos
-	const creditDebitCol = 3;
-	const itemCol = 4;
-	const precoUnidadeCol = 4;
-	const qtdCol = 6;
-	const moedaCol = 7;
-	const realValorCol = 8;
-	const OuroValorCol = 9;
-	const comentarioCol = 10;
+obj.calculateCreditsAndDebts = (nome, estadia, trasactions) => {
+const estadiaRangeNomeCol = 0;
+const estadiaRangeComecoCol = 1;
+const estadiaRangeFechadaCol = 2;
+const estadiaRangeDisponibilidadeCol = 3;
+const estadiaRangeMetodoCol = 4;	
+const estadiaRangeAreaCol = 5;	
+const estadiaRangeLocalCol = 6;	
+const estadiaRangeTarefaCol = 7;	
+const estadiaRangeComentariosCol = 8;
 	var creditsAndDebtsRealOuro = {
 		Credit: {
 			Real: 0,

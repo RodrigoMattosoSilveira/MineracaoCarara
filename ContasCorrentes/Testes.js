@@ -20,8 +20,8 @@ function obtenhaDadoEstadiaAtivaTeste (){
   Logger.log("Dado: " + dado)
 }
 function calculeRendasGanharTeste() {
-  calculeRendasGanhar()
-}
-function meuOnEditGatilhoTeste() {
-  meuOnEditGatilho();
+  var nome = contasCorrentesSheet.getRangeByName("ContasCorrentesNome").getValues()[0][0];
+  var estadia = contasCorrentesSheet.getRangeByName("ContasCorrentesEstadia").getValues()[0][0];
+  var trasactions = contasCorrentesSheet.getRangeByName("TransacoesRendasDepesas").getValues();
+  var creditosDebitos = calculateCreditsAndDebts(nome, estadia, trasactions);
 }
