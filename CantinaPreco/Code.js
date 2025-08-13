@@ -20,7 +20,7 @@ function test( ) {
 }
 function precoGramasDeOuro() {
 	// Obtenha o valor do grama de ouro
-	 var cotacaoOuro = obtenhaCotacaoOuroSimples()
+	 var cotacaoOuro = obtenhaCotacaoOuroSimples();
 
 	cantinaPrecosGama.forEach(function(transaction) {	
 		if (transaction[cantinaPrecosItemCol] != "Nome" &&
@@ -29,4 +29,5 @@ function precoGramasDeOuro() {
 		}
 	});
 	cantinaPrecosSheet.getRange("CantinaPrecoGama").setValues(cantinaPrecosGama);
+	cantinaPrecosSheet.getRange("CantinaPrecoCotacaoOuro").setValue([[cotacaoOuro]]);
 }
