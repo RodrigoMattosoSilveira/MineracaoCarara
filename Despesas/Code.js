@@ -1,17 +1,21 @@
 const despesasID = "1XwjBUJYG4VLN0ZaG0EFzKljWk9VdGvePaDO9Nwd70G4";
 const despesasSheet = SpreadsheetApp.openById(despesasID);
 const despesasCantinaTab = despesasSheet.getSheetByName("Cantina");
-const CantinaNome = despesasCantinaTab.getRange("CantinaAssociado").getValue();
-const CantinaEstadia = despesasCantinaTab.getRange("CantinaEstadia").getValue();
-const CantinaData = despesasCantinaTab.getRange("CantinaData").getValue();
-const CantinaDespesas = despesasCantinaTab.getRange("CantinaDespesas").getValues();
+const CantinaAssociadoRange = despesasCantinaTab.getRange("CantinaAssociado");
+const CantinaDataRange = despesasCantinaTab.getRange("CantinaData");
+const CantinaMoedaRange = despesasCantinaTab.getRange("CantinaMoeda");
+const CantinaEstadiaRange = despesasCantinaTab.getRange("CantinaEstadia");
+const CantinaDespesasRange = despesasCantinaTab.getRange("CantinaDespesas");
+const CantinaQuantidadesRange = despesasCantinaTab.getRange("CantinaQuantidades");
+const CantinaItemsRange = despesasCantinaTab.getRange("CantinaItems");
+const CantinaRange = despesasCantinaTab.getRange("CantinaItems");
 const CantinaDespesasItemCol 		= 0;	
 const CantinaDespesasRealol 		= 1;
 const CantinaDespesasOuroCol 		= 2;	
 const CantinaDespesasQTDCol 		= 3
 const CantinaDespesasTotalRealCol 	= 4;
 const CantinaDespesasTotaOurolCol 	= 5;
-const CantinaDespesasComentariosCol = 6;
+const CantinaComentarioRange = despesasCantinaTab.getRange("CantinaComentario");
 
 const despesasPixTab = despesasSheet.getSheetByName("Pix");
 const PixNome = despesasPixTab.getRange("PixAssociado").getValue();
@@ -21,7 +25,7 @@ const PixDespesas = despesasPixTab.getRange("PixDespesas").getValues();
 const PixDespesasItemCol    = 0;  
 const PixDespesasRealol     = 1;
 const PixDespesasOuroCol    = 2;  
-const PixDespesasQTDCol     = 3
+const PixDespesasQtdCol     = 3
 const PixDespesasTotalRealCol   = 4;
 const PixDespesasTotaOurolCol   = 5;
 const PixDespesasComentariosCol = 6;
@@ -58,9 +62,20 @@ function onOpen() {
 
 function cantinaPrepare() {
   	switchToTab("Cantina");
+	
+	// Clear all the field 
+	CantinaAssociadoRange.setValue("");
+	// CantinaDataRange.setValue(""); it is a formula =TODAY()
+	// CantinaEstadiaRange.setValue(""); // it is a formula =TODAY()
+	CantinaMoedaRange.setValue("Real");
+	CantinaQuantidadesRange.setValue("");
+	CantinaItemsRange.setValue("");
+	CantinaComentarioRange.setValue("");
+
+	// Feedback
   	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
 		.alert('You clicked cantinaPrepare');
-	}
+}
 
 function cantinaExecute() {
   	switchToTab("Cantina");
