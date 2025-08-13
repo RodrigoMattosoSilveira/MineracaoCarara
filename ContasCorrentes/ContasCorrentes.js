@@ -1,32 +1,182 @@
 // @ts-nocheck
 const contasCorrentesId = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
-const contasCorrentesRange = "Dados!A:H";
+const contasCorrentesSheet = SpreadsheetApp.openById(contasCorrentesId);
 const contasCorrrentesSSName = "ContasCorrentes"
-const contasCorrenteDataCol = 0;
-const contasCorrenteNomeCol = 1;
-const contasCorrenteItemCol = 2; 
-const contasCorrenteMetodoCol = 3; 
-const contasCorrenteValorCreditoCol = 4;
-const contasCorrentePesoCreditoCol = 5;
-const contasCorrenteValorDebitoCol = 6;
-const contasCorrentePesoDebitoCol = 7;
-const contasCorrenteComentariosCol = 8;
+const contasCorrentesRange          = "Dados";
+const contasCorrentesNome           = "ContasCorrentesNome";
+const contasCorrentesEstadia        = "ContasCorrentesEstadia";
+const contasCorrentesRendasDepesas      = "TransacoesRendasDepesas";  
+const contasCorrentesCreditoReal          = "CreditoReal";
+const contasCorrentesCreditoOuro          = "CreditoOuro";
+const contasCorrentesDebitoReal           = "DebitoReal"; 
+const contasCorrentesDebitoOuro           = "DebitoOuro";
+const contasCorrentesDataCol              = 0;
+const contasCorrentesNomeCol              = 1;
+const contasCorrentesEstadiaCol           = 2;
+const contasCorrentesMetodoCol            = 3;  // Diaria, Salario, Porcentagem, Cantina, PIX, Diversos
+const contasCorrentesMoedaCol             = 4   // Real, Ouro
+const contasCorrentesCreditDebitCol       = 5;  // Credito, Debito
+const contasCorrentesItemCol              = 6;
+const contasCorrentesPrecoUnidadeRealCol  = 7;  // Real
+const contasCorrentesPrecoUnidadeOuroCol  = 8;  // Gramas de ouro 
+const contasCorrentesItemQtdCol           = 9;
+const contasCorrentesTotalRealCol         = 10; // Real
+const contasCorrentesTotalOuroCol         = 11; // Gramas de ouro
+const contasCorrentesComentariosCol       = 12;
 
 function meuOnEditGatilho(e) {
-  var valorEmReais = 0.00;
+  contasCorrentesSheet.getRangeByName(contasCorrentesCreditoReal).setValues([[0]]);
+  contasCorrentesSheet.getRangeByName(contasCorrentesCreditoOuro).setValues([[0]]);
+  contasCorrentesSheet.getRangeByName(contasCorrentesDebitoReal).setValues([[0]]);
+  contasCorrentesSheet.getRangeByName(contasCorrentesDebitoOuro).setValues([[0]]);
 
-  // Inicialize a RendasPorcentagemReais das contas correntes
-  armazeneValorGama("RendasPorcentagemReais", 0)
+  var nome = contasCorrentesSheet.getRangeByName(contasCorrentesNome).getValues()[0][0];
+  var estadia = contasCorrentesSheet.getRangeByName(contasCorrentesEstadia).getValues()[0][0];
+  var trasactions = contasCorrentesSheet.getRangeByName(contasCorrentesRendasDepesas).getValues();
+  if (nome == "" || estadia == "") {
+    var message = "";
+    message += "O nome do associado ou a estadia nao foram preenchidos";
+    console.error(message);
+    return;
+  }
+  if (trasactions.length == 0) {
+    var message = "";
+    message += "Nao ha nehuma trasacao a ser processada";
+    console.error(message); 
+  }
+  var creditosDebitos = calculateCreditsAndDebts(nome, estadia, trasactions);
+  contasCorrentesSheet.getRangeByName(contasCorrentesCreditoReal).setValues([[creditosDebitos["Credito"]["Real"]]]);
+  contasCorrentesSheet.getRangeByName(contasCorrentesCreditoOuro).setValues([[creditosDebitos["Credito"]["Ouro"]]]);
+  contasCorrentesSheet.getRangeByName(contasCorrentesDebitoReal).setValues([[creditosDebitos["Debito"]["Real"]]]);
+  contasCorrentesSheet.getRangeByName(contasCorrentesDebitoOuro).setValues([[creditosDebitos["Debito"]["Ouro"]]]);
 
-  // Calcule a quantia de ouro, em gramas, ainda em  credito na conta corrente do 
-  // associado
-  ouroGramas = obtenhaValorGama("RendasPorcentagemOuroGramas")
-  valorEmReais = valorDoOuroEmReais(ouroGramas);
-  armazeneValorGama("RendasPorcentagemReais", valorEmReais)
+  var rendasFuturas = calculeRendasGanhar(nome, estadia, trasactions);
+  contasCorrentesSheet.getRangeByName("AGanharReal").setValues([[rendasFuturas["Real"]]]);
+  contasCorrentesSheet.getRangeByName("AGanharOuro").setValues([[rendasFuturas["Ouro"]]]);
+}
 
-  // Calcule o potencial the renda as ser auferida pelo associado ate of find de
-  // sua estadia
-  calculeRendasGanhar();
+function calculateCreditsAndDebts (nome, estadia, trasactions) {
+  var estadiaDia = new Date(estadia).getDay();
+  var estadiaMes = new Date(estadia).getMonth();
+  var estadiaAno = new Date(estadia).getFullYear();
+  var creditsAndDebtsRealOuro = {
+    Credito: {
+      Real: 0,
+      Ouro: 0
+    },
+    Debito: {
+      Real: 0,
+      Ouro: 0
+    },
+  }
+  if (trasactions.length == 0) {
+    var message = "";
+    message += "Nao ha nehuma trasacao a ser processada";
+    return null;
+  }
+  var filteredTransactions = trasactions.filter(function(transaction) {
+    return transaction[contasCorrentesNomeCol] == nome &&
+           transaction[contasCorrentesDataCol] != "" &&
+           new Date(transaction[contasCorrentesEstadiaCol]).getDay() == estadiaDia &&
+           new Date(transaction[contasCorrentesEstadiaCol]).getMonth() == estadiaMes &&
+           new Date(transaction[contasCorrentesEstadiaCol]).getFullYear() == estadiaAno;
+  });
+  if (filteredTransactions.length == 0) {
+    var message = "";
+    message += "Nao ha nehuma trasacao a ser processada";
+    return null;
+  }
+
+  for (var i=0; i < filteredTransactions.length; i++) {
+    var creditoDebito = filteredTransactions[i][contasCorrentesCreditDebitCol]
+    switch (creditoDebito) {
+      // Caso o valor do atributo Credito/Debito seja Credito, some o valor 
+      // do atributo TotalReal e TotalOuro, de acordo com o valor do atributo
+      // Moeda, ao valor do atributo Credito, na gama CreditosEDeb
+      // itosRealOuro caso o valor do atributo Moeda seja Real, some ao Credito Real,
+      // e caso o valor do atributo Moeda seja Ouro, some ao Credito Ouro
+      // caso o valor do atributo Moeda seja invalido, retorne uma mensagem de
+      // erro e retorne null
+      case "Credito":
+            var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
+            switch (moeda) {
+          // Caso o valor do atributo Moeda seja Real, some ao Credito Real
+          // caso o valor do atributo Moeda seja Ouro, some ao Credito Ouro
+          // caso o valor do atributo Moeda seja invalido, retorne uma mensagem de
+          // erro e retorne null
+          case "Real":
+            creditsAndDebtsRealOuro["Credito"]["Real"] += filteredTransactions[i][contasCorrentesTotalRealCol];
+            break;
+          // Caso o valor do atributo Moeda seja Ouro, some ao Credito Ouro 
+          // caso o valor do atributo Moeda seja invalido, retorne uma mensagem de
+          // erro e retorne null
+          // caso o valor do atributo Moeda seja Real, some ao Credito Real
+          // caso o valor do atributo Moeda seja invalido, retorne uma mensagem de  
+          case "Ouro":
+            creditsAndDebtsRealOuro["Credito"]["Ouro"] += filteredTransactions[i][contasCorrentesTotalOuroCol];
+            break;
+          // Caso o valor do atributo Moeda seja invalido, retorne uma mensagem de  
+          // erro e retorne null  
+          default:
+            var message = "";
+            message += "Valor do atributo Moeda invalido (";
+            message += filteredTransactions[i][moedaCol];
+            message += ") na linha #"
+            message += i;
+            message += " na matrix de transacoes";
+            return null;
+        }
+        break;
+      // Caso o valor do atributo Credito/Debito seja Debito, some o valor
+      // do atributo TotalReal e TotalOuro, de acordo com o valor do atributo
+      // Moeda, ao valor do atributo Debito, na gama CreditosEDebitosRealOuro
+      // caso o valor do atributo Moeda seja Real, some ao Debito Real, e caso
+      // o valor do atributo Moeda seja Ouro, some ao Debito Ouro
+      // caso o valor do atributo Moeda seja invalido, retorne uma mensagem de
+      // erro e retorne null  
+      case "Debito":
+            var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
+        switch (moeda) {
+          // Caso o valor do atributo Moeda seja Real, some ao Debito Real
+          // caso o valor do atributo Moeda seja Ouro, some ao Debito Ouro
+          // caso o valor do atributo Moeda seja invalido, retorne uma mensagem de
+          // erro e retorne null
+          // caso o valor do atributo Moeda seja Real, some ao Debito Real    
+          case "Real":
+            creditsAndDebtsRealOuro["Debito"]["Real"] += filteredTransactions[i][contasCorrentesTotalRealCol];
+            break;
+          // Caso o valor do atributo Moeda seja Ouro, some ao Debito Ouro  
+          case "Ouro":
+            creditsAndDebtsRealOuro["Debito"]["Ouro"] += filteredTransactions[i][contasCorrentesTotalOuroCol];
+            break;
+          // Caso o valor do atributo Moeda seja invalido, retorne uma mensagem de  
+          // erro e retorne null
+          // caso o valor do atributo Moeda seja Real, some ao Debito Real  
+          default:
+            var message = "";
+            message += "Valor do atributo Moeda invalido (";
+            message += filteredTransactions[i][contasCorrentesMoedaCol];
+            message += ") na linha #"
+            message += i;
+            message += " na matrix de transacoes";
+            return null;
+        }
+        break;
+      // Caso o valor do atributo Credito/Debito seja invalido, retorne
+      // uma mensagem de erro
+      // e retorne null
+      default:
+        var message = "";
+        message += "Valor do atributo Credito/Debito invalido (";
+        message += filteredTransactions[i][contasCorrentesCreditDebitCol];
+        message += ") na linha #"
+        message += i;
+        message += " na matrix de transacoes"
+        console.error(message)
+        return null;
+    }
+  }
+  return creditsAndDebtsRealOuro;
 }
 
 
@@ -69,30 +219,33 @@ function valorDoOuroEmReais(ouroGramas) {
 //  A gama Saldo, atualizada
 // * ********************************************************************************
 // 
-function calculeRendasGanhar() {
-  var nomeAssociado = obtenhaValorGama("Associado");
-  var inicioEstadia = obtenhaDadoEstadiaAtiva(nomeAssociado, estadiaDadosRangeComecoCol);
+function calculeRendasGanhar(nomeAssociado, inicioEstadia) {
   var metodo        = obtenhaDadoEstadiaAtiva(nomeAssociado, estadiaDadosRangeMetodoCol);
   var tarefa        = obtenhaDadoEstadiaAtiva(nomeAssociado, estadiaDadosRangeTarefaCol);
+  var rendasFuturas = {
+  "Real": 0.00,
+  "Ouro": 0.00
+  }
 
   var saldoGanhar = 0.00;
   switch (metodo) {
     case "Diária":
       saldoGanhar = calculeDiariaGanhar(nomeAssociado, inicioEstadia, metodo, tarefa);
+    rendasFuturas["Real"]= saldoGanhar;
       break;
     case "Salário":
       saldoGanhar = calculeSalarioGanhar(nomeAssociado, inicioEstadia, metodo, tarefa);
+    rendasFuturas["Real"]= saldoGanhar;
       break;
     case "Porcentagem":
       saldoGanhar = calculePorcentagemGanhar(nomeAssociado, inicioEstadia, metodo, tarefa);
+    rendasFuturas["Ouro"]= saldoGanhar;
       break;
     default:
       break;
   }
 
-  // Armazene o saldo a ganhar no summario das contas correntes
-  armazeneValorGama("SaldoGanhar", saldoGanhar)
-  return false;
+  return rendasFuturas;
 }
 
 // *********************************************************************************

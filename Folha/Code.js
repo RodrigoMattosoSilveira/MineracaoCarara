@@ -1,7 +1,3 @@
-function uuid() {
-  return Utilities.getUuid();
-}
-
 /* ********************************************************************************************************************* */
 // Global values
 //
@@ -9,39 +5,57 @@ function uuid() {
 //
 // const ui = SpreadsheetApp.getUi();
 const estadiaID = "1cBWZwZ8JPJARGNFmjFAFzKIaPApeO5kN8jencYUVki4";
-const estadiaRange = "Dados!A:H"
+const estadiaRange = "Dados"; // 
 const estadiaRangeNomeCol = 0;
-const estadiaRangeComeçoCol = 1;
+const estadiaRangeComecoCol = 1;
 const estadiaRangeFechadaCol = 2;
 const estadiaRangeDisponibilidadeCol = 3;
 const estadiaRangeMetodoCol = 4;	
 const estadiaRangeAreaCol = 5;	
-const estadiaRangeLocalCol = 6;	
+const estadiaRangeLocalCol = 6;
 const estadiaRangeTarefaCol = 7;	
 const estadiaRangeComentariosCol = 8;
 
+const contasCorrentesId = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
+const contasCorrentesRange = "Dados";
+const contasCorrentesDataCol              = 0;
+const contasCorrentesNomeCol              = 1;
+const contasCorrentesEstadiaCol           = 2;
+const contasCorrentesMetodoCol            = 3;  // Diaria, Salario, Porcentagem, Cantina, PIX, Diversos
+const contasCorrentesMoedaCol             = 4   // Real, Ouro
+const contasCorrentesCreditDebitCol       = 5;  // Credito, Debito
+const contasCorrentesItemCol              = 6;
+const contasCorrentesPrecoUnidadeRealCol  = 7;  // Real
+const contasCorrentesPrecoUnidadeOuroCol  = 8;  // Gramas de ouro 
+const contasCorrentesItemQtdCol           = 9;
+const contasCorrentesTotalRealCol         = 10; // Real
+const contasCorrentesTotalOuroCol         = 11; // Gramas de ouro
+const contasCorrentesComentariosCol       = 12;
+
 const folhaID = "1T1uTdxSNuxSBuUVVLBoJxiME3HrTtNC3bgb69PThduY";
-const turnoHojeDiaRange = "TurnoHojeDia!A6:H1001"
+const turnoHojeDiaRange = "TurnoHojeDia"
 const turnoHojeDiaRangeFirstRow = 6;
 const turnoHojeDiaRangeFirstCell= 1;
-const turnoHojeNomeCol = 0;
-const turnoHojeDisponibilidadeCol = 1;
-const turnoHojeMetodoCol = 2;
-const turnoHojeAreaCol = 3;
-const turnoHojeLocalCol = 4;
-const turnoHojeTarefaCol = 5;
-const turnoHojeComentariosCol = 6;
+const turnoHojeNomeCol              = 0;
+const turnoHojeEstadiaCol           = 1;
+const turnoHojeDisponibilidadeCol   = 2;
+const turnoHojeMetodoCol            = 3;
+const turnoHojeAreaCol              = 4;
+const turnoHojeLocalCol             = 5;
+const turnoHojeTarefaCol            = 6;
+const turnoHojeComentariosCol       = 7;
 ;
-const turnoOntemDiaRange = "TurnoOntemDia!A2:F1001"
+const turnoOntemDiaRange = "TurnoOntemDia"
 const turnoOntemDiaRangeFirstRow = 2;
 const turnoOntemDiaRangeFirstCell= 1;
-const turnoOntemNomeCol = 0;
-const turnoOntemDisponibilidadeCol = 1;
-const turnoOntemMetodoCol = 2;
-const turnoOntemAreaCol = 3;
-const turnoOntemLocalCol = 4;
-const turnoOntemTarefaCol = 5;
-const turnoOntemComentariosCol = 6
+const turnoOntemNomeCol             = 0;
+const turnoOntemEstadiaCol          = 1;
+const turnoOntemDisponibilidadeCol  = 2;
+const turnoOntemMetodoCol           = 3;
+const turnoOntemAreaCol             = 4;
+const turnoOntemLocalCol            = 5;
+const turnoOntemTarefaCol           = 6;
+const turnoOntemComentariosCol      = 7;
 
 const remuneracaoId = "1vg3ba2eV6pJh_yfwGP-AQ0BjIY9A8Uf4UdupU_3sRIk";
 const remuneracaoRange = "Dados!A:D";
@@ -70,18 +84,15 @@ const producaoPosEmpresaBrCol  = 5;
 const producaoPosAssociadosGramasCol  = 6; 
 const producaoPosAssociadosBrCol  = 7; 
 
-const contasCorrentesId = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
-const contasCorrentesRange = "Dados!A:H";
-const contasCorrenteDataCol = 0;
-const contasCorrenteNomeCol = 1;
-const contasCorrenteItemCol = 2; 
-const contasCorrenteMetodoCol = 3; 
-const contasCorrenteValorCreditoCol = 4;
-const contasCorrentePesoCreditoCol = 5;
-const contasCorrenteValorDebitoCol = 6;
-const contasCorrentePesoDebitoCol = 7;
-const contasCorrenteComentariosCol = 8;
+function onOpen() {
+  var ui = SpreadsheetApp.getUi();
 
+  // Or DocumentApp, SlidesApp or FormApp.
+		ui.createMenu('Cronograma')
+			.addItem('Planeje', 'prepareTurnoDiario')
+			.addItem('Execute', 'executeTurnoDiario')
+      .addToUi();
+}
 /* ********************************************************************************************************************* */
 // prepareTurnoDiario
 // Trabalhe com três gamas: 
@@ -121,7 +132,7 @@ function prepareTurnoDiario() {
   const estadiaVals = estadiaRng.getValues();
 
   const turnoHojeDiaRng = folhaIDSS.getRange(turnoHojeDiaRange);
-  const turnoHojeDiaVals = turnoHojeDiaRng.getValues();
+  turnoHojeDiaRng.clear(); // Limpa a gama antes de inserir os novos valores
   
   var turnoHojeDiaGama = [];
   var turnoHojeDiaRegistro = [];
@@ -139,6 +150,7 @@ function prepareTurnoDiario() {
           estadiaRegistro[estadiaRangeFechadaCol] == "") {
             
           turnoHojeDiaRegistro[turnoHojeNomeCol]             = ontemRegistroNome;
+          turnoHojeDiaRegistro[turnoHojeEstadiaCol]          = estadiaRegistro[estadiaRangeComecoCol];
           turnoHojeDiaRegistro[turnoHojeDisponibilidadeCol]  = estadiaRegistro[estadiaRangeDisponibilidadeCol];
           turnoHojeDiaRegistro[turnoHojeMetodoCol]           = ontemRegistro[turnoOntemMetodoCol];
           turnoHojeDiaRegistro[turnoHojeAreaCol]             = ontemRegistro[turnoOntemAreaCol];
@@ -166,6 +178,7 @@ function prepareTurnoDiario() {
       });
       if (!achou) {
           turnoHojeDiaRegistro[turnoHojeNomeCol]            = estadiaRegistro[estadiaRangeNomeCol];
+          turnoHojeDiaRegistro[turnoHojeEstadiaCol]         = estadiaRegistro[estadiaRangeComecoCol];
           turnoHojeDiaRegistro[turnoHojeDisponibilidadeCol] = estadiaRegistro[estadiaRangeDisponibilidadeCol];
           turnoHojeDiaRegistro[turnoHojeMetodoCol]          = estadiaRegistro[estadiaRangeMetodoCol];
           turnoHojeDiaRegistro[turnoHojeAreaCol]            = estadiaRegistro[estadiaRangeAreaCol];
@@ -177,9 +190,9 @@ function prepareTurnoDiario() {
   });
 
   turnoHojeDiaGama = removeAtributosDuplicados("TurnoHojeDia", turnoHojeDiaGama)
-
   turnoHojeDiaRng.clear();
-  var sheet = SpreadsheetApp.getActiveSheet();
+  var sheet = folhaIDSS.getSheetByName('TurnoHojeDia');
+  sheet.getRange("TurnoHojeDia").clear();
   sheet.getRange(6, 1, turnoHojeDiaGama.length, turnoHojeDiaGama[0].length).setValues(turnoHojeDiaGama);
 }
 
@@ -209,7 +222,7 @@ function removeAtributosDuplicados(tabela, gamaCandidata) {
         message += "Chave Duplicada: " + chaveCandidata
         message += "\n"
         message += "\Na Tabela:       " + tabela
-        ui.alert(message);
+        Logger.log(message);
         // Logger.log("Chave Duplicada (" + chaveCandidata + ") na tabela " + tabela);
         // console.log("Chave Duplicada (" + chaveCandidata + ") na tabela " + tabela);
     }
@@ -281,48 +294,77 @@ function executeTurnoDiario() {
   var contaCorrenteRegistro = [];
   var contasCorrentesRangeDados = [];
   turnoHojeDiaVals.forEach(function (turnoHojeDiaRegistro) {
-    const nome = turnoHojeDiaRegistro[turnoHojeNomeCol];
-    const disponibilidade   = turnoHojeDiaRegistro[turnoHojeDisponibilidadeCol];
     const metodo            = turnoHojeDiaRegistro[turnoHojeMetodoCol];
     const area              = turnoHojeDiaRegistro[turnoHojeAreaCol];
     const local             = turnoHojeDiaRegistro[turnoHojeLocalCol];
     const tarefa            = turnoHojeDiaRegistro[turnoHojeTarefaCol];
-    const comentarios       = turnoHojeDiaRegistro[turnoHojeComentariosCol];
     var ignoreRegister = false;
     if (metodo != "") {
       contaCorrenteRegistro = [];
-      contaCorrenteRegistro.push(new Date(turnHojeDiaData[0]));
-      contaCorrenteRegistro.push(nome);
-      contaCorrenteRegistro.push(area + "/" + local + "/" + tarefa);
-      contaCorrenteRegistro.push(metodo);
-      contaCorrenteRegistro.push(0);    // valor credito
-      contaCorrenteRegistro.push(0);    // peso credito
-      contaCorrenteRegistro.push(0);    // valor debito
-      contaCorrenteRegistro.push(0);    // peso debito    
-      contaCorrenteRegistro.push(comentarios);
-      var simpleObj = remuneracaoObj[metodo]
-      switch (metodo) {
+      contaCorrenteRegistro[contasCorrentesDataCol]        = new Date(turnHojeDiaData[0]);
+      contaCorrenteRegistro[contasCorrentesNomeCol]        = turnoHojeDiaRegistro[turnoHojeNomeCol];
+      contaCorrenteRegistro[contasCorrentesEstadiaCol]     =  turnoHojeDiaRegistro[turnoHojeEstadiaCol];
+      contaCorrenteRegistro[contasCorrentesMetodoCol]      = turnoHojeDiaRegistro[turnoHojeMetodoCol];
+      contaCorrenteRegistro[contasCorrentesCreditDebitCol] = "Credito"
+      contaCorrenteRegistro[contasCorrentesComentariosCol] = turnoHojeDiaRegistro[turnoHojeComentariosCol];
+      contaCorrenteRegistro[contasCorrentesItemCol]        = area + "/" + local + "/" + tarefa
+      switch (metodo) { 
         case "Diária":
-          contaCorrenteRegistro[contasCorrenteValorCreditoCol] = simpleObj[tarefa]
+          // Moeda Real
+          contaCorrenteRegistro[contasCorrentesMoedaCol] = "Real";
+          // Remuneracao em Reais
+          contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] = remuneracaoObj[metodo][tarefa]
+          // Remuneracao em Gramas de Ouro  
+          contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] = 0;
+          // Quantidade de items
+          contaCorrenteRegistro[contasCorrentesItemQtdCol] = 1;
+          // Credito / Debito em Reais
+          contaCorrenteRegistro[contasCorrentesTotalRealCol] = remuneracaoObj[metodo][tarefa];
+          // Credito / Debito em Gramas de Ouro
+          contaCorrenteRegistro[contasCorrentesTotalOuroCol] = 0;
           break;
         case "Salário":
+          // Moeda Real
+          contaCorrenteRegistro[contasCorrentesMoedaCol] = "Real";
+          // Remuneracao em Reais
+          contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] = remuneracaoObj[metodo][tarefa];
+          // Remuneracao em Gramas de Ouro
+          contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] = 0;
+          // Quantidade de items
+          contaCorrenteRegistro[contasCorrentesItemQtdCol] = 0
+          // Credito / Debito em Reais  
+          contaCorrenteRegistro[contasCorrentesTotalRealCol] = 0;
+          // Assalariados recebem o valor total do salário no final do mês  
           if (isLastDayOfMonth(new Date(turnHojeDiaData[0]))) {
-            contaCorrenteRegistro[contasCorrenteValorCreditoCol] = simpleObj[tarefa]
+              // Quantidade de items
+              contaCorrenteRegistro[contasCorrentesItemQtdCol] = 1;
+              // Credito / Debito em Reais  
+              contaCorrenteRegistro[contasCorrentesTotalRealCol] = remuneracaoObj[metodo][tarefa];
           }
+          // Credito / Debito em Gramas de Ouro
+          contaCorrenteRegistro[contasCorrentesTotalOuroCol] = 0; 
           break;
         case "Porcentagem":
-          contaCorrenteRegistro[contasCorrentePesoCreditoCol] = goldProduction[producaoPosAssociadosGramasCol] * simpleObj[tarefa]
-          break;
-        case "Meio_A_Meio":
-          contaCorrenteRegistro[contasCorrentePesoCreditoCol] = goldProduction[producaoPosAssociadosGramasCol] * simpleObj[tarefa]
-          contaCorrenteRegistro[contasCorrenteMetodoCol] = "Porcentagem";
+        case  "Meio_A_Meio":
+          // Moeda Ouro
+          contaCorrenteRegistro[contasCorrentesMoedaCol] = "Ouro";
+          // Remuneracao em Reais
+          contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] = 0;
+          // Remuneracao em Gramas de Ouro
+          contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] = remuneracaoObj[metodo][tarefa];
+          // Quantidade de items
+          contaCorrenteRegistro[contasCorrentesItemQtdCol] = 1;
+           // Credito / Debito em Reais
+          contaCorrenteRegistro[contasCorrentesTotalRealCol] = 0;
+          // Credito / Debito em Gramas de Ouro
+          contaCorrenteRegistro[contasCorrentesTotalOuroCol] = goldProduction[producaoPosAssociadosGramasCol] * remuneracaoObj[metodo][tarefa];
           break;
         default:
           var message = ""
           message += "Metodo de pagamento invalido: " + metodo
           Logger.log(message);
           ignoreRegister = true;
-          break;
+          break;  
       }
       if (!ignoreRegister) {
         contasCorrentesRangeDados.push(contaCorrenteRegistro) 
