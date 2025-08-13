@@ -25,6 +25,9 @@ const contasCorrentesTotalOuroCol         = 11; // Gramas de ouro
 const contasCorrentesComentariosCol       = 12;
 
 function meuOnEditGatilho(e) {
+  // Vire o Semaforo para Vermelho
+  contasCorrentesSheet.getRangeByName("ContasCorrentesSemaforo").setBackground("#FF0000");
+
   contasCorrentesSheet.getRangeByName(contasCorrentesCreditoReal).setValues([[0]]);
   contasCorrentesSheet.getRangeByName(contasCorrentesCreditoOuro).setValues([[0]]);
   contasCorrentesSheet.getRangeByName(contasCorrentesDebitoReal).setValues([[0]]);
@@ -53,6 +56,10 @@ function meuOnEditGatilho(e) {
   var rendasFuturas = calculeRendasGanhar(nome, estadia, trasactions);
   contasCorrentesSheet.getRangeByName("AGanharReal").setValues([[rendasFuturas["Real"]]]);
   contasCorrentesSheet.getRangeByName("AGanharOuro").setValues([[rendasFuturas["Ouro"]]]);
+
+  // Vire o Semaforo para Verde
+  contasCorrentesSheet.getRangeByName("ContasCorrentesSemaforo").setBackground("#00FF00");
+
 }
 
 function calculateCreditsAndDebts (nome, estadia, trasactions) {
