@@ -3,16 +3,6 @@ function diversosPrepare() {
   	// SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
 	// 	.alert('You clicked DiversosPrepare');
   	switchToTab("Diversos");
-	
-	// Clear all the field 
-	DiversosAssociadoRange.setValue("");
-	// DiversosDataRange.setValue(""); it is a formula =TODAY()
-	// DiversosEstadiaRange.setValue(""); // it is a formula =TODAY()
-	DiversosMoedaRange.setValue("Real");
-	DiversosItemsRange.setValue("");
-	DiversosRealRange.setValue("");
-	DiversosQuantidadesRange.setValue("");
-	DiversosComentarioRange.setValue("");
 }
 
 function diversosExecute() {
@@ -76,6 +66,14 @@ function diversosExecute() {
 	// 
 	var lastRow = contasCorrentesDadosTab.getLastRow();
 	contasCorrentesDadosTab.getRange(lastRow + 1, 1, contasCorrentesRangeDados.length, contasCorrentesRangeDados[0].length).setValues(contasCorrentesRangeDados)
+
+	// Clear the form
+	DiversosAssociadoRange.setValue("");
+	DiversosMoedaRange.setValue("Real");
+	DiversosItemsRange.setValue("");
+	DiversosRealRange.setValue("");
+	DiversosQuantidadesRange.setValue("");
+	DiversosComentarioRange.setValue("");
 
 	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
 		.alert('O sistema lancou as despesas Diversas do ' + DiversosAssociado);

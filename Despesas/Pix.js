@@ -3,16 +3,7 @@ function pixPrepare() {
   	// SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
 	// 	.alert('You clicked PixPrepare');
   	switchToTab("Pix");
-	
-	// Clear all the field 
-	PixAssociadoRange.setValue("");
-	// PixDataRange.setValue(""); it is a formula =TODAY()
-	// PixEstadiaRange.setValue(""); // it is a formula =TODAY()
-	PixMoedaRange.setValue("Real");
-	PixItemsRange.setValue("");
-	PixRealRange.setValue("");
-	PixQuantidadesRange.setValue("");
-	PixComentarioRange.setValue("");
+
 }
 
 function pixExecute() {
@@ -72,6 +63,14 @@ function pixExecute() {
 	// 
 	var lastRow = contasCorrentesDadosTab.getLastRow();
 	contasCorrentesDadosTab.getRange(lastRow + 1, 1, contasCorrentesRangeDados.length, contasCorrentesRangeDados[0].length).setValues(contasCorrentesRangeDados)
+
+	// Clear form
+	PixAssociadoRange.setValue("");
+	PixMoedaRange.setValue("Real");
+	PixItemsRange.setValue("");
+	PixRealRange.setValue("");
+	PixQuantidadesRange.setValue("");
+	PixComentarioRange.setValue("");
 
 	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
 		.alert('O sistema lancou o PIX do ' + PixAssociado);

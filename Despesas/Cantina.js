@@ -73,6 +73,13 @@ function cantinaExecute() {
 	var lastRow = contasCorrentesDadosTab.getLastRow();
 	contasCorrentesDadosTab.getRange(lastRow + 1, 1, contasCorrentesRangeDados.length, contasCorrentesRangeDados[0].length).setValues(contasCorrentesRangeDados)
 
+		// Clear the form
+	CantinaAssociadoRange.setValue("");
+	CantinaMoedaRange.setValue("Real");
+	CantinaItemsRange.setValue("");
+	CantinaQuantidadesRange.setValue("");
+	CantinaComentarioRange.setValue("");
+
 	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
 		.alert('O sistema lancou as despesas de cantina do ' + cantinaAssociado);
 }
