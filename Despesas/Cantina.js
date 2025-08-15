@@ -1,3 +1,85 @@
-function test( ) {
-	return 42;
+
+function cantinaPrepare() {
+	// Feedback
+  	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
+		.alert('You clicked cantinaPrepare');
+  	switchToTab("Cantina");
+	
+	// Clear all the field 
+	CantinaAssociadoRange.setValue("");
+	// CantinaDataRange.setValue(""); it is a formula =TODAY()
+	// CantinaEstadiaRange.setValue(""); // it is a formula =TODAY()
+	CantinaMoedaRange.setValue("Real");
+	CantinaItemsRange.setValue("");
+	CantinaQuantidadesRange.setValue("");
+	CantinaComentarioRange.setValue("");
 }
+
+function cantinaExecute() {
+	// SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
+	// 	.alert('You clicked cantinaExecute');
+	switchToTab("Cantina");
+
+	// We need to build one record for each item in CantinaDespesasRange
+	var cantinaData 		= CantinaDataRange.getValues();
+	var cantinaAssociado	= CantinaAssociadoRange.getValue();
+	var cantinaEstadia 		= CantinaEstadiaRange.getValue();
+	var cantinaPagemento 	= CantinaPagementoRange.getValue();
+	var cantinaMoeda 		= CantinaMoedaRange.getValue();
+	var cantinaDespesas     = CantinaDespesasRange.getValues();
+	var cantinaDespesasFiltrados = cantinaDespesas.filter(function(transaction) {
+    	return transaction[CantinaDespesasItemCol ] != "";
+  	});
+	if (cantinaDespesasFiltrados.length == 0) {
+		var message = "";
+		SpreadsheetApp.getUi().alert("Nao ha nehuma Despesa de Cantina a ser processada.");
+		return null;
+	}
+	var cantinaComentario = CantinaComentarioRange.getValue();	
+
+	var contaCorrenteRegistro = [];
+  	var contasCorrentesRangeDados = [];
+	cantinaDespesasFiltrados.forEach(function(transaction) {
+		var item 		= transaction[CantinaDespesasItemCol];
+		var real 		= transaction[CantinaDespesasRealol];
+		var ouro 		= transaction[CantinaDespesasOuroCol];
+		var qtd 		= transaction[CantinaDespesasQTDCol];
+		var totalReal 	= transaction[CantinaDespesasTotalRealCol];
+		var totalOuro 	= transaction[CantinaDespesasTotaOurolCol];
+		      
+		contaCorrenteRegistro = [];
+		contaCorrenteRegistro[contasCorrentesDataCol]        		= cantinaData;
+		contaCorrenteRegistro[contasCorrentesNomeCol]       	 	= cantinaAssociado
+		contaCorrenteRegistro[contasCorrentesEstadiaCol]     		= cantinaEstadia
+		contaCorrenteRegistro[contasCorrentesMetodoCol]      		= 'Cantina';
+		contaCorrenteRegistro[contasCorrentesMoedaCol]       		= cantinaMoeda;
+		contaCorrenteRegistro[contasCorrentesCreditDebitCol] 		= 'Debito';
+		contaCorrenteRegistro[contasCorrentesItemCol]       		= item;
+		contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] 	= real;
+		contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] 	= ouro;
+		contaCorrenteRegistro[contasCorrentesItemQtdCol]         	= qtd;	
+		contaCorrenteRegistro[contasCorrentesTotalRealCol] 			= totalReal;
+		contaCorrenteRegistro[contasCorrentesTotalOuroCol] 			= totalOuro;
+		contaCorrenteRegistro[contasCorrentesComentariosCol] 		= cantinaComentario;
+
+		// Add the record to the range
+		contasCorrentesRangeDados.push(contaCorrenteRegistro)
+	});
+	// 
+	var lastRow = contasCorrentesDadosTab.getLastRow();
+	contasCorrentesDadosTab.getRange(lastRow + 1, 1, contasCorrentesRangeDados.length, contasCorrentesRangeDados[0].length).setValues(contasCorrentesRangeDados)
+}
+// 
+// const contasCorrentesDataCol              	= 0;
+// const contasCorrentesNomeCol              	= 1;
+// const contasCorrentesEstadiaCol           	= 2;
+// const contasCorrentesMetodoCol            	= 3;  // Diaria, Salario, Porcentagem, Cantina, PIX, Diversos, Voo, Fechar, substitua por outro
+// const contasCorrentesMoedaCol             	= 4   // Real, Ouro
+// const contasCorrentesCreditDebitCol       	= 5;  // Credito, Debito
+// const contasCorrentesItemCol              	= 6;
+// const contasCorrentesPrecoUnidadeRealCol  	= 7;  // Real
+// const contasCorrentesPrecoUnidadeOuroCol  	= 8;  // Gramas de ouro 
+// const contasCorrentesItemQtdCol           	= 9;
+// const contasCorrentesTotalRealCol         	= 10; // Real
+// const contasCorrentesTotalOuroCol         	= 11; // Gramas de ouro
+// const contasCorrentesComentariosCol       	= 12

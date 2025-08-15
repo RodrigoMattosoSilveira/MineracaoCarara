@@ -1,21 +1,25 @@
 const despesasID = "1XwjBUJYG4VLN0ZaG0EFzKljWk9VdGvePaDO9Nwd70G4";
 const despesasSheet = SpreadsheetApp.openById(despesasID);
+
 const despesasCantinaTab = despesasSheet.getSheetByName("Cantina");
-const CantinaAssociadoRange = despesasCantinaTab.getRange("CantinaAssociado");
 const CantinaDataRange = despesasCantinaTab.getRange("CantinaData");
-const CantinaMoedaRange = despesasCantinaTab.getRange("CantinaMoeda");
-const CantinaEstadiaRange = despesasCantinaTab.getRange("CantinaEstadia");
-const CantinaDespesasRange = despesasCantinaTab.getRange("CantinaDespesas");
-const CantinaQuantidadesRange = despesasCantinaTab.getRange("CantinaQuantidades");
+
+const CantinaAssociadoRange 	= despesasCantinaTab.getRange("CantinaAssociado");
+const CantinaEstadiaRange 		= despesasCantinaTab.getRange("CantinaEstadia");
+const CantinaPagementoRange 	= despesasCantinaTab.getRange("CantinaPagemento");
+const CantinaMoedaRange 		= despesasCantinaTab.getRange("CantinaMoeda");
+const CantinaDespesasRange 		= despesasCantinaTab.getRange("CantinaDespesas");
+const CantinaComentarioRange	= despesasCantinaTab.getRange("CantinaComentario");
+
 const CantinaItemsRange = despesasCantinaTab.getRange("CantinaItems");
-const CantinaRange = despesasCantinaTab.getRange("CantinaItems");
+const CantinaQuantidadesRange = despesasCantinaTab.getRange("CantinaQuantidades");
+
 const CantinaDespesasItemCol 		= 0;	
 const CantinaDespesasRealol 		= 1;
 const CantinaDespesasOuroCol 		= 2;	
 const CantinaDespesasQTDCol 		= 3
 const CantinaDespesasTotalRealCol 	= 4;
 const CantinaDespesasTotaOurolCol 	= 5;
-const CantinaComentarioRange = despesasCantinaTab.getRange("CantinaComentario");
 
 const despesasPixTab = despesasSheet.getSheetByName("Pix");
 const PixNome = despesasPixTab.getRange("PixAssociado").getValue();
@@ -29,6 +33,26 @@ const PixDespesasQtdCol     = 3
 const PixDespesasTotalRealCol   = 4;
 const PixDespesasTotaOurolCol   = 5;
 const PixDespesasComentariosCol = 6;
+
+const contasCorrentesId 					= "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
+const contasCorrentesSheet 					= SpreadsheetApp.openById(contasCorrentesId);
+const contasCorrentesTab 					= contasCorrentesSheet.getSheetByName("ContasCorrentes");
+const contasCorrentesDadosTab 				= contasCorrentesSheet.getSheetByName("Dados");
+const contasCorrentesDadosRange 			= contasCorrentesDadosTab.getRange("Dados");
+
+const contasCorrentesDataCol              	= 0;
+const contasCorrentesNomeCol              	= 1;
+const contasCorrentesEstadiaCol           	= 2;
+const contasCorrentesMetodoCol            	= 3;  // Diaria, Salario, Porcentagem, Cantina, PIX, Diversos, Voo, Fechar, substitua por outro
+const contasCorrentesMoedaCol             	= 4   // Real, Ouro
+const contasCorrentesCreditDebitCol       	= 5;  // Credito, Debito
+const contasCorrentesItemCol              	= 6;
+const contasCorrentesPrecoUnidadeRealCol  	= 7;  // Real
+const contasCorrentesPrecoUnidadeOuroCol  	= 8;  // Gramas de ouro 
+const contasCorrentesItemQtdCol           	= 9;
+const contasCorrentesTotalRealCol         	= 10; // Real
+const contasCorrentesTotalOuroCol         	= 11; // Gramas de ouro
+const contasCorrentesComentariosCol       	= 12
 
 function onOpen() {
   var ui = SpreadsheetApp.getUi();
@@ -60,28 +84,6 @@ function onOpen() {
 		.addToUi();
 }
 
-function cantinaPrepare() {
-  	switchToTab("Cantina");
-	
-	// Clear all the field 
-	CantinaAssociadoRange.setValue("");
-	// CantinaDataRange.setValue(""); it is a formula =TODAY()
-	// CantinaEstadiaRange.setValue(""); // it is a formula =TODAY()
-	CantinaMoedaRange.setValue("Real");
-	CantinaQuantidadesRange.setValue("");
-	CantinaItemsRange.setValue("");
-	CantinaComentarioRange.setValue("");
-
-	// Feedback
-  	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-		.alert('You clicked cantinaPrepare');
-}
-
-function cantinaExecute() {
-  	switchToTab("Cantina");
-	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-		.alert('You clicked cantinaExecute');
-}
 
 function pixPrepare() {
   	switchToTab("Pix");
