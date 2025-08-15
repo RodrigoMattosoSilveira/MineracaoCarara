@@ -42,6 +42,27 @@ const PixDespesasQTDCol         = 3
 const PixDespesasTotalRealCol   = 4;
 const PixDespesasTotaOurolCol   = 5;
 
+const despesasDiversosTab = despesasSheet.getSheetByName("Diversos");
+const DiversosDataRange = despesasDiversosTab.getRange("DiversosData");
+
+const DiversosAssociadoRange     = despesasDiversosTab.getRange("DiversosAssociado");
+const DiversosEstadiaRange       = despesasDiversosTab.getRange("DiversosEstadia");
+const DiversosPagementoRange     = despesasDiversosTab.getRange("DiversosPagamento");
+const DiversosMoedaRange       = despesasDiversosTab.getRange("DiversosMoeda");
+const DiversosDespesasRange      = despesasDiversosTab.getRange("DiversosDespesas");
+const DiversosComentarioRange    = despesasDiversosTab.getRange("DiversosComentario");
+
+const DiversosItemsRange = despesasDiversosTab.getRange("DiversosItems");
+const DiversosRealRange = despesasDiversosTab.getRange("DiversosReal");
+const DiversosQuantidadesRange = despesasDiversosTab.getRange("DiversosQuantidades");
+
+const DiversosDespesasItemCol        = 0;  
+const DiversosDespesasRealol         = 1;
+const DiversosDespesasOuroCol        = 2;  
+const DiversosDespesasQTDCol         = 3
+const DiversosDespesasTotalRealCol   = 4;
+const DiversosDespesasTotaOurolCol   = 5;
+
 const contasCorrentesId 					= "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
 const contasCorrentesSheet 					= SpreadsheetApp.openById(contasCorrentesId);
 const contasCorrentesTab 					= contasCorrentesSheet.getSheetByName("ContasCorrentes");
@@ -75,10 +96,6 @@ function onOpen() {
 			.addItem('PIX Prepare', 'pixPrepare')
 			.addItem('PIX Execute', 'pixExecute')
 		)	
-		.addSubMenu(ui.createMenu('Voo')
-			.addItem('Voo Prepare', 'vooPrepare')
-			.addItem('Voo Execute', 'vooExecute')
-		)
 
 		.addSubMenu(ui.createMenu('Diversos')
 			.addItem('Diversos Prepare', 'diversosPrepare')
@@ -104,17 +121,7 @@ function vooExecute() {
     	.alert('You clicked vooExecute');
 }
 
-function diversosPrepare() {
-	switchToTab("Diversos");
-  	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-    	.alert('You clicked on diversosPrepare');
-}
 
-function diversosExecute() {
-	switchToTab("Diversos");
-  	SpreadsheetApp.getUi() // Or 
-    	.alert('You clicked the diversosExecute');
-}
 
 function fecharPrepare() {
 	switchToTab("Fechar");
