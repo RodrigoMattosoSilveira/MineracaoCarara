@@ -1,7 +1,7 @@
 function cantinaPrepare() {
 	// Feedback
-  	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-		.alert('You clicked cantinaPrepare');
+  	// SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
+	// 	.alert('You clicked cantinaPrepare');
   	switchToTab("Cantina");
 	
 	// Clear all the field 
@@ -72,4 +72,7 @@ function cantinaExecute() {
 	// 
 	var lastRow = contasCorrentesDadosTab.getLastRow();
 	contasCorrentesDadosTab.getRange(lastRow + 1, 1, contasCorrentesRangeDados.length, contasCorrentesRangeDados[0].length).setValues(contasCorrentesRangeDados)
+
+	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
+		.alert('O sistema lancou as despesas de cantina do ' + cantinaAssociado);
 }

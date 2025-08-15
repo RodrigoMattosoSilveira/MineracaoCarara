@@ -85,4 +85,7 @@ function folgaExecute() {
 	// 
 	var lastRow = contasCorrentesDadosTab.getLastRow();
 	contasCorrentesDadosTab.getRange(lastRow + 1, 1, contasCorrentesRangeDados.length, contasCorrentesRangeDados[0].length).setValues(contasCorrentesRangeDados)
+
+	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
+		.alert('O sistema lancou a despesa do pagamento da folga de ' + FolgaAssociado);
 }
