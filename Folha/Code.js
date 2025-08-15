@@ -32,10 +32,13 @@ const contasCorrentesTotalRealCol         = 10; // Real
 const contasCorrentesTotalOuroCol         = 11; // Gramas de ouro
 const contasCorrentesComentariosCol       = 12;
 
-const folhaID = "1T1uTdxSNuxSBuUVVLBoJxiME3HrTtNC3bgb69PThduY";
-const turnoHojeDiaRange = "TurnoHojeDia"
-const turnoHojeDiaRangeFirstRow = 6;
-const turnoHojeDiaRangeFirstCell= 1;
+const folhaID               = "1T1uTdxSNuxSBuUVVLBoJxiME3HrTtNC3bgb69PThduY";
+const folhaSheet            = SpreadsheetApp.openById(folhaID);
+const turnoHojeDiaDataRage  = folhaSheet.getRange("TurnoHojeDiaData");
+
+const turnoHojeDiaRange             = folhaSheet.getRange("TurnoHojeDia");
+const turnoHojeDiaRangeFirstRow     = 4;
+const turnoHojeDiaRangeFirstCell    = 1;
 const turnoHojeNomeCol              = 0;
 const turnoHojeEstadiaCol           = 1;
 const turnoHojeDisponibilidadeCol   = 2;
@@ -45,9 +48,9 @@ const turnoHojeLocalCol             = 5;
 const turnoHojeTarefaCol            = 6;
 const turnoHojeComentariosCol       = 7;
 ;
-const turnoOntemDiaRange = "TurnoOntemDia"
-const turnoOntemDiaRangeFirstRow = 2;
-const turnoOntemDiaRangeFirstCell= 1;
+const turnoOntemDiaRange            = folhaSheet.getRange("TurnoOntemDia")
+const turnoOntemDiaRangeFirstRow    = 2;
+const turnoOntemDiaRangeFirstCell   = 1;
 const turnoOntemNomeCol             = 0;
 const turnoOntemEstadiaCol          = 1;
 const turnoOntemDisponibilidadeCol  = 2;
@@ -122,17 +125,17 @@ function onOpen() {
 // 
 function prepareTurnoDiario() {
 
+  switchToTab("TurnoHojeDia");
   const folhaIDSS = SpreadsheetApp.openById(folhaID);
   const estadiaDiaSS = SpreadsheetApp.openById(estadiaID);
 
-  const turnoOntemDiaRng = folhaIDSS.getRange(turnoOntemDiaRange)
-  const turnoOntemDiaVals = turnoOntemDiaRng.getValues();
+ const turnoOntemDiaVals = turnoOntemDiaRange.getValues();
 
   const estadiaRng = estadiaDiaSS.getRange(estadiaRange)
   const estadiaVals = estadiaRng.getValues();
 
-  const turnoHojeDiaRng = folhaIDSS.getRange(turnoHojeDiaRange);
-  turnoHojeDiaRng.clear(); // Limpa a gama antes de inserir os novos valores
+  // const turnoHojeDiaRng = folhaIDSS.getRange(turnoHojeDiaRange);
+  turnoHojeDiaRange.clear(); // Limpa a gama antes de inserir os novos valores
   
   var turnoHojeDiaGama = [];
   var turnoHojeDiaRegistro = [];
@@ -150,12 +153,13 @@ function prepareTurnoDiario() {
           estadiaRegistro[estadiaRangeFechadaCol] == "") {
             
           turnoHojeDiaRegistro[turnoHojeNomeCol]             = ontemRegistroNome;
-          turnoHojeDiaRegistro[turnoHojeEstadiaCol]          = estadiaRegistro[estadiaRangeComecoCol];
-          turnoHojeDiaRegistro[turnoHojeDisponibilidadeCol]  = estadiaRegistro[estadiaRangeDisponibilidadeCol];
+          turnoHojeDiaRegistro[turnoHojeEstadiaCol]          = ontemRegistro[turnoOntemEstadiaCol];
+          turnoHojeDiaRegistro[turnoHojeDisponibilidadeCol]  = ontemRegistro[turnoOntemDisponibilidadeCol];
           turnoHojeDiaRegistro[turnoHojeMetodoCol]           = ontemRegistro[turnoOntemMetodoCol];
           turnoHojeDiaRegistro[turnoHojeAreaCol]             = ontemRegistro[turnoOntemAreaCol];
           turnoHojeDiaRegistro[turnoHojeLocalCol]            = ontemRegistro[turnoOntemLocalCol];
-          turnoHojeDiaRegistro[turnoHojeTarefaCol]          = ontemRegistro[turnoHojeTarefaCol];
+          turnoHojeDiaRegistro[turnoHojeTarefaCol]           = ontemRegistro[turnoOntemTarefaCol];
+          turnoHojeDiaRegistro[turnoHojeAreaCol]             = ontemRegistro[turnoOntemComentariosCol]
 
           achou = true;
           turnoHojeDiaGama.push(turnoHojeDiaRegistro)
@@ -190,10 +194,9 @@ function prepareTurnoDiario() {
   });
 
   turnoHojeDiaGama = removeAtributosDuplicados("TurnoHojeDia", turnoHojeDiaGama)
-  turnoHojeDiaRng.clear();
+  turnoHojeDiaRange.clear();
   var sheet = folhaIDSS.getSheetByName('TurnoHojeDia');
-  sheet.getRange("TurnoHojeDia").clear();
-  sheet.getRange(6, 1, turnoHojeDiaGama.length, turnoHojeDiaGama[0].length).setValues(turnoHojeDiaGama);
+  sheet.getRange(4, 1, turnoHojeDiaGama.length, turnoHojeDiaGama[0].length).setValues(turnoHojeDiaGama);
 }
 
 //* ********************************************************************************************************************* */
@@ -265,28 +268,32 @@ function prepareTurnoNoturno() {
 //* ********************************************************************************************************************* */
 // 
 function executeTurnoDiario() {
+  switchToTab("TurnoHojeDia");
   const folhaIDSS = SpreadsheetApp.openById(folhaID);
 
-  const turnoOntemDiaRng = folhaIDSS.getRange(turnoOntemDiaRange)
-  const turnoOntemDiaVals = turnoOntemDiaRng.getValues();
+  // const turnoHojeDiaRng = folhaIDSS.getRange(turnoHojeDiaRange);
+  const turnoHojeDiaVals = turnoHojeDiaRange.getValues().
+    filter(function(registro) {
+      return registro[0] != 0;
+    });
 
-  const turnoHojeDiaRng = folhaIDSS.getRange(turnoHojeDiaRange);
-  const turnoHojeDiaVals = turnoHojeDiaRng.getValues();
-
-  const turnHojeDiaData = folhaIDSS.getRangeByName("TurnoHojeDiaData").getValues();
+  const turnHojeDiaVals = turnoHojeDiaRange.getValues()
+    .filter(function (registro) {
+      return registro[0] != "" &&
+             registro[0] != "Nome"
+    });
 
   const contaCorrentesIDSS = SpreadsheetApp.openById(contasCorrentesId);
 
   // Copie os dados da Folha!TurnoHojeDia para a Folha!TurnoOntemDia
-  turnoOntemDiaRng.clear(); 
-  var sheet = SpreadsheetApp.getActiveSheet();
-  turnoHojeDiaRng.copyTo(turnoOntemDiaRng,  SpreadsheetApp.CopyPasteType.PASTE_VALUES, false)
+  turnoOntemDiaRange.clear(); 
+  turnoOntemDiaRange.copyTo(turnoOntemDiaRange,  SpreadsheetApp.CopyPasteType.PASTE_VALUES, false)
 
   // Build the remuneracaoObj to aid in calculations
   var remuneracaoObj = buildRemuneracaoObj()
 
   // Get the Gold Production for the day 
-  var goldProduction = obtenhaProducaoOuro(new Date(turnHojeDiaData[0]))
+  var goldProduction = obtenhaProducaoOuro(new Date(turnoHojeDiaVals[0]))
 
   // Process the assignments
   var valor = 0;
@@ -301,7 +308,7 @@ function executeTurnoDiario() {
     var ignoreRegister = false;
     if (metodo != "") {
       contaCorrenteRegistro = [];
-      contaCorrenteRegistro[contasCorrentesDataCol]        = new Date(turnHojeDiaData[0]);
+      contaCorrenteRegistro[contasCorrentesDataCol]        = turnoHojeDiaDataRage.getValue()
       contaCorrenteRegistro[contasCorrentesNomeCol]        = turnoHojeDiaRegistro[turnoHojeNomeCol];
       contaCorrenteRegistro[contasCorrentesEstadiaCol]     =  turnoHojeDiaRegistro[turnoHojeEstadiaCol];
       contaCorrenteRegistro[contasCorrentesMetodoCol]      = turnoHojeDiaRegistro[turnoHojeMetodoCol];
@@ -315,7 +322,7 @@ function executeTurnoDiario() {
           // Remuneracao em Reais
           contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] = remuneracaoObj[metodo][tarefa]
           // Remuneracao em Gramas de Ouro  
-          contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] = 0;
+          contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] = 0
           // Quantidade de items
           contaCorrenteRegistro[contasCorrentesItemQtdCol] = 1;
           // Credito / Debito em Reais
@@ -331,11 +338,11 @@ function executeTurnoDiario() {
           // Remuneracao em Gramas de Ouro
           contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] = 0;
           // Quantidade de items
-          contaCorrenteRegistro[contasCorrentesItemQtdCol] = 0
+          contaCorrenteRegistro[contasCorrentesItemQtdCol] = 0;
           // Credito / Debito em Reais  
           contaCorrenteRegistro[contasCorrentesTotalRealCol] = 0;
           // Assalariados recebem o valor total do salário no final do mês  
-          if (isLastDayOfMonth(new Date(turnHojeDiaData[0]))) {
+          if (isLastDayOfMonth(new Date(turnoHojeDiaVals[0]))) {
               // Quantidade de items
               contaCorrenteRegistro[contasCorrentesItemQtdCol] = 1;
               // Credito / Debito em Reais  
@@ -422,8 +429,8 @@ function buildRemuneracaoObj(date) {
 function obtenhaQuotacaoOuroTest() {
   const folhaID = "1T1uTdxSNuxSBuUVVLBoJxiME3HrTtNC3bgb69PThduY";
   const folhaIDSS = SpreadsheetApp.openById(folhaID);
-  const turnHojeDiaData = folhaIDSS.getRangeByName("TurnoHojeDiaData").getValues();
-  obtenhaProducaoOuro(new Date(turnHojeDiaData[0])) 
+  const turnHojeDiaVals =turnoHojeDiaRange.getValues();
+  obtenhaProducaoOuro(new Date(turnHojeDiaVals[0])) 
   // obtenhaProducaoOuro(new Date("2025-07-31T00:00:00"));
 }
 function obtenhaQuotacaoOuro(dataProcurada) {
@@ -456,8 +463,8 @@ function obtenhaQuotacaoOuro(dataProcurada) {
 function obtenhaProducaoOuroTest() {
   const folhaID = "1T1uTdxSNuxSBuUVVLBoJxiME3HrTtNC3bgb69PThduY";
   const folhaIDSS = SpreadsheetApp.openById(folhaID);
-  const turnHojeDiaData = folhaIDSS.getRangeByName("TurnoHojeDiaData").getValues();
-  obtenhaProducaoOuro(new Date(turnHojeDiaData[0])) 
+  const turnHojeDiaVals = turnoHojeDiaRange.getValues();
+  obtenhaProducaoOuro(new Date(turnHojeDiaVals[0])) 
 }
 function obtenhaProducaoOuro(dataProcurada) {
   const producaoIDSS = SpreadsheetApp.openById(producaoId);
@@ -514,3 +521,12 @@ function removeAtributosDuplicadosTest() {
 
 }
 
+function switchToTab(sheetName) {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = spreadsheet.getSheetByName(sheetName);
+  if (sheet) {
+    spreadsheet.setActiveSheet(sheet);
+  } else {
+    Logger.log("Sheet with name '" + sheetName + "' not found.");
+  }
+}
