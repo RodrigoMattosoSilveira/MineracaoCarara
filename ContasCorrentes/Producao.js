@@ -8,8 +8,7 @@ const producaoPosEmpresaGramasCol  = 4;
 const producaoPosEmpresaBrCol  = 5; 
 const producaoPosAssociadosGramasCol  = 6; 
 const producaoPosAssociadosBrCol  = 7; 
-const producaoPosAssociadosMediaCol  = 8; 
-
+const producaoPosAssociadosMediaCol  = 8; // Changed to be the average of the gold produced by MC (producaoPosQueimadaCol)
 // *********************************************************************************
 // obtenhaProducaoOuro
 // 

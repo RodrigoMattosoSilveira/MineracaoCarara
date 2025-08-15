@@ -245,7 +245,7 @@ function calculeRendasGanhar(nomeAssociado, inicioEstadia) {
     rendasFuturas["Real"]= saldoGanhar;
       break;
     case "Porcentagem":
-      saldoGanhar = calculePorcentagemGanhar(nomeAssociado, inicioEstadia, metodo, tarefa);
+      saldoGanhar = calculeGramasOuroGanhar(nomeAssociado, inicioEstadia, metodo, tarefa);
     rendasFuturas["Ouro"]= saldoGanhar;
       break;
     default:
@@ -339,17 +339,17 @@ function calculeSalarioGanhar(nomeAssociado,  inicioEstadia, metodo, tarefa){
 }
 
 // *********************************************************************************
-// calculePorcentagemGanhar
+// calculeGramasOuroGanhar
 // 
 // Input
 //    nomeAssociado
 // Output
-//  O sado to associado, calculado como um trabalhador on poco, que recebe baseado,\
+//  O saldo to associado, calculado como um trabalhador on poco, que recebe baseado,\
 //  na producao diaria de ouro 
 //
 // * ********************************************************************************
 // 
-function calculePorcentagemGanhar(nomeAssociado,  inicioEstadia, metodo, tarefa) {
+function calculeGramasOuroGanhar(nomeAssociado,  inicioEstadia, metodo, tarefa) {
   var gramasEstimadasGanhar = 0;
   var diasRestantes = 0;
   var hoje = new Date();
@@ -376,9 +376,9 @@ function calculePorcentagemGanhar(nomeAssociado,  inicioEstadia, metodo, tarefa)
 
   //  Calcule of valor estimado a ser ganho, no valor do ouro
   var gramasEstimadasGanhar = estimativaDeCotaDiariaAssociado * diasRestantes * porcentagem;
-  estimativaDoValorGanhar = gramasEstimadasGanhar*cotacaoOuro;
+  // estimativaDoValorGanhar = gramasEstimadasGanhar*cotacaoOuro;
 
-  return estimativaDoValorGanhar;
+  return gramasEstimadasGanhar;
 }
 
 Date.prototype.addDays = function(days) {
