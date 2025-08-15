@@ -1,4 +1,3 @@
-
 function cantinaPrepare() {
 	// Feedback
   	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
@@ -69,17 +68,3 @@ function cantinaExecute() {
 	var lastRow = contasCorrentesDadosTab.getLastRow();
 	contasCorrentesDadosTab.getRange(lastRow + 1, 1, contasCorrentesRangeDados.length, contasCorrentesRangeDados[0].length).setValues(contasCorrentesRangeDados)
 }
-// 
-// const contasCorrentesDataCol              	= 0;
-// const contasCorrentesNomeCol              	= 1;
-// const contasCorrentesEstadiaCol           	= 2;
-// const contasCorrentesMetodoCol            	= 3;  // Diaria, Salario, Porcentagem, Cantina, PIX, Diversos, Voo, Fechar, substitua por outro
-// const contasCorrentesMoedaCol             	= 4   // Real, Ouro
-// const contasCorrentesCreditDebitCol       	= 5;  // Credito, Debito
-// const contasCorrentesItemCol              	= 6;
-// const contasCorrentesPrecoUnidadeRealCol  	= 7;  // Real
-// const contasCorrentesPrecoUnidadeOuroCol  	= 8;  // Gramas de ouro 
-// const contasCorrentesItemQtdCol           	= 9;
-// const contasCorrentesTotalRealCol         	= 10; // Real
-// const contasCorrentesTotalOuroCol         	= 11; // Gramas de ouro
-// const contasCorrentesComentariosCol       	= 12

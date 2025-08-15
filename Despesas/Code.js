@@ -22,17 +22,25 @@ const CantinaDespesasTotalRealCol 	= 4;
 const CantinaDespesasTotaOurolCol 	= 5;
 
 const despesasPixTab = despesasSheet.getSheetByName("Pix");
-const PixNome = despesasPixTab.getRange("PixAssociado").getValue();
-const PixEstadia = despesasPixTab.getRange("PixEstadia").getValue();
-const PixData = despesasPixTab.getRange("PixData").getValue();
-const PixDespesas = despesasPixTab.getRange("PixDespesas").getValues();
-const PixDespesasItemCol    = 0;  
-const PixDespesasRealol     = 1;
-const PixDespesasOuroCol    = 2;  
-const PixDespesasQtdCol     = 3
+const PixDataRange = despesasPixTab.getRange("PixData");
+
+const PixAssociadoRange   	= despesasPixTab.getRange("PixAssociado");
+const PixEstadiaRange     	= despesasPixTab.getRange("PixEstadia");
+const PixPagementoRange   	= despesasPixTab.getRange("PixPagamento");
+const PixMoedaRange     	= despesasPixTab.getRange("PixMoeda");
+const PixDespesasRange    	= despesasPixTab.getRange("PixDespesas");
+const PixComentarioRange  	= despesasPixTab.getRange("PixComentario");
+
+const PixItemsRange = despesasPixTab.getRange("PixItems");
+const PixRealRange = despesasPixTab.getRange("PixReal");
+const PixQuantidadesRange = despesasPixTab.getRange("PixQuantidades");
+
+const PixDespesasItemCol        = 0;  
+const PixDespesasRealol         = 1;
+const PixDespesasOuroCol        = 2;  
+const PixDespesasQTDCol         = 3
 const PixDespesasTotalRealCol   = 4;
 const PixDespesasTotaOurolCol   = 5;
-const PixDespesasComentariosCol = 6;
 
 const contasCorrentesId 					= "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
 const contasCorrentesSheet 					= SpreadsheetApp.openById(contasCorrentesId);
@@ -82,19 +90,6 @@ function onOpen() {
 		)
 
 		.addToUi();
-}
-
-
-function pixPrepare() {
-  	switchToTab("Pix");
-	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-		.alert('You clicked on pixPrepare');
-}
-
-function pixExecute() {
-  	switchToTab("Pix");
-	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-		.alert('You clicked pixExecute');
 }
 
 function vooPrepare() {
