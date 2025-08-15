@@ -1,9 +1,9 @@
 function diversosPrepare() {
-	// Feedback
-  	// SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-	// 	.alert('You clicked DiversosPrepare');
-  	switchToTab("Diversos");
+	// Navegue para o formulário Diversos e limpe o mesmo
+ 	switchToTab("Diversos");
+	limparFormularioDiversos();
 }
+
 
 function diversosExecute() {
 	// SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
@@ -67,14 +67,17 @@ function diversosExecute() {
 	var lastRow = contasCorrentesDadosTab.getLastRow();
 	contasCorrentesDadosTab.getRange(lastRow + 1, 1, contasCorrentesRangeDados.length, contasCorrentesRangeDados[0].length).setValues(contasCorrentesRangeDados)
 
-	// Clear the form
+	// Limpe o formulário Diversos e informe ao usuário que o sistema concluiu a operação
+	limparFormularioDiversos();
+	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
+		.alert('O sistema lancou as despesas Diversas do ' + DiversosAssociado);
+}
+
+function limparFormularioDiversos() {
 	DiversosAssociadoRange.setValue("");
 	DiversosMoedaRange.setValue("Real");
 	DiversosItemsRange.setValue("");
 	DiversosRealRange.setValue("");
 	DiversosQuantidadesRange.setValue("");
-	DiversosComentarioRange.setValue("");
-
-	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-		.alert('O sistema lancou as despesas Diversas do ' + DiversosAssociado);
+	DiversosComentarioRange.setValue("");	
 }

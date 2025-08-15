@@ -1,17 +1,7 @@
 function cantinaPrepare() {
-	// Feedback
-  	// SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-	// 	.alert('You clicked cantinaPrepare');
+	// Navegue para o formulário Cantina e limpe o mesmo
   	switchToTab("Cantina");
-	
-	// Clear all the field 
-	CantinaAssociadoRange.setValue("");
-	// CantinaDataRange.setValue(""); it is a formula =TODAY()
-	// CantinaEstadiaRange.setValue(""); // it is a formula =TODAY()
-	CantinaMoedaRange.setValue("Real");
-	CantinaItemsRange.setValue("");
-	CantinaQuantidadesRange.setValue("");
-	CantinaComentarioRange.setValue("");
+	clearCantinaForm();
 }
 
 function cantinaExecute() {
@@ -73,13 +63,16 @@ function cantinaExecute() {
 	var lastRow = contasCorrentesDadosTab.getLastRow();
 	contasCorrentesDadosTab.getRange(lastRow + 1, 1, contasCorrentesRangeDados.length, contasCorrentesRangeDados[0].length).setValues(contasCorrentesRangeDados)
 
-		// Clear the form
+	// Limpe o formulário da cantina e informe ao usuário que o sistema concluiu a operação
+	clearCantinaForm();
+	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
+		.alert('O sistema lancou as despesas de cantina do ' + cantinaAssociado);
+}
+
+function clearCantinaForm () {
 	CantinaAssociadoRange.setValue("");
 	CantinaMoedaRange.setValue("Real");
 	CantinaItemsRange.setValue("");
 	CantinaQuantidadesRange.setValue("");
 	CantinaComentarioRange.setValue("");
-
-	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-		.alert('O sistema lancou as despesas de cantina do ' + cantinaAssociado);
 }

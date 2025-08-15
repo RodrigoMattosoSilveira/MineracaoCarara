@@ -1,9 +1,7 @@
 function pixPrepare() {
-	// Feedback
-  	// SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-	// 	.alert('You clicked PixPrepare');
+	// Navegue para o formulário :IX e limpe o mesmo
   	switchToTab("Pix");
-
+	limparFormularioPix ();	
 }
 
 function pixExecute() {
@@ -64,14 +62,17 @@ function pixExecute() {
 	var lastRow = contasCorrentesDadosTab.getLastRow();
 	contasCorrentesDadosTab.getRange(lastRow + 1, 1, contasCorrentesRangeDados.length, contasCorrentesRangeDados[0].length).setValues(contasCorrentesRangeDados)
 
-	// Clear form
+	// Limpe o formulário PIX e informe ao usuário que o sistema concluiu a operação
+	limparFormularioPix ();	
+	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
+		.alert('O sistema lancou o PIX do ' + PixAssociado);
+}
+
+function limparFormularioPix () {
 	PixAssociadoRange.setValue("");
 	PixMoedaRange.setValue("Real");
 	PixItemsRange.setValue("");
 	PixRealRange.setValue("");
 	PixQuantidadesRange.setValue("");
 	PixComentarioRange.setValue("");
-
-	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-		.alert('O sistema lancou o PIX do ' + PixAssociado);
 }

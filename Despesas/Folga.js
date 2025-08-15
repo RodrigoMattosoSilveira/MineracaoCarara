@@ -1,8 +1,7 @@
 function folgaPrepare() {
-	// Feedback
-  	// SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-	// 	.alert('You clicked FolgaPrepare');
+	// Navegue para o formulário Folga e limpe o mesmo
   	switchToTab("Folga");
+	limparFormularioFolga();
 }
 
 function folgaExecute() {
@@ -75,7 +74,13 @@ function folgaExecute() {
 	var lastRow = contasCorrentesDadosTab.getLastRow();
 	contasCorrentesDadosTab.getRange(lastRow + 1, 1, contasCorrentesRangeDados.length, contasCorrentesRangeDados[0].length).setValues(contasCorrentesRangeDados)
 	
-	// Clear the form
+	// Limpe o formulário Folga e informe ao usuário que o sistema concluiu a operação
+	limparFormularioFolga();
+	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
+		.alert('O sistema lancou a despesa do pagamento da folga de ' + FolgaAssociado);
+}
+
+function limparFormularioFolga() {
 	FolgaAssociadoRange.setValue("");
 	FolgaMoedaRange.setValue("Real");
 	FolgaItemsRange.setValue("");
@@ -83,7 +88,4 @@ function folgaExecute() {
 	FolgaQuantidadesRange.setValue("");
 	FolgaSubstituidoRange.setValue("");
 	FolgaComentarioRange.setValue("");
-
-	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-		.alert('O sistema lancou a despesa do pagamento da folga de ' + FolgaAssociado);
 }
