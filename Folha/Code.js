@@ -357,7 +357,7 @@ function executeTurnoDiario() {
            // Credito / Debito em Reais
           contaCorrenteRegistro[contasCorrentesTotalRealCol] = 0;
           // Credito / Debito em Gramas de Ouro
-          contaCorrenteRegistro[contasCorrentesTotalOuroCol] = goldProduction[producaoPosAssociadosGramasCol] * remuneracaoObj[metodo][tarefa];
+          contaCorrenteRegistro[contasCorrentesTotalOuroCol] = goldProduction[producaoPosEmpresaBrCol] * remuneracaoObj[metodo][tarefa];
           break;
         default:
           var message = ""
