@@ -32,9 +32,9 @@ const contasCorrentesTotalRealCol         = 10; // Real
 const contasCorrentesTotalOuroCol         = 11; // Gramas de ouro
 const contasCorrentesComentariosCol       = 12;
 
-const folhaID               = "1T1uTdxSNuxSBuUVVLBoJxiME3HrTtNC3bgb69PThduY";
-const folhaSheet            = SpreadsheetApp.openById(folhaID);
-const turnoHojeDiaDataRage  = folhaSheet.getRange("TurnoHojeDiaData");
+const folhaID                 = "1T1uTdxSNuxSBuUVVLBoJxiME3HrTtNC3bgb69PThduY";
+const folhaSheet              = SpreadsheetApp.openById(folhaID);
+const turnoHojeDiaDataRange   = folhaSheet.getRange("TurnoHojeDiaData");
 
 const turnoHojeDiaRange             = folhaSheet.getRange("TurnoHojeDia");
 const turnoHojeDiaRangeFirstRow     = 4;
@@ -47,7 +47,7 @@ const turnoHojeAreaCol              = 4;
 const turnoHojeLocalCol             = 5;
 const turnoHojeTarefaCol            = 6;
 const turnoHojeComentariosCol       = 7;
-;
+
 const turnoOntemDiaRange            = folhaSheet.getRange("TurnoOntemDia")
 const turnoOntemDiaRangeFirstRow    = 2;
 const turnoOntemDiaRangeFirstCell   = 1;
@@ -271,29 +271,20 @@ function executeTurnoDiario() {
   switchToTab("TurnoHojeDia");
   const folhaIDSS = SpreadsheetApp.openById(folhaID);
 
-  // const turnoHojeDiaRng = folhaIDSS.getRange(turnoHojeDiaRange);
+  // Get the data
   const turnoHojeDiaVals = turnoHojeDiaRange.getValues().
-    filter(function(registro) {
-      return registro[0] != 0;
-    });
-
-  const turnHojeDiaVals = turnoHojeDiaRange.getValues()
-    .filter(function (registro) {
+    filter(function (registro) {
       return registro[0] != "" &&
              registro[0] != "Nome"
     });
 
   const contaCorrentesIDSS = SpreadsheetApp.openById(contasCorrentesId);
 
-  // Copie os dados da Folha!TurnoHojeDia para a Folha!TurnoOntemDia
-  turnoOntemDiaRange.clear(); 
-  turnoOntemDiaRange.copyTo(turnoOntemDiaRange,  SpreadsheetApp.CopyPasteType.PASTE_VALUES, false)
-
   // Build the remuneracaoObj to aid in calculations
   var remuneracaoObj = buildRemuneracaoObj()
 
   // Get the Gold Production for the day 
-  var goldProduction = obtenhaProducaoOuro(new Date(turnoHojeDiaVals[0]))
+  var goldProduction = obtenhaProducaoOuro( turnoHojeDiaDataRange.getValue());
 
   // Process the assignments
   var valor = 0;
@@ -308,7 +299,7 @@ function executeTurnoDiario() {
     var ignoreRegister = false;
     if (metodo != "") {
       contaCorrenteRegistro = [];
-      contaCorrenteRegistro[contasCorrentesDataCol]        = turnoHojeDiaDataRage.getValue()
+      contaCorrenteRegistro[contasCorrentesDataCol]        = turnoHojeDiaDataRange.getValue();
       contaCorrenteRegistro[contasCorrentesNomeCol]        = turnoHojeDiaRegistro[turnoHojeNomeCol];
       contaCorrenteRegistro[contasCorrentesEstadiaCol]     =  turnoHojeDiaRegistro[turnoHojeEstadiaCol];
       contaCorrenteRegistro[contasCorrentesMetodoCol]      = turnoHojeDiaRegistro[turnoHojeMetodoCol];
@@ -364,7 +355,7 @@ function executeTurnoDiario() {
            // Credito / Debito em Reais
           contaCorrenteRegistro[contasCorrentesTotalRealCol] = 0;
           // Credito / Debito em Gramas de Ouro
-          contaCorrenteRegistro[contasCorrentesTotalOuroCol] = goldProduction[producaoPosEmpresaBrCol] * remuneracaoObj[metodo][tarefa];
+          contaCorrenteRegistro[contasCorrentesTotalOuroCol] = goldProduction[producaoPosQueimadaCol] * remuneracaoObj[metodo][tarefa];
           break;
         default:
           var message = ""
@@ -387,6 +378,13 @@ function executeTurnoDiario() {
   var contaCorrentesDados = contaCorrentesIDSS.getSheetByName("Dados");
   var lastRow = contaCorrentesDados.getLastRow();
   contaCorrentesDados.getRange(lastRow + 1, 1, contasCorrentesRangeDados.length, contasCorrentesRangeDados[0].length).setValues(contasCorrentesRangeDados)
+
+  // Copie os dados da Folha!TurnoHojeDia para a Folha!TurnoOntemDia
+  turnoOntemDiaRange.clear(); 
+  turnoOntemDiaRange.copyTo(turnoOntemDiaRange,  SpreadsheetApp.CopyPasteType.PASTE_VALUES, false)
+
+	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
+		.alert('O sistema lancou as rendas auferidas pelo cronograma de hoje');
 }
 
 function buildRemuneracaoObj(date) {
