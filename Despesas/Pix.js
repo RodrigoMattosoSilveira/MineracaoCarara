@@ -20,6 +20,11 @@ function pixExecute() {
 	// 	.alert('You clicked PixExecute');
 	switchToTab("Pix");
 
+	if (PixAssociadoRange.getValue() == "") {
+		SpreadsheetApp.getUi().alert("O Associado deve ser preenchido.");
+		return null;
+	}
+
 	// We need to build one record for each item in PixDespesasRange
 	var PixData 		= PixDataRange.getValues();
 	var PixAssociado	= PixAssociadoRange.getValue();

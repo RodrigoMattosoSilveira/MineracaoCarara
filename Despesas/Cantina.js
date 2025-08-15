@@ -19,6 +19,11 @@ function cantinaExecute() {
 	// 	.alert('You clicked cantinaExecute');
 	switchToTab("Cantina");
 
+	if (CantinaAssociadoRange.getValue() == "") {
+		SpreadsheetApp.getUi().alert("O Associado deve ser preenchido.");
+		return null;
+	}
+
 	// We need to build one record for each item in CantinaDespesasRange
 	var cantinaData 		= CantinaDataRange.getValues();
 	var cantinaAssociado	= CantinaAssociadoRange.getValue();

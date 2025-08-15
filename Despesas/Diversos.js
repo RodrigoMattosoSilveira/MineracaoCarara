@@ -20,6 +20,11 @@ function diversosExecute() {
 	// 	.alert('You clicked DiversosExecute');
 	switchToTab("Diversos");
 
+	if (DiversosAssociadoRange.getValue() == "") {
+		SpreadsheetApp.getUi().alert("O Associado deve ser preenchido.");
+		return null;
+	}	
+
 	// We need to build one record for each item in DiversosDespesasRange
 	var DiversosData 		= DiversosDataRange.getValues();
 	var DiversosAssociado	= DiversosAssociadoRange.getValue();
