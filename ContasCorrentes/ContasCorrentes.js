@@ -89,9 +89,7 @@ function calculateCreditsAndDebts (nome, estadia, trasactions) {
            new Date(transaction[contasCorrentesEstadiaCol]).getFullYear() == estadiaAno;
   });
   if (filteredTransactions.length == 0) {
-    var message = "";
-    message += "Nao ha nehuma trasacao a ser processada";
-    return null;
+    return creditsAndDebtsRealOuro;
   }
 
   for (var i=0; i < filteredTransactions.length; i++) {
