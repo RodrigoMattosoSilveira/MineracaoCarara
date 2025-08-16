@@ -34,6 +34,7 @@ const contasCorrentesComentariosCol       = 12;
 
 const folhaID                 = "1T1uTdxSNuxSBuUVVLBoJxiME3HrTtNC3bgb69PThduY";
 const folhaSheet              = SpreadsheetApp.openById(folhaID);
+const folhaTurnoHojeDiaTab    = folhaSheet.getSheetByName('TurnoHojeDia')
 const turnoHojeDiaDataRange   = folhaSheet.getRange("TurnoHojeDiaData");
 
 const turnoHojeDiaRange             = folhaSheet.getRange("TurnoHojeDia");
@@ -159,7 +160,7 @@ function prepareTurnoDiario() {
           turnoHojeDiaRegistro[turnoHojeAreaCol]             = ontemRegistro[turnoOntemAreaCol];
           turnoHojeDiaRegistro[turnoHojeLocalCol]            = ontemRegistro[turnoOntemLocalCol];
           turnoHojeDiaRegistro[turnoHojeTarefaCol]           = ontemRegistro[turnoOntemTarefaCol];
-          turnoHojeDiaRegistro[turnoHojeAreaCol]             = ontemRegistro[turnoOntemComentariosCol]
+          turnoHojeDiaRegistro[turnoHojeComentariosCol]             = ontemRegistro[turnoOntemComentariosCol]
 
           achou = true;
           turnoHojeDiaGama.push(turnoHojeDiaRegistro)
@@ -197,6 +198,11 @@ function prepareTurnoDiario() {
   turnoHojeDiaRange.clear();
   var sheet = folhaIDSS.getSheetByName('TurnoHojeDia');
   sheet.getRange(4, 1, turnoHojeDiaGama.length, turnoHojeDiaGama[0].length).setValues(turnoHojeDiaGama);
+
+  setEstadiaFormatCondition ('TurnoHojeDia', turnoHojeDiaRange, contasCorrentesEstadiaCol);
+
+	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
+		.alert('O sistema preparou o cronograma de hoje');
 }
 
 //* ********************************************************************************************************************* */
@@ -381,7 +387,9 @@ function executeTurnoDiario() {
 
   // Copie os dados da Folha!TurnoHojeDia para a Folha!TurnoOntemDia
   turnoOntemDiaRange.clear(); 
-  turnoOntemDiaRange.copyTo(turnoOntemDiaRange,  SpreadsheetApp.CopyPasteType.PASTE_VALUES, false)
+  turnoHojeDiaRange.copyTo(turnoOntemDiaRange,  SpreadsheetApp.CopyPasteType.PASTE_VALUES, false)
+
+  setEstadiaFormatCondition ('TurnoHojeDia', turnoHojeDiaRange, contasCorrentesEstadiaCol);
 
 	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
 		.alert('O sistema lancou as rendas auferidas pelo cronograma de hoje');
@@ -526,5 +534,48 @@ function switchToTab(sheetName) {
     spreadsheet.setActiveSheet(sheet);
   } else {
     Logger.log("Sheet with name '" + sheetName + "' not found.");
+  }
+  return sheet;
+}
+
+function setEstadiaFormatCondition (targetSheet, range, col) {
+  const sheet = switchToTab(targetSheet);
+  const rules = sheet.getConditionalFormatRules(); 
+  var values = range.getValues();
+  var today = new Date();
+  
+  let todayExpired = new Date();
+  todayExpired.setDate(todayExpired.getDate() - 90);
+  let todayWeek = new Date();
+  todayWeek.setDate(todayWeek.getDate() - 83);
+  let todayMonth = new Date();
+  todayMonth.setDate(todayMonth.getDate() - 60);
+
+  for (var i = 0; i < values.length; i++) {
+    if (values[i][0] == "") {
+      var lastRow = i - 1;
+      var r1c1 = "R" + 1 + "C" + col + ":" + "R" + lastRow + "C" + col;
+      const range = sheet.getRange(r1c1);
+      var rule = SpreadsheetApp.newConditionalFormatRule()
+      .whenDateBefore(todayExpired)
+      .setBackground('#FF0000')
+      .setRanges([range])
+      .build();
+      rules.push(rule)
+      rule = SpreadsheetApp.newConditionalFormatRule()
+      .whenDateBefore(todayWeek)
+      .setBackground('#ffff00')
+      .setRanges([range])
+      .build();
+      rules.push(rule)
+      rule = SpreadsheetApp.newConditionalFormatRule()
+      .whenDateBefore(todayMonth)
+      .setBackground('#00ff00')
+      .setRanges([range])
+      .build();
+      rules.push(rule)
+      sheet.setConditionalFormatRules(rules); // Apply the updated rules
+      break;
+    }
   }
 }
