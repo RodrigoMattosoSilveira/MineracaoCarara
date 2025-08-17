@@ -3,5 +3,5 @@ function testGetR1C1 () {
 }
 
 function testSetEstadiaFormatCondition () {
-	 setEstadiaFormatCondition ('TurnoHojeDia', turnoHojeDiaRange, contasCorrentesEstadiaCol);
+	 ccSetEstadiaFormatCondition ('TurnoHojeDia', turnoHojeDiaRange, contasCorrentesEstadiaCol);
 }
