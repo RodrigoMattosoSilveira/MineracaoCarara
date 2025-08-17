@@ -1,8 +1,8 @@
 // @ts-nocheck
 const contasCorrentesId = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
 const contasCorrentesSheet = SpreadsheetApp.openById(contasCorrentesId);
-const contasCorrrentesSSName = "ContasCorrentes"
-const contasCorrentesRange          = "Dados";
+const contasCorrentesSSName = "ContasCorrentes"
+const contasCorentesRange          = "Dados";
 const contasCorrentesNome           = "ContasCorrentesNome";
 const contasCorrentesEstadia        = "ContasCorrentesEstadia";
 const contasCorrentesRendasDepesas      = "TransacoesRendasDepesas";  
@@ -56,6 +56,9 @@ function meuOnEditGatilho(e) {
   var rendasFuturas = calculeRendasGanhar(nome, estadia, trasactions);
   contasCorrentesSheet.getRangeByName("AGanharReal").setValues([[rendasFuturas["Real"]]]);
   contasCorrentesSheet.getRangeByName("AGanharOuro").setValues([[rendasFuturas["Ouro"]]]);
+
+  const turnoHojeDiaDataRange   = contasCorrentesSheet.getRange("ContasCorrentesEstadia");
+  ccSetEstadiaFormatCondition ('ContasCorrentes', turnoHojeDiaDataRange);
 
   // Vire o Semaforo para Verde
   contasCorrentesSheet.getRangeByName("ContasCorrentesSemaforo").setBackground("#00FF00");
@@ -495,4 +498,63 @@ function armazeneValorGama(nomeGama, valor) {
   var values = [[valor]];
   const contaCorrenteIDSS = SpreadsheetApp.openById(contasCorrentesId);
   contaCorrenteIDSS.getRangeByName(nomeGama).setValues(values);
+}
+/* ********************************************************************************************************************* */
+// ccSetEstadiaFormatCondition
+// Set the Estadia's conditional rules
+//   Input:   
+//    targetSheet (string) - The target sheet
+//    range (range) - the target range
+//    col (Integer) - the column
+// Output:
+//    TRUE if set up, null otherwise
+//
+// @see https://yagisanatode.com/copy_and_paste_values_from_one_google_sheet_to_another_with_apps_script/
+// @see https://spreadsheet.dev/iterate-through-rows-in-google-sheets-using-apps-script
+// @see https://developers.google.com/apps-script/reference/spreadsheet/range
+//* ********************************************************************************************************************* */
+// 
+function ccSetEstadiaFormatCondition (targetSheet, estadiaRange) {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = spreadsheet.getSheetByName(targetSheet);
+  if (sheet) {
+    spreadsheet.setActiveSheet(sheet);
+  } else {
+    return null
+  }
+  
+  const rules = sheet.getConditionalFormatRules(); 
+  var values = estadiaRange.getValues();
+  var today = new Date();
+  
+  let todayExpired = new Date();
+  todayExpired.setDate(todayExpired.getDate() - 90);
+  let todayWeek = new Date();
+  todayWeek.setDate(todayWeek.getDate() - 83);
+  let todayMonth = new Date();
+  todayMonth.setDate(todayMonth.getDate() - 60);
+
+  var topLeftRow = estadiaRange.getRow();
+  var topLeftColumn = estadiaRange.getColumn();
+    var r1c1 = "R" + topLeftRow + "C" + topLeftColumn + ":" + "R" + topLeftRow + "C" + topLeftColumn;
+    const range = sheet.getRange(r1c1);
+    var rule = SpreadsheetApp.newConditionalFormatRule()
+    .whenDateBefore(todayExpired)
+    .setBackground('#FF0000')
+    .setRanges([range])
+    .build();
+    rules.push(rule)
+    rule = SpreadsheetApp.newConditionalFormatRule()
+    .whenDateBefore(todayWeek)
+    .setBackground('#ffff00')
+    .setRanges([range])
+    .build();
+    rules.push(rule)
+    rule = SpreadsheetApp.newConditionalFormatRule()
+    .whenDateBefore(todayMonth)
+    .setBackground('#00ff00')
+    .setRanges([range])
+    .build();
+    rules.push(rule)
+    sheet.setConditionalFormatRules(rules); // Apply the updated rules
 }
