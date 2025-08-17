@@ -200,7 +200,7 @@ function prepareTurnoDiario() {
   var sheet = folhaIDSS.getSheetByName('TurnoHojeDia');
   sheet.getRange(4, 1, turnoHojeDiaGama.length, turnoHojeDiaGama[0].length).setValues(turnoHojeDiaGama);
 
-  setEstadiaFormatCondition ('TurnoHojeDia', turnoHojeDiaEstadiaRange, turnoHojeEstadiaCol);
+  ccSetEstadiaFormatCondition ('TurnoHojeDia', turnoHojeDiaEstadiaRange);
 
 	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
 		.alert('O sistema preparou o cronograma de hoje');
@@ -551,7 +551,7 @@ function switchToTab(sheetName) {
 // @see https://developers.google.com/apps-script/reference/spreadsheet/range
 //* ********************************************************************************************************************* */
 // 
-function setEstadiaFormatCondition (targetSheet, estadiaRange) {
+function ccSetEstadiaFormatCondition (targetSheet, estadiaRange) {
   const sheet = switchToTab(targetSheet);
   const rules = sheet.getConditionalFormatRules(); 
   var values = estadiaRange.getValues();
