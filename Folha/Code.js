@@ -38,6 +38,7 @@ const folhaTurnoHojeDiaTab    = folhaSheet.getSheetByName('TurnoHojeDia')
 const turnoHojeDiaDataRange   = folhaSheet.getRange("TurnoHojeDiaData");
 
 const turnoHojeDiaRange             = folhaSheet.getRange("TurnoHojeDia");
+const turnoHojeDiaEstadiaRange      = folhaSheet.getRange("TurnoHojeDiaEstadia");
 const turnoHojeDiaRangeFirstRow     = 4;
 const turnoHojeDiaRangeFirstCell    = 1;
 const turnoHojeNomeCol              = 0;
@@ -199,7 +200,7 @@ function prepareTurnoDiario() {
   var sheet = folhaIDSS.getSheetByName('TurnoHojeDia');
   sheet.getRange(4, 1, turnoHojeDiaGama.length, turnoHojeDiaGama[0].length).setValues(turnoHojeDiaGama);
 
-  setEstadiaFormatCondition ('TurnoHojeDia', turnoHojeDiaRange, contasCorrentesEstadiaCol);
+  setEstadiaFormatCondition ('TurnoHojeDia', turnoHojeDiaEstadiaRange, turnoHojeEstadiaCol);
 
 	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
 		.alert('O sistema preparou o cronograma de hoje');
@@ -389,8 +390,6 @@ function executeTurnoDiario() {
   turnoOntemDiaRange.clear(); 
   turnoHojeDiaRange.copyTo(turnoOntemDiaRange,  SpreadsheetApp.CopyPasteType.PASTE_VALUES, false)
 
-  setEstadiaFormatCondition ('TurnoHojeDia', turnoHojeDiaRange, contasCorrentesEstadiaCol);
-
 	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
 		.alert('O sistema lancou as rendas auferidas pelo cronograma de hoje');
 }
@@ -537,11 +536,25 @@ function switchToTab(sheetName) {
   }
   return sheet;
 }
-
-function setEstadiaFormatCondition (targetSheet, range, col) {
+/* ********************************************************************************************************************* */
+// setEstadiaFormatCondition
+// Set the Estadia's conditional rules.
+//   Input:   
+//    targetSheet (string) - The target sheet
+//    range (range) - the target range
+//    col (Integer) - the column
+// Output:
+//    TRUE if set up, null otherwise
+//
+// @see https://yagisanatode.com/copy_and_paste_values_from_one_google_sheet_to_another_with_apps_script/
+// @see https://spreadsheet.dev/iterate-through-rows-in-google-sheets-using-apps-script
+// @see https://developers.google.com/apps-script/reference/spreadsheet/range
+//* ********************************************************************************************************************* */
+// 
+function setEstadiaFormatCondition (targetSheet, estadiaRange, col) {
   const sheet = switchToTab(targetSheet);
   const rules = sheet.getConditionalFormatRules(); 
-  var values = range.getValues();
+  var values = estadiaRange.getValues();
   var today = new Date();
   
   let todayExpired = new Date();
@@ -551,10 +564,11 @@ function setEstadiaFormatCondition (targetSheet, range, col) {
   let todayMonth = new Date();
   todayMonth.setDate(todayMonth.getDate() - 60);
 
-  for (var i = 0; i < values.length; i++) {
+  var topLeftRow = estadiaRange.getRow();
+  var topLeftColumn = estadiaRange.getColumn();
+  for (var i = topLeftRow; i < values.length; i++) {
     if (values[i][0] == "") {
-      var lastRow = i - 1;
-      var r1c1 = "R" + 1 + "C" + col + ":" + "R" + lastRow + "C" + col;
+      var r1c1 = "R" + topLeftRow + "C" + topLeftColumn + ":" + "R" + i + "C" + topLeftColumn;
       const range = sheet.getRange(r1c1);
       var rule = SpreadsheetApp.newConditionalFormatRule()
       .whenDateBefore(todayExpired)
