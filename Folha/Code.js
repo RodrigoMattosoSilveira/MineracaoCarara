@@ -538,7 +538,7 @@ function switchToTab(sheetName) {
 }
 /* ********************************************************************************************************************* */
 // setEstadiaFormatCondition
-// Set the Estadia's conditional rules.
+// Set the Estadia's conditional rules
 //   Input:   
 //    targetSheet (string) - The target sheet
 //    range (range) - the target range
@@ -551,7 +551,7 @@ function switchToTab(sheetName) {
 // @see https://developers.google.com/apps-script/reference/spreadsheet/range
 //* ********************************************************************************************************************* */
 // 
-function setEstadiaFormatCondition (targetSheet, estadiaRange, col) {
+function setEstadiaFormatCondition (targetSheet, estadiaRange) {
   const sheet = switchToTab(targetSheet);
   const rules = sheet.getConditionalFormatRules(); 
   var values = estadiaRange.getValues();
