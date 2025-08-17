@@ -1,6 +1,10 @@
+// *** Identificação da folhas das Despesas
+// 
 const despesasID = "1XwjBUJYG4VLN0ZaG0EFzKljWk9VdGvePaDO9Nwd70G4";
 const despesasSheet = SpreadsheetApp.openById(despesasID);
 
+// *** Layout do formulário Cantina
+// 
 const despesasCantinaTab = despesasSheet.getSheetByName("Cantina");
 const CantinaDataRange = despesasCantinaTab.getRange("CantinaData");
 
@@ -21,6 +25,8 @@ const CantinaDespesasQTDCol 		= 3
 const CantinaDespesasTotalRealCol 	= 4;
 const CantinaDespesasTotaOurolCol 	= 5;
 
+// *** Layout do formulário PIX
+// 
 const despesasPixTab = despesasSheet.getSheetByName("Pix");
 const PixDataRange = despesasPixTab.getRange("PixData");
 
@@ -42,6 +48,8 @@ const PixDespesasQTDCol         = 3
 const PixDespesasTotalRealCol   = 4;
 const PixDespesasTotaOurolCol   = 5;
 
+// *** Layout do formulário Diversos
+// 
 const despesasDiversosTab = despesasSheet.getSheetByName("Diversos");
 const DiversosDataRange = despesasDiversosTab.getRange("DiversosData");
 
@@ -63,11 +71,52 @@ const DiversosDespesasQTDCol         = 3
 const DiversosDespesasTotalRealCol   = 4;
 const DiversosDespesasTotaOurolCol   = 5;
 
+// *** Layout do formulário Folga
+// 
+despesasFolgaTab = despesasSheet.getSheetByName("Folga");
+const FolgaDataRange = despesasFolgaTab.getRange("FolgaData");
+
+const FolgaAssociadoRange     = despesasFolgaTab.getRange("FolgaAssociado");
+const FolgaEstadiaRange       = despesasFolgaTab.getRange("FolgaEstadia");
+const FolgaPagementoRange     = despesasFolgaTab.getRange("FolgaPagamento");
+const FolgaMoedaRange       = despesasFolgaTab.getRange("FolgaMoeda");
+const FolgaDespesasRange      = despesasFolgaTab.getRange("FolgaDespesas");
+const FolgaSubstituidoRange      = despesasFolgaTab.getRange("FolgaSubstituido");
+const FolgaSubstituidoDiariaRange      = despesasFolgaTab.getRange("FolgaSubstituidoDiaria");
+const FolgaComentarioRange    = despesasFolgaTab.getRange("FolgaComentario");
+
+const FolgaItemsRange = despesasFolgaTab.getRange("FolgaItems");
+const FolgaRealRange = despesasFolgaTab.getRange("FolgaReal");
+const FolgaQuantidadesRange = despesasFolgaTab.getRange("FolgaQuantidades");
+
+const FolgaDespesasItemCol        = 0;  
+const FolgaDespesasRealol         = 1;
+const FolgaDespesasOuroCol        = 2;  
+const FolgaDespesasQTDCol         = 3
+const FolgaDespesasTotalRealCol   = 4;
+const FolgaDespesasTotaOurolCol   = 5;
+
+// *** Layout do formulário Fechar
+// 
+const despesasFecharTab 	 = despesasSheet.getSheetByName("Fechar");
+const FecharDataRange 		 = despesasFecharTab.getRange("FecharData");
+const FecharAssociadoRange   = despesasFecharTab.getRange("FecharAssociado");
+const FecharEstadiaRange     = despesasFecharTab.getRange("FecharEstadia");
+const FecharDadosRange       = despesasFecharTab.getRange("FecharDados");
+const FecharComentarioRange  = despesasFecharTab.getRange("FecharComentario");
+
+const FecharDespesasItemCol    = 0;  
+const FecharCreditoDebitolCol  = 1;
+const FecharDespesasRealCol    = 2;
+const FecharDespesasOuroCol    = 3;  
+
+// *** Identificação da Sheet Contas Correntes
+// 
 const contasCorrentesId 					= "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
 const contasCorrentesSheet 					= SpreadsheetApp.openById(contasCorrentesId);
 const contasCorrentesTab 					= contasCorrentesSheet.getSheetByName("ContasCorrentes");
 const contasCorrentesDadosTab 				= contasCorrentesSheet.getSheetByName("Dados");
-const contasCorrentesDadosRange 			= contasCorrentesDadosTab.getRange("Dados");
+// const contasCorrentesDadosRange 			= contasCorrentesDadosTab.getRange("Dados");
 
 const contasCorrentesDataCol              	= 0;
 const contasCorrentesNomeCol              	= 1;
@@ -83,7 +132,7 @@ const contasCorrentesTotalRealCol         	= 10; // Real
 const contasCorrentesTotalOuroCol         	= 11; // Gramas de ouro
 const contasCorrentesComentariosCol       	= 12
 
-function onOpen() {
+function onOpen(e) {
   var ui = SpreadsheetApp.getUi();
 
   // Or DocumentApp, SlidesApp or FormApp.
@@ -101,38 +150,17 @@ function onOpen() {
 			.addItem('Diversos Prepare', 'diversosPrepare')
 			.addItem('Diversos Execute', 'diversosExecute')
 		)
+
+		.addSubMenu(ui.createMenu('Folga')
+			.addItem('Folga Prepare', 'folgaPrepare')
+			.addItem('Folga Execute', 'folgaExecute')
+		)
 		.addSubMenu(ui.createMenu('Fechar')
 			.addItem('Fechar Prepare', 'fecharPrepare')
 			.addItem('Fechar Execute', 'fecharExecute')
 		)
 
 		.addToUi();
-}
-
-function vooPrepare() {
-	switchToTab("Voo");
-  	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-    	.alert('You clicked on vooPrepare');
-}
-
-function vooExecute() {
-	switchToTab("Voo");
-  	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-    	.alert('You clicked vooExecute');
-}
-
-
-
-function fecharPrepare() {
-	switchToTab("Fechar");
-  	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-    	.alert('You clicked on fecharPrepare');
-}
-
-function fecharExecute() {
-	switchToTab("Fechar");
-	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-		.alert('You clicked the fecharExecute');
 }
 
 function switchToTab(sheetName) {
