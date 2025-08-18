@@ -47,7 +47,7 @@ function meuOnEditGatilho(e) {
     message += "Nao ha nehuma trasacao a ser processada";
     console.error(message); 
   }
-  var creditosDebitos = calculateCreditsAndDebts(nome, estadia, trasactions);
+  var creditosDebitos = resumirContaCorrenteAssociado(nome, estadia, trasactions);
   contasCorrentesSheet.getRangeByName(contasCorrentesCreditoReal).setValues([[creditosDebitos["Credito"]["Real"]]]);
   contasCorrentesSheet.getRangeByName(contasCorrentesCreditoOuro).setValues([[creditosDebitos["Credito"]["Ouro"]]]);
   contasCorrentesSheet.getRangeByName(contasCorrentesDebitoReal).setValues([[creditosDebitos["Debito"]["Real"]]]);
@@ -65,7 +65,7 @@ function meuOnEditGatilho(e) {
 
 }
 
-function calculateCreditsAndDebts (nome, estadia, trasactions) {
+function resumirContaCorrenteAssociado (nome, estadia, transactions) {
   var estadiaDia = new Date(estadia).getDay();
   var estadiaMes = new Date(estadia).getMonth();
   var estadiaAno = new Date(estadia).getFullYear();
@@ -79,12 +79,12 @@ function calculateCreditsAndDebts (nome, estadia, trasactions) {
       Ouro: 0
     },
   }
-  if (trasactions.length == 0) {
+  if (transactions.length == 0) {
     var message = "";
     message += "Nao ha nehuma trasacao a ser processada";
     return null;
   }
-  var filteredTransactions = trasactions.filter(function(transaction) {
+  var filteredTransactions = transactions.filter(function(transaction) {
     return transaction[contasCorrentesNomeCol] == nome &&
            transaction[contasCorrentesDataCol] != "" &&
            new Date(transaction[contasCorrentesEstadiaCol]).getDay() == estadiaDia &&
