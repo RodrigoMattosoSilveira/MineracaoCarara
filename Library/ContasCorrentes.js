@@ -28,19 +28,19 @@ function cc_getSpreadSheet() {
   return SpreadsheetApp.openById(CC_SHEET_ID);
 }
 function cc_getContasCorrentesTab() {
-	let spreadSheet = getContasCorrentesSpreadSheet();
+	let spreadSheet = cc_getSpreadSheet();
 	return spreadSheet.getSheetByName(CC_TAB_NAME);
 }
 function cc_getDadosSheet() {
-	let spreadSheet = getContasCorrentesSpreadSheet();
+	let spreadSheet = cc_getSpreadSheet();
 	return spreadSheet.getSheetByName(DADOS_TAB_NAME);
 }
 function cc_getDadosSheetRange() {
-	let spreadSheet = getContasCorrentesSpreadSheet();
+	let spreadSheet = cc_getSpreadSheet();
 	return spreadSheet.getRangeByName(CC_TRANSACOES_RENDAS_DESPESAS_RANGE_NAME);
 }
 function cc_getTransacoesRendasDespesasRange() {
-	let spreadSheet = getContasCorrentesSpreadSheet();
+	let spreadSheet = cc_getSpreadSheet();
 	return spreadSheet.getRangeByName(CC_TRANSACOES_RENDAS_DESPESAS_RANGE_NAME);
 }
 

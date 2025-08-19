@@ -1,11 +1,14 @@
 // *** Identificação da folhas das Despesas
 // 
-const despesasID = "1XwjBUJYG4VLN0ZaG0EFzKljWk9VdGvePaDO9Nwd70G4";
-const despesasSheet = SpreadsheetApp.openById(despesasID);
+const despesasID 		  = "1XwjBUJYG4VLN0ZaG0EFzKljWk9VdGvePaDO9Nwd70G4";
+const despesasSpreadSheet = SpreadsheetApp.openById(despesasID);
+function despesasGetSpreaSheet() {
+	return SpreadsheetApp.openById(despesasID);
+} 
 
 // *** Layout do formulário Cantina
 // 
-const despesasCantinaTab = despesasSheet.getSheetByName("Cantina");
+const despesasCantinaTab = despesasSpreadSheet.getSheetByName("Cantina");
 const CantinaDataRange = despesasCantinaTab.getRange("CantinaData");
 
 const CantinaAssociadoRange 	= despesasCantinaTab.getRange("CantinaAssociado");
@@ -27,7 +30,7 @@ const CantinaDespesasTotaOurolCol 	= 5;
 
 // *** Layout do formulário PIX
 // 
-const despesasPixTab = despesasSheet.getSheetByName("Pix");
+const despesasPixTab = despesasSpreadSheet.getSheetByName("Pix");
 const PixDataRange = despesasPixTab.getRange("PixData");
 
 const PixAssociadoRange   	= despesasPixTab.getRange("PixAssociado");
@@ -50,7 +53,7 @@ const PixDespesasTotaOurolCol   = 5;
 
 // *** Layout do formulário Diversos
 // 
-const despesasDiversosTab = despesasSheet.getSheetByName("Diversos");
+const despesasDiversosTab = despesasSpreadSheet.getSheetByName("Diversos");
 const DiversosDataRange = despesasDiversosTab.getRange("DiversosData");
 
 const DiversosAssociadoRange     = despesasDiversosTab.getRange("DiversosAssociado");
@@ -73,7 +76,7 @@ const DiversosDespesasTotaOurolCol   = 5;
 
 // *** Layout do formulário Folga
 // 
-despesasFolgaTab = despesasSheet.getSheetByName("Folga");
+despesasFolgaTab = despesasSpreadSheet.getSheetByName("Folga");
 const FolgaDataRange = despesasFolgaTab.getRange("FolgaData");
 
 const FolgaAssociadoRange     = despesasFolgaTab.getRange("FolgaAssociado");
@@ -95,20 +98,6 @@ const FolgaDespesasOuroCol        = 2;
 const FolgaDespesasQTDCol         = 3
 const FolgaDespesasTotalRealCol   = 4;
 const FolgaDespesasTotaOurolCol   = 5;
-
-// *** Layout do formulário Fechar
-// 
-const despesasFecharTab 	 = despesasSheet.getSheetByName("Fechar");
-const FecharDataRange 		 = despesasFecharTab.getRange("FecharData");
-const FecharAssociadoRange   = despesasFecharTab.getRange("FecharAssociado");
-const FecharEstadiaRange     = despesasFecharTab.getRange("FecharEstadia");
-const FecharDadosRange       = despesasFecharTab.getRange("FecharDados");
-const FecharComentarioRange  = despesasFecharTab.getRange("FecharComentario");
-
-const FecharDespesasItemCol    = 0;  
-const FecharCreditoDebitolCol  = 1;
-const FecharDespesasRealCol    = 2;
-const FecharDespesasOuroCol    = 3;  
 
 // *** Identificação da Sheet Contas Correntes
 // 
@@ -156,8 +145,8 @@ function onOpen(e) {
 			.addItem('Folga Execute', 'folgaExecute')
 		)
 		.addSubMenu(ui.createMenu('Fechar')
-			.addItem('Fechar Prepare', 'fecharPrepare')
-			.addItem('Fechar Execute', 'fecharExecute')
+			.addItem('Prepare', 'fecharPrepare')
+			.addItem('Feche', 'fecharExecute')
 		)
 
 		.addToUi();

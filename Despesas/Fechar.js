@@ -1,8 +1,23 @@
-var contaCorrente = [];;
+// CararaLibrary
+// SciptID: 1MUcp-N2BXCoJI3ussufDnfghByRVGBATXMPP7BeZg-1iCQXbrKw5rzaO
+// Software: https://script.google.com/home/projects/1MUcp-N2BXCoJI3ussufDnfghByRVGBATXMPP7BeZg-1iCQXbrKw5rzaO/edit 
+// 
+
+// *** Layout do formulário Fechar
+// 
+const despesasFecharTab 	 = despesasSpreadSheet.getSheetByName("Fechar");
+const FecharDataRange 		 = despesasFecharTab.getRange("FecharData");
+const FecharAssociadoRange   = despesasFecharTab.getRange("FecharAssociado");
+const FecharEstadiaRange     = despesasFecharTab.getRange("FecharEstadia");
+const FecharDadosRange       = despesasFecharTab.getRange("FecharDados");
+const FecharComentarioRange  = despesasFecharTab.getRange("FecharComentario");
+const FecharDadosRangeName   = "FecharDados";
+
+const FecharDespesasItemCol    = 0;  
 
 function fecharPrepare() {
 	// Navegue para o formulário Diversos e limpe o mesmo
-  	switchToTab("Fechar");
+  	CararaLibrary.activateSheet("Fechar");
 	limparFormularioFechar();
 }
 
@@ -11,74 +26,51 @@ function fecharGatilho(e) {
 		SpreadsheetApp.getUi().alert("O Associado deve ser preenchido.");
 		return null;
 	}
-	despesasSheet.getRangeByName("FecharSemaforo").setBackground("#FF0000");
+	// TODO Issue #33 Replace the curreent Semaphors with modal dialog boxes
+	despesasSpreadSheet.getRangeByName("FecharSemaforo").setBackground("#FF0000");
 
 	// Build Conta Corrent records
-	var FecharData 			= FecharDataRange.getValue();
-	var FecharAssociado		= FecharAssociadoRange.getValue();
-	var FecharEstadia 		= FecharEstadiaRange.getValue();
-	var FecharComentario    = FecharComentarioRange.getValue();
+	const FecharData 			= FecharDataRange.getValue();
+	const FecharAssociado		= FecharAssociadoRange.getValue();
+	const FecharEstadia 		= FecharEstadiaRange.getValue();
+	const FecharComentario    = FecharComentarioRange.getValue();
 
 	// Compute outstanding totals
-	var creditoReal = calculaTotais(contasCorrentesDadosTab, FecharAssociado, FecharEstadia, "Credito", "Real", FecharComentario);
-	var creditoOuro = calculaTotais(contasCorrentesDadosTab, FecharAssociado, FecharEstadia, "Credito", "Ouro", FecharComentario);
-	var debitoReal = calculaTotais(contasCorrentesDadosTab, FecharAssociado, FecharEstadia, "Debito", "Real"), FecharComentario;
-	var debitoOuro = calculaTotais(contasCorrentesDadosTab, FecharAssociado, FecharEstadia, "Debito", "Ouro", FecharComentario);
+	const contasCorrentesDadosRange =   CararaLibrary.cc_getTransacoesRendasDespesasRange();
+	const contasCorrentesDadosRangeVals =   contasCorrentesDadosRange.getValues();
+	const creditosDebitos = CararaLibrary.resumirContaCorrenteAssociado(FecharAssociado, FecharEstadia, contasCorrentesDadosRangeVals);
 
-	// Compute os registros de contas correntes
-	var contaCorrenteRegistro;
-	if (creditoReal > 0) {
-		var item =  'A Mineração Carará pagou ao Associado seu credito em Real';
-		contaCorrenteRegistro = fillUpRegister (FecharData, FecharAssociado, FecharEstadia, 'Real', 'Debito', item, creditoReal)
+	//  Obtenha e preencha a area do formularon a incluir as informations a
+	// cerca dos debitos e creditos do associado
+	const fecharDadosRange = despesasSpreadSheet.getRangeByName(FecharDadosRangeName)
+	let fecharDadosRangeVals = fecharDadosRange.getValues();
+	let i = 0;
+	if (creditosDebitos["Credito"]["Real"] > 0) {
+		let formattedPrice = new Intl.NumberFormat('en-US', {
+			style: 'currency',
+			currency: 'USD'
+		}).format(creditosDebitos["Credito"]["Real"] );
+		fecharDadosRangeVals[i][0] = 'A Mineração Carará pagou ao Associado seu credito em Real, ' + formattedPrice;
+		i++
 	}
-	else {
-		contaCorrenteRegistro = fillUpRegister ('', '', '', '', '', '', '')
+	if (creditosDebitos["Credito"]["Ouro"] > 0) {
+		fecharDadosRangeVals[i][0]  = 'A Mineração Carará pagou ao Associado seu credito em Ouro, ' + creditosDebitos["Credito"]["Ouro"] + 'g';
+		i++
 	}
-	contaCorrente.push(contaCorrenteRegistro)
+	if (creditosDebitos["Debito"]["Real"] > 0) {
+		let formattedPrice = new Intl.NumberFormat('en-US', {
+			style: 'currency',
+			currency: 'USD'
+		}).format(creditosDebitos["Debito"]["Real"] );
+		fecharDadosRangeVals[i][0]  = 'O Associado  pagou a Mineração Carará seu debito em Real, ' + formattedPrice;
+		i++
+	}
+	if (creditosDebitos["Debito"]["Ouro"] > 0) {
+		fecharDadosRangeVals[i][0]  = 'O Associado  pagou a Mineração Carará seu debito em ouro, ' + creditosDebitos["Debito"]["Ouro"] + 'g';
+	}
+	fecharDadosRange.setValues(fecharDadosRangeVals).setFontSize(14);
 
-	if (creditoOuro > 0) {
-		var item =  'A Mineração Carará pagou ao Associado seu credito em Ouro';
-		var contaCorrenteRegistro = fillUpRegister (FecharData, FecharAssociado, FecharEstadia, 'Ouro', 'Debito', item, creditoOuro)
-		contaCorrente.push(contaCorrenteRegistro)
-	}
-	else {
-		contaCorrenteRegistro = fillUpRegister ('', '', '', '', '', '', '')
-	}
-	contaCorrente.push(contaCorrenteRegistro);
-
-	if (debitoReal > 0) {
-		var item =  'O Associado  pagou a Mineração Carará seu debito em Real';
-		contaCorrenteRegistro = fillUpRegister (FecharData, FecharAssociado, FecharEstadia, 'Real', 'Credito', item, debitoReal)
-		contaCorrente.push(contaCorrenteRegistro)
-	}
-	else {
-		contaCorrenteRegistro = fillUpRegister ('', '', '', '', '', '', '')
-	}
-	contaCorrente.push(contaCorrenteRegistro);
-
-	if (debitoOuro > 0) {
-		var item =  'O Associado  pagou a Mineração Carará seu debito em Ouro';
-		contaCorrenteRegistro = fillUpRegister (FecharData, FecharAssociado, FecharEstadia, 'Real', 'Credito', item, debitoOuro)
-		contaCorrente.push(contaCorrenteRegistro)
-	}
-	else {
-		contaCorrenteRegistro = fillUpRegister ('', '', '', '', '', '', '')
-	}
-	contaCorrente.push(contaCorrenteRegistro);
-
-	// Show form data; build the form register
-	var fecharItems = [];
-	contaCorrente.forEach(function(registro) {
-		var fecharItem = [];
-		fecharItem[FecharDespesasItemCol]	= registro[contasCorrentesItemCol];
-		fecharItem[FecharCreditoDebitolCol] = registro[contasCorrentesCreditDebitCol]
-		fecharItem[FecharDespesasRealCol] 	= registro[contasCorrentesPrecoUnidadeRealCol];
-		fecharItem[FecharDespesasOuroCol] 	= registro[contasCorrentesPrecoUnidadeOuroCol]
-		fecharItems.push(fecharItem);
-	});
-	FecharDadosRange.setValues(fecharItems)
-
-	despesasSheet.getRangeByName("FecharSemaforo").setBackground("#00FF00");
+	despesasSpreadSheet.getRangeByName("FecharSemaforo").setBackground("#00FF00");
 }
 
 function fecharExecute() {
@@ -88,9 +80,56 @@ function fecharExecute() {
 		return null;
 	}
 
-	// 
+	// Build Conta Corrent records
+	// const despesasFecharTab 	 = despesasSpreadSheet.getSheetByName("Fechar");
+	// const FecharAssociadoRange   = despesasFecharTab.getRange("FecharAssociado");
+	// const FecharEstadiaRange     = despesasFecharTab.getRange("FecharEstadia");
+	// const FecharDadosRange       = despesasFecharTab.getRange("FecharDados");
+	// const FecharComentarioRange  = despesasFecharTab.getRange("FecharComentario");
+
+	const FecharData 			= FecharDataRange.getValue();
+	const FecharAssociado		= FecharAssociadoRange.getValue();
+	const FecharEstadia 		= FecharEstadiaRange.getValue();
+	const FecharComentario    = FecharComentarioRange.getValue();
+
+	// Compute outstanding totals
+	const contasCorrentesDadosRange =   CararaLibrary.cc_getTransacoesRendasDespesasRange().getValues();
+	const creditosDebitos = CararaLibrary.resumirContaCorrenteAssociado(FecharAssociado, FecharEstadia, contasCorrentesDadosRange);
+	const creditoReal		= creditosDebitos["Credito"]["Real"];
+	const creditoOuro 		= creditosDebitos["Credito"]["Ouro"];
+	const debitoReal 		= creditosDebitos["Debito"]["Real"];
+	const debitoOuro 		= creditosDebitos["Debito"]["Ouro"];
+
+	// Compute os registros de contas correntes
+	var contaCorrente = [];
+	var contaCorrenteRegistro;
+	if (creditoReal > 0) {
+		var item =  'A Mineração Carará pagou ao Associado seu credito em Real';
+		contaCorrenteRegistro = fillUpRegister (FecharData, FecharAssociado, FecharEstadia, 'Real', 'Debito', item, creditoReal, FecharComentario);
+		contaCorrente.push(contaCorrenteRegistro)
+	}
+
+
+	if (creditoOuro > 0) {
+		var item =  'A Mineração Carará pagou ao Associado seu credito em Ouro';
+		var contaCorrenteRegistro = fillUpRegister (FecharData, FecharAssociado, FecharEstadia, 'Ouro', 'Debito', item, creditoOuro, FecharComentario);
+		contaCorrente.push(contaCorrenteRegistro)
+	}
+
+	if (debitoReal > 0) {
+		var item =  'O Associado  pagou a Mineração Carará seu debito em Real';
+		contaCorrenteRegistro = fillUpRegister (FecharData, FecharAssociado, FecharEstadia, 'Real', 'Credito', item, debitoReal, FecharComentario);
+		contaCorrente.push(contaCorrenteRegistro)
+	}
+
+	if (debitoOuro > 0) {
+		var item =  'O Associado  pagou a Mineração Carará seu debito em Ouro';
+		contaCorrenteRegistro = fillUpRegister (FecharData, FecharAssociado, FecharEstadia, 'Real', 'Credito', item, debitoOuro, FecharComentario);
+		contaCorrente.push(contaCorrenteRegistro)
+	}
+
 	var lastRow = contasCorrentesDadosTab.getLastRow();
-	contasCorrentesDadosTab.getRange(lastRow + 1, 1, contasCorrentes.length, contasCorrentes[0].length).setValues(contasCorrentes)
+	contasCorrentesDadosTab.getRange(lastRow + 1, 1, contaCorrente.length, contaCorrente[0].length).setValues(contaCorrente)
 		
 	// Clear form
 	FecharAssociadoRange.setValue("");
@@ -104,59 +143,7 @@ function fecharExecute() {
 } 
 
 // ****************************************************************************
-// calculaTotais - Calcula o total dos creditos ou debitos, em Real our Ouro
-// do registros de conta corrente de um associado
-// 
-// Input
-// 		contasCorrentesDadosTab (Range)
-// 		associado (string)
-// 		estadia (Date)
-// 		creditoOuDebito (String)
-// 		moeda (String)
-// Output
-// 		Total dos creditos ou debitos, em Real our Ouro do registros de conta 
-//      corrente de um associado
-// ****************************************************************************
-// 
-function calculaTotais(contasCorrentesDadosTab, associado, estadia, creditoOuDebito, moeda) {
-	// Search for  Associado credito em Real
-	var valor = 0;
-	var estadiaDia = new Date(estadia).getDay();
-	var estadiaMes = new Date(estadia).getMonth();
-  	var estadiaAno = new Date(estadia).getFullYear();
-
-	var registros= contasCorrentesDadosTab.getRange(2, 1, contasCorrentesDadosTab.getLastRow() - 1, contasCorrentesDadosTab.getLastColumn())
-		.getValues();
-	var registrosFiltrados = registros.filter(function(transaction) {
-		return transaction[contasCorrentesNomeCol] == associado && 
-		new Date(transaction[contasCorrentesEstadiaCol]).getDay() == estadiaDia &&
-        new Date(transaction[contasCorrentesEstadiaCol]).getMonth() == estadiaMes &&
-        new Date(transaction[contasCorrentesEstadiaCol]).getFullYear() == estadiaAno &&
-		transaction[contasCorrentesCreditDebitCol] == creditoOuDebito &&
-		transaction[contasCorrentesMoedaCol] == moeda;
-	});
-	registrosFiltrados.forEach(function(transaction) {
-		valor += transaction[contasCorrentesTotalRealCol];
-	})
-	return valor;
-}
-
-// ****************************************************************************
-// compararDatas 
-// 
-// Input
-// 		umaData
-//      outraData
-// Output
-// 		True is the same, null otherwise
-// ****************************************************************************
-//
-function compararDatas(umaData, outraData) {
-	umDia 
-}
-
-// ****************************************************************************
-// preenchaRegistroCC - Preencha o registro the contas correntes
+// fillUpRegister - Preencha o registro the contas correntes
 // 
 // Input
 // 		data (Date)
@@ -199,5 +186,5 @@ function fillUpRegister (data, associado, estadia, moeda, cOrD, item, valor, fec
 }
 
 function limparFormularioFechar() {
-	return null;
+	despesasSpreadSheet.getRangeByName(FecharDadosRangeName).clear({contentsOnly: true});
 }
