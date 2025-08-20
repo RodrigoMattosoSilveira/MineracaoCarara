@@ -1,6 +1,20 @@
 {
   "timeZone": "America/Los_Angeles",
   "dependencies": {
+    "libraries": [
+      {
+        "userSymbol": "CararaLibrary",
+        "version": "6",
+        "libraryId": "1MUcp-N2BXCoJI3ussufDnfghByRVGBATXMPP7BeZg-1iCQXbrKw5rzaO",
+        "developmentMode": false
+      },
+      {
+        "userSymbol": "DespesasLib",
+        "version": "2",
+        "libraryId": "1R1B4qPTW-FDtZ7-NzMEYWoQ_Taspr2y6M0g2SNHzJqZmLwqMSmm88VaR",
+        "developmentMode": false
+      }
+    ]
   },
   "exceptionLogging": "STACKDRIVER",
   "runtimeVersion": "V8"
