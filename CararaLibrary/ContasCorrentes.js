@@ -1,3 +1,6 @@
+// Script Files: https://script.google.com/home/projects/1MUcp-N2BXCoJI3ussufDnfghByRVGBATXMPP7BeZg-1iCQXbrKw5rzaO/edit
+// Scipt Id: 1MUcp-N2BXCoJI3ussufDnfghByRVGBATXMPP7BeZg-1iCQXbrKw5rzaO
+
 // Contas Correntes - CC_SHEET_ID
 // 
 const CC_SHEET_ID								= "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
@@ -92,10 +95,11 @@ function resumirContaCorrenteAssociado (nome, estadia, transactions) {
   }
   var filteredTransactions = transactions.filter(function(transaction) {
     return transaction[contasCorrentesNomeCol] == nome &&
-           transaction[contasCorrentesDataCol] != "" &&
-           new Date(transaction[contasCorrentesEstadiaCol]).getDay() == estadiaDia &&
-           new Date(transaction[contasCorrentesEstadiaCol]).getMonth() == estadiaMes &&
-           new Date(transaction[contasCorrentesEstadiaCol]).getFullYear() == estadiaAno;
+      transaction[contasCorrentesDataCol] != "" &&
+      transaction[contasCorrentesMetodoCol] != "Fechar" &&
+      new Date(transaction[contasCorrentesEstadiaCol]).getDay() == estadiaDia &&
+      new Date(transaction[contasCorrentesEstadiaCol]).getMonth() == estadiaMes &&
+      new Date(transaction[contasCorrentesEstadiaCol]).getFullYear() == estadiaAno;
   });
   if (filteredTransactions.length == 0) {
     return creditosDebitosRealOuro;

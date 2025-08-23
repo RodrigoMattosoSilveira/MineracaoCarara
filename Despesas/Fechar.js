@@ -27,8 +27,10 @@ function fecharGatilho(e) {
 		return null;
 	}
 	// TODO Issue #33 Replace the curreent Semaphors with modal dialog boxes
-	despesasSpreadSheet.getRangeByName("FecharSemaforo").setBackground("#FF0000");
-
+	// despesasSpreadSheet.getRangeByName("FecharSemaforo").setBackground("#FF0000");
+	showModalDialogFechar();
+}
+function fecharGatilhoCompletar() {
 	// Build Conta Corrent records
 	const FecharData 			= FecharDataRange.getValue();
 	const FecharAssociado		= FecharAssociadoRange.getValue();
@@ -70,7 +72,7 @@ function fecharGatilho(e) {
 	}
 	fecharDadosRange.setValues(fecharDadosRangeVals).setFontSize(14);
 
-	despesasSpreadSheet.getRangeByName("FecharSemaforo").setBackground("#00FF00");
+	// despesasSpreadSheet.getRangeByName("FecharSemaforo").setBackground("#00FF00");
 }
 
 function fecharExecute() {
