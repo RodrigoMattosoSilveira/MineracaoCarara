@@ -13,26 +13,26 @@ function onOpen(e) {
 }
 
 function checkConditionAndShowDialog() {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  // https://github.com/vineethtrv/css-loader
-  let modalTitulo = "Fechar Contas Correntes"
-  showDialog(modalTitulo);
+  // const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  // // https://github.com/vineethtrv/css-loader
+  // let modalTitulo = "Fechar Contas Correntes"
+  // showDialog(modalTitulo);
+  modalTitle = 'Fechar Conta Corrente'
+  modalHtml = 'Dialog';
+  showModalDialog(modalTitle, modalHtml)
 }
 
 function showCustomDialogSimple() {
-  const html = HtmlService.createHtmlOutputFromFile('Dialog')
-    .setWidth(400)
-    .setHeight(300);
-  SpreadsheetApp.getUi().showModalDialog(html, 'Custom Modal Dialog');
+  modalTitle = 'Fechar Conta Corrente'
+  modalHtml = 'Dialog';
+  showModalDialog(modalTitle, modalHtml)
 }
 
 function showDialog(modalTitulo) {
-  var ui = SpreadsheetApp.getUi();
-  var template = HtmlService.createTemplateFromFile('Dialog')
-  var html = template.evaluate()    	
+  var html = HtmlService.createHtmlOutputFromFile(modalHtml)   	
     .setWidth(400)
     .setHeight(300);
-  ui.showModalDialog(html, modalTitulo);
+  SpreadsheetApp.getUi().showModalDialog(html, modalTitle);
 }
 
 function processData() {
@@ -45,4 +45,11 @@ function processData() {
 
 function runLibrary() {
  CararaLibrary.removeDuplicates();
+}
+
+function showModalDialog(modalTitle, modalHtml) {
+  var html = HtmlService.createHtmlOutputFromFile(modalHtml)   	
+    .setWidth(400)
+    .setHeight(300);
+  SpreadsheetApp.getUi().showModalDialog(html, modalTitle);
 }
