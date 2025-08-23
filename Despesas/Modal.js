@@ -4,10 +4,8 @@ function showModalDialogFechar() {
   showModalDialog(modalTitle, modalHtml)
 }
 function showModalDialog(modalTitle, modalHtml) {
-  var ui = SpreadsheetApp.getUi();
-  var template = HtmlService.createTemplateFromFile(modalHtml)
-  var html = template.evaluate()    	
+  var html = HtmlService.createHtmlOutputFromFile(modalHtml)   	
     .setWidth(400)
     .setHeight(300);
-  ui.showModalDialog(html, modalTitle);
+  SpreadsheetApp.getUi().showModalDialog(html, modalTitle);
 }
