@@ -1,5 +1,52 @@
+// ****************************************************************************
+// Menu - This is a set of functions
+// ****************************************************************************
+// 
+function onOpen(e) {
+  var ui = SpreadsheetApp.getUi();
 
+  // Or DocumentApp, SlidesApp or FormApp.
+		ui.createMenu('Cronograma')
+			.addItem('Modelar', 'cronogramaModelar')
+			.addItem('Planejar', 'cronogramaPlanejar')
+			.addItem('Informar', 'cronogramaInformar')
+			.addItem('Inspecionar', 'cronogramaInspecionar')
+			.addItem('Registrar', 'cronogramaRegistrar')
+			.addItem('Atualizar', 'cronogramaAtualizar')
+		.addToUi();
+}
+//  Usar um cronograma recente, um modelo, para agilizar o planejamento;
+function cronogramaModelar() {
+	SpreadsheetApp.getUi().alert('Selected cronogramaModelar menu!');
+}
 
+//  Refinar of modelo
+function cronogramaPlanejar() {
+	SpreadsheetApp.getUi().alert('Selected cronogramaPlanejar menu!');
+}
+
+// Informar os associados de suas responsabilidades;
+function cronogramaInformar() {
+	SpreadsheetApp.getUi().alert('Selected cronogramaInformar menu!');
+}
+
+// Rever e atualizar o cronograma executado
+function cronogramaInspecionar() {
+	SpreadsheetApp.getUi().alert('Selected cronogramaInspecionar menu!');
+}
+
+// Lançar a rendas auferidas nas contas correntes;
+function cronogramaRegistrar() {
+	SpreadsheetApp.getUi().alert('Selected cronogramaRegistrar menu!');
+}
+
+// Lançar rendas pendentes nas contas correntes;
+function cronogramaAtualizar() {
+	SpreadsheetApp.getUi().alert('Selected cronogramaAtualizar menu!');
+}
+
+// ****************************************************************************
+// ****************************************************************************
 // ****************************************************************************
 // selecionarDataTipo - Exibe uma caixa de diálogo onde o usuário pode 
 // selecionar o data e tipo do Cronograma a ser criado
