@@ -6,19 +6,19 @@ function onOpen(e) {
   var ui = SpreadsheetApp.getUi();
 
   // Or DocumentApp, SlidesApp or FormApp.
-		ui.createMenu('Cronograma')
-			.addItem('Modelar', 'cronogramaModelar')
-			.addItem('Planejar', 'cronogramaPlanejar')
-			.addItem('Informar', 'cronogramaInformar')
-			.addItem('Inspecionar', 'cronogramaInspecionar')
-			.addItem('Registrar', 'cronogramaRegistrar')
-			.addItem('Atualizar', 'cronogramaAtualizar')
-		.addToUi();
+	ui.createMenu('Cronograma')
+		.addItem('Modelar', 'cronogramaModelar')
+		.addItem('Planejar', 'cronogramaPlanejar')
+		.addItem('Informar', 'cronogramaInformar')
+		.addItem('Inspecionar', 'cronogramaInspecionar')
+		.addItem('Registrar', 'cronogramaRegistrar')
+		.addItem('Atualizar', 'cronogramaAtualizar')
+	.addToUi();
 }
 //  Usar um cronograma recente, um modelo, para agilizar o planejamento;
-function cronogramaModelar() {
-	SpreadsheetApp.getUi().alert('Selected cronogramaModelar menu!');
-}
+// function cronogramaModelar() {
+// 	See Modelar.js
+// }
 
 //  Refinar of modelo
 function cronogramaPlanejar() {
@@ -45,25 +45,8 @@ function cronogramaAtualizar() {
 	SpreadsheetApp.getUi().alert('Selected cronogramaAtualizar menu!');
 }
 
-// ****************************************************************************
-// ****************************************************************************
-// ****************************************************************************
-// selecionarDataTipo - Exibe uma caixa de diálogo onde o usuário pode 
-// selecionar o data e tipo do Cronograma a ser criado
-// 
-// Input
-// 		None
-// Output
-// 		DataTipo (Object) = {
-// 			data: <<Date, igual ou adiante ao dia presente>>
-// 			tipo: <<String [TipoA | TipoB]
-//      }
-// ****************************************************************************
-// 
-function selecionarDataTipo() {
-	let DataTipo = {};
-	return DataTipo;
-}
+
+
 // ****************************************************************************
 // selecionarModelo - O planejador usa um menu suspenso para acionar a lógica 
 // para selecionar registros de Cronograma que correspondam ao tipo fornecido e
@@ -83,6 +66,7 @@ function selecionarModelo(tipo) {
 	let planejar = []
 	return planejar
 }
+
 // ****************************************************************************
 // refinarCronograma - O Planejador adiciona, edita, e remove registros na 
 // planilha Planejar manualmente; ele usa um menu suspenso para acionar logica
