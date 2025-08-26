@@ -1,8 +1,8 @@
-let datas = ['08/24/2025', '09/24/2025'];
+let datas = ['08/26/2025', '08/27/2025'];
 const putDatas = (dados) => datas = [...dados];
 const getDatas = () => datas;
 
-let turnos = [];
+let turnos = ['Diurno', 'Noturno'];
 const putTurnos = (dados) => turnos = [...dados];
 const getTurnos = () => turnos;
 
