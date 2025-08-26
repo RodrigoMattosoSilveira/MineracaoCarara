@@ -24,7 +24,6 @@ function cronogramaModelar() {
 	datas.push(dataAmanhaStr)
 
 	apresenteCaixaDialogoDataTurno(datas, ['Diurno', 'Noturno'], cronogramaModelarProsseguir)
-	SpreadsheetApp.getUi().alert('Done');
 	return true
 }
 
