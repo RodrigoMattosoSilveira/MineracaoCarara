@@ -1,42 +1,19 @@
-var dataOpcoes = ['08/24/2025', '09/24/2025'];
-var dataSelecionada = '';
-var retornar;
-const definirDatasOpções = (dados) => {
-    dataOpcoes = [...dados];
-};
-const retorneCaixaDialogoDatas = () => {
-    Logger.log('retorneCaixaDialogoDatas: ' + JSON.stringify(turnoOpcoes));
-    return dataOpcoes;
-}
-const processarDataSelecionada = (dado) => {
-	dataSelecionada = dado;
-}
+let datas = ['08/24/2025', '09/24/2025'];
+const putDatas = (dados) => datas = [...dados];
+const getDatas = () => datas;
 
-var turnoOpcoes = ['Diario', 'Noturno'];
-var turnoSelecionado = '';
-const definirTurnosOpções = (dados) => {
-    turnoOpcoes = [...dados];
-};
+let turnos = [];
+const putTurnos = (dados) => turnos = [...dados];
+const getTurnos = () => turnos;
 
-const processarTurnoSelecionado = (dado) => {
-	turnoSelecionado = dado;
-}
+var nomeFuncao = ''
+const putNomeFuncao = (dado) => nomeFuncao = dado;
+const getNomeFuncao = () => nomeFuncao;
 
-const retorneCaixaDialogoTurnos = () => {
-    Logger.log('retorneCaixaDialogoTurnos: ' + JSON.stringify(turnoOpcoes));
-    return turnoOpcoes;
-}
-
-const retorneFuncaoServidor = () => {
-    Logger.log('retorneFuncaoServidor');
-    return retornar;
-}
-
-
-const apresenteCaixaDialogoDataTurno = (dataDados, turnoDados, retorno) => {
-    definirDatasOpções(dataDados);
-    definirTurnosOpções(turnoDados);
-    retornar = retorno;
+const apresenteCaixaDialogoDataTurno = (dataDados, turnoDados, funcao) => {
+    putDatas(dataDados);
+    putTurnos(turnoDados);
+    putNomeFuncao(funcao);
 
     // var caixaModal = 'CaixaDialogoDataTurnoModal';
     var caixaModal = 'CaixaDialogoBootstrap';
