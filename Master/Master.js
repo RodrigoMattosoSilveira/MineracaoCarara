@@ -48,8 +48,9 @@ function updateDolarParaReal() {
   masterSS.getRangeByName("GoldUsdOz").setValues(rangeValue);
 }
 // ****************************************************************************
-// obterPeriodos - Retorna um objecto, classificados pelos periodos, como os 
-// nomes de cada periodo como chave
+// obterPeriodos - Retorna um mapa, identificados e classificados pelos nomes 
+// dos periodos de trabalho na organizacao, cada nome associado com um objeto 
+// consistindo da indetidade e hora do periodo de trabalho
 // 
 // Input
 // 		none 
@@ -57,18 +58,16 @@ function updateDolarParaReal() {
 // 		periodos (Object), os períodos de trabalho da organização
 // ****************************************************************************
 // 
-function obterPeriodos () {
-  let periodos = {};
-  obterPeriodosGamaVals().forEach(element => {
-    periodos[element[PERIODO_NOME_COL]] = {
-      'ID': element[PERIODO_ID_COL], 
-      'Hora': element[PERIODO_HORA_COL],
-  }});
+function obterPeriodos() {
+  let periodos = new Map();
+  obterPeriodosGamaVals().forEach(element => { 
+    periodos.set(element[PERIODO_NOME_COL], {'ID': element[PERIODO_ID_COL], 'Hora': element[PERIODO_HORA_COL],});
+  });
   return periodos;
 }
 // ****************************************************************************
-// obterPeriodosIds - Retorna uma matriz de objetos que consiste dos IDs 
-// dos períodos de trabalho da organização
+// obterPeriodosIds - Retorna um de objetos que consiste dos IDs dos períodos 
+// de trabalho da organização
 // 
 // Input
 // 		none 

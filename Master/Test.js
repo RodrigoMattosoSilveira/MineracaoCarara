@@ -21,14 +21,20 @@ const obterPeriodoIdsTeste = () => {
 }
 
 //  Validate that we retrive the correct periods
+//  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
 const obterPeriodosTeste = () => {
-	let periodos = {...obterPeriodos()};
-	let objectKeys = Object.keys(periodos);
-	let valid = objectKeys.length == 2;
-	valid &= objectKeys[0].localeCompare("Diurno") == 0;
-	valid &= periodos["Diurno"]["ID"] == 1;
-	valid &= objectKeys[1].localeCompare("Noturno") == 0;
-	valid &= periodos["Noturno"]["ID"] == 2;
+	let valid = true;
+	let periodNames = ["Diurno", "Noturno"];
+
+	let periodosMap = obterPeriodos();
+	valid &= periodosMap.size == 2;
+
+	valid &= periodosMap.has("Diurno");
+	valid &= periodosMap.has("Noturno");
+
+	valid &= periodosMap.get("Diurno")["ID"] == 1;
+	valid &= 	valid &= periodosMap.get("Noturno")["ID"] == 2;
+
 	valid ? 
 		console.info(" ✔︎ obterPeriodos") :
 		console.info(" ✖︎  obterPeriodos")
