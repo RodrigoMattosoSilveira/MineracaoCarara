@@ -1,8 +1,12 @@
 const MASTER_ID = "1CXo2aNn6bXqbMZTypgG6I9DTdVEy-8wly5AhOs0k8Zg";
-const PERIODOS_GAMA = "Periodos";
 const obterMasterSheet = () =>  SpreadsheetApp.openById(MASTER_ID);
-const obterMasterGamaPeriodos = () => obterMasterSheet().getRangeByName(PERIODOS_GAMA);
-const obterMasterGamaPeriodosVals = () => obterMasterGamaPeriodos().getValues();
+
+const PERIODOS_GAMA    = "Periodos";
+const PERIODO_NOME_COL = 0;
+const PERIODO_ID_COL   = 1;
+const PERIODO_HORA_COL = 2;
+const obterPeriodosGama     = () => obterMasterSheet().getRangeByName(PERIODOS_GAMA).sort(PERIODO_ID_COL+1);;
+const obterPeriodosGamaVals = () => obterPeriodosGama().getValues();
 
 // This function will be in charge to return the current gold price
 //  https://1337invest.com/how-to-import-gold-price-into-google-sheet/
@@ -43,19 +47,56 @@ function updateDolarParaReal() {
   const masterSS = SpreadsheetApp.openById(MASTER_ID);
   masterSS.getRangeByName("GoldUsdOz").setValues(rangeValue);
 }
-
 // ****************************************************************************
-// obterPeríodos - Retorna uma matriz de objetos que consiste dos períodos de 
-// trabalho da organização
+// obterPeriodos - Retorna um objecto, classificados pelos periodos, como os 
+// nomes de cada periodo como chave
 // 
 // Input
 // 		none 
 // Output
-// 		períodos (Array), os períodos de trabalho da organização
+// 		periodos (Object), os períodos de trabalho da organização
 // ****************************************************************************
 // 
-const obterPeríodos = () => {
-  let periodos = []
-  obterMasterGamaPeriodosVals().forEach(element => {periodos.push(element[0])});
+const obterPeriodos = () => {
+  let periodos = {};
+  obterPeriodosGamaVals().forEach(element => {
+    periodos[element[PERIODO_NOME_COL]] = {
+      'ID': element[PERIODO_ID_COL], 
+      'Hora': element[PERIODO_HORA_COL],
+  }});
   return periodos;
+}
+// ****************************************************************************
+// obterPeriodosIds - Retorna uma matriz de objetos que consiste dos IDs 
+// dos períodos de trabalho da organização
+// 
+// Input
+// 		none 
+// Output
+// 		matriz (Array), os períodos de trabalho da organização
+// ****************************************************************************
+// 
+const obterPeriodosIds = () => {
+  let matriz = []
+  obterPeriodosGamaVals().forEach(element => {matriz.push(element[PERIODO_ID_COL])});
+  return matriz;
+}
+// ****************************************************************************
+// obterPeriodosNomes - Retorna uma matriz de objetos que consiste dos nomes 
+// dos períodos de trabalho da organização
+// 
+// Input
+// 		none 
+// Output
+// 		matriz (Array), os períodos de trabalho da organização
+// ****************************************************************************
+// 
+const obterPeriodosNomes = () => {
+  let matriz = []
+  // obterPeriodosGamaVals().forEach(element => {matriz.push(element[PERIODO_NOME_COL])});
+  // let sheet = obterMasterSheet();
+  // let range =  obterMasterSheet().obterPeriodosGama().obterPeriodosGamaVals()
+  // let vals = range.getValues();
+  obterPeriodosGamaVals().forEach(element => {matriz.push(element[PERIODO_NOME_COL])})
+  return matriz;
 }
