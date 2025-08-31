@@ -57,7 +57,7 @@ function updateDolarParaReal() {
 // 		periodos (Object), os períodos de trabalho da organização
 // ****************************************************************************
 // 
-const obterPeriodos = () => {
+function obterPeriodos () {
   let periodos = {};
   obterPeriodosGamaVals().forEach(element => {
     periodos[element[PERIODO_NOME_COL]] = {
