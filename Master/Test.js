@@ -33,7 +33,7 @@ const obterPeriodosTeste = () => {
 	valid &= periodosMap.has("Noturno");
 
 	valid &= periodosMap.get("Diurno")["ID"] == 1;
-	valid &= 	valid &= periodosMap.get("Noturno")["ID"] == 2;
+	valid &= periodosMap.get("Noturno")["ID"] == 2;
 
 	valid ? 
 		console.info(" ✔︎ obterPeriodos") :
