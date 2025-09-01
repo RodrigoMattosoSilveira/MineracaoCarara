@@ -1,10 +1,12 @@
 const GOOGLE_SHEET_ID = "1OCwl3tVukD6nhGYqGvcVrGP_NjGFLJ7NYL-5vkdZTOg";
 const obterGoogleSheet = () =>  SpreadsheetApp.openById(GOOGLE_SHEET_ID);
 
+const PUBLICADOS_PLANILHA     = "Publicados";
 const PUBLICADOS_GAMA         = "Publicados";
 const PUBLICADOS_DATA_COL     = 0;
 const PUBLICADOS_NOME_COL     = 1;
 const PUBLICADOS_ORDEM_COL    = 2;
+const obterPlanilhaPublicados = () => obterGoogleSheet().getSheetByName(PUBLICADOS_PLANILHA);
 function obterPublicadosGama() {
 	return obterGoogleSheet().getRangeByName(PUBLICADOS_GAMA).sort([
 		{column: PUBLICADOS_DATA_COL  + 1, ascending: false}, // Column numbers adjusted for A1C1 notation
@@ -177,32 +179,54 @@ function atualizarContasCorrentes(Planejar) {
 }
 
 // ****************************************************************************
-// atualizarContasCorrentes - O Planejador aciona a lógica para lancar as 
-// transacoes de rendas de contas correntes auferidas por trabalhos em 
-// Cronogramas com os atributos Estado e ContaCorrente iguais a Executado e 
-// Pendente repectivamente, usando a seguinte logica. Para cada Associado,'
-// considere seu metodo de pagamento:
-// - Diaria / Salario
-// 		- Lancar a renda auferida pelo Associado em sua Conta Corrente
-// 		- Atualizar o atributo ContasCorrente do Assocido no Cronograma como 
-// 		  Lancado
-// - Comissao
-// 		- Se a producao do poco para o dia que trabalhou existe:
-// 		- Lancar a renda auferida pelo Associado emd sua Conta Corrente
-// 		- Atualizar o atributo ContasCorrente do Assocido no Cronograma como 
-// 		  Lancado
+// publicarCronograma - O sistema executa essa lógica depois que o usuário opta 
+// por ignorar o planejamento do cronograma para essa data e período
 // Input
-// 		Cronograma (Sheet), A planilha Cronograma
+// 		data (Date), A data a ser ignorada
+// 		periodo (Date), O periodo a ser ignorado
+// 		pordem (Date), A ordem a ser ignorada
 // Output
-// 		Cronograma (Sheet), A planilha Cronograma, com os registros para os
-// 		quais foram criadas transacos in Contas Correntes, atualizados para
-// 		Lancado
-// 
-// 		Contas Correntes (Sheet), A planilha Contas Correntes, ,atualiza com as 
-// 		Transcoes do de pagamento efetuadas pelo trabalho executado de acordo
-// 		com o Cronograma
+// 		true, no caso de uma inserção bem-sucedida da data e do período 
+// 		ignorados na planilha Publicados; false otherwise
 // ****************************************************************************
 //
-function publicarCronograma() {
-	
+function publicarCronograma(data, periodo, ordem)  {
+	let dataStr = dateToString(data);
+	let cronograma = [[dataStr, periodo, ordem]];
+
+	// Insira esse cronograma na planilha Publicados
+	let planilhaPublicados = obterPlanilhaPublicados()
+	let lastRow = planilhaPublicados.getLastRow();
+	planilhaPublicados.getRange(lastRow + 1, 1, cronograma.length, cronograma[0].length).setValues(cronograma)
+}
+// ****************************************************************************
+// dateToString - Converter um dado lido de uma planilha na célula em uma 
+// string
+// 
+// Input
+// 		data (Date), A data a ser convertida
+// Output
+// 		dataStr (String), a data convertida; false otherwise
+// ****************************************************************************
+//
+function dateToString(data) {
+	let dataObj = new Date(data);
+	let dataStr = '';
+
+	// Month
+	if ((dataObj.getMonth() + 1) < 10) {
+		dataStr += "0";
+	}
+	dataStr += dataObj.getMonth() + 1;
+	dataStr += '/';
+	// Day
+	if (dataObj.getDate() < 10) {
+		dataStr += "0";
+	}
+	dataStr += dataObj.getDate();
+	dataStr += '/';
+	// Year
+	dataStr += dataObj.getFullYear();
+
+	return dataStr;
 }

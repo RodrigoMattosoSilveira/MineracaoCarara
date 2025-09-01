@@ -5,6 +5,9 @@ const getData = ()     => documentProperties.getProperty('DATA');
 const putPeriodo = (periodo) => documentProperties.setProperty('PERIODO', periodo);
 const getPeriodo = ()        => documentProperties.getProperty('PERIODO');
 
+const putOrdem = (ordem) => documentProperties.setProperty('ORDEM', ordem);
+const getOrdem = ()        => documentProperties.getProperty('ORDEM');
+
 //  Usar um cronograma recente, um modelo, para agilizar o planejamento;
 function cronogramaModelar() {
 	// Navegue para a planilha Planejar
@@ -20,6 +23,7 @@ function cronogramaModelar() {
 	let proximoCronogramaCandidato = [...obterProximoCronograma(cronogramaPublicadoMaisRecente, periodosMap)]
     putData(proximoCronogramaCandidato[0]);
     putPeriodo(proximoCronogramaCandidato[1]);
+	putOrdem(proximoCronogramaCandidato[2]);
 
 	// Apresentar dialogo modal; selecionar Planejar or Ignorar
 	apresentarDialogoModelar(proximoCronogramaCandidato)
@@ -30,23 +34,29 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 	// SpreadsheetApp.getUi().alert('Acao selecionada: ' + JSON.stringify(acaoSelecionada));
 	let data = getData();
   	let periodo = getPeriodo()
-	let message = '';
+	let ordem = Math.trunc(getOrdem());
+	let menssagem = '';
 	switch (acaoSelecionada) {
 		case 'Planejar':
-			message += 'Acao selecionada: ' + "Planejando"
-			message += "\n"
-			message += "Data:" + data.toString();
-			message += "\n"
-			message += "Periodo:" + periodo;
-			SpreadsheetApp.getUi().alert(message);
+			menssagem = construirProsseguirMenssagem(acaoSelecionada, data, periodo, ordem) 
+			console.info(menssagem);
+			// SpreadsheetApp.getUi().alert(menssagem);
 			break;
 		case 'Ignorar':
-			message += 'Acao selecionada: ' + "Ignorando"
-			message += "\n"
-			message += "Data:" + data.toString();
-			message += "\n"
-			message += "Periodo:" + periodo;
-			SpreadsheetApp.getUi().alert(message);
+			menssagem = construirProsseguirMenssagem(acaoSelecionada, data, periodo, ordem) 
+			console.info(menssagem);
+
+			// Update the Publicados folha e termine a operacao
+			publicarCronograma(data, periodo, ordem);
+
+			// Navegue para a planilha Planejar
+			CararaLibrary.activateSheet("PUBLICADOS_PLANILHA");		
+
+			// Informar ao usuário que o sistema concluiu a operação 
+			let resultado = "Inseriu cronograma como publicado, sem o planejar"
+			menssagem = construirProsseguirMenssagem(resultado, data, periodo, ordem) 
+			console.info(menssagem);
+			SpreadsheetApp.getUi().alert(menssagem);
 			break;
 		default:
 			break;
@@ -142,4 +152,31 @@ function adicionarDias(data, dias) {
     const newDate = new Date(data);
     newDate.setDate(data.getDate() + dias);
     return newDate;
+}
+// ****************************************************************************
+// TODO move this to the Library
+// construirProsseguirMenssagem - Cria uma string de mensagem para informar o 
+// usuário sobre o resultado do trabalho do sistema
+// 
+// Input
+// 		acao <string> - O Resultado
+// 		data <Date> - A data do cronograma
+// 		periodo <string> O periodo do cronograma
+// 		orderm <int> A ordem do periodo no dia de trabalho
+// Output
+// 		true, caso o sistema enviou a mensagem, false caso contrário
+// ****************************************************************************
+// 
+function construirProsseguirMenssagem(acao, data, periodo, ordem) {
+	let menssagem = '';
+
+	menssagem += 'Resultado: ' + acao;
+	menssagem += "\n"
+	menssagem += "Data: " + dateToString(data);
+	menssagem += "\n"
+	menssagem += "Periodo: " + periodo;
+	menssagem += "\n"
+	menssagem += "Ordem: " + ordem;
+
+	return menssagem;
 }
