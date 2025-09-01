@@ -1,5 +1,8 @@
 //  Usar um cronograma recente, um modelo, para agilizar o planejamento;
 function cronogramaModelar() {
+	// Navegue para a planilha Planejar
+	CararaLibrary.activateSheet("Planejar");
+
 	// Recuperar o cronograma publicado mais recente. Usar hoje caso não haja nenhuma
 	let cronogramaPublicadoMaisRecente = [...obterCronogramaPublicadoMaisRecente()]
 

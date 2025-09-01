@@ -13,22 +13,38 @@
   <body>
 	<div class="container">
 		<form id="myForm">
-			<div class="mb-3">
-				<label for="dataCronogramaId" class="form-label">Data Cronograma</label>
-				<input type="text" readonly class="form-control-plaintext" id="dataCronogramaId" value="Data">
+			<div class="row align-items-start justify-content-around">
+				 <div class="col-4">
+					<!-- div class="mb-3"-->
+						<label for="dataCronogramaId" class="fw-bold form-label">Data</label>
+						<input type="text" readonly class="form-control-plaintext" id="dataCronogramaId" value="Data">
+					<!--/div -->					
+				 </div>
+				<div class="col-4">
+					<!-- div class="mb-3"-->
+						<label for="periodoCronogramaId" class="fw-bold form-label">Periodo</label>
+						<input type="text" readonly class="form-control-plaintext" id="periodoCronogramaId" value="Periodo">
+					<!--/div -->
+				</div>
 			</div>
-				<div class="mb-3">
-				<label for="periodoCronogramaId" class="form-label">Periodo</label>
-				<input type="text" readonly class="form-control-plaintext" id="periodoCronogramaId" value="Periodo">
 			</div>
-			<div class="col-12">
- 				<!-- button type="submit" class="btn btn-primary" onclick="enviarDados()">Selecionei</button -->
-				<input class="btn btn-primary" type="button" value="Planejar" onclick="enviarDados('Planejar')">
- 			</div>
-			<div class="col-12">
- 				<!-- button type="submit" class="btn btn-primary" onclick="enviarDados()">Selecionei</button -->
-				<input class="btn btn-primary" type="button" value="Ignorar" onclick="enviarDados('Ignorar')">
- 			</div>
+			<div class="row align-items-start justify-content-around">
+  				<div class="col-12"></div>
+			</div>
+			<div class="row align-items-start justify-content-around">
+				<div class="col-4">
+					<!-- div class="mb-3"-->
+						<!-- button type="submit" class="btn btn-primary" onclick="enviarDados()">Selecionei</button -->
+						<input class="btn btn-primary" type="button" value="Planejar" onclick="enviarDados('Planejar')">
+					<!--/div -->
+				</div>
+				<div class="col-4">
+					<!-- div class="mb-3"-->
+						<!-- button type="submit" class="btn btn-primary" onclick="enviarDados()">Selecionei</button -->
+						<input class="btn btn-primary" type="button" value="Ignorar" onclick="enviarDados('Ignorar')">
+					<!--/div -->
+				</div>
+			</div>
 		</form>
 	</div>
 	<script>

@@ -9,8 +9,8 @@ const apresentarDialogoModelar = (proximoCronogramaCandidato) =>  {
     putData(proximoCronogramaCandidato[0]);
     putTurno(proximoCronogramaCandidato[1]);
 
-    const html = HtmlService.createHtmlOutputFromFile('DialogoModelarr') 
-        .setWidth(400)
-        .setHeight(300);
+    const html = HtmlService.createHtmlOutputFromFile('DialogoModelar1') 
+        .setWidth(360)
+        .setHeight(240);
     SpreadsheetApp.getUi().showModalDialog(html, 'Modelar');
 }
