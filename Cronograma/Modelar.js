@@ -1,3 +1,10 @@
+var documentProperties = PropertiesService.getDocumentProperties();
+const putData = (data) => documentProperties.setProperty('DATA', data);
+const getData = ()     => documentProperties.getProperty('DATA');
+
+const putPeriodo = (periodo) => documentProperties.setProperty('PERIODO', periodo);
+const getPeriodo = ()        => documentProperties.getProperty('PERIODO');
+
 //  Usar um cronograma recente, um modelo, para agilizar o planejamento;
 function cronogramaModelar() {
 	// Navegue para a planilha Planejar
@@ -11,14 +18,39 @@ function cronogramaModelar() {
 
 	// Calcular o candidato ao proximo cronograma
 	let proximoCronogramaCandidato = [...obterProximoCronograma(cronogramaPublicadoMaisRecente, periodosMap)]
+    putData(proximoCronogramaCandidato[0]);
+    putPeriodo(proximoCronogramaCandidato[1]);
 
-	//
+	// Apresentar dialogo modal; selecionar Planejar or Ignorar
 	apresentarDialogoModelar(proximoCronogramaCandidato)
 	return true
 }
 
-const cronogramaModelarProsseguir = (dataTurno) => {
-	SpreadsheetApp.getUi().alert('Acao selecionada: ' + JSON.stringify(dataTurno));
+const cronogramaModelarProsseguir = (acaoSelecionada) => {
+	// SpreadsheetApp.getUi().alert('Acao selecionada: ' + JSON.stringify(acaoSelecionada));
+	let data = getData();
+  	let periodo = getPeriodo()
+	let message = '';
+	switch (acaoSelecionada) {
+		case 'Planejar':
+			message += 'Acao selecionada: ' + "Planejando"
+			message += "\n"
+			message += "Data:" + data.toString();
+			message += "\n"
+			message += "Periodo:" + periodo;
+			SpreadsheetApp.getUi().alert(message);
+			break;
+		case 'Ignorar':
+			message += 'Acao selecionada: ' + "Ignorando"
+			message += "\n"
+			message += "Data:" + data.toString();
+			message += "\n"
+			message += "Periodo:" + periodo;
+			SpreadsheetApp.getUi().alert(message);
+			break;
+		default:
+			break;
+	}
 }
 
 // ****************************************************************************

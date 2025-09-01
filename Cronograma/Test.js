@@ -1,3 +1,7 @@
+function cronogramaModelarProsseguirTeste() {
+  cronogramaModelarProsseguir("Planejar");
+}
+
 function obterProximoCronogramaTeste(testData) {
 
 	let cronogramaPublicadoMaisRecente = testData.CRONOGRAMA_TESTE

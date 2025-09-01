@@ -1,7 +1,6 @@
 const GOOGLE_SHEET_ID = "1OCwl3tVukD6nhGYqGvcVrGP_NjGFLJ7NYL-5vkdZTOg";
 const obterGoogleSheet = () =>  SpreadsheetApp.openById(GOOGLE_SHEET_ID);
 
-
 const PUBLICADOS_GAMA         = "Publicados";
 const PUBLICADOS_DATA_COL     = 0;
 const PUBLICADOS_NOME_COL     = 1;
@@ -145,6 +144,7 @@ function informarAssociados(Planejar) {
 function completarCronograma(Planejar) {
 
 }
+
 // ****************************************************************************
 // atualizarContasCorrentes - O Planejador aciona a lógica para lancar as 
 // transacoes de rendas de contas correntes auferidas por trabalhos em 
@@ -174,4 +174,35 @@ function completarCronograma(Planejar) {
 //
 function atualizarContasCorrentes(Planejar) {
 
+}
+
+// ****************************************************************************
+// atualizarContasCorrentes - O Planejador aciona a lógica para lancar as 
+// transacoes de rendas de contas correntes auferidas por trabalhos em 
+// Cronogramas com os atributos Estado e ContaCorrente iguais a Executado e 
+// Pendente repectivamente, usando a seguinte logica. Para cada Associado,'
+// considere seu metodo de pagamento:
+// - Diaria / Salario
+// 		- Lancar a renda auferida pelo Associado em sua Conta Corrente
+// 		- Atualizar o atributo ContasCorrente do Assocido no Cronograma como 
+// 		  Lancado
+// - Comissao
+// 		- Se a producao do poco para o dia que trabalhou existe:
+// 		- Lancar a renda auferida pelo Associado emd sua Conta Corrente
+// 		- Atualizar o atributo ContasCorrente do Assocido no Cronograma como 
+// 		  Lancado
+// Input
+// 		Cronograma (Sheet), A planilha Cronograma
+// Output
+// 		Cronograma (Sheet), A planilha Cronograma, com os registros para os
+// 		quais foram criadas transacos in Contas Correntes, atualizados para
+// 		Lancado
+// 
+// 		Contas Correntes (Sheet), A planilha Contas Correntes, ,atualiza com as 
+// 		Transcoes do de pagamento efetuadas pelo trabalho executado de acordo
+// 		com o Cronograma
+// ****************************************************************************
+//
+function publicarCronograma() {
+	
 }
