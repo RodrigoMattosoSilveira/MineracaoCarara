@@ -1,3 +1,19 @@
+const GOOGLE_SHEET_ID = "1OCwl3tVukD6nhGYqGvcVrGP_NjGFLJ7NYL-5vkdZTOg";
+const obterGoogleSheet = () =>  SpreadsheetApp.openById(GOOGLE_SHEET_ID);
+
+
+const PUBLICADOS_GAMA         = "Publicados";
+const PUBLICADOS_DATA_COL     = 0;
+const PUBLICADOS_NOME_COL     = 1;
+const PUBLICADOS_ORDEM_COL    = 2;
+function obterPublicadosGama() {
+	return obterGoogleSheet().getRangeByName(PUBLICADOS_GAMA).sort([
+		{column: PUBLICADOS_DATA_COL  + 1, ascending: false}, // Column numbers adjusted for A1C1 notation
+		{column: PUBLICADOS_ORDEM_COL + 1, ascending: true}
+	]);
+}
+function obterPublicadosGamaVals() { return obterPublicadosGama().getValues();}
+
 // ****************************************************************************
 // Menu - This is a set of functions
 // ****************************************************************************
