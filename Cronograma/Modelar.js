@@ -43,53 +43,46 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			let planejarGamaVals = [];
 			let planejarGamaRegistro = [];
 
-			// menssagem = construirProsseguirMenssagem(acaoSelecionada, data, periodo, ordem) 
-			// console.info(menssagem);
-
-			// Limpar a planilha Planejar
+			// Construir a planilha Cronograma!Planejar, incluindo todos os 
+			// registros ativos da planilha Cronograma!Estadia, 
+			// 	  - Limpar todos os registros na planilha Cronograma!Planejar;
+			//    - Definir o atributo Acao do registro a incluir na planilha
+			//      Cronograma!Planejar do seguinte modo:
+			//        - Definir seu atributo Ação como Incluir, caso o 
+			//          associado tiver um registro correspondente na planilha
+			//          Cronograma!Modelos com o atributo de Período 
+			//          correspondente ao Período que está sendo planejado;
+			// 		  - Caso contrário, definir seu atributo Ação como Excluir
+			// 
+			// Observe que os registros na planilha Cronograma!Estadia
+			// representam um subconjunto dos registros da planilha 
+			// Estadia!Dados, onde filtramos aqueles com estadias expiradas.
+			//  
 			if (!limpaPlanilhaGama(PLANEJAR_PLANILHA, PLANEJAR_GAMA)) {
-				console.error('Limpando a gama Planejar da planilha Planejar');
+				console.error('Limpando Cronograma!Planejar');
 			}
 
-			// Carregar os registros da planilha Modelos, do mesmo período; 
-			// caso o período não exista na planilha Modelo, copie todos os 
-			// registros da planilha Estadiav com Estadia ativa e que não fazem
-			// parte de nenhum dos períodos na planilha Modelo;
+			// Construa uma matriz de todos os associados na planilha 
+			// Cronograma!Modelos cujo atributo de período corresponde ao 
+			// período que está sendo planejado
+			const modeloGamaObjKeys = [];
 			let modeloGamaVals = obterModelosGamaVals();
-			if (modeloGamaVals.length > 0) {
- 				let modeloGamaValsFiltered = modeloGamaVals.filter (elemento => elemento[MODELOS_PERIODO] === periodo);
-				
-				modeloGamaValsFiltered.forEach(elemento => {
-				planejarGamaRegistro = [...[]];
-				planejarGamaRegistro.push("Incluir")
-				planejarGamaRegistro.push(dataStr)
-				planejarGamaRegistro.push(periodo)
-				planejarGamaRegistro.push(elemento[MODELOS_NOME]);
-				planejarGamaRegistro.push(elemento[MODELOS_INICIO]);
-				planejarGamaRegistro.push(elemento[MODELOS_METODO]);
-				planejarGamaRegistro.push(elemento[MODELOS_AREA]);
-				planejarGamaRegistro.push(elemento[MODELOS_LOCAL]);
-				planejarGamaRegistro.push(elemento[MODELOS_TAREFA]);
-				planejarGamaRegistro.push(elemento[MODELOS_REMUNERACAO]);
-				planejarGamaRegistro.push(elemento[MODELOS_COMENTARIOS]);
-				planejarGamaVals.push(planejarGamaRegistro);
+			modeloGamaVals.forEach(elemento => {
+				if (elemento[MODELOS_PERIODO === periodo]) {
+					let key = '' + elemento[MODELOS_NOME] + dateToString(elemento[MODELOS_INICIO]);
+					modeloGamaObjKeys.push(key);
+				}
 			});
 
-			}
-			// Incluir todos associados ativos na planilha ESTADIA sem 
-			// atribuição na planilha Modelo
-			const modeloGamaObj = Object.create({key: []});
-			obterModelosGamaVals().forEach(elemento => {
-				key = '' + elemento[MODELOS_NOME] + dateToString(elemento[MODELOS_INICIO]);
-				modeloGamaObj.key = elemento;
-			});
-			let modeloGamaObjKeys = Object.keys(modeloGamaObj);
 			let estadiasGamaVals = obterEstadiasGamaVals();
 			estadiasGamaVals.forEach(elemento => {
-				key = '' + elemento[ESTADIAS_NOME] + dateToString(elemento[ESTADIAS_INICIO]);
-				if (modeloGamaObjKeys.indexOf(key) == -1 && elemento[ESTADIAS_NOME] != '') {
+				if (elemento[ESTADIAS_NOME] != '') {
 					planejarGamaRegistro = [...[]];
-					planejarGamaRegistro.push("Excluir")
+
+					key = '' + elemento[ESTADIAS_NOME] + dateToString(elemento[ESTADIAS_INICIO]);
+					let acao = modeloGamaObjKeys.indexOf(key) == -1 ? "Incluir" : "Excluir"
+
+					planejarGamaRegistro.push(acao)
 					planejarGamaRegistro.push(dataStr)
 					planejarGamaRegistro.push(periodo)
 					planejarGamaRegistro.push(elemento[ESTADIAS_NOME]);
@@ -100,8 +93,8 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 					planejarGamaRegistro.push(elemento[ESTADIAS_TAREFA]);
 					planejarGamaRegistro.push(elemento[ESTADIAS_REMUNERACAO]);
 					planejarGamaRegistro.push(elemento[ESTADIAS_COMENTARIOS]);
-					planejarGamaVals.push(planejarGamaRegistro);
-				}		
+					planejarGamaVals.push([...planejarGamaRegistro]);	
+				}
 			});
 
 			// Copiar os registros formatados para a planilha Planejar
