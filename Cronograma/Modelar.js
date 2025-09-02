@@ -33,14 +33,88 @@ function cronogramaModelar() {
 const cronogramaModelarProsseguir = (acaoSelecionada) => {
 	// SpreadsheetApp.getUi().alert('Acao selecionada: ' + JSON.stringify(acaoSelecionada));
 	let data = getData();
+	let dataStr = dateToString(data);
   	let periodo = getPeriodo()
 	let ordem = Math.trunc(getOrdem());
 	let menssagem = '';
+	let resultado = '';
 	switch (acaoSelecionada) {
 		case 'Planejar':
-			menssagem = construirProsseguirMenssagem(acaoSelecionada, data, periodo, ordem) 
+			let planejarGamaVals = [];
+			let planejarGamaRegistro = [];
+
+			// menssagem = construirProsseguirMenssagem(acaoSelecionada, data, periodo, ordem) 
+			// console.info(menssagem);
+
+			// Limpar a planilha Planejar
+			if (!limpaPlanilhaGama(PLANEJAR_PLANILHA, PLANEJAR_GAMA)) {
+				console.error('Limpando a gama Planejar da planilha Planejar');
+			}
+
+			// Carregar os registros da planilha Modelos, do mesmo período; 
+			// caso o período não exista na planilha Modelo, copie todos os 
+			// registros da planilha Estadiav com Estadia ativa e que não fazem
+			// parte de nenhum dos períodos na planilha Modelo;
+			let modeloGamaVals = obterModelosGamaVals();
+			if (modeloGamaVals.length > 0) {
+ 				let modeloGamaValsFiltered = modeloGamaVals.filter (elemento => elemento[MODELOS_PERIODO] === periodo);
+				
+				modeloGamaValsFiltered.forEach(elemento => {
+				planejarGamaRegistro = [...[]];
+				planejarGamaRegistro.push("Incluir")
+				planejarGamaRegistro.push(dataStr)
+				planejarGamaRegistro.push(periodo)
+				planejarGamaRegistro.push(elemento[MODELOS_NOME]);
+				planejarGamaRegistro.push(elemento[MODELOS_INICIO]);
+				planejarGamaRegistro.push(elemento[MODELOS_METODO]);
+				planejarGamaRegistro.push(elemento[MODELOS_AREA]);
+				planejarGamaRegistro.push(elemento[MODELOS_LOCAL]);
+				planejarGamaRegistro.push(elemento[MODELOS_TAREFA]);
+				planejarGamaRegistro.push(elemento[MODELOS_REMUNERACAO]);
+				planejarGamaRegistro.push(elemento[MODELOS_COMENTARIOS]);
+				planejarGamaVals.push(planejarGamaRegistro);
+			});
+
+			}
+			// Incluir todos associados ativos na planilha ESTADIA sem 
+			// atribuição na planilha Modelo
+			const modeloGamaObj = Object.create({key: []});
+			obterModelosGamaVals().forEach(elemento => {
+				key = '' + elemento[MODELOS_NOME] + dateToString(elemento[MODELOS_INICIO]);
+				modeloGamaObj.key = elemento;
+			});
+			let modeloGamaObjKeys = Object.keys(modeloGamaObj);
+			let estadiasGamaVals = obterEstadiasGamaVals();
+			estadiasGamaVals.forEach(elemento => {
+				key = '' + elemento[ESTADIAS_NOME] + dateToString(elemento[ESTADIAS_INICIO]);
+				if (modeloGamaObjKeys.indexOf(key) == -1 && elemento[ESTADIAS_NOME] != '') {
+					planejarGamaRegistro = [...[]];
+					planejarGamaRegistro.push("Excluir")
+					planejarGamaRegistro.push(dataStr)
+					planejarGamaRegistro.push(periodo)
+					planejarGamaRegistro.push(elemento[ESTADIAS_NOME]);
+					planejarGamaRegistro.push(elemento[ESTADIAS_INICIO]);
+					planejarGamaRegistro.push(elemento[ESTADIAS_METODO]);
+					planejarGamaRegistro.push(elemento[ESTADIAS_AREA]);
+					planejarGamaRegistro.push(elemento[ESTADIAS_LOCAL]);
+					planejarGamaRegistro.push(elemento[ESTADIAS_TAREFA]);
+					planejarGamaRegistro.push(elemento[ESTADIAS_REMUNERACAO]);
+					planejarGamaRegistro.push(elemento[ESTADIAS_COMENTARIOS]);
+					planejarGamaVals.push(planejarGamaRegistro);
+				}		
+			});
+
+			// Copiar os registros formatados para a planilha Planejar
+			copiarGamaValsParaPlanilha(PLANEJAR_PLANILHA, PLANEJAR_GAMA, planejarGamaVals)
+
+			// Ativar a planilha Planejar
+			CararaLibrary.activateSheet("Planejar");
+
+			// Informar ao usuário que o sistema concluiu a operação 
+			resultado = "Povoou a planilha Planajar com os registros do mais recente cronograma do mesmo período"
+			menssagem = construirProsseguirMenssagem(resultado, data, periodo, ordem) 
 			console.info(menssagem);
-			// SpreadsheetApp.getUi().alert(menssagem);
+			SpreadsheetApp.getUi().alert(menssagem);
 			break;
 		case 'Ignorar':
 			menssagem = construirProsseguirMenssagem(acaoSelecionada, data, periodo, ordem) 
@@ -53,7 +127,7 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			CararaLibrary.activateSheet("PUBLICADOS_PLANILHA");		
 
 			// Informar ao usuário que o sistema concluiu a operação 
-			let resultado = "Inseriu cronograma como publicado, sem o planejar"
+			resultado = "Inseriu cronograma como publicado, sem o planejar"
 			menssagem = construirProsseguirMenssagem(resultado, data, periodo, ordem) 
 			console.info(menssagem);
 			SpreadsheetApp.getUi().alert(menssagem);
