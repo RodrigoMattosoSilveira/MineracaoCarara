@@ -98,7 +98,7 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			});
 
 			// Copiar os registros formatados para a planilha Planejar
-			copiarGamaValsParaPlanilha(PLANEJAR_PLANILHA, PLANEJAR_GAMA, planejarGamaVals)
+			copiarGamaValsParaPlanilhaVelho(PLANEJAR_PLANILHA, PLANEJAR_GAMA, planejarGamaVals)
 
 			// Ativar a planilha Planejar
 			CararaLibrary.activateSheet("Planejar");

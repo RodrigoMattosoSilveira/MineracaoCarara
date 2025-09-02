@@ -8,6 +8,7 @@ const PUBLICADOS_NOME_COL     = 1;
 const PUBLICADOS_ORDEM_COL    = 2;
 const obterPlanilhaPublicados = () =>  	obterGoogleSheet().getSheetByName(PUBLICADOS_PLANILHA);
 const obterPublicadosGama     = () =>	obterGoogleSheet().getRangeByName(PUBLICADOS_GAMA)
+											.filter( elemento => elemento[PUBLICADOS_DATA_COL] !== '') 
 											.sort([
 												// Column numbers adjusted for A1C1 notation
 												{column: PUBLICADOS_DATA_COL  + 1, ascending: false}, 
@@ -29,7 +30,7 @@ const obterEstadiasPlanilha = () => obterGoogleSheet().getSheetByName(ESTADIAS_P
 const obterEstadiasGama = () => obterGoogleSheet().getRangeByName(ESTADIAS_GAMA);
 const obterEstadiasGamaVals = () => {
 	let  gama = obterEstadiasGama();
-	return  (gama !== null) ? gama.getValues() : [];
+	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[ESTADIAS_NOME] !== '') : [];
 }
 
 const MODELOS_PLANILHA = "MODELOS";
@@ -47,7 +48,7 @@ const obterModelosPlanilha = () => obterGoogleSheet().getSheetByName(MODELOS_PLA
 const obterModelosGama = () => obterGoogleSheet().getRangeByName(MODELOS_GAMA);
 const obterModelosGamaVals = () => {
 	let  gama = obterModelosGama();
-	return  (gama !== null) ? gama.getValues() : [];
+	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[MODELOS_NOME] !== '') : [];
 }
 
 const PLANEJAR_PLANILHA = "PLANEJAR";
@@ -67,8 +68,51 @@ const obterPlanejarPlanilha = () => obterGoogleSheet().getSheetByName(PLANEJAR_P
 const obterPlanejarGama = () => obterGoogleSheet().getRangeByName(PLANEJAR_GAMA);
 const obterPlanejarGamaVals = () => {
 	let  gama = obterPlanejarGama();
-	return  (gama !== null) ? gama.getValues() : [];
+	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[PLANEJAR_NOME] !== '') : [];
 }
+const obterPlanejarDataPeriodoKeys = () => {
+	const keys = [];
+	let vals = obterPlanejarGamaVals();
+	vals.forEach(elemento => {
+		let key = '' + elemento[PLANEJAR_DATA] + elemento[PLANEJAR_PERIODO];
+		if (keys.indexOf(key) == -1) {
+			keys.push(key); 
+		}
+	});
+	return keys;
+}
+
+const ATIVOS_PLANILHA = "ATIVOS";
+const ATIVOS_GAMA = "ATIVOS";
+const ATIVOS_ESTADO = 0;
+const ATIVOS_DATA = 1;
+const ATIVOS_PERIODO = 2;
+const ATIVOS_NOME = 3;
+const ATIVOS_INICIO = 4;
+const ATIVOS_METODO = 5;
+const ATIVOS_AREA = 6;
+const ATIVOS_LOCAL = 7;
+const ATIVOS_TAREFA = 8;
+const ATIVOS_REMUNERACAO = 9;
+const ATIVOS_COMENTARIOS = 10;
+const obterAtivosPlanilha = () => obterGoogleSheet().getSheetByName(ATIVOS_PLANILHA);
+const obterAtivosGama = () => obterGoogleSheet().getRangeByName(ATIVOS_GAMA);
+const obterAtivosGamaVals = () => {
+  let  gama = obterAtivosGama();
+  return  (gama !== null) ? gama.getValues().filter( elemento => elemento[ATIVOS_NOME] !== '') : [];
+}
+const obterAtivosKeys = () => {
+	const keys = [];
+	let vals = obterAtivosGamaVals();
+	vals.forEach(elemento => {
+		let key = '' + elemento[ATIVOS_DATA] + elemento[ATIVOS_PERIODO];
+		if (keys.indexOf(key) == -1) {
+			keys.push(key); 
+		}
+	});
+	return keys;
+}
+
 // ****************************************************************************
 // limpaPlanilhaGama - Limpe o intervalo com o mesmo noje da planilha nomeada
 // 
@@ -95,6 +139,17 @@ function limpaPlanilhaGama(planilha, gama) {
 					break
 			}
 			break;
+		case ATIVOS_PLANILHA:
+			switch (gama) {
+				case PLANEJAR_GAMA:
+					ativosGama = obterAtivosGama();
+					break;
+				default:
+					valid = false;
+					break
+			}
+			break;
+
 		default:
 			valid = false;
 			break;	
@@ -119,7 +174,7 @@ function limpaPlanilhaGama(planilha, gama) {
 // 		TRUE, se o sistema executou a tarefa, FALSE caso contrario;
 // ****************************************************************************
 //
-const copiarGamaValsParaPlanilha = (planilhaDestino, gamaDestino, gamaVals) => {
+const copiarGamaValsParaPlanilhaVelho = (planilhaDestino, gamaDestino, gamaVals) => {
 	// Copiar os registros formatados para a planilha Planejar
 	let valid = true;
 	let planilha;
@@ -138,10 +193,36 @@ const copiarGamaValsParaPlanilha = (planilhaDestino, gamaDestino, gamaVals) => {
 					break
 			}
 			break;
+		case ATIVOS_PLANILHA:
+			switch (gamaDestino) {
+				case ATIVOS_GAMA:
+					planilha = obterAtivosPlanilha();
+					lastRow = planilha.getLastRow();
+					break;
+				default:
+					valid = false;
+					break
+			}
+			break;
+
 		default:
 			valid = false;
 			break;	
 	}
 	if (valid) {planilha.getRange(lastRow + 1, 1, gamaVals.length, gamaVals[0].length).setValues(gamaVals)}
 	return valid;
+}
+
+const copiarGamaValsParaPlanilha = (planilhaDestino, gamaVals) => {
+	if (planilhaDestino === null) {
+		console.error("copiarGamaValsParaPlanilha - Invalida planilhaDestino");
+		return false;
+	}
+	if (gamaVals === null) {
+		console.error("copiarGamaValsParaPlanilha - Invalida gamaVals");
+	}
+
+	lastRow = planilhaDestino.getLastRow();
+	planilhaDestino.getRange(lastRow + 1, 1, gamaVals.length, gamaVals[0].length).setValues(gamaVals)
+	return true;
 }
