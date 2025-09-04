@@ -58,9 +58,7 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			// representam um subconjunto dos registros da planilha 
 			// Estadia!Dados, onde filtramos aqueles com estadias expiradas.
 			//  
-			if (!limpaPlanilhaGama(PLANEJAR_PLANILHA, PLANEJAR_GAMA)) {
-				console.error('Limpando Cronograma!Planejar');
-			}
+			obterPlanejarGama() !== null ? obterPlanejarGama().clear({contentsOnly: true}) : null;
 
 			// Construa uma matriz de todos os associados na planilha 
 			// Cronograma!Modelos cujo atributo de período corresponde ao 
@@ -98,7 +96,9 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			});
 
 			// Copiar os registros formatados para a planilha Planejar
-			copiarGamaValsParaPlanilhaVelho(PLANEJAR_PLANILHA, PLANEJAR_GAMA, planejarGamaVals)
+			// copiarGamaValsParaPlanilhaVelho(PLANEJAR_PLANILHA, PLANEJAR_GAMA, planejarGamaVals)
+			copiarGamaValsParaPlanilha(obterPlanejarPlanilha(), planejarGamaVals)
+			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_ACAO_GAMA, ACOES_VALIDAS);
 
 			// Ativar a planilha Planejar
 			CararaLibrary.activateSheet("Planejar");
