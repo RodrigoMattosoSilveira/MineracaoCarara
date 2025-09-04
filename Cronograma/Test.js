@@ -1,3 +1,14 @@
+
+function cronogramaModelarProsseguirTeste() {
+  cronogramaModelarProsseguir("Planejar");
+}
+const gamaPublicadosTemChaveDataPeriodoTeste = () => {
+  let valido = gamaPublicadosTemChaveDataPeriodo('02/08/2025Diurno')
+	!valido ? 
+		console.info(" ✔︎ GamaPublicadosTemChaveDataPeriodoTeste, 02/08/2025Diurno") :
+		console.error(" ✖︎  GamaPublicadosTemChaveDataPeriodoTeste, 02/08/2025Diurno")
+}
+
 const numeroParaLetraTeste = () => {
   let letra = numeroParaLetra(PLANEJAR_ACAO + 1)
   let valido = letra.localeCompare('A') === 0 ? true : false;
@@ -30,10 +41,6 @@ const vLookupPersonalizadoTeste = () => {
 	valido ? 
 		console.info(" ✔︎ vLookupPersonalizado, chave 2") :
 		console.error(" ✖︎  vLookupPersonalizado")
-}
-
-function cronogramaModelarProsseguirTeste() {
-  cronogramaModelarProsseguir("Planejar");
 }
 
 function obterProximoCronogramaTeste(testData) {

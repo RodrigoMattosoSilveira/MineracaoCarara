@@ -11,11 +11,24 @@ const obterPublicadosGama     = ()  =>	obterGoogleSheet().getRangeByName(PUBLICA
 											.sort([
 												// Column numbers adjusted for A1C1 notation
 												{column: PUBLICADOS_DATA_COL  + 1, ascending: false}, 
-												{column: PUBLICADOS_ORDEM_COL + 1, ascending: true}
+												{column: PUBLICADOS_ORDEM_COL + 1, ascending: false}
 	                                 		 ]);
-
 const obterPublicadosGamaVals = ()  =>  obterPublicadosGama().getValues()
-											.filter( elemento => elemento[PUBLICADOS_DATA_COL] !== '');
+											.filter( (elemento) => elemento[PUBLICADOS_DATA_COL] !== '' &&
+											          elemento[PUBLICADOS_DATA_COL] !== 'Data');
+const obterPublicadosDataPeriodoKeys = () => {
+	const keys = [];
+	let vals = obterPublicadosGamaVals();
+	vals.forEach(elemento => {
+		let key = '' + elemento[PUBLICADOS_DATA_COL] + elemento[PUBLICADOS_NOME_COL];
+		if (keys.indexOf(key) == -1) {
+			keys.push(key); 
+		}
+	});
+	return keys;
+}
+const gamaPublicadosTemChaveDataPeriodo = (chave) => obterPublicadosDataPeriodoKeys().indexOf(chave) !== -1 ? true : false;
+
 const ESTADIAS_PLANILHA = "Estadias";
 const ESTADIAS_GAMA = "Estadias";
 const ESTADIAS_NOME = 0;
@@ -30,7 +43,7 @@ const obterEstadiasPlanilha = () => obterGoogleSheet().getSheetByName(ESTADIAS_P
 const obterEstadiasGama = () => obterGoogleSheet().getRangeByName(ESTADIAS_GAMA);
 const obterEstadiasGamaVals = () => {
 	let  gama = obterEstadiasGama();
-	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[ESTADIAS_NOME] !== '') : [];
+	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[ESTADIAS_NOME] !== '' && elemento[ESTADIAS_NOME] !== 'Nome') : [];
 }
 
 const MODELOS_PLANILHA = "Modelos";
@@ -49,6 +62,17 @@ const obterModelosGama = () => obterGoogleSheet().getRangeByName(MODELOS_GAMA);
 const obterModelosGamaVals = () => {
 	let  gama = obterModelosGama();
 	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[MODELOS_NOME] !== '') : [];
+}
+const obterModelosNomeInicioKeys = () => {
+	const keys = [];
+	let vals = obterModelosGamaVals();
+	vals.forEach(elemento => {
+		let key = '' + elemento[MODELOS_NOME] + dateToString(elemento[MODELOS_INICIO]);
+		if (keys.indexOf(key) == -1) {
+			keys.push(key); 
+		}
+	});
+	return keys;
 }
 
 const PLANEJAR_PLANILHA = "Planejar";
@@ -81,6 +105,17 @@ const obterPlanejarDataPeriodoKeys = () => {
 	let vals = obterPlanejarGamaVals();
 	vals.forEach(elemento => {
 		let key = '' + elemento[PLANEJAR_DATA] + elemento[PLANEJAR_PERIODO];
+		if (keys.indexOf(key) == -1) {
+			keys.push(key); 
+		}
+	});
+	return keys;
+}
+const obterPlanejarNomeInicioKeys = () => {
+	const keys = [];
+	let vals = obterPlanejarGamaVals();
+	vals.forEach(elemento => {
+		let key = '' + elemento[PLANEJAR_NOME] + elemento[PLANEJAR_INICIO];
 		if (keys.indexOf(key) == -1) {
 			keys.push(key); 
 		}

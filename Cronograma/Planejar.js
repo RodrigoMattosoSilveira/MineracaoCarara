@@ -62,7 +62,7 @@ function cronogramaPlanejar() {
 	// planejado
   	let periodVals = obterPeriodosGamaVals();
 	let ordem = vLookupPersonalizado(periodo, periodVals, PERIODOS_NOME, PERIODOS_ORDEM);
-	let periodoVal = [[data, periodo, ordem]]
+	let periodoVal = [[dateToString(data), periodo, ordem]]
 	copiarGamaValsParaPlanilha(obterPublicadosPlanilha(), periodoVal);
 
 	// Substituir a instância do período na planilha Cronograma!Modelo pelo
@@ -89,8 +89,10 @@ function cronogramaPlanejar() {
 	// Informar ao usuário que o sistema concluiu a operação 
 	menssagem = '';
 	menssagem += "Povoou a planilha Cronograma!Ativos com os registros da planilha Cronograma!Planejar"
-	menssagem += '\n';
+	menssagem += '\n' + '\n';
 	menssagem += "Atualizou a planilha Cronograma!Modelos com os registros da planilha Cronograma!Planejar"
+	menssagem += '\n' + '\n';
+	menssagem += "Atualizou a planilha Cronograma!Publicados com os registros do period publicado"
 	console.info(menssagem);
 	SpreadsheetApp.getUi().alert(menssagem);
 }
