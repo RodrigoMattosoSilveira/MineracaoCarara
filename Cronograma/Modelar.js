@@ -96,7 +96,6 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			});
 
 			// Copiar os registros formatados para a planilha Planejar
-			// copiarGamaValsParaPlanilhaVelho(PLANEJAR_PLANILHA, PLANEJAR_GAMA, planejarGamaVals)
 			copiarGamaValsParaPlanilha(obterPlanejarPlanilha(), planejarGamaVals)
 			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_ACAO+1, PLANEJAR_ACOES_VALIDAS);
 			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_METODO+1, PLANEJAR_METODOS_VALIDOS);
