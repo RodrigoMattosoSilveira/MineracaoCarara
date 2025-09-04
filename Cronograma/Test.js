@@ -1,3 +1,20 @@
+const numeroParaLetraTeste = () => {
+  let letra = numeroParaLetra(PLANEJAR_ACAO + 1)
+  let valido = letra.localeCompare('A') === 0 ? true : false;
+	valido ? 
+		console.info(" ✔︎ numeroParaLetraTeste, A") :
+		console.error(" ✖︎  numeroParaLetraTeste, A")
+}
+
+const getA1C1Teste = () => {
+  let nomeGama = obterA1C1(PLANEJAR_PLANILHA, 'C', 2, 'C', 10)
+  let valido = nomeGama.localeCompare('Planejar!C2:C10') === 0 ? true : false;
+	valido ? 
+		console.info(" ✔︎ getA1C1Teste, colI = 3, rowI = 2, colF = 3, rowI = 10") :
+		console.error(" ✖︎  getA1C1Teste, colI = 3, rowI = 2, colF = 3, rowI = 10")
+
+}
+
 const vLookupPersonalizadoTeste = () => {
   let periodVals = obterPeriodosGamaVals();
   let procurado = vLookupPersonalizado("Diurno", periodVals, PERIODOS_NOME, PERIODOS_ORDEM) 

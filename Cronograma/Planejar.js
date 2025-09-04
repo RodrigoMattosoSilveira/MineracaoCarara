@@ -63,7 +63,7 @@ function cronogramaPlanejar() {
   	let periodVals = obterPeriodosGamaVals();
 	let ordem = vLookupPersonalizado(periodo, periodVals, PERIODOS_NOME, PERIODOS_ORDEM);
 	let periodoVal = [[data, periodo, ordem]]
-	copiarGamaValsParaPlanilha(obterPeriodosPlanilha(), periodoVal);
+	copiarGamaValsParaPlanilha(obterPublicadosPlanilha(), periodoVal);
 
 	// Substituir a instância do período na planilha Cronograma!Modelo pelo
 	// período planejado em ativosGamaVals
@@ -81,7 +81,7 @@ function cronogramaPlanejar() {
 	copiarGamaValsParaPlanilha(obterModelosPlanilha(), newModelosGamaVals);
 
 	// limpar a planilha Cronograma!Planejar
-	obterPlanejarGama() !== null ? obterPlanejarGama().clear({contentsOnly: true}) : null;
+	obterPlanejarGama() !== null ? obterPlanejarGama().clearContent() : null;
 
 	// Ativar a planilha Cronograma!Ativos
 	CararaLibrary.activateSheet(ATIVOS_PLANILHA);

@@ -98,7 +98,12 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			// Copiar os registros formatados para a planilha Planejar
 			// copiarGamaValsParaPlanilhaVelho(PLANEJAR_PLANILHA, PLANEJAR_GAMA, planejarGamaVals)
 			copiarGamaValsParaPlanilha(obterPlanejarPlanilha(), planejarGamaVals)
-			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_ACAO_GAMA, ACOES_VALIDAS);
+			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_ACAO+1, PLANEJAR_ACOES_VALIDAS);
+			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_METODO+1, PLANEJAR_METODOS_VALIDOS);
+			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_AREA+1, PLANEJAR_AREAS_VALIDAS);
+			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_LOCAL+1, PLANEJAR_LOCAIS_VALIDOS);
+			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_TAREFA+1, PLANEJAR_TAREFAS_VALIDAS);
+
 
 			// Ativar a planilha Planejar
 			CararaLibrary.activateSheet("Planejar");

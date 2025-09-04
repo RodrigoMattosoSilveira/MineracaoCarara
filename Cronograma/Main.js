@@ -215,3 +215,13 @@ function dateToString(data) {
 
 	return dataStr;
 }
+// ****************************************************************************
+// numeroParaLetra - Converter um numero para a letra maiuscula equivalente
+// 
+// Input
+// 		num (int), A numero a ser convertido
+// Output
+// 		letra (String), a letra; null caso contrario
+// ****************************************************************************
+//
+const numeroParaLetra = (num) => (num < 1 || num > 26) ? null : String.fromCharCode(num + 64);

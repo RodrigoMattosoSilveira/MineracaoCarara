@@ -6,7 +6,7 @@ const PUBLICADOS_GAMA         = "Publicados";
 const PUBLICADOS_DATA_COL     = 0;
 const PUBLICADOS_NOME_COL     = 1;
 const PUBLICADOS_ORDEM_COL    = 2;
-const obterPlanilhaPublicados = ()  =>  obterGoogleSheet().getSheetByName(PUBLICADOS_PLANILHA);
+const obterPublicadosPlanilha = ()  =>  obterGoogleSheet().getSheetByName(PUBLICADOS_PLANILHA);
 const obterPublicadosGama     = ()  =>	obterGoogleSheet().getRangeByName(PUBLICADOS_GAMA)
 											.sort([
 												// Column numbers adjusted for A1C1 notation
@@ -33,8 +33,8 @@ const obterEstadiasGamaVals = () => {
 	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[ESTADIAS_NOME] !== '') : [];
 }
 
-const MODELOS_PLANILHA = "MODELOS";
-const MODELOS_GAMA = "MODELOS";
+const MODELOS_PLANILHA = "Modelos";
+const MODELOS_GAMA = "Modelos";
 const MODELOS_PERIODO = 0;
 const MODELOS_NOME = 1;
 const MODELOS_INICIO = 2;
@@ -51,8 +51,14 @@ const obterModelosGamaVals = () => {
 	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[MODELOS_NOME] !== '') : [];
 }
 
-const PLANEJAR_PLANILHA = "PLANEJAR";
-const PLANEJAR_GAMA = "PLANEJAR";
+const PLANEJAR_PLANILHA = "Planejar";
+const PLANEJAR_GAMA = "Planejar";
+const PLANEJAR_ACAO_GAMA = "PlanejarAcao"
+const PLANEJAR_ACOES_VALIDAS = "AcoesValidas"
+const PLANEJAR_METODOS_VALIDOS = "MetodosValidos"
+const PLANEJAR_AREAS_VALIDAS = "AreasValidas"
+const PLANEJAR_LOCAIS_VALIDOS = "LocaisValidos"
+const PLANEJAR_TAREFAS_VALIDAS = "TarefasValidas"
 const PLANEJAR_ACAO = 0;
 const PLANEJAR_DATA = 1;
 const PLANEJAR_PERIODO = 2;
@@ -82,8 +88,8 @@ const obterPlanejarDataPeriodoKeys = () => {
 	return keys;
 }
 
-const ATIVOS_PLANILHA = "ATIVOS";
-const ATIVOS_GAMA = "ATIVOS";
+const ATIVOS_PLANILHA = "Ativos";
+const ATIVOS_GAMA = "Ativos";
 const ATIVOS_ESTADO = 0;
 const ATIVOS_DATA = 1;
 const ATIVOS_PERIODO = 2;
@@ -128,55 +134,6 @@ const obterPeriodosGamaVals = () => {
 }
 
 // ****************************************************************************
-// limpaPlanilhaGama - Limpe o intervalo com o mesmo noje da planilha nomeada
-// 
-// Input
-// 		planilha <string> - O nome da planilha
-// 		gama <string> - O nome da gama
-// Output
-// 		TRUE, se o sistema executou a tarefa, FALSE caso contrario;
-// ****************************************************************************
-//
-function limpaPlanilhaGama(planilha, gama) {
-	let valid = true;
-	let planilhaGama = null;
-	switch (planilha) {
-		case MODELOS_PLANILHA:
-			break;
-		case PLANEJAR_PLANILHA:
-			switch (gama) {
-				case PLANEJAR_GAMA:
-					planilhaGama = obterPlanejarGama();
-					break;
-				default:
-					valid = false;
-					break
-			}
-			break;
-		case ATIVOS_PLANILHA:
-			switch (gama) {
-				case PLANEJAR_GAMA:
-					ativosGama = obterAtivosGama();
-					break;
-				default:
-					valid = false;
-					break
-			}
-			break;
-
-		default:
-			valid = false;
-			break;	
-	}
-
-	if (planilhaGama !== null) {
-		planilhaGama.clear({contentsOnly: true});
-	} 
-
-	return valid;
-}
-
-// ****************************************************************************
 // copiarGamaValsParaPlanilha - Limpe o intervalo com o mesmo noje da planilha 
 // nomeada
 // 
@@ -196,8 +153,8 @@ const copiarGamaValsParaPlanilha = (planilhaDestino, gamaVals) => {
 		console.error("copiarGamaValsParaPlanilha - Invalida gamaVals");
 	}
 
-	lastRow = planilhaDestino.getLastRow();
-	planilhaDestino.getRange(lastRow + 1, 1, gamaVals.length, gamaVals[0].length).setValues(gamaVals)
+	let lastRow = planilhaDestino.getLastRow();
+	planilhaDestino.getRange(lastRow + 1, 1, gamaVals.length, gamaVals[0].length).setValues(gamaVals);
 	return true;
 }
 
@@ -225,3 +182,46 @@ const vLookupPersonalizado = (chavePesquisa, matrizVals, colunaPesquisa, colunaR
   }
   return null;
 }
+
+// ****************************************************************************
+// setDataValidation - Estabelecer validacao de dados
+// 
+// Input
+// 		planilha <Sheet> - a planilha com a columna a ser validada
+// 
+// 		rangeName <String> - O nome da coluna a ser validade
+// 
+// 		validChoicesRange <string> - O nome da gama com os valores
+// 
+// Output
+// 		Validacao estabelecida
+// ****************************************************************************
+//
+function estabelederValidacaoDados(sheet, columnNumber, validChoicesRangeName) {
+	let lastRow = sheet.getLastRow();
+	let column = numeroParaLetra(columnNumber);
+	let a1C1Gama = obterA1C1(sheet.getName(), column, 2, column, lastRow)
+
+	var range = sheet.getRange(a1C1Gama); // Specify the range for validation
+
+	var rule = SpreadsheetApp.newDataValidation()
+	.requireValueInRange(sheet.getRange(validChoicesRangeName), true) // Reference range for valid values
+	.setAllowInvalid(false) // Prevent invalid entries
+	.build();
+
+	range.setDataValidation(rule); // Apply the validation rule
+}
+// ****************************************************************************
+// getA1C1 - Converter linhas e colunma ao nome de uma gama
+// 
+// Input
+// 		planilha (string), O nome da planilha
+//      colI (int), a columa inicial
+//      rowI (int), a linha inicial
+//      colF (int), a columa final
+//      rowF (int), a linha final
+// Output
+// 		nomeGama (String), o nome da gama
+// ****************************************************************************
+//
+const obterA1C1 = (planilha, colI, linI, colF, linF) => planilha + '!' + colI + linI + ':' +  colF + linF
