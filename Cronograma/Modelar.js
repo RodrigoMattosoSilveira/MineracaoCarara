@@ -104,7 +104,6 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_LOCAL+1, PLANEJAR_LOCAIS_VALIDOS);
 			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_TAREFA+1, PLANEJAR_TAREFAS_VALIDAS);
 
-
 			// Ativar a planilha Planejar
 			CararaLibrary.activateSheet("Planejar");
 
