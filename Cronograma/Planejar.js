@@ -17,27 +17,38 @@ function cronogramaPlanejar() {
 	// Construa uma matriz com os datas/peridos na planilha Cronograma!Ativos
 	const ativosGamaObjKeys = obterAtivosKeys();
 
+	// Certificar de que a planilha  Cronograma!Planejar esteja preenchida 
 	const planejarGamaVals = obterPlanejarGamaVals();
 	if (planejarGamaVals.length === 0) {
 		SpreadsheetApp.getUi().alert(" A planilha Cronograma!Planejar não tem um cronograma para ser ativado");
 		return;
 	}
+
+	// Certificar de que a planilha  Cronograma!Planejar contem apenas um cronograma 
 	const planejarDataPeriodoKeys = obterPlanejarDataPeriodoKeys();
 	if (planejarDataPeriodoKeys.length != 1) {
 		SpreadsheetApp.getUi().alert(" A planilha Cronograma!Planejar contém vários cronogramas");
 		return;
 	}
+
+	// Certificar de que o cronograma da planilha  Cronograma!Planejar nao 
+	// existe na planilha // Certificar de que a planilha  Cronograma!Ativos 
 	const planejarDataPeriodoKey = planejarDataPeriodoKeys[0];
+	let data = dateToString(planejarGamaVals[0][PLANEJAR_DATA]);
+	let periodo = planejarGamaVals[0][PLANEJAR_PERIODO];
 	if (ativosGamaObjKeys.indexOf(planejarDataPeriodoKey) != -1) {
 		let menssagem = '';
 		menssagem +=  'O cronograma da planilha Cronograma!Planejar ';
 		menssagem +=  '\n';
-		menssagem +=  dateToString(planejarGamaVals[0][PLANEJAR_DATA]) + ' / ' + planejarGamaVals[0][PLANEJAR_PERIODO]
+		menssagem +=  data + ' / ' + periodo;
 		menssagem +=  ' já existe na planilha Cronograma!Ativos';
 		menssagem +=  '\n';
 		SpreadsheetApp.getUi().alert(menssagem);
 		return;
 	}
+
+	// Copiar os registros da da planilha  Cronograma!Planejar para a planilha
+	// Cronograma!Ativos 
 	planejarGamaVals.forEach(planejarRegistro => {
 		if (planejarRegistro[PLANEJAR_ACAO] === 'Incluir') {
 			ativosGamaRegistro = [...planejarRegistro];
@@ -47,11 +58,39 @@ function cronogramaPlanejar() {
 	});
 	copiarGamaValsParaPlanilha(obterAtivosPlanilha(), ativosGamaVals);
 
-	// Ativar a planilha ATIVOS
+	// Atualizar a planilha Cronograma!Publicados, including o periodo 
+	// planejado
+  	let periodVals = obterPeriodosGamaVals();
+	let ordem = vLookupPersonalizado(periodo, periodVals, PERIODOS_NOME, PERIODOS_ORDEM);
+	let periodoVal = [[data, periodo, ordem]]
+	copiarGamaValsParaPlanilha(obterPeriodosPlanilha(), periodoVal);
+
+	// Substituir a instância do período na planilha Cronograma!Modelo pelo
+	// período planejado em ativosGamaVals
+	let modelosGama = obterModelosGama();
+	let modelosGamaVals = modelosGama === null ? [] : obterModelosGamaVals();
+	let newModelosGamaVals = []
+	modelosGama.clear({contentsOnly: true})
+	modelosGamaVals.forEach( (elemento) => elemento[MODELOS_PERIODO] !== periodo ? newModelosGamaVals.push([...elemento]) : null)
+	ativosGamaVals.forEach ( (elemento) => {
+		// Remover o Estado e Data, manter o resto
+		elemento.shift();
+		elemento.shift()
+		newModelosGamaVals.push([...elemento])
+	})
+	copiarGamaValsParaPlanilha(obterModelosPlanilha(), newModelosGamaVals);
+
+	// limpar a planilha Cronograma!Planejar
+	obterPlanejarGama() !== null ? obterPlanejarGama().clear({contentsOnly: true}) : null;
+
+	// Ativar a planilha Cronograma!Ativos
 	CararaLibrary.activateSheet(ATIVOS_PLANILHA);
 
 	// Informar ao usuário que o sistema concluiu a operação 
-	menssagem = "Povoou a planilha Cronograma!Ativos com os registros da planilha Cronograma!Planejar"
+	menssagem = '';
+	menssagem += "Povoou a planilha Cronograma!Ativos com os registros da planilha Cronograma!Planejar"
+	menssagem += '\n';
+	menssagem += "Atualizou a planilha Cronograma!Modelos com os registros da planilha Cronograma!Planejar"
 	console.info(menssagem);
 	SpreadsheetApp.getUi().alert(menssagem);
 }

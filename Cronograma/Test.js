@@ -1,3 +1,20 @@
+const vLookupPersonalizadoTeste = () => {
+  let periodVals = obterPeriodosGamaVals();
+  let procurado = vLookupPersonalizado("Diurno", periodVals, PERIODOS_NOME, PERIODOS_ORDEM) 
+  valido = procurado === 1 ? true : false;
+
+	valido ? 
+		console.info(" ✔︎ vLookupPersonalizado, chave Diurno") :
+		console.error(" ✖︎  vLookupPersonalizado")
+
+  procurado = vLookupPersonalizado(2, periodVals, PERIODOS_ORDEM, PERIODOS_NOME) 
+  valido = procurado === "Noturno" ? true : false;
+
+	valido ? 
+		console.info(" ✔︎ vLookupPersonalizado, chave 2") :
+		console.error(" ✖︎  vLookupPersonalizado")
+}
+
 function cronogramaModelarProsseguirTeste() {
   cronogramaModelarProsseguir("Planejar");
 }

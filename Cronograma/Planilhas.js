@@ -6,16 +6,16 @@ const PUBLICADOS_GAMA         = "Publicados";
 const PUBLICADOS_DATA_COL     = 0;
 const PUBLICADOS_NOME_COL     = 1;
 const PUBLICADOS_ORDEM_COL    = 2;
-const obterPlanilhaPublicados = () =>  	obterGoogleSheet().getSheetByName(PUBLICADOS_PLANILHA);
-const obterPublicadosGama     = () =>	obterGoogleSheet().getRangeByName(PUBLICADOS_GAMA)
-											.filter( elemento => elemento[PUBLICADOS_DATA_COL] !== '') 
+const obterPlanilhaPublicados = ()  =>  obterGoogleSheet().getSheetByName(PUBLICADOS_PLANILHA);
+const obterPublicadosGama     = ()  =>	obterGoogleSheet().getRangeByName(PUBLICADOS_GAMA)
 											.sort([
 												// Column numbers adjusted for A1C1 notation
 												{column: PUBLICADOS_DATA_COL  + 1, ascending: false}, 
 												{column: PUBLICADOS_ORDEM_COL + 1, ascending: true}
 	                                 		 ]);
 
-function obterPublicadosGamaVals() { return obterPublicadosGama().getValues();}
+const obterPublicadosGamaVals = ()  =>  obterPublicadosGama().getValues()
+											.filter( elemento => elemento[PUBLICADOS_DATA_COL] !== '');
 const ESTADIAS_PLANILHA = "Estadias";
 const ESTADIAS_GAMA = "Estadias";
 const ESTADIAS_NOME = 0;
@@ -113,6 +113,20 @@ const obterAtivosKeys = () => {
 	return keys;
 }
 
+const PERIODOS_PLANILHA = "Periodos";
+const PERIODOS_GAMA = "Periodos";
+const PERIODOS_NOME = 0;
+const PERIODOS_ORDEM = 1;
+const PERIODOS_INICIO = 2;
+
+const obterPeriodosPlanilha = () => obterGoogleSheet().getSheetByName(PERIODOS_PLANILHA);
+const obterPeriodosGama = () => obterGoogleSheet().getRangeByName(PERIODOS_GAMA);
+const obterPeriodosGamaVals = () => {
+  let  gama = obterPeriodosGama();
+  return  (gama !== null) ? gama.getValues()
+  								.filter( elemento => elemento[PERIODOS_NOME] !== '' && elemento[PERIODOS_NOME] !== 'Nome') : [];
+}
+
 // ****************************************************************************
 // limpaPlanilhaGama - Limpe o intervalo com o mesmo noje da planilha nomeada
 // 
@@ -167,52 +181,12 @@ function limpaPlanilhaGama(planilha, gama) {
 // nomeada
 // 
 // Input
-// 		planilhaDestino <string> - O nome da planilha
-// 		gamaDestino <string> - O nome da gama
+// 		planilhaDestino <Sheet> - A planilha 
 // 		gamaVals <Array of Arrays> - Os valores a serem copiados
 // Output
 // 		TRUE, se o sistema executou a tarefa, FALSE caso contrario;
 // ****************************************************************************
 //
-const copiarGamaValsParaPlanilhaVelho = (planilhaDestino, gamaDestino, gamaVals) => {
-	// Copiar os registros formatados para a planilha Planejar
-	let valid = true;
-	let planilha;
-	let lastRow;
-	switch (planilhaDestino) {
-		case MODELOS_PLANILHA:
-			break;
-		case PLANEJAR_PLANILHA:
-			switch (gamaDestino) {
-				case PLANEJAR_GAMA:
-					planilha = obterPlanejarPlanilha();
-					lastRow = planilha.getLastRow();
-					break;
-				default:
-					valid = false;
-					break
-			}
-			break;
-		case ATIVOS_PLANILHA:
-			switch (gamaDestino) {
-				case ATIVOS_GAMA:
-					planilha = obterAtivosPlanilha();
-					lastRow = planilha.getLastRow();
-					break;
-				default:
-					valid = false;
-					break
-			}
-			break;
-
-		default:
-			valid = false;
-			break;	
-	}
-	if (valid) {planilha.getRange(lastRow + 1, 1, gamaVals.length, gamaVals[0].length).setValues(gamaVals)}
-	return valid;
-}
-
 const copiarGamaValsParaPlanilha = (planilhaDestino, gamaVals) => {
 	if (planilhaDestino === null) {
 		console.error("copiarGamaValsParaPlanilha - Invalida planilhaDestino");
@@ -225,4 +199,29 @@ const copiarGamaValsParaPlanilha = (planilhaDestino, gamaVals) => {
 	lastRow = planilhaDestino.getLastRow();
 	planilhaDestino.getRange(lastRow + 1, 1, gamaVals.length, gamaVals[0].length).setValues(gamaVals)
 	return true;
+}
+
+// ****************************************************************************
+// customVLOOKUP - Procure um valor em uma matriz
+// 
+// Input
+// 		ChavePesquisa <string> - o valor a ser procurado nas linhas da matrix
+// 
+// 		matrizVals <Array of Arrays> - Os valores da matriz em questao
+// 
+// 		colunaPesquisa <int> - A coluna onde procurar a chavePesquisa
+// // 
+// 		colunaResultado <int> - A coluna na linha onde encontramos a 
+//  	ChavePesquisa e onde recuperar valor
+// Output
+// 		O valor procurado se encontrado, NULL caso contrario;
+// ****************************************************************************
+//
+const vLookupPersonalizado = (chavePesquisa, matrizVals, colunaPesquisa, colunaResultado) => {
+  for (let i = 0; i < matrizVals.length; i++) {
+    if (matrizVals[i][colunaPesquisa] === chavePesquisa) {
+      return matrizVals[i][colunaResultado]; // Adjust for zero-based index
+    }
+  }
+  return null;
 }
