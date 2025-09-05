@@ -136,11 +136,12 @@ const ATIVOS_LOCAL = 7;
 const ATIVOS_TAREFA = 8;
 const ATIVOS_REMUNERACAO = 9;
 const ATIVOS_COMENTARIOS = 10;
+const ATIVOS_ORDEM = 11;
 const obterAtivosPlanilha = () => obterGoogleSheet().getSheetByName(ATIVOS_PLANILHA);
 const obterAtivosGama = () => obterGoogleSheet().getRangeByName(ATIVOS_GAMA);
 const obterAtivosGamaVals = () => {
   let  gama = obterAtivosGama();
-  return  (gama !== null) ? gama.getValues().filter( elemento => elemento[ATIVOS_NOME] !== '') : [];
+  return  (gama !== null) ? gama.getValues().filter( elemento => elemento[ATIVOS_NOME] !== '' && elemento[ATIVOS_NOME] !== 'Nome') : [];
 }
 const obterAtivosKeys = () => {
 	const keys = [];
@@ -159,7 +160,6 @@ const PERIODOS_GAMA = "Periodos";
 const PERIODOS_NOME = 0;
 const PERIODOS_ORDEM = 1;
 const PERIODOS_INICIO = 2;
-
 const obterPeriodosPlanilha = () => obterGoogleSheet().getSheetByName(PERIODOS_PLANILHA);
 const obterPeriodosGama = () => obterGoogleSheet().getRangeByName(PERIODOS_GAMA);
 const obterPeriodosGamaVals = () => {
@@ -167,6 +167,22 @@ const obterPeriodosGamaVals = () => {
   return  (gama !== null) ? gama.getValues()
   								.filter( elemento => elemento[PERIODOS_NOME] !== '' && elemento[PERIODOS_NOME] !== 'Nome') : [];
 }
+
+const PDF_PLANILHA = "PDF";
+const PDF_DATA= "PDFData";
+const PDF_PERIODO= "PDFPeriodo";
+const PDF_GAMA = "PDFInformar";
+const PDF_NOME = 0;
+const PDF_AREA = 1;
+const PDF_LOCAL = 2;
+const PDF_TAREFA = 3;
+const obterPdfPlanilha = () 	=> obterGoogleSheet().getSheetByName(PDF_PLANILHA);
+const obterPdfInformar = () 	=> obterGoogleSheet().getRangeByName(PDF_GAMA);
+const obterPdfInformarVals = () => obterPdfInformar() !== null ? obterPdfInformar().getValues() : [];
+const obterPdfData = () 		=> obterGoogleSheet().getRangeByName(PDF_DATA);
+const obterPdfDataVals = ()		=> obterPdfData() !== null ? obterPdfInformar.getValues() : [];
+const obterPdfPeriodo = () 		=> obterGoogleSheet().getRangeByName(PDF_PERIODO);
+const obterPdfPeriodoVals = () 	=> obterPdfPeriodo() !== null ? obterPdfPeriodo.getValues() : [];
 
 // ****************************************************************************
 // copiarGamaValsParaPlanilha - Limpe o intervalo com o mesmo noje da planilha 

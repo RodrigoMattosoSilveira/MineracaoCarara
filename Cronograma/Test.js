@@ -1,5 +1,21 @@
+const sorAtivosMaisAntigoTeste = () => {
+	let ativosGama = obterAtivosGamaVals();
+	ativosGama = [...addicioneOrdermAoCronograma(ativosGama)];
 
-function cronogramaModelarProsseguirTeste() {
+	let expectedArray = JSON.stringify(ativosGama);
+	let resultArray = JSON.stringify(sortAtivosMaisAntigo(ativosGama));
+	expectedArray.localeCompare(resultArray) === 0 ? 
+		console.info(" ✔︎ sorAativosMaisAntigoTeste") :
+		console.error(" ✖︎  sorAativosMaisAntigoTeste")
+
+	ativosGamaReversed = [...ativosGama].reverse();
+	resultArray = JSON.stringify(sortAtivosMaisAntigo(ativosGama));
+	expectedArray.localeCompare(resultArray) === 0 ? 
+		console.info(" ✔︎ sorAativosMaisAntigoTeste") :
+		console.error(" ✖︎  sorAativosMaisAntigoTeste")
+}
+
+const cronogramaModelarProsseguirTeste = () => {
   cronogramaModelarProsseguir("Planejar");
 }
 const gamaPublicadosTemChaveDataPeriodoTeste = () => {

@@ -12,6 +12,8 @@ function cronogramaPlanejar() {
 	let ativosGamaVals = [];
 	let ativosGamaRegistro = [];
 
+	SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Planejar');
+
 	// SpreadsheetApp.getUi().alert('Selected cronogramaPlanejar menu!');
 
 	// Construa uma matriz com os datas/peridos na planilha Cronograma!Ativos
@@ -96,3 +98,4 @@ function cronogramaPlanejar() {
 	console.info(menssagem);
 	SpreadsheetApp.getUi().alert(menssagem);
 }
+
