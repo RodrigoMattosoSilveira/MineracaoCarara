@@ -170,3 +170,9 @@ const sortAtivosMaisAntigo = (informarAtivosGamaVals) => {
 	});
     return informarAtivosGamaVals
 }
+const sum = (a, b) => a + b;
+const subtract = (a, b) => a - b;
+if (typeof module !== 'undefined') module.exports = {
+    sum,
+    subtract
+}
