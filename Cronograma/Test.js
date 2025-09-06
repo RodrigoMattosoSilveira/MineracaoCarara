@@ -1,3 +1,30 @@
+const sorAtivosMaisAntigoTeste = () => {
+	let ativosGama = obterAtivosGamaVals();
+	ativosGama = [...addicioneOrdermAoCronograma(ativosGama)];
+
+	let expectedArray = JSON.stringify(ativosGama);
+	let resultArray = JSON.stringify(sortAtivosMaisAntigo(ativosGama));
+	expectedArray.localeCompare(resultArray) === 0 ? 
+		console.info(" ✔︎ sorAativosMaisAntigoTeste") :
+		console.error(" ✖︎  sorAativosMaisAntigoTeste")
+
+	ativosGamaReversed = [...ativosGama].reverse();
+	resultArray = JSON.stringify(sortAtivosMaisAntigo(ativosGama));
+	expectedArray.localeCompare(resultArray) === 0 ? 
+		console.info(" ✔︎ sorAativosMaisAntigoTeste") :
+		console.error(" ✖︎  sorAativosMaisAntigoTeste")
+}
+
+const cronogramaModelarProsseguirTeste = () => {
+  cronogramaModelarProsseguir("Planejar");
+}
+const gamaPublicadosTemChaveDataPeriodoTeste = () => {
+  let valido = gamaPublicadosTemChaveDataPeriodo('02/08/2025Diurno')
+	!valido ? 
+		console.info(" ✔︎ GamaPublicadosTemChaveDataPeriodoTeste, 02/08/2025Diurno") :
+		console.error(" ✖︎  GamaPublicadosTemChaveDataPeriodoTeste, 02/08/2025Diurno")
+}
+
 const numeroParaLetraTeste = () => {
   let letra = numeroParaLetra(PLANEJAR_ACAO + 1)
   let valido = letra.localeCompare('A') === 0 ? true : false;
@@ -30,10 +57,6 @@ const vLookupPersonalizadoTeste = () => {
 	valido ? 
 		console.info(" ✔︎ vLookupPersonalizado, chave 2") :
 		console.error(" ✖︎  vLookupPersonalizado")
-}
-
-function cronogramaModelarProsseguirTeste() {
-  cronogramaModelarProsseguir("Planejar");
 }
 
 function obterProximoCronogramaTeste(testData) {

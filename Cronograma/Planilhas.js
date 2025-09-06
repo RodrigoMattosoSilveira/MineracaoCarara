@@ -11,11 +11,24 @@ const obterPublicadosGama     = ()  =>	obterGoogleSheet().getRangeByName(PUBLICA
 											.sort([
 												// Column numbers adjusted for A1C1 notation
 												{column: PUBLICADOS_DATA_COL  + 1, ascending: false}, 
-												{column: PUBLICADOS_ORDEM_COL + 1, ascending: true}
+												{column: PUBLICADOS_ORDEM_COL + 1, ascending: false}
 	                                 		 ]);
-
 const obterPublicadosGamaVals = ()  =>  obterPublicadosGama().getValues()
-											.filter( elemento => elemento[PUBLICADOS_DATA_COL] !== '');
+											.filter( (elemento) => elemento[PUBLICADOS_DATA_COL] !== '' &&
+											          elemento[PUBLICADOS_DATA_COL] !== 'Data');
+const obterPublicadosDataPeriodoKeys = () => {
+	const keys = [];
+	let vals = obterPublicadosGamaVals();
+	vals.forEach(elemento => {
+		let key = '' + elemento[PUBLICADOS_DATA_COL] + elemento[PUBLICADOS_NOME_COL];
+		if (keys.indexOf(key) == -1) {
+			keys.push(key); 
+		}
+	});
+	return keys;
+}
+const gamaPublicadosTemChaveDataPeriodo = (chave) => obterPublicadosDataPeriodoKeys().indexOf(chave) !== -1 ? true : false;
+
 const ESTADIAS_PLANILHA = "Estadias";
 const ESTADIAS_GAMA = "Estadias";
 const ESTADIAS_NOME = 0;
@@ -30,7 +43,7 @@ const obterEstadiasPlanilha = () => obterGoogleSheet().getSheetByName(ESTADIAS_P
 const obterEstadiasGama = () => obterGoogleSheet().getRangeByName(ESTADIAS_GAMA);
 const obterEstadiasGamaVals = () => {
 	let  gama = obterEstadiasGama();
-	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[ESTADIAS_NOME] !== '') : [];
+	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[ESTADIAS_NOME] !== '' && elemento[ESTADIAS_NOME] !== 'Nome') : [];
 }
 
 const MODELOS_PLANILHA = "Modelos";
@@ -49,6 +62,17 @@ const obterModelosGama = () => obterGoogleSheet().getRangeByName(MODELOS_GAMA);
 const obterModelosGamaVals = () => {
 	let  gama = obterModelosGama();
 	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[MODELOS_NOME] !== '') : [];
+}
+const obterModelosNomeInicioKeys = () => {
+	const keys = [];
+	let vals = obterModelosGamaVals();
+	vals.forEach(elemento => {
+		let key = '' + elemento[MODELOS_NOME] + dateToString(elemento[MODELOS_INICIO]);
+		if (keys.indexOf(key) == -1) {
+			keys.push(key); 
+		}
+	});
+	return keys;
 }
 
 const PLANEJAR_PLANILHA = "Planejar";
@@ -87,6 +111,17 @@ const obterPlanejarDataPeriodoKeys = () => {
 	});
 	return keys;
 }
+const obterPlanejarNomeInicioKeys = () => {
+	const keys = [];
+	let vals = obterPlanejarGamaVals();
+	vals.forEach(elemento => {
+		let key = '' + elemento[PLANEJAR_NOME] + elemento[PLANEJAR_INICIO];
+		if (keys.indexOf(key) == -1) {
+			keys.push(key); 
+		}
+	});
+	return keys;
+}
 
 const ATIVOS_PLANILHA = "Ativos";
 const ATIVOS_GAMA = "Ativos";
@@ -101,11 +136,12 @@ const ATIVOS_LOCAL = 7;
 const ATIVOS_TAREFA = 8;
 const ATIVOS_REMUNERACAO = 9;
 const ATIVOS_COMENTARIOS = 10;
+const ATIVOS_ORDEM = 11;
 const obterAtivosPlanilha = () => obterGoogleSheet().getSheetByName(ATIVOS_PLANILHA);
 const obterAtivosGama = () => obterGoogleSheet().getRangeByName(ATIVOS_GAMA);
 const obterAtivosGamaVals = () => {
   let  gama = obterAtivosGama();
-  return  (gama !== null) ? gama.getValues().filter( elemento => elemento[ATIVOS_NOME] !== '') : [];
+  return  (gama !== null) ? gama.getValues().filter( elemento => elemento[ATIVOS_NOME] !== '' && elemento[ATIVOS_NOME] !== 'Nome') : [];
 }
 const obterAtivosKeys = () => {
 	const keys = [];
@@ -124,7 +160,6 @@ const PERIODOS_GAMA = "Periodos";
 const PERIODOS_NOME = 0;
 const PERIODOS_ORDEM = 1;
 const PERIODOS_INICIO = 2;
-
 const obterPeriodosPlanilha = () => obterGoogleSheet().getSheetByName(PERIODOS_PLANILHA);
 const obterPeriodosGama = () => obterGoogleSheet().getRangeByName(PERIODOS_GAMA);
 const obterPeriodosGamaVals = () => {
@@ -132,6 +167,27 @@ const obterPeriodosGamaVals = () => {
   return  (gama !== null) ? gama.getValues()
   								.filter( elemento => elemento[PERIODOS_NOME] !== '' && elemento[PERIODOS_NOME] !== 'Nome') : [];
 }
+
+const PDF_PLANILHA = "PDF";
+const PDF_DATA= "PDFData";
+const PDF_PERIODO= "PDFPeriodo";
+const PDF_GAMA = "PDFInformar";
+const PDF_EXPORTAR = "PDFExportar";
+const PDF_HEADER = "PDFHeader";
+const PDF_NOME = 0;
+const PDF_AREA = 1;
+const PDF_LOCAL = 2;
+const PDF_TAREFA = 3;
+const obterPdfPlanilha = () 	=> obterGoogleSheet().getSheetByName(PDF_PLANILHA);
+const obterPdfInformar = () 	=> obterGoogleSheet().getRangeByName(PDF_GAMA);
+const obterPdfInformarVals = () => obterPdfInformar() !== null ? obterPdfInformar().getValues() : [];
+const obterPdfData = () 		=> obterGoogleSheet().getRangeByName(PDF_DATA);
+const obterPdfDataVals = ()		=> obterPdfData() !== null ? obterPdfInformar.getValues() : [];
+const obterPdfPeriodo = () 		=> obterGoogleSheet().getRangeByName(PDF_PERIODO);
+const obterPdfPeriodoVals = () 	=> obterPdfPeriodo() !== null ? obterPdfPeriodo.getValues() : [];
+const obterPdfExportar = () 	=> obterGoogleSheet().getRangeByName(PDF_EXPORTAR);
+const obterPdfHeader = () 	    => obterGoogleSheet().getRangeByName(PDF_HEADER);
+
 
 // ****************************************************************************
 // copiarGamaValsParaPlanilha - Limpe o intervalo com o mesmo noje da planilha 

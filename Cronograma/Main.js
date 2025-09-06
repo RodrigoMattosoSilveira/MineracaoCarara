@@ -1,5 +1,3 @@
-
-
 // ****************************************************************************
 // Menu - This is a set of functions
 // ****************************************************************************
@@ -23,14 +21,14 @@ function onOpen(e) {
 // }
 
 //  Refinar of modelo
-function cronogramaPlanejar() {
-	SpreadsheetApp.getUi().alert('Selected cronogramaPlanejar menu!');
-}
+// function cronogramaPlanejar() {
+// 	SpreadsheetApp.getUi().alert('Selected cronogramaPlanejar menu!');
+// }
 
-// Informar os associados de suas responsabilidades;
-function cronogramaInformar() {
-	SpreadsheetApp.getUi().alert('Selected cronogramaInformar menu!');
-}
+// // Informar os associados de suas responsabilidades;
+// function cronogramaInformar() {
+// 	SpreadsheetApp.getUi().alert('Selected cronogramaInformar menu!');
+// }
 
 // Rever e atualizar o cronograma executado
 function cronogramaInspecionar() {

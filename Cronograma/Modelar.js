@@ -42,6 +42,7 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 		case 'Planejar':
 			let planejarGamaVals = [];
 			let planejarGamaRegistro = [];
+			let planejarNomeInicioKeys = [];
 
 			// Construir a planilha Cronograma!Planejar, incluindo todos os 
 			// registros ativos da planilha Cronograma!Estadia, 
@@ -63,24 +64,33 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			// Construa uma matriz de todos os associados na planilha 
 			// Cronograma!Modelos cujo atributo de período corresponde ao 
 			// período que está sendo planejado
-			const modeloGamaObjKeys = [];
-			let modeloGamaVals = obterModelosGamaVals();
-			modeloGamaVals.forEach(elemento => {
-				if (elemento[MODELOS_PERIODO === periodo]) {
-					let key = '' + elemento[MODELOS_NOME] + dateToString(elemento[MODELOS_INICIO]);
-					modeloGamaObjKeys.push(key);
-				}
+			const modelosGamaVals = obterModelosGamaVals().filter( elemento => elemento[MODELOS_PERIODO] === periodo);
+			modelosGamaVals.forEach(elemento => {
+				planejarGamaRegistro = [...[]];
+				planejarGamaRegistro.push("Incluir")
+				planejarGamaRegistro.push(dataStr)
+				planejarGamaRegistro.push(periodo)
+				planejarGamaRegistro.push(elemento[MODELOS_NOME]);
+				planejarGamaRegistro.push(elemento[MODELOS_INICIO]);
+				planejarGamaRegistro.push(elemento[MODELOS_METODO]);
+				planejarGamaRegistro.push(elemento[MODELOS_AREA]);
+				planejarGamaRegistro.push(elemento[MODELOS_LOCAL]);
+				planejarGamaRegistro.push(elemento[MODELOS_TAREFA]);
+				planejarGamaRegistro.push(elemento[MODELOS_REMUNERACAO]);
+				planejarGamaRegistro.push(elemento[MODELOS_COMENTARIOS]);
+				planejarGamaVals.push([...planejarGamaRegistro]);
+
+				planejarNomeInicioKeys.push(elemento[MODELOS_NOME] + dateToString(elemento[ESTADIAS_INICIO]));
+
 			});
 
 			let estadiasGamaVals = obterEstadiasGamaVals();
 			estadiasGamaVals.forEach(elemento => {
-				if (elemento[ESTADIAS_NOME] != '') {
-					planejarGamaRegistro = [...[]];
+				planejarGamaRegistro = [...[]];
 
-					key = '' + elemento[ESTADIAS_NOME] + dateToString(elemento[ESTADIAS_INICIO]);
-					let acao = modeloGamaObjKeys.indexOf(key) == -1 ? "Incluir" : "Excluir"
-
-					planejarGamaRegistro.push(acao)
+				key = '' + elemento[ESTADIAS_NOME] + dateToString(elemento[MODELOS_INICIO]);
+				if (planejarNomeInicioKeys.indexOf(key) === -1) {
+					planejarGamaRegistro.push("Excluir")
 					planejarGamaRegistro.push(dataStr)
 					planejarGamaRegistro.push(periodo)
 					planejarGamaRegistro.push(elemento[ESTADIAS_NOME]);
@@ -91,25 +101,26 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 					planejarGamaRegistro.push(elemento[ESTADIAS_TAREFA]);
 					planejarGamaRegistro.push(elemento[ESTADIAS_REMUNERACAO]);
 					planejarGamaRegistro.push(elemento[ESTADIAS_COMENTARIOS]);
-					planejarGamaVals.push([...planejarGamaRegistro]);	
-				}
+					planejarGamaVals.push([...planejarGamaRegistro]);				
+					}
 			});
 
 			// Copiar os registros formatados para a planilha Planejar
-			// copiarGamaValsParaPlanilhaVelho(PLANEJAR_PLANILHA, PLANEJAR_GAMA, planejarGamaVals)
 			copiarGamaValsParaPlanilha(obterPlanejarPlanilha(), planejarGamaVals)
+
+			// Estabelecer validação de colunas de suas células ativas
 			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_ACAO+1, PLANEJAR_ACOES_VALIDAS);
 			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_METODO+1, PLANEJAR_METODOS_VALIDOS);
 			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_AREA+1, PLANEJAR_AREAS_VALIDAS);
 			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_LOCAL+1, PLANEJAR_LOCAIS_VALIDOS);
 			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_TAREFA+1, PLANEJAR_TAREFAS_VALIDAS);
 
-
 			// Ativar a planilha Planejar
 			CararaLibrary.activateSheet("Planejar");
 
 			// Informar ao usuário que o sistema concluiu a operação 
-			resultado = "Povoou a planilha Planajar com os registros do mais recente cronograma do mesmo período"
+			resultado = "Povoou a planilha Planejar com os registros do mais recente cronograma do mesmo período"
+			resultado += '\n';
 			menssagem = construirProsseguirMenssagem(resultado, data, periodo, ordem) 
 			console.info(menssagem);
 			SpreadsheetApp.getUi().alert(menssagem);
