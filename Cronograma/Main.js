@@ -1,0 +1,225 @@
+// ****************************************************************************
+// Menu - This is a set of functions
+// ****************************************************************************
+// 
+function onOpen(e) {
+  var ui = SpreadsheetApp.getUi();
+
+  // Or DocumentApp, SlidesApp or FormApp.
+	ui.createMenu('Cronograma')
+		.addItem('Modelar', 'cronogramaModelar')
+		.addItem('Planejar', 'cronogramaPlanejar')
+		.addItem('Informar', 'cronogramaInformar')
+		.addItem('Inspecionar', 'cronogramaInspecionar')
+		.addItem('Registrar', 'cronogramaRegistrar')
+		.addItem('Atualizar', 'cronogramaAtualizar')
+	.addToUi();
+}
+//  Usar um cronograma recente, um modelo, para agilizar o planejamento;
+// function cronogramaModelar() {
+// 	See Modelar.js
+// }
+
+//  Refinar of modelo
+// function cronogramaPlanejar() {
+// 	SpreadsheetApp.getUi().alert('Selected cronogramaPlanejar menu!');
+// }
+
+// // Informar os associados de suas responsabilidades;
+// function cronogramaInformar() {
+// 	SpreadsheetApp.getUi().alert('Selected cronogramaInformar menu!');
+// }
+
+// Rever e atualizar o cronograma executado
+function cronogramaInspecionar() {
+	SpreadsheetApp.getUi().alert('Selected cronogramaInspecionar menu!');
+}
+
+// Lançar a rendas auferidas nas contas correntes;
+function cronogramaRegistrar() {
+	SpreadsheetApp.getUi().alert('Selected cronogramaRegistrar menu!');
+}
+
+// Lançar rendas pendentes nas contas correntes;
+function cronogramaAtualizar() {
+	SpreadsheetApp.getUi().alert('Selected cronogramaAtualizar menu!');
+}
+
+
+
+// ****************************************************************************
+// selecionarModelo - O planejador usa um menu suspenso para acionar a lógica 
+// para selecionar registros de Cronograma que correspondam ao tipo fornecido e
+// sejam os mais recentes, colocando-os na planilha Planejar
+// 
+// Input
+// 		tipo <<String>
+// Output
+// 		Planejar (Sheet), A planilha Planejar, constituida de um subconjunto de 
+// 		registros da planilha Cronograma que são os mais recentes do tipo 
+// 		fornecido.  O atributo Estado de cada registro e definido como 
+// 		EmPlanejamento; o atributo ContaCorrent de cada registro e definido 
+// 		como Pendente
+// ****************************************************************************
+// 
+function selecionarModelo(tipo) {
+	let planejar = []
+	return planejar
+}
+
+// ****************************************************************************
+// refinarCronograma - O Planejador adiciona, edita, e remove registros na 
+// planilha Planejar manualmente; ele usa um menu suspenso para acionar logica
+// para addicionar os registros da planilha Planejar na planilha Cronograma, 
+// atualizados com o atributo Estad desses registros definido como Planejado 
+// 
+// Input
+// 		Planejar (Sheet), A planilha Planejar, constituida de um subconjunto de 
+// 		registros da planilha Cronograma que são os mais recentes do tipo 
+// 		fornecido
+// Output
+// 		Cronograma (Sheet), A planilha Cronograma atualizada com os registros da
+// 		Planilha Planejar com o atributo Estado desses registros definido como 
+// 		Planejado
+// ****************************************************************************
+//
+function refinarCronograma(Planejar) {
+
+}
+// ****************************************************************************
+// informarAssociados - O Planejador aciona a lógica para exibir uma caixa de 
+// diálogo com a data e o tipo dos cronogramas com o Estado Planejado. O 
+// planejador escolhe of Cronograma a ser publicado and aciona a lógica para
+// copiar esses registros para a planilha Informar. O sistema atualiza os 
+// os Estado dos registros selecionados na planilha Cronograma selecionado para
+// EmExecucao.
+// 
+// So pode haver um Cronograma em execucao
+// 
+// Input
+// 		Cronograma (Sheet), A planilha Planejar, constituida de um subconjunto
+// 		de registros da planilha Cronograma que são os mais recentes do tipo 
+// 		fornecido
+// Output
+// 		Informar (Sheet), A planilha usada para imprimir o Cronograma, 
+// 		atualizada e formatada com os registros do Cronograma a ser executado
+// 
+// 		Cronograma (Sheet), A planilha Cronograma, com os registros selecionados
+//  	para publicao e execucao atualizados com o atributo Estado definido como 
+// 		EmExecucao
+// ****************************************************************************
+//
+function informarAssociados(Planejar) {
+
+}
+// ****************************************************************************
+// completarCronograma - O Planejador aciona a lógica para encerrar o 
+// Cronograma definido como o subconjunto de registros com Estado definido como 
+// EmExecucao. 
+// 
+// So pode haver um Cronograma em execucao
+// 
+// Input
+// 		Cronograma (Sheet), A planilha Cronograma
+// Output
+// 		Cronograma (Sheet), A planilha Cronograma, com os registros com Estado
+// 		definido como EmExecucao, modificados para Executado
+// ****************************************************************************
+//
+function completarCronograma(Planejar) {
+
+}
+
+// ****************************************************************************
+// atualizarContasCorrentes - O Planejador aciona a lógica para lancar as 
+// transacoes de rendas de contas correntes auferidas por trabalhos em 
+// Cronogramas com os atributos Estado e ContaCorrente iguais a Executado e 
+// Pendente repectivamente, usando a seguinte logica. Para cada Associado,'
+// considere seu metodo de pagamento:
+// - Diaria / Salario
+// 		- Lancar a renda auferida pelo Associado em sua Conta Corrente
+// 		- Atualizar o atributo ContasCorrente do Assocido no Cronograma como 
+// 		  Lancado
+// - Comissao
+// 		- Se a producao do poco para o dia que trabalhou existe:
+// 		- Lancar a renda auferida pelo Associado emd sua Conta Corrente
+// 		- Atualizar o atributo ContasCorrente do Assocido no Cronograma como 
+// 		  Lancado
+// Input
+// 		Cronograma (Sheet), A planilha Cronograma
+// Output
+// 		Cronograma (Sheet), A planilha Cronograma, com os registros para os
+// 		quais foram criadas transacos in Contas Correntes, atualizados para
+// 		Lancado
+// 
+// 		Contas Correntes (Sheet), A planilha Contas Correntes, ,atualiza com as 
+// 		Transcoes do de pagamento efetuadas pelo trabalho executado de acordo
+// 		com o Cronograma
+// ****************************************************************************
+//
+function atualizarContasCorrentes(Planejar) {
+
+}
+
+// ****************************************************************************
+// publicarCronograma - O sistema executa essa lógica depois que o usuário opta 
+// por ignorar o planejamento do cronograma para essa data e período
+// Input
+// 		data (Date), A data a ser ignorada
+// 		periodo (Date), O periodo a ser ignorado
+// 		pordem (Date), A ordem a ser ignorada
+// Output
+// 		true, no caso de uma inserção bem-sucedida da data e do período 
+// 		ignorados na planilha Publicados; false otherwise
+// ****************************************************************************
+//
+function publicarCronograma(data, periodo, ordem)  {
+	let dataStr = dateToString(data);
+	let cronograma = [[dataStr, periodo, ordem]];
+
+	// Insira esse cronograma na planilha Publicados
+	let planilhaPublicados = obterPlanilhaPublicados()
+	let lastRow = planilhaPublicados.getLastRow();
+	planilhaPublicados.getRange(lastRow + 1, 1, cronograma.length, cronograma[0].length).setValues(cronograma)
+}
+// ****************************************************************************
+// dateToString - Converter um dado lido de uma planilha na célula em uma 
+// string
+// 
+// Input
+// 		data (Date), A data a ser convertida
+// Output
+// 		dataStr (String), a data convertida; false otherwise
+// ****************************************************************************
+//
+function dateToString(data) {
+	let dataObj = new Date(data);
+	let dataStr = '';
+
+	// Month
+	if ((dataObj.getMonth() + 1) < 10) {
+		dataStr += "0";
+	}
+	dataStr += dataObj.getMonth() + 1;
+	dataStr += '/';
+	// Day
+	if (dataObj.getDate() < 10) {
+		dataStr += "0";
+	}
+	dataStr += dataObj.getDate();
+	dataStr += '/';
+	// Year
+	dataStr += dataObj.getFullYear();
+
+	return dataStr;
+}
+// ****************************************************************************
+// numeroParaLetra - Converter um numero para a letra maiuscula equivalente
+// 
+// Input
+// 		num (int), A numero a ser convertido
+// Output
+// 		letra (String), a letra; null caso contrario
+// ****************************************************************************
+//
+const numeroParaLetra = (num) => (num < 1 || num > 26) ? null : String.fromCharCode(num + 64);

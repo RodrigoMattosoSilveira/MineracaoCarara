@@ -24,9 +24,11 @@ const contasCorrentesTotalRealCol         = 10; // Real
 const contasCorrentesTotalOuroCol         = 11; // Gramas de ouro
 const contasCorrentesComentariosCol       = 12;
 
+const contasCorentesSemaphorRange         = contasCorrentesSheet.getRangeByName("ContasCorrentesSemaforo")
+
 function meuOnEditGatilho(e) {
   // Vire o Semaforo para Vermelho
-  contasCorrentesSheet.getRangeByName("ContasCorrentesSemaforo").setBackground("#FF0000");
+  contasCorentesSemaphorRange.setBackground("#FF0000");
 
   contasCorrentesSheet.getRangeByName(contasCorrentesCreditoReal).setValues([[0]]);
   contasCorrentesSheet.getRangeByName(contasCorrentesCreditoOuro).setValues([[0]]);
@@ -61,7 +63,7 @@ function meuOnEditGatilho(e) {
   ccSetEstadiaFormatCondition ('ContasCorrentes', turnoHojeDiaDataRange);
 
   // Vire o Semaforo para Verde
-  contasCorrentesSheet.getRangeByName("ContasCorrentesSemaforo").setBackground("#00FF00");
+  contasCorentesSemaphorRange.setBackground("#00FF00");
 
 }
 
