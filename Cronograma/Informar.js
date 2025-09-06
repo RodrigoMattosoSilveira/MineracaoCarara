@@ -32,24 +32,23 @@ function cronogramaInformar() {
     pdfInformar.offset(0, 0, pdfInformar.getLastRow(),  pdfInformar.getLastColumn()).setBorder(false, false, false, false, false, false);
     pdfInformar.offset(0, 0, informarRegistros.length, informarRegistros[0].length).setValues(informarRegistros);
     pdfInformar.offset(0, 0, informarRegistros.length, informarRegistros[0].length).setBorder(true, true, true, true, true, true);
+
+    let pdfExportar = obterPdfExportar();
+    let pdfHeaderHeight = obterPdfHeader().getNumRows();
+    let r1 = pdfInformar.getRow()
+    let r2 = r1 + informarRegistros.length - 1;
+    let c1 = pdfExportar.getColumn();
+    let c2 = pdfExportar.getLastColumn();
+    exportRangeAsPDF(r1, r2, c1, c2);
     return true
 }
 
-const apresentarDialogoPDF = (proximoCronogramaCandidato) =>  {
-    putData(proximoCronogramaCandidato[0]);
-    putPeriodo(proximoCronogramaCandidato[1]);
-
-    const html = HtmlService.createHtmlOutputFromFile('DialogoPdf') 
-        .setWidth(360)
-        .setHeight(240);
-    SpreadsheetApp.getUi().showModalDialog(html, 'Modelar');
-}
-
-const exportRangeAsPDF = () => {
+const exportRangeAsPDF = (r1, r2, c1, c2) => {
     let sheet = obterPdfPlanilha(); 
     let lastRow = sheet.getLastRow();
     let sheetId = sheet.getSheetId();
     let url = SpreadsheetApp.getActiveSpreadsheet().getUrl();
+    // let url = 'https://docs.google.com/spreadsheets/d/'+SpreadsheetApp.getActiveSpreadsheet().getId()+'/export?';
     url = url.replace(/edit$/, '') + 'export?' +
         // 'format=pdf' +
         // '&portrait=true' +
@@ -67,19 +66,20 @@ const exportRangeAsPDF = () => {
         '&title=false' +
         '&gridlines=false' +
         '&pagenum=CENTER' +
-        '&fzr=true' +
-        '&fzc=false' +
-        '&r1=1' +
-        '&r2=' + lastrow+1 +
-        '&c1=4' +
-        '&c2=8' +
+        '&r1=' + 1 +
+        '&r2=' + r2 +
+        '&c1=' + c1 +
+        '&c2=' + c2 +
         '&left_margin=0.5' +
         '&right_margin=0.5' +
-        '&top_margin=0.' +
+        '&top_margin=.5' +
         '&bottom_margin=0.5'
     let blob = getFileAsBlob(url);
-    Logger.log("Content type: " + blob.getContentType());
-    Logger.log("File size in MB: " + blob.getBytes().length / 1000000);
+    // Logger.log("Content type: " + blob.getContentType());
+    // Logger.log("File size in MB: " + blob.getBytes().length / 1000000);
+    let blobName = 'Cronograma - ' + dateToString(obterPdfData().getValue()) + ' - ' + obterPdfPeriodo().getValue() + '.pdf';
+    blob.setName(blobName);
+    DriveApp.getFolderById('1dNBIZ0NG9bsEad9vd-QgbxmLQZ5rPgJc').createFile(blob);
 }
 
 const getFileAsBlob = (exportUrl) => {
