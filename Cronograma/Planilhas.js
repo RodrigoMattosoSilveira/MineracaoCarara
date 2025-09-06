@@ -137,6 +137,10 @@ const ATIVOS_TAREFA = 8;
 const ATIVOS_REMUNERACAO = 9;
 const ATIVOS_COMENTARIOS = 10;
 const ATIVOS_ORDEM = 11;
+const ATIVOS_METODOS_VALIDOS = "MetodosValidos"
+const ATIVOS_AREAS_VALIDAS = "AreasValidas"
+const ATIVOS_LOCAIS_VALIDOS = "LocaisValidos"
+const ATIVOS_TAREFAS_VALIDAS = "TarefasValidas"
 const obterAtivosPlanilha = () => obterGoogleSheet().getSheetByName(ATIVOS_PLANILHA);
 const obterAtivosGama = () => obterGoogleSheet().getRangeByName(ATIVOS_GAMA);
 const obterAtivosGamaVals = () => {

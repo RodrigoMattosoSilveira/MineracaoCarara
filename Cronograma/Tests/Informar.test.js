@@ -1,5 +1,5 @@
 if (typeof require !== 'undefined') {
-	const Informar = require('./Informar')
+	const Informar = require('../Informar')
 	test('adds 1 + 2 to equal 3', () => {
   		expect(Informar.sum(1, 2)).toBe(3);
 	});
