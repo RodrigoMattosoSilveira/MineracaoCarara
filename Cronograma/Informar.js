@@ -1,17 +1,17 @@
 // Informar os associados de suas responsabilidades;
 function cronogramaInformar() {
-    SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Informar');
+    SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Informar', 1);
 
     // Navegue para a planilha PDF
     CararaLibrary.activateSheet(PDF_PLANILHA);
 
     // Recuperar o cronograma ATIVADO mais ANTIGO. 
-    let cronogramaAtivatoMaisAntigo = [...addicioneOrdermAoCronograma( obterAtivosGamaVals())];
-    cronogramaAtivatoMaisAntigo = [...sortAtivosMaisAntigo(cronogramaAtivatoMaisAntigo)];
-    let dataControle = dateToString(cronogramaAtivatoMaisAntigo[0][ATIVOS_DATA]);
-    let periodoControle = cronogramaAtivatoMaisAntigo[0][ATIVOS_PERIODO];
+    let cronogramaAtivatoMaisAntigoVals = [...addicioneOrdermAoCronograma( obterAtivosGamaVals())];
+    cronogramaAtivatoMaisAntigoVals = [...sortAtivosMaisAntigo(cronogramaAtivatoMaisAntigoVals)];
+    let dataControle = dateToString(cronogramaAtivatoMaisAntigoVals[0][ATIVOS_DATA]);
+    let periodoControle = cronogramaAtivatoMaisAntigoVals[0][ATIVOS_PERIODO];
     let chaveControle = dataControle + periodoControle;
-    let ativosInformar = cronogramaAtivatoMaisAntigo.filter(elemento => chaveControle === (dateToString(elemento[ATIVOS_DATA]) + elemento[ATIVOS_PERIODO]));
+    let ativosInformar = cronogramaAtivatoMaisAntigoVals.filter(elemento => chaveControle === (dateToString(elemento[ATIVOS_DATA]) + elemento[ATIVOS_PERIODO]));
 
     let pdfInformar = obterPdfInformar();
     pdfInformar.clearContent();
@@ -40,6 +40,15 @@ function cronogramaInformar() {
     let c1 = pdfExportar.getColumn();
     let c2 = pdfExportar.getLastColumn();
     exportRangeAsPDF(r1, r2, c1, c2);
+
+    let ativosGama = obterAtivosGama();
+    let ativosGamaVals = obterAtivosGamaVals();
+    ativosGamaVals.forEach( (elemento, index) => {
+        if (chaveControle === (dateToString(elemento[ATIVOS_DATA]) + elemento[ATIVOS_PERIODO])) {
+            ativosGama.offset(index, ATIVOS_ESTADO, 1, 1).setValue('Inspecionar');
+        }
+    }); 
+    SpreadsheetApp.getActiveSpreadsheet().toast('Fim', 'Informar', 1);
     return true
 }
 
