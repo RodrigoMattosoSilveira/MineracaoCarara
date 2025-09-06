@@ -86,3 +86,38 @@ function removeHeaderAndBlankRows(rangeName, header, column) {
 
   return filteredData;
 }
+// ****************************************************************************
+// dateToString - Converter um dado lido de uma planilha na célula em uma 
+// string
+// 
+// Input
+// 		data (Date), A data a ser convertida
+// Output
+// 		dataStr (String), a data convertida; false otherwise
+// ****************************************************************************
+//
+const dateToString = (data) => {
+	let dataObj = new Date(data);
+	let dataStr = '';
+
+	// Month
+	if ((dataObj.getMonth() + 1) < 10) {
+		dataStr += "0";
+	}
+	dataStr += dataObj.getMonth() + 1;
+	dataStr += '/';
+	// Day
+	if (dataObj.getDate() < 10) {
+		dataStr += "0";
+	}
+	dataStr += dataObj.getDate();
+	dataStr += '/';
+	// Year
+	dataStr += dataObj.getFullYear();
+
+	return dataStr;
+}
+
+if (typeof module !== 'undefined') module.exports = {
+    dateToString,
+}
