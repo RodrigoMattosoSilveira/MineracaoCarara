@@ -172,6 +172,8 @@ const PDF_PLANILHA = "PDF";
 const PDF_DATA= "PDFData";
 const PDF_PERIODO= "PDFPeriodo";
 const PDF_GAMA = "PDFInformar";
+const PDF_EXPORTAR = "PDFExportar";
+const PDF_HEADER = "PDFHeader";
 const PDF_NOME = 0;
 const PDF_AREA = 1;
 const PDF_LOCAL = 2;
@@ -183,6 +185,9 @@ const obterPdfData = () 		=> obterGoogleSheet().getRangeByName(PDF_DATA);
 const obterPdfDataVals = ()		=> obterPdfData() !== null ? obterPdfInformar.getValues() : [];
 const obterPdfPeriodo = () 		=> obterGoogleSheet().getRangeByName(PDF_PERIODO);
 const obterPdfPeriodoVals = () 	=> obterPdfPeriodo() !== null ? obterPdfPeriodo.getValues() : [];
+const obterPdfExportar = () 	=> obterGoogleSheet().getRangeByName(PDF_EXPORTAR);
+const obterPdfHeader = () 	    => obterGoogleSheet().getRangeByName(PDF_HEADER);
+
 
 // ****************************************************************************
 // copiarGamaValsParaPlanilha - Limpe o intervalo com o mesmo noje da planilha 
