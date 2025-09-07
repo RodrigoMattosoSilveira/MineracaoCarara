@@ -96,7 +96,7 @@ function removeHeaderAndBlankRows(rangeName, header, column) {
 // 		dataStr (String), a data convertida; false otherwise
 // ****************************************************************************
 //
-const dateToString = (data) => {
+function dateToString(data) {
 	let dataObj = new Date(data);
 	let dataStr = '';
 
