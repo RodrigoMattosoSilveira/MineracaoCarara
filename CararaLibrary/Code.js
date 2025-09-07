@@ -87,13 +87,10 @@ function removeHeaderAndBlankRows(rangeName, header, column) {
   return filteredData;
 }
 // ****************************************************************************
-// dateToString - Converter um dado lido de uma planilha na célula em uma 
-// string
+// Converter um dado lido de uma planilha na célula em uma cadeia the caracters
 // 
-// Input
-// 		data (Date), A data a ser convertida
-// Output
-// 		dataStr (String), a data convertida; false otherwise
+// @parm {string} data - Uma cadeia the caracters representando uma data
+// @return {Date|null} - A data convertida; false otherwise
 // ****************************************************************************
 //
 function dateToString(data) {
@@ -118,6 +115,17 @@ function dateToString(data) {
 	return dataStr;
 }
 
+// ****************************************************************************
+// Converter um numero para a letra maiuscula equivalente
+// 
+// @parm {number} num - A numero a ser convertido
+// @return {string|null} - a letra
+// ****************************************************************************
+//
+const numeroParaLetra = (num) => (num < 1 || num > 26) ? null : String.fromCharCode(num + 64);
+
+
 if (typeof module !== 'undefined') module.exports = {
     dateToString,
+    numeroParaLetra,
 }
