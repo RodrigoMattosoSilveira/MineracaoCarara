@@ -21,8 +21,20 @@ function obterProducaoPoco (pocoNome, data) {
 	let pocoDataVals = pocoGamaVals.filter( elemento => CararaLibrary.dateToString(elemento[PRODUCAO_DATA]) === dataStr);
 	return (pocoDataVals.length > 0) ? pocoDataVals[0] : null;
 } 
-if (typeof module !== 'undefined') module.exports = {
-    obterProducaoPocos: obterProducaoPocosNomes,
-	validarPlanilhaTemPoco: validarProducaoPlanilhaTemPoco,
-	obterProducaoPoco
+function obterProducaoPocos (data) {
+	let pocos = obterProducaoPocosNomes();
+	let pocosDataVals = {};
+	for (let i = 0; i < pocos.length; i++) {
+		let pocoNome = pocos[i];
+		let pocoDataVals = obterProducaoPoco(pocoNome, data);
+		if (pocoDataVals !== null && pocoDataVals[PRODUCAO_QTD] !== '') {
+			pocosDataVals[pocoNome] = pocoDataVals[PRODUCAO_QTD];
+		}
+	}
+	return pocosDataVals;
 }
+if (typeof module !== 'undefined') module.exports = {
+    obterProducaoPocosNomes,
+	validarProducaoPlanilhaTemPoco,
+	obterProducaoPoco,
+};
