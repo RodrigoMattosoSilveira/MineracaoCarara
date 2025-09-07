@@ -1,7 +1,7 @@
 const EPSILON = 0.00001;
 const obterProducaoPocosTestes = () => {
   let dataProcurada = '9/5/2025'
-	let producao = obterProducaoPocos("9/5/2025");
+	let producao = obterProducaoPocos(dataProcurada);
 	let producaoKeys = Object.keys(producao);
 	producaoKeys.length === 2 ?
 		console.info(" ✔︎ obterProducaoPocos, " + dataProcurada + " length === 2") :
@@ -13,24 +13,31 @@ const obterProducaoPocosTestes = () => {
 		console.info(" ✔︎ obterProducaoPocos, Poço_2" + dataProcurada + " 7.98903561473896") :
 		console.error(" ✖︎  obterProducaoPocos, Poço_2 " + dataProcurada + " 7.98903561473896")	
 
-  dataProcurada = '1/1/2025'
-  producao = obterProducaoPocos("1/1/2025");
+    dataProcurada = '1/1/2025'
+    producao = obterProducaoPocos(dataProcurada);
 	producaoKeys = Object.keys(producao);
 	producaoKeys.length === 1 ?
 		console.info(" ✔︎ obterProducaoPocos, " + dataProcurada + " length === 1") :
 		console.error(" ✖︎  obterProducaoPocos, " + dataProcurada + " length === 1");
-  producaoKeys.indexOf("Poço_1") !== -1 ?
-  	console.info(" ✔︎ obterProducaoPocosTeste, Poço_1 " + dataProcurada + " presente") :
+    producaoKeys.indexOf("Poço_1") !== -1 ?
+  	    console.info(" ✔︎ obterProducaoPocosTeste, Poço_1 " + dataProcurada + " presente") :
 		console.error(" ✖︎  obterProducaoPocosTeste, Poço_1 " + dataProcurada + " resente");
-  producaoKeys.indexOf("Poço_2") === -1 ?
-  	console.info(" ✔︎ obterProducaoPocosTeste, Poço_2 " + dataProcurada + " nao presente") :
+    producaoKeys.indexOf("Poço_2") === -1 ?
+  	    console.info(" ✔︎ obterProducaoPocosTeste, Poço_2 " + dataProcurada + " nao presente") :
 		console.error(" ✖︎  obterProducaoPocosTeste, Poço_2 " + dataProcurada + " nao presente");
 	Math.abs(producao["Poço_1"] - 19.6178864851321) < EPSILON ?
 		console.info(" ✔︎ obterProducaoPocos, Poço_1 " + dataProcurada + "  21.9534838229411") :
 		console.error(" ✖︎  obterProducaoPocos, Poço_1 " + dataProcurada + " 21.9534838229411")	
+
+    dataProcurada = '31/12/2024'
+    producao = obterProducaoPocos(dataProcurada);
+	producaoKeys = Object.keys(producao);
+	producaoKeys.length === 0 ?
+		console.info(" ✔︎ obterProducaoPocos, " + dataProcurada + " length === 0") :
+		console.error(" ✖︎  obterProducaoPocos, " + dataProcurada + " length === 0");
 }
 const obterProducaoPocoTeste = () => {
-  let pocoProducao = obterProducaoPoco("Poço_1", "9/6/2025");
+  let pocoProducao = Producao.obterProducaoPoco("Poço_1", "9/6/2025");
   Math.abs(pocoProducao[PRODUCAO_QTD] - 15.97807122947792) < EPSILON ?
    	console.info(" ✔︎ obterProducaoPoco, Poço_1 9/6/2025  15.97807122947792") :
 	console.error(" ✖︎  obterProducaoPoco, Poço_1 9/6/2025  15.97807122947792")
