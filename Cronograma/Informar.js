@@ -8,10 +8,10 @@ function cronogramaInformar() {
     // Recuperar o cronograma ATIVADO mais ANTIGO. 
     let cronogramaAtivatoMaisAntigoVals = [...addicioneOrdermAoCronograma( obterAtivosGamaVals())];
     cronogramaAtivatoMaisAntigoVals = [...sortAtivosMaisAntigo(cronogramaAtivatoMaisAntigoVals)];
-    let dataControle = dateToString(cronogramaAtivatoMaisAntigoVals[0][ATIVOS_DATA]);
+    let dataControle = CararaLibrary.dateToString(cronogramaAtivatoMaisAntigoVals[0][ATIVOS_DATA]);
     let periodoControle = cronogramaAtivatoMaisAntigoVals[0][ATIVOS_PERIODO];
     let chaveControle = dataControle + periodoControle;
-    let ativosInformar = cronogramaAtivatoMaisAntigoVals.filter(elemento => chaveControle === (dateToString(elemento[ATIVOS_DATA]) + elemento[ATIVOS_PERIODO]));
+    let ativosInformar = cronogramaAtivatoMaisAntigoVals.filter(elemento => chaveControle === ( CararaLibrary.dateToString(elemento[ATIVOS_DATA]) + elemento[ATIVOS_PERIODO]));
 
     let pdfInformar = obterPdfInformar();
     pdfInformar.clearContent();
@@ -44,7 +44,7 @@ function cronogramaInformar() {
     let ativosGama = obterAtivosGama();
     let ativosGamaVals = obterAtivosGamaVals();
     ativosGamaVals.forEach( (elemento, index) => {
-        if (chaveControle === (dateToString(elemento[ATIVOS_DATA]) + elemento[ATIVOS_PERIODO])) {
+        if (chaveControle === ( CararaLibrary.dateToString(elemento[ATIVOS_DATA]) + elemento[ATIVOS_PERIODO])) {
             ativosGama.offset(index, ATIVOS_ESTADO, 1, 1).setValue('Inspecionar');
         }
     }); 
@@ -86,7 +86,7 @@ const exportRangeAsPDF = (r1, r2, c1, c2) => {
     let blob = getFileAsBlob(url);
     // Logger.log("Content type: " + blob.getContentType());
     // Logger.log("File size in MB: " + blob.getBytes().length / 1000000);
-    let blobName = 'Cronograma - ' + dateToString(obterPdfData().getValue()) + ' - ' + obterPdfPeriodo().getValue() + '.pdf';
+    let blobName = 'Cronograma - ' +  CararaLibrary.dateToString(obterPdfData().getValue()) + ' - ' + obterPdfPeriodo().getValue() + '.pdf';
     blob.setName(blobName);
     DriveApp.getFolderById('1dNBIZ0NG9bsEad9vd-QgbxmLQZ5rPgJc').createFile(blob);
 }

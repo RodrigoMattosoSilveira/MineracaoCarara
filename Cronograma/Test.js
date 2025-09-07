@@ -77,7 +77,7 @@ const gamaPublicadosTemChaveDataPeriodoTeste = () => {
 }
 
 const numeroParaLetraTeste = () => {
-  let letra = numeroParaLetra(PLANEJAR_ACAO + 1)
+  let letra = CararaLibrary.numeroParaLetra(PLANEJAR_ACAO + 1)
   let valido = letra.localeCompare('A') === 0 ? true : false;
 	valido ? 
 		console.info(" ✔︎ numeroParaLetraTeste, A") :
