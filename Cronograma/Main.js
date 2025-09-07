@@ -30,10 +30,10 @@ function onOpen(e) {
 // 	SpreadsheetApp.getUi().alert('Selected cronogramaInformar menu!');
 // }
 
-// Rever e atualizar o cronograma executado
-function cronogramaInspecionar() {
-	SpreadsheetApp.getUi().alert('Selected cronogramaInspecionar menu!');
-}
+// // Rever e atualizar o cronograma executado
+// function cronogramaInspecionar() {
+// 	SpreadsheetApp.getUi().alert('Selected cronogramaInspecionar menu!');
+// }
 
 // Lançar a rendas auferidas nas contas correntes;
 function cronogramaRegistrar() {
