@@ -1,6 +1,6 @@
 // Informar os associados de suas responsabilidades;
 function cronogramaInformar() {
-    SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Informar', 1);
+    SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Informar', 3);
 
     // Navegue para a planilha PDF
     CararaLibrary.activateSheet(PDF_PLANILHA);
