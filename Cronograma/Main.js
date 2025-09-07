@@ -10,7 +10,7 @@ function onOpen(e) {
 		.addItem('Modelar', 'cronogramaModelar')
 		.addItem('Planejar', 'cronogramaPlanejar')
 		.addItem('Informar', 'cronogramaInformar')
-		.addItem('Inspecionar', 'cronogramaContabilizar')
+		.addItem('Contabilizar', 'cronogramaContabilizar')
 	.addToUi();
 }
 
