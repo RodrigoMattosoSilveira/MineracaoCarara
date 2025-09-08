@@ -143,7 +143,7 @@ const ATIVOS_LOCAIS_VALIDOS = "LocaisValidos"
 const ATIVOS_TAREFAS_VALIDAS = "TarefasValidas"
 const obterAtivosPlanilha = () => obterGoogleSheet().getSheetByName(ATIVOS_PLANILHA);
 const obterAtivosGama = () => obterGoogleSheet().getRangeByName(ATIVOS_GAMA);
-const obterAtivosGamaVals = () => {
+function obterAtivosGamaVals () {
   let  gama = obterAtivosGama();
   return  (gama !== null) ? gama.getValues().filter( elemento => elemento[ATIVOS_NOME] !== '' && elemento[ATIVOS_NOME] !== 'Nome') : [];
 }

@@ -61,14 +61,17 @@ function cronogramaContabilizar() {
 	// 
 	let contaCorrenteRegistro = [];
 	let contasCorrentesRangeDados = [];
+  let registrosContabilizados = [];
+  let registrosNaoContabilizados = [];
 	informarAtivosGamaVals.forEach( elemento => {
-	const datastr           = CararaLibrary.dateToString(elemento[ATIVOS_DATA]);
-	const poco              = elemento[ATIVOS_LOCAL];
+	  const datastr           = CararaLibrary.dateToString(elemento[ATIVOS_DATA]);
+	  const poco              = elemento[ATIVOS_LOCAL];
     const metodo            = elemento[ATIVOS_METODO];
     const area              = elemento[ATIVOS_AREA];
     const local             = elemento[ATIVOS_LOCAL];
     const tarefa            = elemento[ATIVOS_TAREFA];
-    var ignoreRegister = false;
+    const chave             = datastr + elemento[ATIVOS_PERIODO] + elemento[ATIVOS_NOME];
+    let contabilizeRegistro = true;
     if (metodo != "") {
       contaCorrenteRegistro = [];
       contaCorrenteRegistro[contasCorrentesDataCol]        = elemento[ATIVOS_DATA];
@@ -92,6 +95,7 @@ function cronogramaContabilizar() {
           contaCorrenteRegistro[contasCorrentesTotalRealCol] = elemento[ATIVOS_REMUNERACAO];
           // Credito / Debito em Gramas de Ouro
           contaCorrenteRegistro[contasCorrentesTotalOuroCol] = 0;
+          registrosContabilizados.push(elemento);
           break;
         case "Salário":
           // Moeda Real
@@ -113,6 +117,7 @@ function cronogramaContabilizar() {
           }
           // Credito / Debito em Gramas de Ouro
           contaCorrenteRegistro[contasCorrentesTotalOuroCol] = 0; 
+          registrosContabilizados.push(elemento);
           break;
         case "Porcentagem":
         case  "Meio_A_Meio":
@@ -129,29 +134,67 @@ function cronogramaContabilizar() {
             contaCorrenteRegistro[contasCorrentesTotalRealCol] = 0;
             // Credito / Debito em Gramas de Ouro
             contaCorrenteRegistro[contasCorrentesTotalOuroCol] = producaoDiaria[datastr][poco] * elemento[ATIVOS_REMUNERACAO];
+            registrosContabilizados.push(elemento);
+          }
+          else {
+            // Nao contabilizar esse registro ainda, pois a producao do poco 
+            // ainda nao foi registrada
+            elemento[ATIVOS_COMENTARIOS] = "Aguardando Produção do Poço";
+            registrosNaoContabilizados.push(chave);
+             contabilizeRegistro = false;
           }
           break;
         default:
           var message = ""
           message += "Metodo de pagamento invalido: " + metodo
           Logger.log(message);
-          ignoreRegister = true;
+          contabilizeRegistro = false;
           break;  
       }
-      if (!ignoreRegister) {
+      if (contabilizeRegistro) {
         contasCorrentesRangeDados.push(contaCorrenteRegistro) 
       }
     }
   })
-//   Logger.log("Contas Correntes");
-//   contasCorrentesRangeDados.forEach(function (registro) {
-//     Logger.log(registro)
-//   })
 
   // Append
   var contaCorrentesDados = contaCorrentesIDSS.getSheetByName("Dados");
   var lastRow = contaCorrentesDados.getLastRow();
   contaCorrentesDados.getRange(lastRow + 1, 1, contasCorrentesRangeDados.length, contasCorrentesRangeDados[0].length).setValues(contasCorrentesRangeDados)
+
+  // Remover os registros contabilizados da planilha Cronograma!Ativos
+  let newAtivosGamaVals = []    
+  let registrosContabilizadosChaves = registrosContabilizados.map( elemento => 
+    CararaLibrary.dateToString(elemento[ATIVOS_DATA]) + elemento[ATIVOS_PERIODO] + elemento[ATIVOS_NOME]
+  );
+  ativosGamaVals.forEach( registroAtivo => {
+    let chaveAtivo = CararaLibrary.dateToString(registroAtivo[ATIVOS_DATA]) + registroAtivo[ATIVOS_PERIODO] + registroAtivo[ATIVOS_NOME];
+    registrosContabilizadosChaves.indexOf(chaveAtivo) === -1 ? newAtivosGamaVals.push([...registroAtivo]) : null;
+  });
+  let ativosPlanilha = obterAtivosPlanilha();
+  obterAtivosGama().clear({contentsOnly:true, validationsOnly:true});
+  copiarGamaValsParaPlanilha(ativosPlanilha, newAtivosGamaVals);    
+	estabelederValidacaoDados(ativosPlanilha, ATIVOS_METODO+1, 	ATIVOS_METODOS_VALIDOS);
+	estabelederValidacaoDados(ativosPlanilha, ATIVOS_AREA+1, 	ATIVOS_AREAS_VALIDAS);
+	estabelederValidacaoDados(ativosPlanilha, ATIVOS_LOCAL+1, 	ATIVOS_LOCAIS_VALIDOS);
+	estabelederValidacaoDados(ativosPlanilha, ATIVOS_TAREFA+1, 	ATIVOS_TAREFAS_VALIDAS);
+  ativoGama = obterAtivosGama
+  ativoGama().setBackground('#ffffff');
+
+
+  // Destaque os resgisters que aguardam a produção do poço
+  ativosGamaVals = obterAtivosGamaVals();
+  let ativosSheet = obterAtivosPlanilha();
+  let ultimaAtivoCol = obterAtivosGama().getLastColumn();
+  registrosNaoContabilizados.forEach( chaveNaoContabilizada => {
+    for (let i = 0; i < ativosGamaVals.length; i++) {
+      let chaveAtivos = CararaLibrary.dateToString(ativosGamaVals[i][ATIVOS_DATA]) + ativosGamaVals[i][ATIVOS_PERIODO] + ativosGamaVals[i][ATIVOS_NOME];
+      if (chaveAtivos === chaveNaoContabilizada) { 
+        let row = ativosSheet.setActiveRange(ativosSheet.getRange(i + 2, 1, 1, ultimaAtivoCol));
+        row.setBackground('#fde9e9'); 
+      }
+    }
+  });
 
 	SpreadsheetApp.getActiveSpreadsheet().toast('O sistema contabilizou os ganhos dos associados', 'Contabilizar', 3);
 }
