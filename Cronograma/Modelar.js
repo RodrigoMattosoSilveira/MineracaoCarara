@@ -33,7 +33,7 @@ function cronogramaModelar() {
 const cronogramaModelarProsseguir = (acaoSelecionada) => {
 	// SpreadsheetApp.getUi().alert('Acao selecionada: ' + JSON.stringify(acaoSelecionada));
 	let data = getData();
-	let dataStr = dateToString(data);
+	let dataStr =  CararaLibrary.dateToString(data);
   	let periodo = getPeriodo()
 	let ordem = Math.trunc(getOrdem());
 	let menssagem = '';
@@ -80,7 +80,7 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 				planejarGamaRegistro.push(elemento[MODELOS_COMENTARIOS]);
 				planejarGamaVals.push([...planejarGamaRegistro]);
 
-				planejarNomeInicioKeys.push(elemento[MODELOS_NOME] + dateToString(elemento[ESTADIAS_INICIO]));
+				planejarNomeInicioKeys.push(elemento[MODELOS_NOME] +  CararaLibrary.dateToString(elemento[ESTADIAS_INICIO]));
 
 			});
 
@@ -88,7 +88,7 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			estadiasGamaVals.forEach(elemento => {
 				planejarGamaRegistro = [...[]];
 
-				key = '' + elemento[ESTADIAS_NOME] + dateToString(elemento[MODELOS_INICIO]);
+				key = '' + elemento[ESTADIAS_NOME] +  CararaLibrary.dateToString(elemento[MODELOS_INICIO]);
 				if (planejarNomeInicioKeys.indexOf(key) === -1) {
 					planejarGamaRegistro.push("Excluir")
 					planejarGamaRegistro.push(dataStr)
@@ -106,14 +106,15 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			});
 
 			// Copiar os registros formatados para a planilha Planejar
-			copiarGamaValsParaPlanilha(obterPlanejarPlanilha(), planejarGamaVals)
+			let planejarPlanilha = obterPlanejarPlanilha();
+			copiarGamaValsParaPlanilha(planejarPlanilha, planejarGamaVals)
 
 			// Estabelecer validação de colunas de suas células ativas
-			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_ACAO+1, PLANEJAR_ACOES_VALIDAS);
-			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_METODO+1, PLANEJAR_METODOS_VALIDOS);
-			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_AREA+1, PLANEJAR_AREAS_VALIDAS);
-			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_LOCAL+1, PLANEJAR_LOCAIS_VALIDOS);
-			estabelederValidacaoDados(obterPlanejarPlanilha(), PLANEJAR_TAREFA+1, PLANEJAR_TAREFAS_VALIDAS);
+			estabelederValidacaoDados(planejarPlanilha, PLANEJAR_ACAO+1,   PLANEJAR_ACOES_VALIDAS);
+			estabelederValidacaoDados(planejarPlanilha, PLANEJAR_METODO+1, PLANEJAR_METODOS_VALIDOS);
+			estabelederValidacaoDados(planejarPlanilha, PLANEJAR_AREA+1,   PLANEJAR_AREAS_VALIDAS);
+			estabelederValidacaoDados(planejarPlanilha, PLANEJAR_LOCAL+1,  PLANEJAR_LOCAIS_VALIDOS);
+			estabelederValidacaoDados(planejarPlanilha, PLANEJAR_TAREFA+1, PLANEJAR_TAREFAS_VALIDAS);
 
 			// Ativar a planilha Planejar
 			CararaLibrary.activateSheet("Planejar");
@@ -255,7 +256,7 @@ function construirProsseguirMenssagem(acao, data, periodo, ordem) {
 
 	menssagem += 'Resultado: ' + acao;
 	menssagem += "\n"
-	menssagem += "Data: " + dateToString(data);
+	menssagem += "Data: " +  CararaLibrary.dateToString(data);
 	menssagem += "\n"
 	menssagem += "Periodo: " + periodo;
 	menssagem += "\n"

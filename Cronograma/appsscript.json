@@ -10,8 +10,14 @@
       },
       {
         "userSymbol": "CararaLibrary",
-        "version": "7",
+        "version": "13",
         "libraryId": "1MUcp-N2BXCoJI3ussufDnfghByRVGBATXMPP7BeZg-1iCQXbrKw5rzaO",
+        "developmentMode": false
+      },
+      {
+        "userSymbol": "Producao",
+        "version": "8",
+        "libraryId": "1g0CoMagS7iUzUU8qK1bZGbFjcnqwn7w8dFJ1MCeitvXtcC_mTIiVivT6",
         "developmentMode": false
       }
     ]

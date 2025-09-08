@@ -67,7 +67,7 @@ const obterModelosNomeInicioKeys = () => {
 	const keys = [];
 	let vals = obterModelosGamaVals();
 	vals.forEach(elemento => {
-		let key = '' + elemento[MODELOS_NOME] + dateToString(elemento[MODELOS_INICIO]);
+		let key = '' + elemento[MODELOS_NOME] +  CararaLibrary.dateToString(elemento[MODELOS_INICIO]);
 		if (keys.indexOf(key) == -1) {
 			keys.push(key); 
 		}
@@ -137,9 +137,13 @@ const ATIVOS_TAREFA = 8;
 const ATIVOS_REMUNERACAO = 9;
 const ATIVOS_COMENTARIOS = 10;
 const ATIVOS_ORDEM = 11;
+const ATIVOS_METODOS_VALIDOS = "MetodosValidos"
+const ATIVOS_AREAS_VALIDAS = "AreasValidas"
+const ATIVOS_LOCAIS_VALIDOS = "LocaisValidos"
+const ATIVOS_TAREFAS_VALIDAS = "TarefasValidas"
 const obterAtivosPlanilha = () => obterGoogleSheet().getSheetByName(ATIVOS_PLANILHA);
 const obterAtivosGama = () => obterGoogleSheet().getRangeByName(ATIVOS_GAMA);
-const obterAtivosGamaVals = () => {
+function obterAtivosGamaVals () {
   let  gama = obterAtivosGama();
   return  (gama !== null) ? gama.getValues().filter( elemento => elemento[ATIVOS_NOME] !== '' && elemento[ATIVOS_NOME] !== 'Nome') : [];
 }
@@ -188,6 +192,38 @@ const obterPdfPeriodoVals = () 	=> obterPdfPeriodo() !== null ? obterPdfPeriodo.
 const obterPdfExportar = () 	=> obterGoogleSheet().getRangeByName(PDF_EXPORTAR);
 const obterPdfHeader = () 	    => obterGoogleSheet().getRangeByName(PDF_HEADER);
 
+const PRODUCAO_PLANILHA = "Modelos";
+const PRODUCAO_DATA = 0;
+const PRODUCAO_QTD = 1;
+const PRODUCAO_MEDIA = 2;
+const obterProducaoPlanilha = () => obterGoogleSheet().getSheetByName(PRODUCAO_PLANILHA);
+const obterProducaoGama = (gamaName) => obterGoogleSheet().getRangeByName(gamaName);
+const obterProducaoGamaVals = gamaName => {
+	let  gama = obterProducaoGama(gamaName);
+	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[PRODUCAO_DATA] !== '') : [];
+}
+
+const contasCorrentesId = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
+const contasCorrentesRange = "Dados";
+const contasCorrentesDataCol              = 0;
+const contasCorrentesNomeCol              = 1;
+const contasCorrentesEstadiaCol           = 2;
+const contasCorrentesMetodoCol            = 3;  // Diaria, Salario, Porcentagem, Cantina, PIX, Diversos
+const contasCorrentesMoedaCol             = 4   // Real, Ouro
+const contasCorrentesCreditDebitCol       = 5;  // Credito, Debito
+const contasCorrentesItemCol              = 6;
+const contasCorrentesPrecoUnidadeRealCol  = 7;  // Real
+const contasCorrentesPrecoUnidadeOuroCol  = 8;  // Gramas de ouro 
+const contasCorrentesItemQtdCol           = 9;
+const contasCorrentesTotalRealCol         = 10; // Real
+const contasCorrentesTotalOuroCol         = 11; // Gramas de ouro
+const contasCorrentesComentariosCol       = 12;
+const obterContasCorrentesPlanilha = () => SpreadsheetApp.openById(contasCorrentesId).getSheetByName(contasCorrentesRange);
+const obterContasCorrentesGama = () => obterContasCorrentesPlanilha().getRangeByName(contasCorrentesRange);
+const obterContasCorrentesGamaVals = () => {
+  let  gama = obterContasCorrentesGama();
+  return  (gama !== null) ? gama.getValues().filter( elemento => elemento[contasCorrentesDataCol] !== '' && elemento[contasCorrentesDataCol] !== 'Data') : [];
+}
 
 // ****************************************************************************
 // copiarGamaValsParaPlanilha - Limpe o intervalo com o mesmo noje da planilha 
@@ -255,7 +291,7 @@ const vLookupPersonalizado = (chavePesquisa, matrizVals, colunaPesquisa, colunaR
 //
 function estabelederValidacaoDados(sheet, columnNumber, validChoicesRangeName) {
 	let lastRow = sheet.getLastRow();
-	let column = numeroParaLetra(columnNumber);
+	let column = CararaLibrary.numeroParaLetra(columnNumber);
 	let a1C1Gama = obterA1C1(sheet.getName(), column, 2, column, lastRow)
 
 	var range = sheet.getRange(a1C1Gama); // Specify the range for validation

@@ -1,17 +1,17 @@
 // Informar os associados de suas responsabilidades;
 function cronogramaInformar() {
-    SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Informar');
+    SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Informar', 3);
 
     // Navegue para a planilha PDF
     CararaLibrary.activateSheet(PDF_PLANILHA);
 
     // Recuperar o cronograma ATIVADO mais ANTIGO. 
-    let cronogramaAtivatoMaisAntigo = [...addicioneOrdermAoCronograma( obterAtivosGamaVals())];
-    cronogramaAtivatoMaisAntigo = [...sortAtivosMaisAntigo(cronogramaAtivatoMaisAntigo)];
-    let dataControle = dateToString(cronogramaAtivatoMaisAntigo[0][ATIVOS_DATA]);
-    let periodoControle = cronogramaAtivatoMaisAntigo[0][ATIVOS_PERIODO];
+    let cronogramaAtivatoMaisAntigoVals = [...addicioneOrdermAoCronograma( obterAtivosGamaVals())];
+    cronogramaAtivatoMaisAntigoVals = [...sortAtivosMaisAntigo(cronogramaAtivatoMaisAntigoVals)];
+    let dataControle = CararaLibrary.dateToString(cronogramaAtivatoMaisAntigoVals[0][ATIVOS_DATA]);
+    let periodoControle = cronogramaAtivatoMaisAntigoVals[0][ATIVOS_PERIODO];
     let chaveControle = dataControle + periodoControle;
-    let ativosInformar = cronogramaAtivatoMaisAntigo.filter(elemento => chaveControle === (dateToString(elemento[ATIVOS_DATA]) + elemento[ATIVOS_PERIODO]));
+    let ativosInformar = cronogramaAtivatoMaisAntigoVals.filter(elemento => chaveControle === ( CararaLibrary.dateToString(elemento[ATIVOS_DATA]) + elemento[ATIVOS_PERIODO]));
 
     let pdfInformar = obterPdfInformar();
     pdfInformar.clearContent();
@@ -40,6 +40,15 @@ function cronogramaInformar() {
     let c1 = pdfExportar.getColumn();
     let c2 = pdfExportar.getLastColumn();
     exportRangeAsPDF(r1, r2, c1, c2);
+
+    let ativosGama = obterAtivosGama();
+    let ativosGamaVals = obterAtivosGamaVals();
+    ativosGamaVals.forEach( (elemento, index) => {
+        if (chaveControle === ( CararaLibrary.dateToString(elemento[ATIVOS_DATA]) + elemento[ATIVOS_PERIODO])) {
+            ativosGama.offset(index, ATIVOS_ESTADO, 1, 1).setValue('Inspecionar');
+        }
+    }); 
+    SpreadsheetApp.getActiveSpreadsheet().toast('Fim', 'Informar', 1);
     return true
 }
 
@@ -77,7 +86,7 @@ const exportRangeAsPDF = (r1, r2, c1, c2) => {
     let blob = getFileAsBlob(url);
     // Logger.log("Content type: " + blob.getContentType());
     // Logger.log("File size in MB: " + blob.getBytes().length / 1000000);
-    let blobName = 'Cronograma - ' + dateToString(obterPdfData().getValue()) + ' - ' + obterPdfPeriodo().getValue() + '.pdf';
+    let blobName = 'Cronograma - ' +  CararaLibrary.dateToString(obterPdfData().getValue()) + ' - ' + obterPdfPeriodo().getValue() + '.pdf';
     blob.setName(blobName);
     DriveApp.getFolderById('1dNBIZ0NG9bsEad9vd-QgbxmLQZ5rPgJc').createFile(blob);
 }
@@ -92,44 +101,6 @@ const getFileAsBlob = (exportUrl) => {
     return response.getBlob();
 }
 
-// ****************************************************************************
-// obterCronogramaAtivatoMaisAntigo - Obtenha a versão mais antiga dos 
-// cronogramas ativados.  
-// 
-// Input
-// 		none
-// Output
-// 		cronograma (Array) - O cronograma mais antigo; caso contrario, []
-// ****************************************************************************
-//
-function obterCronogramaAtivatoMaisAntigo() {
-	// Obter os cronogramas ativos
-	let ativosGamaVals = obterAtivosGamaVals();
-	if (ativosGamaVals.length === 0) {
-		SpreadsheetApp.getActiveSpreadsheet().toast('Não há um cronograma ativo', 'Informar');
-		return [];
-	}
-	let informarGamaVals = [...ativosGamaVals.filter(elemento => elemento[ATIVOS_ESTADO] === 'Informar')]
-	if (ativosGamaVals.length === 0) {
-		SpreadsheetApp.getActiveSpreadsheet().toast('Não há um cronograma tipo Informar', 'Informar');
-		return [];
-	}
-	let periodVals = obterPeriodosGamaVals();	
-	informarGamaVals.forEach(informarRegistro => {
-		let procurado = vLookupPersonalizado("Diurno", periodVals, PERIODOS_NOME, PERIODOS_ORDEM) 
-		informarRegistro[ATIVOS_ORDEM] = procurado
-	});
-	informarGamaVals.sort((a, b) => {
-		let dateA = new Date(a[ATIVOS_DATA]).getTime();
-		let dateB = new Date(b[ATIVOS_DATA]).getTime();
-		if (dateA === dateB) {
-			return a[ATIVOS_ORDEM] - b[ATIVOS_ORDEM];
-		}
-		return dateA - dateB
-	});
-	
-	return informarGamaVals;
-}
 // ****************************************************************************
 // addicioneOrdermAoCronograma - Obtenha a versão mais antiga dos 
 // cronogramas ativados.  
@@ -160,4 +131,10 @@ const sortAtivosMaisAntigo = (informarAtivosGamaVals) => {
 		return dateA - dateB
 	});
     return informarAtivosGamaVals
+}
+const sum = (a, b) => a + b;
+const subtract = (a, b) => a - b;
+if (typeof module !== 'undefined') module.exports = {
+    sum,
+    subtract
 }

@@ -1,0 +1,5 @@
+const GOOGLE_SHEET_ID = "1XJQmUb-1W2egXWj000Uer8QS6FZd7lUgqppoehjxwj4";
+const PRODUCAO_DATA = 0;
+const PRODUCAO_QTD = 1;
+const PRODUCAO_MEDIA = 2;
+

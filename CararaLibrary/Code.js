@@ -86,3 +86,46 @@ function removeHeaderAndBlankRows(rangeName, header, column) {
 
   return filteredData;
 }
+// ****************************************************************************
+// Converter um dado lido de uma planilha na célula em uma cadeia the caracters
+// 
+// @parm {string} data - Uma cadeia the caracters representando uma data
+// @return {Date|null} - A data convertida; false otherwise
+// ****************************************************************************
+//
+function dateToString(data) {
+	let dataObj = new Date(data);
+	let dataStr = '';
+
+	// Month
+	if ((dataObj.getMonth() + 1) < 10) {
+		dataStr += "0";
+	}
+	dataStr += dataObj.getMonth() + 1;
+	dataStr += '/';
+	// Day
+	if (dataObj.getDate() < 10) {
+		dataStr += "0";
+	}
+	dataStr += dataObj.getDate();
+	dataStr += '/';
+	// Year
+	dataStr += dataObj.getFullYear();
+
+	return dataStr;
+}
+
+// ****************************************************************************
+// Converter um numero para a letra maiuscula equivalente
+// 
+// @parm {number} num - A numero a ser convertido
+// @return {string|null} - a letra
+// ****************************************************************************
+//
+function numeroParaLetra (num) { return (num < 1 || num > 26) ? null : String.fromCharCode(num + 64); }
+
+
+if (typeof module !== 'undefined') module.exports = {
+    dateToString,
+    numeroParaLetra,
+}

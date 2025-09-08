@@ -36,7 +36,7 @@ function cronogramaPlanejar() {
 	// Certificar de que o cronograma da planilha  Cronograma!Planejar nao 
 	// existe na planilha // Certificar de que a planilha  Cronograma!Ativos 
 	const planejarDataPeriodoKey = planejarDataPeriodoKeys[0];
-	let data = dateToString(planejarGamaVals[0][PLANEJAR_DATA]);
+	let data =  CararaLibrary.dateToString(planejarGamaVals[0][PLANEJAR_DATA]);
 	let periodo = planejarGamaVals[0][PLANEJAR_PERIODO];
 	if (ativosGamaObjKeys.indexOf(planejarDataPeriodoKey) != -1) {
 		let menssagem = '';
@@ -58,13 +58,18 @@ function cronogramaPlanejar() {
 			ativosGamaVals.push(ativosGamaRegistro);
 		}
 	});
-	copiarGamaValsParaPlanilha(obterAtivosPlanilha(), ativosGamaVals);
-
+	let ativosPlanilha = obterAtivosPlanilha();
+	copiarGamaValsParaPlanilha(ativosPlanilha, ativosGamaVals);
+	estabelederValidacaoDados(ativosPlanilha, ATIVOS_METODO+1, 	ATIVOS_METODOS_VALIDOS);
+	estabelederValidacaoDados(ativosPlanilha, ATIVOS_AREA+1, 	ATIVOS_AREAS_VALIDAS);
+	estabelederValidacaoDados(ativosPlanilha, ATIVOS_LOCAL+1, 	ATIVOS_LOCAIS_VALIDOS);
+	estabelederValidacaoDados(ativosPlanilha, ATIVOS_TAREFA+1, 	ATIVOS_TAREFAS_VALIDAS);
+	
 	// Atualizar a planilha Cronograma!Publicados, including o periodo 
 	// planejado
   	let periodVals = obterPeriodosGamaVals();
 	let ordem = vLookupPersonalizado(periodo, periodVals, PERIODOS_NOME, PERIODOS_ORDEM);
-	let periodoVal = [[dateToString(data), periodo, ordem]]
+	let periodoVal = [[CararaLibrary.dateToString(data), periodo, ordem]]
 	copiarGamaValsParaPlanilha(obterPublicadosPlanilha(), periodoVal);
 
 	// Substituir a instância do período na planilha Cronograma!Modelo pelo
