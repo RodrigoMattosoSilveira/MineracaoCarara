@@ -122,7 +122,7 @@ function dateToString(data) {
 // @return {string|null} - a letra
 // ****************************************************************************
 //
-const numeroParaLetra = (num) => (num < 1 || num > 26) ? null : String.fromCharCode(num + 64);
+function numeroParaLetra (num) { (num < 1 || num > 26) ? null : String.fromCharCode(num + 64); }
 
 
 if (typeof module !== 'undefined') module.exports = {

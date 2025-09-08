@@ -102,44 +102,6 @@ const getFileAsBlob = (exportUrl) => {
 }
 
 // ****************************************************************************
-// obterCronogramaAtivatoMaisAntigo - Obtenha a versão mais antiga dos 
-// cronogramas ativados.  
-// 
-// Input
-// 		none
-// Output
-// 		cronograma (Array) - O cronograma mais antigo; caso contrario, []
-// ****************************************************************************
-//
-function obterCronogramaAtivatoMaisAntigo() {
-	// Obter os cronogramas ativos
-	let ativosGamaVals = obterAtivosGamaVals();
-	if (ativosGamaVals.length === 0) {
-		SpreadsheetApp.getActiveSpreadsheet().toast('Não há um cronograma ativo', 'Informar');
-		return [];
-	}
-	let informarGamaVals = [...ativosGamaVals.filter(elemento => elemento[ATIVOS_ESTADO] === 'Informar')]
-	if (ativosGamaVals.length === 0) {
-		SpreadsheetApp.getActiveSpreadsheet().toast('Não há um cronograma tipo Informar', 'Informar');
-		return [];
-	}
-	let periodVals = obterPeriodosGamaVals();	
-	informarGamaVals.forEach(informarRegistro => {
-		let procurado = vLookupPersonalizado("Diurno", periodVals, PERIODOS_NOME, PERIODOS_ORDEM) 
-		informarRegistro[ATIVOS_ORDEM] = procurado
-	});
-	informarGamaVals.sort((a, b) => {
-		let dateA = new Date(a[ATIVOS_DATA]).getTime();
-		let dateB = new Date(b[ATIVOS_DATA]).getTime();
-		if (dateA === dateB) {
-			return a[ATIVOS_ORDEM] - b[ATIVOS_ORDEM];
-		}
-		return dateA - dateB
-	});
-	
-	return informarGamaVals;
-}
-// ****************************************************************************
 // addicioneOrdermAoCronograma - Obtenha a versão mais antiga dos 
 // cronogramas ativados.  
 // 
