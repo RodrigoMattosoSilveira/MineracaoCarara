@@ -7,6 +7,7 @@ const PERIODO_ID_COL   = 1;
 const PERIODO_HORA_COL = 2;
 const obterPeriodosGama     = () => obterMasterSheet().getRangeByName(PERIODOS_GAMA).sort(PERIODO_ID_COL+1);;
 const obterPeriodosGamaVals = () => obterPeriodosGama().getValues();
+const CURRENCY_FREAKS_API_KEY = '50d10488069441ee9bcb078a6239e5c7'
 
 // This function will be in charge to return the current gold price
 //  https://1337invest.com/how-to-import-gold-price-into-google-sheet/
@@ -41,11 +42,15 @@ function updateGoldPriceInSheet(){
   masterSS.getRangeByName("GoldUsdOz").setValues(rangeValue);
 }
 
+// TODO Mineração Carará will have to get its own API key
 function updateDolarParaReal() {
-  const goldValue = GOOGLEFINANCE("CURRENCY:USDBRL")
-  const rangeValue = [[goldValue]]
+  var url = 'https://api.currencyfreaks.com/v2.0/rates/latest?apikey=' + CURRENCY_FREAKS_API_KEY;
+  var response = UrlFetchApp.fetch(url);
+  var content = response.getContentText();
+  var json = JSON.parse(content);
+  var brlRate = json['rates']['BRL']
   const masterSS = SpreadsheetApp.openById(MASTER_ID);
-  masterSS.getRangeByName("GoldUsdOz").setValues(rangeValue);
+  masterSS.getRangeByName("UsdToBrl").setValue(brlRate);
 }
 // ****************************************************************************
 // obterPeriodos - Retorna um mapa, identificados e classificados pelos nomes 
