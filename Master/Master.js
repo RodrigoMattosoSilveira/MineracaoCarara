@@ -39,7 +39,7 @@ function updateGoldPriceInSheet(){
   const goldValue = getOneOzGoldPriceUsd()
   const rangeValue = [[goldValue]]
   const masterSS = SpreadsheetApp.openById(MASTER_ID);
-  masterSS.getRangeByName("GoldUsdOz").setValues(rangeValue);
+  masterSS.getRangeByName("OuroUsdOnca").setValues(rangeValue);
 }
 
 // TODO Mineração Carará will have to get its own API key

@@ -71,6 +71,7 @@ function cronogramaContabilizar() {
     const local             = elemento[ATIVOS_LOCAL];
     const tarefa            = elemento[ATIVOS_TAREFA];
     const chave             = datastr + elemento[ATIVOS_PERIODO] + elemento[ATIVOS_NOME];
+    const chaveProducao     = datastr + elemento[ATIVOS_LOCAL] +  elemento[ATIVOS_PERIODO]
     let contabilizeRegistro = true;
     if (metodo != "") {
       contaCorrenteRegistro = [];
@@ -121,7 +122,9 @@ function cronogramaContabilizar() {
           break;
         case "Porcentagem":
         case  "Meio_A_Meio":
-          if (producaoDiaria[datastr][poco] !== undefined) {
+          let producaoDataPocoPeriodo = Producao.obterProducaoDataPocoPeriodo(chaveProducao)
+          if (producaoDataPocoPeriodo!== null) {
+          // if (producaoDiaria[datastr][poco] !== undefined) {
             // Moeda Ouro
             contaCorrenteRegistro[contasCorrentesMoedaCol] = "Ouro";
             // Remuneracao em Reais
@@ -133,7 +136,8 @@ function cronogramaContabilizar() {
             // Credito / Debito em Reais
             contaCorrenteRegistro[contasCorrentesTotalRealCol] = 0;
             // Credito / Debito em Gramas de Ouro
-            contaCorrenteRegistro[contasCorrentesTotalOuroCol] = producaoDiaria[datastr][poco] * elemento[ATIVOS_REMUNERACAO];
+            // contaCorrenteRegistro[contasCorrentesTotalOuroCol] = producaoDiaria[datastr][poco] * elemento[ATIVOS_REMUNERACAO];
+            contaCorrenteRegistro[contasCorrentesTotalOuroCol] = producaoDataPocoPeriodo * elemento[ATIVOS_REMUNERACAO];
             registrosContabilizados.push(elemento);
           }
           else {
