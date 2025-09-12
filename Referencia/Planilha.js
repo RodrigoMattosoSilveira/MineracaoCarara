@@ -42,12 +42,12 @@ const obterReferenciaTarefasGamaVals = () => obterReferenciaGamaVals(REFERENCIA_
 const obterReferenciaPeriodosGamaVals = () => obterReferenciaGamaVals(REFERENCIA_PERIODO_GAMA_NOME);
 
 
-const obterReferenciaPocos = () => {
+function obterReferenciaPocos() {
   let pocos = []
   obterReferenciaGamaVals(REFERENCIA_LOCAIS_GAMA_NOME).forEach( elemento => elemento[0].startsWith('Poço_') ? pocos.push(elemento[0]) : null);
   return  pocos;
 }
-const obterReferenciaPeriodos = () => {
+function obterReferenciaPeriodos() {
   let periodos = []
   obterReferenciaGamaVals(REFERENCIA_PERIODO_GAMA_NOME).forEach( elemento => periodos.push(elemento[0]));
   return  periodos;
