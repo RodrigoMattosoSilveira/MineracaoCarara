@@ -40,8 +40,15 @@ const obterReferenciaAreasGamaVals = () => obterReferenciaGamaVals(REFERENCIA_AR
 const obterReferenciaLocaisGamaVals = () => obterReferenciaGamaVals(REFERENCIA_LOCAIS_GAMA_NOME);
 const obterReferenciaTarefasGamaVals = () => obterReferenciaGamaVals(REFERENCIA_TAREFAS_GAMA_NOME);
 const obterReferenciaPeriodosGamaVals = () => obterReferenciaGamaVals(REFERENCIA_PERIODO_GAMA_NOME);
+
+
 const obterReferenciaPocos = () => {
   let pocos = []
   obterReferenciaGamaVals(REFERENCIA_LOCAIS_GAMA_NOME).forEach( elemento => elemento[0].startsWith('Poço_') ? pocos.push(elemento[0]) : null);
   return  pocos;
+}
+const obterReferenciaPeriodos = () => {
+  let periodos = []
+  obterReferenciaGamaVals(REFERENCIA_PERIODO_GAMA_NOME).forEach( elemento => periodos.push(elemento[0]));
+  return  periodos;
 }
