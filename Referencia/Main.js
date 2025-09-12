@@ -37,7 +37,7 @@ function updateDolarParaReal() {
   var content = response.getContentText();
   var json = JSON.parse(content);
   var brlRate = json['rates']['BRL']
-  const masterSS = SpreadsheetApp.openById(MASTER_ID);
+  const masterSS = SpreadsheetApp.openById(REFERENCIA_GOOGLE_SHEET_ID);
   masterSS.getRangeByName("UsdToBrl").setValue(brlRate);
 }
 
