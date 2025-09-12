@@ -12,39 +12,51 @@
   </head>
   <body>
 	<div class="container">
+    	<h2 class="mb-4">Produção diária de poços por período</h2>
 		<form id="myForm">
-			<div class="row align-items-start justify-content-around">
-				 <div class="col-4">
-					<!-- div class="mb-3"-->
-						<label for="dataCronogramaId" class="fw-bold form-label">Data</label>
-						<input type="text" readonly class="form-control-plaintext" id="dataCronogramaId" value="Aguarde">
-					<!--/div -->					
-				 </div>
-				<div class="col-4">
-					<!-- div class="mb-3"-->
-						<label for="periodoCronogramaId" class="fw-bold form-label">Periodo</label>
-						<input type="text" readonly class="form-control-plaintext" id="periodoCronogramaId" value="Aguarde">
-					<!--/div -->
-				</div>
-			</div>
-			</div>
-			<div class="row align-items-start justify-content-around">
-  				<div class="col-12"></div>
-			</div>
-			<div class="row align-items-start justify-content-around">
-				<div class="col-4">
-					<!-- div class="mb-3"-->
-						<!-- button type="submit" class="btn btn-primary" onclick="enviarDados()">Selecionei</button -->
-						<input class="btn btn-primary" type="button" value="Planejar" onclick="enviarDados('Planejar')">
-					<!--/div -->
-				</div>
-				<div class="col-4">
-					<!-- div class="mb-3"-->
-						<!-- button type="submit" class="btn btn-primary" onclick="enviarDados()">Selecionei</button -->
-						<input class="btn btn-primary" type="button" value="Ignorar" onclick="enviarDados('Ignorar')">
-					<!--/div -->
-				</div>
-			</div>
+      <!-- Row 1 -->
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="name1" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name1" placeholder="Enter name">
+        </div>
+        <div class="col-md-4">
+          <label for="email1" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email1" placeholder="Enter email">
+        </div>
+        <div class="col-md-4">
+          <label for="phone1" class="form-label">Phone</label>
+          <input type="tel" class="form-control" id="phone1" placeholder="Enter phone">
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="name2" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name2" placeholder="Enter name">
+        </div>
+        <div class="col-md-4">
+          <label for="email2" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email2" placeholder="Enter email">
+        </div>
+        <div class="col-md-4">
+          <label for="phone2" class="form-label">Phone</label>
+          <input type="tel" class="form-control" id="phone2" placeholder="Enter phone">
+        </div>
+      </div>
+
+      <!-- Add More Rows Button -->
+      <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary">Add More Rows</button>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="mt-4">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
 		</form>
 	</div>
 	<script>

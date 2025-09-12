@@ -1,3 +1,25 @@
+// ****************************************************************************
+// Menu - This is a set of functions
+// ****************************************************************************
+// 
+function onOpen(e) {
+  var ui = SpreadsheetApp.getUi();
+
+  // Or DocumentApp, SlidesApp or FormApp.
+	ui.createMenu('Producao')
+		.addItem('Registrar', 'producaoRegistrar')
+	.addToUi();
+}
+/* *****************************************************************************
+ * Grencia a tarefa de coletar a produção diária e periódica de ouro.
+ * @parm {e}, o ambiente 
+ * @returns nonne
+ * ************************************************************************** */
+// 
+function producaoRegistrar() {
+	SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Registrar Produção');
+}
+
 /* *****************************************************************************
  * Retorna a produção do poço para em uma data e período
  * @parm {Date}, data - O dia de interesse
@@ -17,5 +39,5 @@ function obterProducaoDataPocoPeriodo(data, poco, periodo) {
 }
 
 if (typeof module !== 'undefined') module.exports = {
-	obterProducaoDataPocoPeriodo,
+	apresentarDialogoProducaoDataPocoPeriodo, apresentarDialogoModelar
 };
