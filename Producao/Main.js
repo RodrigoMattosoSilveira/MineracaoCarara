@@ -17,7 +17,26 @@ function onOpen(e) {
  * ************************************************************************** */
 // 
 function producaoRegistrar() {
-	SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Registrar Produção');
+	SpreadsheetApp.getActiveSpreadsheet().toast('Registrar Produção', 'Inicio', 3);
+
+	// Navegue para a planilha Planejar
+	CararaLibrary.activateSheet("Producao");
+
+	// Construir e salvar o objetoFormulario
+	let objetoFormulario = {}
+	objetoFormulario['pocos'] = JSON.stringify([...Referencia.obterReferenciaPocos()]);
+    objetoFormulario['periodos'] =  JSON.stringify([...Referencia.obterReferenciaPeriodos()]);
+	putObjetoFormulario(JSON.stringify(objetoFormulario));
+
+	// Apresentar dialogo modal; coletar a producao dos pocos
+	apresentarDialogoProducao()
+	return true
+}
+
+function producaoRegistrarProsseguir(matriz) {
+	let message = ''
+	matriz.length > 0 ? message = JSON.stringify(matriz) : message = 'Notning';
+SpreadsheetApp.getActiveSpreadsheet().toast(message, 'Result', 3);	
 }
 
 /* *****************************************************************************
@@ -41,3 +60,7 @@ function obterProducaoDataPocoPeriodo(data, poco, periodo) {
 if (typeof module !== 'undefined') module.exports = {
 	apresentarDialogoProducaoDataPocoPeriodo, apresentarDialogoModelar
 };
+
+var documentProperties = PropertiesService.getDocumentProperties();
+const putObjetoFormulario = (objetoFormulario) => documentProperties.setProperty('OBJECTO_FORMULARIO', objetoFormulario);
+const getObjetoFormulario = () => documentProperties.getProperty('OBJECTO_FORMULARIO');

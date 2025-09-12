@@ -4,11 +4,14 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <!-- Flatpickr CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- Latest Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- title>Hello, world!</title -->
 
-    <title>Hello, world!</title>
   </head>
   <body>
 	<div class="container">
@@ -17,8 +20,13 @@
       <!-- Row 1 -->
       <div class="row mb-3">
         <div class="col-md-4">
-          <label for="name1" class="form-label">Name</label>
-          <input type="text" class="form-control" id="name1" placeholder="Enter name">
+          <label for="data1" class="form-label">Data</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="data1" placeholder="Selecione data">
+            <span class="input-group-text">
+              <i class="bi bi-calendar"></i>
+            </span>
+          </div>
         </div>
         <div class="col-md-4">
           <label for="email1" class="form-label">Email</label>
@@ -33,8 +41,13 @@
       <!-- Row 2 -->
       <div class="row mb-3">
         <div class="col-md-4">
-          <label for="name2" class="form-label">Name</label>
-          <input type="text" class="form-control" id="name2" placeholder="Enter name">
+          <label for="data2" class="form-label">Data</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="data2" placeholder="Selecione data">
+            <span class="input-group-text">
+              <i class="bi bi-calendar"></i>
+            </span>
+          </div>
         </div>
         <div class="col-md-4">
           <label for="email2" class="form-label">Email</label>
@@ -45,60 +58,66 @@
           <input type="tel" class="form-control" id="phone2" placeholder="Enter phone">
         </div>
       </div>
-
-      <!-- Add More Rows Button -->
-      <div class="d-flex justify-content-end">
-        <button type="button" class="btn btn-secondary">Add More Rows</button>
-      </div>
-
-      <!-- Submit Button -->
-      <div class="mt-4">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
+      <!-- Submit Buttons -->
+			<div class="row align-items-start justify-content-around">
+				<div class="col-4">
+					<!-- div class="mb-3"-->
+						<!-- button type="submit" class="btn btn-primary" onclick="enviarDados()">Selecionei</button -->
+						<input class="btn btn-primary" type="button" value="Ignorar" onclick="enviarProducao('Ignorar')">
+					<!--/div -->
+				</div>
+				<div class="col-4">
+					<!-- div class="mb-3"-->
+						<!-- button type="submit" class="btn btn-primary" onclick="enviarDados()">Selecionei</button -->
+						<input class="btn btn-primary" type="button" value="Registrar" onclick="enviarProducao('Registrar')">
+					<!--/div -->
+				</div>
+      </div>  
     </form>
   </div>
 		</form>
 	</div>
 	<script>
-		function atualizeData(data) {
-			console.log("Modelar Data: " + data)
-			let dataObj = new Date(data);
-			let dataStr = '';
-			if (dataObj.getDate() < 10) {
-				dataStr += "0";
-			}
-			dataStr += dataObj.getDate();
-			dataStr += '/';
-			if ((dataObj.getMonth() + 1) < 10) {
-				dataStr += "0";
-			}
-			dataStr += dataObj.getMonth() + 1;
-			dataStr += '/';
-			dataStr += dataObj.getFullYear();
-			console.log("Modelar Data: " + dataStr)
-			atualizeInput('dataCronogramaId', dataStr);
+		function configurarFormulario(objetoFormularioStr) {
+      let objetoFormulario = JSON.parse(objetoFormularioStr)
+ 			// console.log("Poços: " + JSON.stringify(objetoFormulario['pocos']));
+      // console.log("Períodos: " + JSON.stringify(objetoFormulario['periodos']))
+ 			console.log("Poços: " + objetoFormulario['pocos']);
+      console.log("Períodos: " + objetoFormulario['periodos']);
 		}
-		function atualizePeriodo(periodo) {
-			console.log("Modelar Turnos: " + periodo)
-			atualizeInput('periodoCronogramaId', periodo);
-		}
-
-		function atualizeInput(elementoId, valor) {
-			console.log("Modelar Atualizar " + elementoId + ": " + valor)
-  			document.getElementById(elementoId).value = valor;
-		}
-
-		function enviarDados(acao) {
-			google.script.run.withSuccessHandler(feixarCaixa).cronogramaModelarProsseguir(acao);
+		function enviarProducao(acao) {
+      console.log("Acao: " + acao)
+      matriz = [];
+      switch (acao) {
+        case 'Ignorar':
+          break;
+        case 'Registrar':
+          matriz.push(['a', 'b', 'c'])
+          break;
+        default:
+          break;
+      } 
+			google.script.run.withSuccessHandler(feixarCaixa).producaoRegistrarProsseguir(matriz);
 		}
 		function feixarCaixa() {
 			google.script.host.close();
 		}			
-	
-		google.script.run.withSuccessHandler(atualizeData).getData();
-		google.script.run.withSuccessHandler(atualizePeriodo).getPeriodo();
-	</script>
-	<scrip src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
+    document.addEventListener('DOMContentLoaded', function () {
+      flatpickr("#data1", {
+        dateFormat: "d-m-Y", // Adjust the format as needed (e.g., Y-m-d, d-m-Y, etc.)
+        allowInput: true // Allows manual input
+      });
+      flatpickr("#data2", {
+        dateFormat: "d-m-Y", // Adjust the format as needed (e.g., Y-m-d, d-m-Y, etc.)
+        allowInput: true // Allows manual input
+      });
+
+    });
+	
+		google.script.run.withSuccessHandler(configurarFormulario).getObjetoFormulario();
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   </body>
 </html>

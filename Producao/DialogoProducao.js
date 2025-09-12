@@ -1,9 +1,7 @@
-const apresentarDialogoProducao= (proximoCronogramaCandidato) =>  {
-    putData(proximoCronogramaCandidato[0]);
-    putPeriodo(proximoCronogramaCandidato[1]);
+const apresentarDialogoProducao = () =>  {
 
-    const html = HtmlService.createHtmlOutputFromFile('DialogoMProducao_1') 
-        .setWidth(360)
-        .setHeight(240);
+    const html = HtmlService.createHtmlOutputFromFile('DialogoProducao_1') 
+        .setWidth(900)
+        .setHeight(600);
     SpreadsheetApp.getUi().showModalDialog(html, 'Registrar Producao Diária');
 }
