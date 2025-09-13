@@ -1,4 +1,12 @@
 const EPSILON = 0.00001;
+const producaoRegistrarProsseguirTeste = () => {
+  matriz = [
+    ['13/09/2025', 'Poço_1', 'Diurno', '0.45'], 
+    ['', '', '', ''],
+    ['', '', '', '']
+  ]
+  producaoRegistrarProsseguir(matriz);
+}
 const obterProducaoDataPocoPeriodoTeste = () => {
   let data = '09/06/2025';
   let poco = 'Poço_1';

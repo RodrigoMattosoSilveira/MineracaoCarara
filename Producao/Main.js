@@ -37,6 +37,44 @@ function producaoRegistrarProsseguir(matriz) {
 	let message = ''
 	matriz.length > 0 ? message = JSON.stringify(matriz) : message = 'Notning';
 	SpreadsheetApp.getActiveSpreadsheet().toast(message, 'Result', 3);	
+
+	// Armazene os dados de produção, garantindo que não sobrescreva um registro 
+	// existente.
+	let producaoGamaVals = obterProducaoGamaVals();
+	let producaoGamaValsChaves = producaoGamaVals.map(registro => {
+		let data	= new Date(registro[0]);
+		let dia 	= data.getDate() < 10 ? '0' + data.getDate() : data.getDate();
+		let mes 	= data.getMonth() + 1 < 10 ? '0' + (data.getMonth() + 1) : (data.getMonth() + 1);
+		let ano 	= data.getUTCFullYear();
+		let poco 	= registro[1];
+		let periodo = registro[2]
+		return '' + dia + mes + ano + poco + periodo;
+	})
+	let producaoPlanilha = _obterProducaoPlanilha();
+	let lastRow = producaoPlanilha.getLastRow();
+	matriz.forEach( (registro) => {
+		let data 	= registro[0];
+		let dia 	= Number(data.substring(0,2)) !== NaN ? Number(data.substring(0,2)) < 10 ? '0' + Number(data.substring(0,2)) : Number(data.substring(0,2)) : NaN;
+		let mes 	= Number(data.substring(3,5)) !== NaN ? Number(data.substring(3,5)) < 10 ? '0' + Number(data.substring(3,5)) : Number(data.substring(3,5)) : NaN;
+		let ano 	= Number(data.substring(6,10));
+		let poco 	= registro[1];
+		let periodo = registro[2]
+		gramas = Number(registro[3]);
+		if (dia !== NaN && mes !== NaN && mes !== NaN && poco !== '' && periodo !== '' && gramas != NaN) {
+			chave = '' + dia + mes + ano + poco + periodo;
+			if (producaoGamaValsChaves.indexOf(chave) === -1) {
+				// Temos um bom registro de produção; antes de salvá-lo, 
+				// converter a data para mm/dd/aaaa
+				registro[0] = mes + '/' + dia + '/' + ano;
+   				producaoPlanilha.getRange(lastRow + 1, 1, 1, registro.length).setValues([registro])
+				lastRow++;
+			}
+		}
+	});
+
+	// Classifique a gama Produção com as datas em ordem decrescente, depois 
+	// por bem e período. 
+	_obterProducaoGama().sort([{column: 1, ascending: false}, {column: 2, ascending: true}, {column: 3, ascending: true}])
 }
 
 /* *****************************************************************************
