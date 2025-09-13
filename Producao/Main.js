@@ -36,7 +36,7 @@ function producaoRegistrar() {
 function producaoRegistrarProsseguir(matriz) {
 	let message = ''
 	matriz.length > 0 ? message = JSON.stringify(matriz) : message = 'Notning';
-SpreadsheetApp.getActiveSpreadsheet().toast(message, 'Result', 3);	
+	SpreadsheetApp.getActiveSpreadsheet().toast(message, 'Result', 3);	
 }
 
 /* *****************************************************************************

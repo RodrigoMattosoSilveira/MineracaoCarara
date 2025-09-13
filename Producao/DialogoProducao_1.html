@@ -20,7 +20,7 @@
       <!-- Row 1 -->
       <div class="row mb-3">
         <div class="col-md-3">
-          <label for="data1" class="form-label">Data</label>
+          <label for="data1" class="form-label fw-bold">Data</label>
           <div class="input-group">
             <input type="text" class="form-control" id="data1" placeholder="Data">
             <span class="input-group-text">
@@ -29,7 +29,7 @@
           </div>
         </div>
         <div class="col-md-3">
-          <label for="poco1" class="form-label">Poço</label>
+          <label for="poco1" class="form-label fw-bold">Poço</label>
           <select class="form-select form-select-lg mb-3" 
               aria-label=".form-select-lg example"
               id="poco1" 
@@ -37,7 +37,7 @@
           </select>
         </div>
         <div class="col-md-3">
-          <label for="periodo1" class="form-label">Período</label>
+          <label for="periodo1" class="form-label fw-bold">Período</label>
           <select class="form-select form-select-lg mb-3" 
               aria-label=".form-select-lg example"
               id="periodo1" 
@@ -45,8 +45,8 @@
           </select>
        </div>
         <div class="col-md-3">
-          <label for="qtd1" class="form-label">Gramas</label>
-          <input type="number" class="form-control" id="qtd1" placeholder="Peso">
+          <label for="gramas1" class="form-label fw-bold">Gramas</label>
+          <input type="number" class="form-control" id="gramas1" placeholder="Peso">
         </div>
 
       </div>
@@ -54,7 +54,7 @@
       <!-- Row 2 -->
       <div class="row mb-3">
         <div class="col-md-3">
-          <label for="data2" class="form-label">Data</label>
+          <label for="data2" class="form-label fw-bold">Data</label>
           <div class="input-group">
             <input type="text" class="form-control" id="data2" placeholder="Data">
             <span class="input-group-text">
@@ -63,7 +63,7 @@
           </div>
         </div>
         <div class="col-md-3">
-          <label for="poco2" class="form-label">Poço</label>
+          <label for="poco2" class="form-label fw-bold">Poço</label>
           <select class="form-select form-select-lg mb-3" 
               aria-label=".form-select-lg example"
               id="poco2" 
@@ -71,7 +71,7 @@
           </select>
         </div>
         <div class="col-md-3">
-          <label for="periodo2" class="form-label">Período</label>
+          <label for="periodo2" class="form-label fw-bold">Período</label>
           <select class="form-select form-select-lg mb-3" 
               aria-label=".form-select-lg example"
               id="periodo2" 
@@ -79,8 +79,40 @@
           </select>
         </div>
         <div class="col-md-3">
-          <label for="qtd2" class="form-label">Gramas</label>
-          <input type="number" class="form-control" id="qtd2" placeholder="Gramas">
+          <label for="gramas2" class="form-label fw-bold">Gramas</label>
+          <input type="number" class="form-control" id="gramas2" placeholder="Gramas">
+        </div>
+
+      <!-- Row 3 -->
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="data3" class="form-label fw-bold">Data</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="data3" placeholder="Data">
+            <span class="input-group-text">
+              <i class="bi bi-calendar"></i>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="poco3" class="form-label fw-bold">Poço</label>
+          <select class="form-select form-select-lg mb-3" 
+              aria-label=".form-select-lg example"
+              id="poco3" 
+              onchange="obtenhaPoco2Selecionado()">
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="periodo3" class="form-label fw-bold">Período</label>
+          <select class="form-select form-select-lg mb-3" 
+              aria-label=".form-select-lg example"
+              id="periodo3" 
+              onchange="obtenhaPeriodo2Selecionado()">
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="gramas3" class="form-label fw-bold">Gramas</label>
+          <input type="number" class="form-control" id="gramas3" placeholder="Gramas">
         </div>
 
       </div>
@@ -110,10 +142,12 @@
  			console.log("Poços: " + objetoFormulario['pocos']);
       console.log("Períodos: " + objetoFormulario['periodos']);
       let theseIds = ['poco1, poco2'];
-      atualizeSelect('poco1', "Poço",  JSON.parse(objetoFormulario['pocos']))
-      atualizeSelect('poco2', "Poço",  JSON.parse(objetoFormulario['pocos']))
-      atualizeSelect('periodo1', "Período",  JSON.parse(objetoFormulario['periodos']))
-      atualizeSelect('periodo2', "Período",  JSON.parse(objetoFormulario['periodos']))
+      atualizeSelect('poco1', "Poço",  JSON.parse(objetoFormulario['pocos']));
+      atualizeSelect('poco2', "Poço",  JSON.parse(objetoFormulario['pocos']));
+      atualizeSelect('poco3', "Poço",  JSON.parse(objetoFormulario['pocos']));
+      atualizeSelect('periodo1', "Período",  JSON.parse(objetoFormulario['periodos']));
+      atualizeSelect('periodo2', "Período",  JSON.parse(objetoFormulario['periodos']));
+      atualizeSelect('periodo3', "Período",  JSON.parse(objetoFormulario['periodos']));
 		}
 
 		function atualizeSelect(elementoId, aviso, dados) {
@@ -121,7 +155,7 @@
 			console.log("atualizeSelect dados: "  + dados);
 			const dropdown = document.getElementById(elementoId);
 			dropdown.innerHTML = ''; // Clear existing options
-			dropdown.innerHTML = `<option selected>` + aviso + `</option>`
+			dropdown.innerHTML = `<option selected>` + '' + `</option>`
 			dados.forEach(item => {
 				const option = document.createElement('option');
 				option.value = item;
@@ -129,26 +163,51 @@
 				dropdown.appendChild(option);
 			});
 		}
-
 		function obtenhaValorSelecionado (id) {
 			var valorEl = document.getElementById(id);
 			var valor = valorEl.options[valorEl.selectedIndex].value;
 			return valor;
 		}
+		function obtenhaValorTeclado (id) {
+			var valorEl = document.getElementById(id);
+			var valor = valorEl.value;
+			return valor;
+		}
 
+		function construirMatriz (id) {
+      let row = [];
+      let data = obtenhaValorTeclado('data'+ id);
+      console.log('construirMatriz, data' + id  + ': ' + data);
+      row.push(data)
+      let poco = obtenhaValorSelecionado('poco' + id)
+      console.log('construirMatriz, poco' + id  + ': ' + poco);
+      row.push(poco);
+      let periodo = obtenhaValorSelecionado('periodo' + id)
+      row.push(periodo);
+      console.log('construirMatriz, periodo' + id  + ': ' + periodo);
+      let gramas = obtenhaValorTeclado('gramas' + id)
+      console.log('construirMatriz, gramas' + id  + ': ' + gramas);
+      row.push(gramas);
+      return row;
+		}
+
+    rows = []; // note that it is a script level variable
     function enviarProducao(acao) {
       console.log("Acao: " + acao)
-      matriz = [];
       switch (acao) {
         case 'Ignorar':
           break;
         case 'Registrar':
-          matriz.push(['a', 'b', 'c'])
+          for (let i = 1; i < 4; i++) {
+            row = construirMatriz(i);
+            console.log('enviarProducao, row: ' + row);
+            rows.push(row)
+          }
           break;
         default:
           break;
       } 
-			google.script.run.withSuccessHandler(feixarCaixa).producaoRegistrarProsseguir(matriz);
+			google.script.run.withSuccessHandler(feixarCaixa).producaoRegistrarProsseguir(rows);
 		}
 		function feixarCaixa() {
 			google.script.host.close();
@@ -161,6 +220,10 @@
         allowInput: true // Allows manual input
       });
       flatpickr("#data2", {
+        dateFormat: "d-m-Y", // Adjust the format as needed (e.g., Y-m-d, d-m-Y, etc.)
+        allowInput: true // Allows manual input
+      });
+      flatpickr("#data3", {
         dateFormat: "d-m-Y", // Adjust the format as needed (e.g., Y-m-d, d-m-Y, etc.)
         allowInput: true // Allows manual input
       });
