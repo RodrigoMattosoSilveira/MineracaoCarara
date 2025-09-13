@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Flatpickr CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- Latest Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- title>Hello, world!</title -->
+
+  </head>
+  <body>
+	<div class="container">
+    	<h2 class="mb-4">Produção diária de poços por período</h2>
+		<form id="myForm">
+      <!-- Row 1 -->
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="data1" class="form-label fw-bold">Data</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="data1" placeholder="Data">
+            <span class="input-group-text">
+              <i class="bi bi-calendar"></i>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="poco1" class="form-label fw-bold">Poço</label>
+          <select class="form-select form-select-lg mb-3" 
+              aria-label=".form-select-lg example"
+              id="poco1" 
+              onchange="obtenhaPoco1Selecionado()">
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="periodo1" class="form-label fw-bold">Período</label>
+          <select class="form-select form-select-lg mb-3" 
+              aria-label=".form-select-lg example"
+              id="periodo1" 
+              onchange="obtenhaPeriodo1Selecionado()">
+          </select>
+       </div>
+        <div class="col-md-3">
+          <label for="gramas1" class="form-label fw-bold">Gramas</label>
+          <input type="number" class="form-control" id="gramas1" placeholder="Peso">
+        </div>
+
+      </div>
+
+      <!-- Row 2 -->
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="data2" class="form-label fw-bold">Data</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="data2" placeholder="Data">
+            <span class="input-group-text">
+              <i class="bi bi-calendar"></i>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="poco2" class="form-label fw-bold">Poço</label>
+          <select class="form-select form-select-lg mb-3" 
+              aria-label=".form-select-lg example"
+              id="poco2" 
+              onchange="obtenhaPoco2Selecionado()">
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="periodo2" class="form-label fw-bold">Período</label>
+          <select class="form-select form-select-lg mb-3" 
+              aria-label=".form-select-lg example"
+              id="periodo2" 
+              onchange="obtenhaPeriodo2Selecionado()">
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="gramas2" class="form-label fw-bold">Gramas</label>
+          <input type="number" class="form-control" id="gramas2" placeholder="Gramas">
+        </div>
+
+      <!-- Row 3 -->
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="data3" class="form-label fw-bold">Data</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="data3" placeholder="Data">
+            <span class="input-group-text">
+              <i class="bi bi-calendar"></i>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="poco3" class="form-label fw-bold">Poço</label>
+          <select class="form-select form-select-lg mb-3" 
+              aria-label=".form-select-lg example"
+              id="poco3" 
+              onchange="obtenhaPoco2Selecionado()">
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="periodo3" class="form-label fw-bold">Período</label>
+          <select class="form-select form-select-lg mb-3" 
+              aria-label=".form-select-lg example"
+              id="periodo3" 
+              onchange="obtenhaPeriodo2Selecionado()">
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="gramas3" class="form-label fw-bold">Gramas</label>
+          <input type="number" class="form-control" id="gramas3" placeholder="Gramas">
+        </div>
+
+      </div>
+      <!-- Submit Buttons -->
+			<div class="row align-items-start justify-content-around">
+				<div class="col-4">
+					<!-- div class="mb-3"-->
+						<!-- button type="submit" class="btn btn-primary" onclick="enviarDados()">Selecionei</button -->
+						<input class="btn btn-primary" type="button" value="Ignorar" onclick="enviarProducao('Ignorar')">
+					<!--/div -->
+				</div>
+				<div class="col-4">
+					<!-- div class="mb-3"-->
+						<!-- button type="submit" class="btn btn-primary" onclick="enviarDados()">Selecionei</button -->
+						<input class="btn btn-primary" type="button" value="Registrar" onclick="enviarProducao('Registrar')">
+					<!--/div -->
+      </div>  
+    </form>
+  </div>
+		</form>
+	</div>
+	<script>
+		function configurarFormulario(objetoFormularioStr) {
+      let objetoFormulario = JSON.parse(objetoFormularioStr)
+ 			// console.log("Poços: " + JSON.stringify(objetoFormulario['pocos']));
+      // console.log("Períodos: " + JSON.stringify(objetoFormulario['periodos']))
+ 			console.log("Poços: " + objetoFormulario['pocos']);
+      console.log("Períodos: " + objetoFormulario['periodos']);
+      let theseIds = ['poco1, poco2'];
+      atualizeSelect('poco1', "Poço",  JSON.parse(objetoFormulario['pocos']));
+      atualizeSelect('poco2', "Poço",  JSON.parse(objetoFormulario['pocos']));
+      atualizeSelect('poco3', "Poço",  JSON.parse(objetoFormulario['pocos']));
+      atualizeSelect('periodo1', "Período",  JSON.parse(objetoFormulario['periodos']));
+      atualizeSelect('periodo2', "Período",  JSON.parse(objetoFormulario['periodos']));
+      atualizeSelect('periodo3', "Período",  JSON.parse(objetoFormulario['periodos']));
+		}
+
+		function atualizeSelect(elementoId, aviso, dados) {
+      console.log("atualizeSelect id: " + elementoId);
+			console.log("atualizeSelect dados: "  + dados);
+			const dropdown = document.getElementById(elementoId);
+			dropdown.innerHTML = ''; // Clear existing options
+			dropdown.innerHTML = `<option selected>` + '' + `</option>`
+			dados.forEach(item => {
+				const option = document.createElement('option');
+				option.value = item;
+				option.textContent = item;
+				dropdown.appendChild(option);
+			});
+		}
+		function obtenhaValorSelecionado (id) {
+			var valorEl = document.getElementById(id);
+			var valor = valorEl.options[valorEl.selectedIndex].value;
+			return valor;
+		}
+		function obtenhaValorTeclado (id) {
+			var valorEl = document.getElementById(id);
+			var valor = valorEl.value;
+			return valor;
+		}
+
+		function construirMatriz (id) {
+      let row = [];
+      let data = obtenhaValorTeclado('data'+ id);
+      console.log('construirMatriz, data' + id  + ': ' + data);
+      row.push(data)
+      let poco = obtenhaValorSelecionado('poco' + id)
+      console.log('construirMatriz, poco' + id  + ': ' + poco);
+      row.push(poco);
+      let periodo = obtenhaValorSelecionado('periodo' + id)
+      row.push(periodo);
+      console.log('construirMatriz, periodo' + id  + ': ' + periodo);
+      let gramas = obtenhaValorTeclado('gramas' + id)
+      console.log('construirMatriz, gramas' + id  + ': ' + gramas);
+      row.push(gramas);
+      return row;
+		}
+
+    rows = []; // note that it is a script level variable
+    function enviarProducao(acao) {
+      console.log("Acao: " + acao)
+      switch (acao) {
+        case 'Ignorar':
+          break;
+        case 'Registrar':
+          for (let i = 1; i < 4; i++) {
+            row = construirMatriz(i);
+            console.log('enviarProducao, row: ' + row);
+            rows.push(row)
+          }
+          break;
+        default:
+          break;
+      } 
+			google.script.run.withSuccessHandler(feixarCaixa).producaoRegistrarProsseguir(rows);
+		}
+		function feixarCaixa() {
+			google.script.host.close();
+		}			
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // https://tutorialdeep.com/live-editor/bootstrap5-datepicker/
+      flatpickr("#data1", {
+        dateFormat: "d-m-Y", // Adjust the format as needed (e.g., Y-m-d, d-m-Y, etc.)
+        allowInput: true // Allows manual input
+      });
+      flatpickr("#data2", {
+        dateFormat: "d-m-Y", // Adjust the format as needed (e.g., Y-m-d, d-m-Y, etc.)
+        allowInput: true // Allows manual input
+      });
+      flatpickr("#data3", {
+        dateFormat: "d-m-Y", // Adjust the format as needed (e.g., Y-m-d, d-m-Y, etc.)
+        allowInput: true // Allows manual input
+      });
+
+    });
+	
+		google.script.run.withSuccessHandler(configurarFormulario).getObjetoFormulario();
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  </body>
+</html>
