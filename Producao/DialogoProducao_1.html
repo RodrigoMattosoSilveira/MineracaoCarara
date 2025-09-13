@@ -19,44 +19,70 @@
 		<form id="myForm">
       <!-- Row 1 -->
       <div class="row mb-3">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="data1" class="form-label">Data</label>
           <div class="input-group">
-            <input type="text" class="form-control" id="data1" placeholder="Selecione data">
+            <input type="text" class="form-control" id="data1" placeholder="Data">
             <span class="input-group-text">
               <i class="bi bi-calendar"></i>
             </span>
           </div>
         </div>
-        <div class="col-md-4">
-          <label for="email1" class="form-label">Email</label>
-          <input type="email" class="form-control" id="email1" placeholder="Enter email">
+        <div class="col-md-3">
+          <label for="poco1" class="form-label">Poço</label>
+          <select class="form-select form-select-lg mb-3" 
+              aria-label=".form-select-lg example"
+              id="poco1" 
+              onchange="obtenhaPoco1Selecionado()">
+          </select>
         </div>
-        <div class="col-md-4">
-          <label for="phone1" class="form-label">Phone</label>
-          <input type="tel" class="form-control" id="phone1" placeholder="Enter phone">
+        <div class="col-md-3">
+          <label for="periodo1" class="form-label">Período</label>
+          <select class="form-select form-select-lg mb-3" 
+              aria-label=".form-select-lg example"
+              id="periodo1" 
+              onchange="obtenhaPeriodo1Selecionado()">
+          </select>
+       </div>
+        <div class="col-md-3">
+          <label for="qtd1" class="form-label">Gramas</label>
+          <input type="number" class="form-control" id="qtd1" placeholder="Peso">
         </div>
+
       </div>
 
       <!-- Row 2 -->
       <div class="row mb-3">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="data2" class="form-label">Data</label>
           <div class="input-group">
-            <input type="text" class="form-control" id="data2" placeholder="Selecione data">
+            <input type="text" class="form-control" id="data2" placeholder="Data">
             <span class="input-group-text">
               <i class="bi bi-calendar"></i>
             </span>
           </div>
         </div>
-        <div class="col-md-4">
-          <label for="email2" class="form-label">Email</label>
-          <input type="email" class="form-control" id="email2" placeholder="Enter email">
+        <div class="col-md-3">
+          <label for="poco2" class="form-label">Poço</label>
+          <select class="form-select form-select-lg mb-3" 
+              aria-label=".form-select-lg example"
+              id="poco2" 
+              onchange="obtenhaPoco2Selecionado()">
+          </select>
         </div>
-        <div class="col-md-4">
-          <label for="phone2" class="form-label">Phone</label>
-          <input type="tel" class="form-control" id="phone2" placeholder="Enter phone">
+        <div class="col-md-3">
+          <label for="periodo2" class="form-label">Período</label>
+          <select class="form-select form-select-lg mb-3" 
+              aria-label=".form-select-lg example"
+              id="periodo2" 
+              onchange="obtenhaPeriodo2Selecionado()">
+          </select>
         </div>
+        <div class="col-md-3">
+          <label for="qtd2" class="form-label">Gramas</label>
+          <input type="number" class="form-control" id="qtd2" placeholder="Gramas">
+        </div>
+
       </div>
       <!-- Submit Buttons -->
 			<div class="row align-items-start justify-content-around">
@@ -71,7 +97,6 @@
 						<!-- button type="submit" class="btn btn-primary" onclick="enviarDados()">Selecionei</button -->
 						<input class="btn btn-primary" type="button" value="Registrar" onclick="enviarProducao('Registrar')">
 					<!--/div -->
-				</div>
       </div>  
     </form>
   </div>
@@ -84,8 +109,34 @@
       // console.log("Períodos: " + JSON.stringify(objetoFormulario['periodos']))
  			console.log("Poços: " + objetoFormulario['pocos']);
       console.log("Períodos: " + objetoFormulario['periodos']);
+      let theseIds = ['poco1, poco2'];
+      atualizeSelect('poco1', "Poço",  JSON.parse(objetoFormulario['pocos']))
+      atualizeSelect('poco2', "Poço",  JSON.parse(objetoFormulario['pocos']))
+      atualizeSelect('periodo1', "Período",  JSON.parse(objetoFormulario['periodos']))
+      atualizeSelect('periodo2', "Período",  JSON.parse(objetoFormulario['periodos']))
 		}
-		function enviarProducao(acao) {
+
+		function atualizeSelect(elementoId, aviso, dados) {
+      console.log("atualizeSelect id: " + elementoId);
+			console.log("atualizeSelect dados: "  + dados);
+			const dropdown = document.getElementById(elementoId);
+			dropdown.innerHTML = ''; // Clear existing options
+			dropdown.innerHTML = `<option selected>` + aviso + `</option>`
+			dados.forEach(item => {
+				const option = document.createElement('option');
+				option.value = item;
+				option.textContent = item;
+				dropdown.appendChild(option);
+			});
+		}
+
+		function obtenhaValorSelecionado (id) {
+			var valorEl = document.getElementById(id);
+			var valor = valorEl.options[valorEl.selectedIndex].value;
+			return valor;
+		}
+
+    function enviarProducao(acao) {
       console.log("Acao: " + acao)
       matriz = [];
       switch (acao) {
@@ -104,6 +155,7 @@
 		}			
 
     document.addEventListener('DOMContentLoaded', function () {
+      // https://tutorialdeep.com/live-editor/bootstrap5-datepicker/
       flatpickr("#data1", {
         dateFormat: "d-m-Y", // Adjust the format as needed (e.g., Y-m-d, d-m-Y, etc.)
         allowInput: true // Allows manual input
