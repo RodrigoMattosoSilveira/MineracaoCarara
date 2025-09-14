@@ -13,6 +13,7 @@ const REFERENCIA_LOCAIS_GAMA_NOME = "Local";
 const REFERENCIA_TAREFAS_GAMA_NOME = "Tarefa";	
 const REFERENCIA_PERIODO_GAMA_NOME = "Periodo";	
 const REFERENCIA_OURO_USD_ONCA_GAMA_NOME = 'OuroUsdOnca'
+const REFERENCIA_OURO_BRL_GRAMA_GAMA_NOME = 'OuroBrlGrama'
 
 const obterReferenciaGoogleSheet = () =>  SpreadsheetApp.openById(REFERENCIA_GOOGLE_SHEET_ID);
 const obterReferenciaMetodosPlanilha = () => obterReferenciaPlanilha(REFERENCIA_METODOS_PLANILHA_NOME);
@@ -40,6 +41,7 @@ const obterReferenciaAreasGamaVals = () => obterReferenciaGamaVals(REFERENCIA_AR
 const obterReferenciaLocaisGamaVals = () => obterReferenciaGamaVals(REFERENCIA_LOCAIS_GAMA_NOME);
 const obterReferenciaTarefasGamaVals = () => obterReferenciaGamaVals(REFERENCIA_TAREFAS_GAMA_NOME);
 const obterReferenciaPeriodosGamaVals = () => obterReferenciaGamaVals(REFERENCIA_PERIODO_GAMA_NOME);
+const obterReferenciaOuroBrlGramaVal = () => obterReferenciaGamaVals(REFERENCIA_OURO_BRL_GRAMA_GAMA_NOME)[0][0];
 
 
 function obterReferenciaPocos() {

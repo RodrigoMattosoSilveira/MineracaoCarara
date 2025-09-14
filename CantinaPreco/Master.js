@@ -14,9 +14,10 @@ const masterId = "1CXo2aNn6bXqbMZTypgG6I9DTdVEy-8wly5AhOs0k8Zg";
 //
 //* ********************************************************************************************************************* */
 //
+// TODO replace with Referencia library
 function obtenhaCotacaoOuroSimples() {
-  const masterSS = SpreadsheetApp.openById(masterId);
-  const cotacaoOuroArray = masterSS.getRangeByName("OuroBrlGrama").getValues();
-  const cotacaoOuro = cotacaoOuroArray[0][0];
-  return cotacaoOuro;
+  // const masterSS = SpreadsheetApp.openById(masterId);
+  // const cotacaoOuroArray = masterSS.getRangeByName("OuroBrlGrama").getValues();
+  // const cotacaoOuro = cotacaoOuroArray[0][0];
+  return cotacaoOuro = Referencia.obterReferenciaOuroBrlGramaVal();
 }
