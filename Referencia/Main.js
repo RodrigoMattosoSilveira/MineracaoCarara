@@ -37,7 +37,48 @@ function updateDolarParaReal() {
   var content = response.getContentText();
   var json = JSON.parse(content);
   var brlRate = json['rates']['BRL']
-  const masterSS = SpreadsheetApp.openById(REFERENCIA_GOOGLE_SHEET_ID);
-  masterSS.getRangeByName("UsdToBrl").setValue(brlRate);
+  obterReferenciaOuroBrlGama().setValue(brlRate);
 }
-
+// ****************************************************************************
+// Retorna um mapa, identificados e classificados pelos nomes dos periodos de 
+// trabalho na organizacao, cada nome associado com um objeto consistindo da 
+// indetidade e hora do periodo de trabalho
+// 
+// @returns {Object} os períodos de trabalho da organização
+// ****************************************************************************
+// 
+function obterPeriodos() {
+  let periodos = new Map();
+  obterReferenciaPeriodosGamaVals().forEach(element => { 
+    periodos.set(element[REFERENCIA_PERIODO_NOME_COL], {'ID': element[REFERENCIA_PERIODO_ID_COL], 'Hora': element[REFERENCIA_PERIODO_HORA_COL],});
+  });
+  return periodos;
+}
+// ****************************************************************************
+// obterPeriodosIds - Retorna um de objetos que consiste dos IDs dos períodos 
+// de trabalho da organização
+// 
+// @returns {Array} as IDs dos períodos de trabalho da organização
+// ****************************************************************************
+// 
+const obterPeriodosIds = () => {
+  let matriz = []
+  obterReferenciaPeriodosGamaVals().forEach(element => {matriz.push(element[PERIODO_ID_COL])});
+  return matriz;
+}
+// ****************************************************************************
+// obterPeriodosNomes - Retorna uma matriz de objetos que consiste dos nomes 
+// dos períodos de trabalho da organização
+// 
+// @returns {Array} os nomes dos períodos de trabalho da organização
+// ****************************************************************************
+// 
+const obterPeriodosNomes = () => {
+  let matriz = []
+  // obterPeriodosGamaVals().forEach(element => {matriz.push(element[PERIODO_NOME_COL])});
+  // let sheet = obterMasterSheet();
+  // let range =  obterMasterSheet().obterPeriodosGama().obterPeriodosGamaVals()
+  // let vals = range.getValues();
+  obterReferenciaPeriodosGamaVals().forEach(element => {matriz.push(element[PERIODO_NOME_COL])})
+  return matriz;
+}
