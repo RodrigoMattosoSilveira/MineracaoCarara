@@ -12,13 +12,6 @@ const ouro18KaratGramaCol = 8;
 const ouro14KaratGramaCol = 9;
 const ouro10KaratGramaCol = 10;
 
-function obtenhaCotacaoOuroTest() {
-  const folhaID = "1T1uTdxSNuxSBuUVVLBoJxiME3HrTtNC3bgb69PThduY";
-  const folhaIDSS = SpreadsheetApp.openById(folhaID);
-  const turnHojeDiaData = folhaIDSS.getRangeByName("TurnoHojeDiaData").getValues();
-  obtenhaProducaoOuro(new Date(turnHojeDiaData[0])) 
-  // obtenhaProducaoOuro(new Date("2025-07-31T00:00:00"));
-}
 function obtenhaCotacaoOuro(dataProcurada) {
   const ouroIDSS = SpreadsheetApp.openById(ouroId);
   const ouroDadosRng = ouroIDSS.getRange(ouroDadosGama);
