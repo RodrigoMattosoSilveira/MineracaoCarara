@@ -17,7 +17,7 @@ const REFERENCIA_OURO_BRL_GRAMA_GAMA_NOME = 'OuroBrlGrama'
 
 const REFERENCIA_PERIODO_NOME_COL     = 0;
 const REFERENCIA_PERIODO_ID_COL       = 1;
-const REFERENCIA_PERIODO_ID_HORA_COL  = 2;
+const REFERENCIA_PERIODO_HORA_COL     = 2;
 
 const obterReferenciaGoogleSheet      = ()  =>  SpreadsheetApp.openById(REFERENCIA_GOOGLE_SHEET_ID);
 const obterReferenciaMetodosPlanilha  = ()  => obterReferenciaPlanilha(REFERENCIA_METODOS_PLANILHA_NOME);
@@ -46,7 +46,7 @@ const obterReferenciaAreasGamaVals    = () => obterReferenciaGamaVals(REFERENCIA
 const obterReferenciaLocaisGamaVals   = () => obterReferenciaGamaVals(REFERENCIA_LOCAIS_GAMA_NOME);
 const obterReferenciaTarefasGamaVals  = () => obterReferenciaGamaVals(REFERENCIA_TAREFAS_GAMA_NOME);
 const obterReferenciaPeriodosGamaVals = () => obterReferenciaGamaVals(REFERENCIA_PERIODO_GAMA_NOME);
-const obterReferenciaOuroBrlGramaVal  = () => obterReferenciaGamaVals(REFERENCIA_OURO_BRL_GRAMA_GAMA_NOME)[0][0];
+function obterReferenciaOuroBrlGramaVal () { obterReferenciaGamaVals(REFERENCIA_OURO_BRL_GRAMA_GAMA_NOME)[0][0]; }
 
 
 function obterReferenciaPocos() {

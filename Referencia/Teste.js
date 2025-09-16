@@ -1,3 +1,6 @@
+const obterPeriodosTeste = () => {
+  let myMap = obterPeriodos()
+}
 const obterReferenciaOuroBrlGramaValTeste = () => {
   let valor = obterReferenciaOuroBrlGramaVal()
 }

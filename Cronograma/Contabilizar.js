@@ -35,22 +35,6 @@ function cronogramaContabilizar() {
 			datasContabilizar.push(dataStr);
 		}
 	});
-
-	// Construa um object descrevendo a producao diaria dos pocos. Seram assim:		
-	// {
-	//   "9/5/2025": { "Poço_1": 21.95, "Poço_2": 0.71 },
-	//   "9/6/2025": { "Poço_1": 15.97 }
-	// }	
-	let producaoDiaria = {};
-  let producaoPoco;
-	datasContabilizar.forEach( dataStr => {
-     producaoDiaria[dataStr] = {};
-    producaoPoco = Producao.obterProducaoPocos(dataStr);
-    const keys = Object.keys(producaoPoco);
-    keys.forEach(key => {
-        producaoDiaria[dataStr][key] = producaoPoco[key]; 
-    });
-	});
 	
 	// Processar os registros a serem contabilizados. Contabilizar todos os 
 	// registros com Método igual a Diária. Contabilizar registros com Método 
@@ -122,8 +106,8 @@ function cronogramaContabilizar() {
           break;
         case "Porcentagem":
         case  "Meio_A_Meio":
-          let producaoDataPocoPeriodo = Producao.obterProducaoDataPocoPeriodo(chaveProducao)
-          if (producaoDataPocoPeriodo!== null) {
+          let producaoDataPocoPeriodo = Producao.obterProducaoDataPocoPeriodoChave(chaveProducao)
+          if (producaoDataPocoPeriodo !== null) {
           // if (producaoDiaria[datastr][poco] !== undefined) {
             // Moeda Ouro
             contaCorrenteRegistro[contasCorrentesMoedaCol] = "Ouro";
