@@ -261,7 +261,7 @@ function calculeRendasGanhar(nomeAssociado, inicioEstadia) {
 // *********************************************************************************
 // obtenhaDadoEstadiaAtiva
 // Obtenha o dado com o nome em nomeAssociado, e a coluna em dadoColuna. Note que
-// essa funcao so fornece dados para associados com estadias ativas
+// essa funcao so fornece dados paracolaboradores com estadias ativas
 // 
 // Input
 //    nomeAssociado
@@ -365,10 +365,10 @@ function calculeGramasOuroGanhar(nomeAssociado,  inicioEstadia, metodo, tarefa) 
   var timeDifference = Math.abs(fimEstadia.getTime() - Date.now());
   var diasRestantes = Math.ceil(timeDifference / (1000 * 3600 * 24));
 
-  // Obtenha a porcentagem dos associados alocada ao associadp
+  // Obtenha a porcentagem doscolaboradores alocada ao associadp
   var porcentagem = obtenhaRemuneracao (metodo, tarefa)
 
-  // Obtenha a media de producao de ouro alocada aos associados
+  // Obtenha a media de producao de ouro alocada aoscolaboradores
   producaoOuroRegistro = obtenhaProducaoOuro(hoje);
   estimativaDeCotaDiariaAssociado = producaoOuroRegistro[producaoPosAssociadosMediaCol]
 

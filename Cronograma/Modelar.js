@@ -61,7 +61,7 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			//  
 			obterPlanejarGama() !== null ? obterPlanejarGama().clear({contentsOnly: true}) : null;
 
-			// Construa uma matriz de todos os associados na planilha 
+			// Construa uma matriz de todos oscolaboradores na planilha 
 			// Cronograma!Modelos cujo atributo de período corresponde ao 
 			// período que está sendo planejado
 			const modelosGamaVals = obterModelosGamaVals().filter( elemento => elemento[MODELOS_PERIODO] === periodo);

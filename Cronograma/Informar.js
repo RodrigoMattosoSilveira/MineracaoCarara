@@ -1,4 +1,4 @@
-// Informar os associados de suas responsabilidades;
+// Informar oscolaboradores de suas responsabilidades;
 function cronogramaInformar() {
     SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Informar', 3);
 
