@@ -11,7 +11,7 @@ function diversosExecute() {
 	switchToTab("Diversos");
 
 	if (DiversosAssociadoRange.getValue() == "") {
-		SpreadsheetApp.getUi().alert("O Associado deve ser preenchido.");
+		SpreadsheetApp.getUi().alert("OColaboradordeve ser preenchido.");
 		return null;
 	}	
 

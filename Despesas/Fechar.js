@@ -23,7 +23,7 @@ function fecharPrepare() {
 
 function fecharGatilho(e) {
 	if (FecharAssociadoRange.getValue() == "") {
-		SpreadsheetApp.getUi().alert("O Associado deve ser preenchido.");
+		SpreadsheetApp.getUi().alert("OColaboradordeve ser preenchido.");
 		return null;
 	}
 	// TODO Issue #33 Replace the curreent Semaphors with modal dialog boxes
@@ -52,11 +52,11 @@ function fecharGatilhoCompletar() {
 			style: 'currency',
 			currency: 'USD'
 		}).format(creditosDebitos["Credito"]["Real"] );
-		fecharDadosRangeVals[i][0] = 'A Mineração Carará pagou ao Associado seu credito em Real, ' + formattedPrice;
+		fecharDadosRangeVals[i][0] = 'A Mineração Carará pagou aoColaboradorseu credito em Real, ' + formattedPrice;
 		i++
 	}
 	if (creditosDebitos["Credito"]["Ouro"] > 0) {
-		fecharDadosRangeVals[i][0]  = 'A Mineração Carará pagou ao Associado seu credito em Ouro, ' + creditosDebitos["Credito"]["Ouro"] + 'g';
+		fecharDadosRangeVals[i][0]  = 'A Mineração Carará pagou aoColaboradorseu credito em Ouro, ' + creditosDebitos["Credito"]["Ouro"] + 'g';
 		i++
 	}
 	if (creditosDebitos["Debito"]["Real"] > 0) {
@@ -64,11 +64,11 @@ function fecharGatilhoCompletar() {
 			style: 'currency',
 			currency: 'USD'
 		}).format(creditosDebitos["Debito"]["Real"] );
-		fecharDadosRangeVals[i][0]  = 'O Associado  pagou a Mineração Carará seu debito em Real, ' + formattedPrice;
+		fecharDadosRangeVals[i][0]  = 'OColaborador pagou a Mineração Carará seu debito em Real, ' + formattedPrice;
 		i++
 	}
 	if (creditosDebitos["Debito"]["Ouro"] > 0) {
-		fecharDadosRangeVals[i][0]  = 'O Associado  pagou a Mineração Carará seu debito em ouro, ' + creditosDebitos["Debito"]["Ouro"] + 'g';
+		fecharDadosRangeVals[i][0]  = 'OColaborador pagou a Mineração Carará seu debito em ouro, ' + creditosDebitos["Debito"]["Ouro"] + 'g';
 	}
 	fecharDadosRange.setValues(fecharDadosRangeVals).setFontSize(14);
 
@@ -78,7 +78,7 @@ function fecharGatilhoCompletar() {
 function fecharExecute() {
 	switchToTab("Fechar");
 	if (FecharAssociadoRange.getValue() == "") {
-		SpreadsheetApp.getUi().alert("O Associado deve ser preenchido.");
+		SpreadsheetApp.getUi().alert("OColaboradordeve ser preenchido.");
 		return null;
 	}
 
@@ -106,26 +106,26 @@ function fecharExecute() {
 	var contaCorrente = [];
 	var contaCorrenteRegistro;
 	if (creditoReal > 0) {
-		var item =  'A Mineração Carará pagou ao Associado seu credito em Real';
+		var item =  'A Mineração Carará pagou aoColaboradorseu credito em Real';
 		contaCorrenteRegistro = fillUpRegister (FecharData, FecharAssociado, FecharEstadia, 'Real', 'Debito', item, creditoReal, FecharComentario);
 		contaCorrente.push(contaCorrenteRegistro)
 	}
 
 
 	if (creditoOuro > 0) {
-		var item =  'A Mineração Carará pagou ao Associado seu credito em Ouro';
+		var item =  'A Mineração Carará pagou aoColaboradorseu credito em Ouro';
 		var contaCorrenteRegistro = fillUpRegister (FecharData, FecharAssociado, FecharEstadia, 'Ouro', 'Debito', item, creditoOuro, FecharComentario);
 		contaCorrente.push(contaCorrenteRegistro)
 	}
 
 	if (debitoReal > 0) {
-		var item =  'O Associado  pagou a Mineração Carará seu debito em Real';
+		var item =  'OColaborador pagou a Mineração Carará seu debito em Real';
 		contaCorrenteRegistro = fillUpRegister (FecharData, FecharAssociado, FecharEstadia, 'Real', 'Credito', item, debitoReal, FecharComentario);
 		contaCorrente.push(contaCorrenteRegistro)
 	}
 
 	if (debitoOuro > 0) {
-		var item =  'O Associado  pagou a Mineração Carará seu debito em Ouro';
+		var item =  'OColaborador pagou a Mineração Carará seu debito em Ouro';
 		contaCorrenteRegistro = fillUpRegister (FecharData, FecharAssociado, FecharEstadia, 'Real', 'Credito', item, debitoOuro, FecharComentario);
 		contaCorrente.push(contaCorrenteRegistro)
 	}

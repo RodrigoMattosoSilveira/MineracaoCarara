@@ -10,7 +10,7 @@ function pixExecute() {
 	switchToTab("Pix");
 
 	if (PixAssociadoRange.getValue() == "") {
-		SpreadsheetApp.getUi().alert("O Associado deve ser preenchido.");
+		SpreadsheetApp.getUi().alert("OColaboradordeve ser preenchido.");
 		return null;
 	}
 

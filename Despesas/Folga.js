@@ -14,7 +14,7 @@ function folgaExecute() {
 		return null;
 	}
 	if (FolgaPagementoRange.getValue() != "Porcentagem") {
-		SpreadsheetApp.getUi().alert("O Associado precisa ser comissionado.");
+		SpreadsheetApp.getUi().alert("OColaboradorprecisa ser comissionado.");
 		return null;
 	}
 	if (FolgaSubstituidoRange.getValue() == "") {
