@@ -43,7 +43,7 @@ function fecharGatilhoCompletar() {
 	const creditosDebitos = CararaLibrary.resumirContaCorrenteAssociado(FecharAssociado, FecharEstadia, contasCorrentesDadosRangeVals);
 
 	//  Obtenha e preencha a area do formularon a incluir as informations a
-	// cerca dos debitos e creditos do associado
+	// cerca dos debitos e creditos docolaborador
 	const fecharDadosRange = despesasSpreadSheet.getRangeByName(FecharDadosRangeName)
 	let fecharDadosRangeVals = fecharDadosRange.getValues();
 	let i = 0;
@@ -159,10 +159,10 @@ function fecharExecute() {
 // 		contaCorrenteRegistro (Array)
 // ****************************************************************************
 // 
-function fillUpRegister (data, associado, estadia, moeda, cOrD, item, valor, fecharComentario) {
+function fillUpRegister (data,colaborador, estadia, moeda, cOrD, item, valor, fecharComentario) {
 	var contaCorrenteRegistro = [];
 	contaCorrenteRegistro[contasCorrentesDataCol]        		= data;
-	contaCorrenteRegistro[contasCorrentesNomeCol]       	 	= associado
+	contaCorrenteRegistro[contasCorrentesNomeCol]       	 	=colaborador
 	contaCorrenteRegistro[contasCorrentesEstadiaCol]     		= estadia
 	contaCorrenteRegistro[contasCorrentesMetodoCol]      		= 'Fechar';
 	contaCorrenteRegistro[contasCorrentesMoedaCol]       		= moeda

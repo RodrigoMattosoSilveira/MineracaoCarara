@@ -40,7 +40,7 @@ function meuOnEditGatilho(e) {
   var trasactions = contasCorrentesSheet.getRangeByName(contasCorrentesRendasDepesas).getValues();
   if (nome == "" || estadia == "") {
     var message = "";
-    message += "O nome do associado ou a estadia nao foram preenchidos";
+    message += "O nome docolaborador ou a estadia nao foram preenchidos";
     console.error(message);
     return;
   }
@@ -198,7 +198,7 @@ function resumirContaCorrenteAssociado (nome, estadia, transactions) {
 //    
 // Output
 //  Range  (RendasPorcentagemReais A quantia em reais, equivalente a quantia de ouro, 
-//  em gramas, ainda em credito na conta corrente do associado
+//  em gramas, ainda em credito na conta corrente docolaborador
 // * ********************************************************************************
 // 
 function valorDoOuroEmReais(ouroGramas) {
@@ -214,7 +214,7 @@ function valorDoOuroEmReais(ouroGramas) {
   cotacaoOuro = obtenhaCotacaoOuroSimples()
 
   //  Calcule a renda em reais, equivalente a quantia de ouro, 
-  //  em gramas, ainda em credito na conta corrente do associado
+  //  em gramas, ainda em credito na conta corrente docolaborador
   rendasPorcentagemReais = ouroGramas * cotacaoOuro
 
   return rendasPorcentagemReais;
@@ -267,7 +267,7 @@ function calculeRendasGanhar(nomeAssociado, inicioEstadia) {
 //    nomeAssociado
 //    dadoColumna
 // Output
-//  O dado na linha com o nome do associado, e a coluna do dadoColuna; campo em
+//  O dado na linha com o nome docolaborador, e a coluna do dadoColuna; campo em
 //  branco no caso the nao have estadia ativa para nomeAssociado
 //
 //  Note que os valores para access a planilha Estadia encontram-se no arquivo 
@@ -300,7 +300,7 @@ function obtenhaDadoEstadiaAtiva(nomeAssociado, dadoColumna) {
 //    metodo
 //    tarefa
 // Output
-//  A diaria a ser ganha pelo associado entre hoje e o final de sua estadia
+//  A diaria a ser ganha pelocolaborador entre hoje e o final de sua estadia
 //
 // * ********************************************************************************
 // 
@@ -324,7 +324,7 @@ function calculeDiariaGanhar (nomeAssociado,  inicioEstadia, metodo, tarefa) {
 //    metodo
 //    tarefa
 // Output
-//  O salario a ser ganho pelo associado entre hoje e o final de sua estadia,
+//  O salario a ser ganho pelocolaborador entre hoje e o final de sua estadia,
 //  calculado baseado no ganhos diarios
 //
 // * ********************************************************************************
@@ -347,7 +347,7 @@ function calculeSalarioGanhar(nomeAssociado,  inicioEstadia, metodo, tarefa){
 // Input
 //    nomeAssociado
 // Output
-//  O saldo to associado, calculado como um trabalhador on poco, que recebe baseado,\
+//  O saldo tocolaborador, calculado como um trabalhador on poco, que recebe baseado,\
 //  na producao diaria de ouro 
 //
 // * ********************************************************************************

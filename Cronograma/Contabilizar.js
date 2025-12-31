@@ -10,7 +10,7 @@
  * produções ainda não foram gravadas; nesse caso, o sistema preserva esses 
  * registros.
  * 
- * Uma vez que o associado responsável registra a produção de um poço para um 
+ * Uma vez que ocolaborador responsável registra a produção de um poço para um 
  * determinado dia, el pode acionar o menu Contabilizar para contabilizar os 
  * o sistema contabilizara esses resgistros a espera pela produção do poço.
  */
