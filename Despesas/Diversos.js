@@ -10,16 +10,16 @@ function diversosExecute() {
 	// 	.alert('You clicked DiversosExecute');
 	switchToTab("Diversos");
 
-	if (DiversosAssociadoRange.getValue() == "") {
-		SpreadsheetApp.getUi().alert("O Associado deve ser preenchido.");
+	if (DiversosColaboradorRange.getValue() == "") {
+		SpreadsheetApp.getUi().alert("OColaboradordeve ser preenchido.");
 		return null;
 	}	
 
 	// We need to build one record for each item in DiversosDespesasRange
 	var DiversosData 		= DiversosDataRange.getValues();
-	var DiversosAssociado	= DiversosAssociadoRange.getValue();
-	if (DiversosAssociado == "") {
-		SpreadsheetApp.getUi().alert("O campo DiversosAssociado deve ser preenchido.");
+	var DiversosColaborador	= DiversosColaboradorRange.getValue();
+	if (DiversosColaborador == "") {
+		SpreadsheetApp.getUi().alert("O campo DiversosColaborador deve ser preenchido.");
 		return null;
 	}
 	var DiversosEstadia 		= DiversosEstadiaRange.getValue();
@@ -47,7 +47,7 @@ function diversosExecute() {
 		      
 		contaCorrenteRegistro = [];
 		contaCorrenteRegistro[contasCorrentesDataCol]        		= DiversosData;
-		contaCorrenteRegistro[contasCorrentesNomeCol]       	 	= DiversosAssociado
+		contaCorrenteRegistro[contasCorrentesNomeCol]       	 	= DiversosColaborador
 		contaCorrenteRegistro[contasCorrentesEstadiaCol]     		= DiversosEstadia
 		contaCorrenteRegistro[contasCorrentesMetodoCol]      		= 'Diversos';
 		contaCorrenteRegistro[contasCorrentesMoedaCol]       		= DiversosMoeda;
@@ -70,11 +70,11 @@ function diversosExecute() {
 	// Limpe o formulário Diversos e informe ao usuário que o sistema concluiu a operação
 	limparFormularioDiversos();
 	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-		.alert('O sistema lancou as despesas Diversas do ' + DiversosAssociado);
+		.alert('O sistema lancou as despesas Diversas do ' + DiversosColaborador);
 }
 
 function limparFormularioDiversos() {
-	DiversosAssociadoRange.setValue("");
+	DiversosColaboradorRange.setValue("");
 	DiversosMoedaRange.setValue("Real");
 	DiversosItemsRange.setValue("");
 	DiversosRealRange.setValue("");

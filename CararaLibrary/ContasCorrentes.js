@@ -48,12 +48,12 @@ function cc_getTransacoesRendasDespesasRange() {
 }
 
 /* ********************************************************************************************************************* */
-// resumirContaCorrentAssociado
-//    Calcula um resumo dos Creditos e Debitos de um Associado, in Real e Ouro
+// resumirContaCorrentColaborador
+//    Calcula um resumo dos Creditos e Debitos de um Colaborador, in Real e Ouro
 // 
 // Input:
-//    nome (String)       - O nome to Associado
-//    estadia (Date       - (Date) - A data da estadia do Associado
+//    nome (String)       - O nome to Colaborador
+//    estadia (Date       - (Date) - A data da estadia do Colaborador
 //    transacoes (Range)  - A fonte dos dados a serem sumarizados
 //
 // Output:
@@ -70,7 +70,7 @@ function cc_getTransacoesRendasDespesasRange() {
 //    }
 //* ********************************************************************************************************************* */
 //
-function resumirContaCorrenteAssociado (nome, estadia, transactions) {
+function resumirContaCorrenteColaborador (nome, estadia, transactions) {
   // Iniializamos os sumarios 
     var creditosDebitosRealOuro = {
     Credito: {

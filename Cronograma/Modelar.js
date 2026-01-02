@@ -50,7 +50,7 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			//    - Definir o atributo Acao do registro a incluir na planilha
 			//      Cronograma!Planejar do seguinte modo:
 			//        - Definir seu atributo Ação como Incluir, caso o 
-			//          associado tiver um registro correspondente na planilha
+			//         colaborador tiver um registro correspondente na planilha
 			//          Cronograma!Modelos com o atributo de Período 
 			//          correspondente ao Período que está sendo planejado;
 			// 		  - Caso contrário, definir seu atributo Ação como Excluir
@@ -61,7 +61,7 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			//  
 			obterPlanejarGama() !== null ? obterPlanejarGama().clear({contentsOnly: true}) : null;
 
-			// Construa uma matriz de todos os associados na planilha 
+			// Construa uma matriz de todos oscolaboradores na planilha 
 			// Cronograma!Modelos cujo atributo de período corresponde ao 
 			// período que está sendo planejado
 			const modelosGamaVals = obterModelosGamaVals().filter( elemento => elemento[MODELOS_PERIODO] === periodo);

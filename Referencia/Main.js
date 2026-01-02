@@ -41,7 +41,7 @@ function updateDolarParaReal() {
 }
 // ****************************************************************************
 // Retorna um mapa, identificados e classificados pelos nomes dos periodos de 
-// trabalho na organizacao, cada nome associado com um objeto consistindo da 
+// trabalho na organizacao, cada nomecolaborador com um objeto consistindo da 
 // indetidade e hora do periodo de trabalho
 // 
 // @returns {Object} os períodos de trabalho da organização

@@ -6,11 +6,11 @@
  * Estado[Inspecionar]. Uma vez contabilizados, esses registros são removidos da
  * planilha Cronograma!Ativos.
  * 
- * Isso, com exceção de associados que trabalharam em poços para os quais suas 
+ * Isso, com exceção decolaboradores que trabalharam em poços para os quais suas 
  * produções ainda não foram gravadas; nesse caso, o sistema preserva esses 
  * registros.
  * 
- * Uma vez que o associado responsável registra a produção de um poço para um 
+ * Uma vez que ocolaborador responsável registra a produção de um poço para um 
  * determinado dia, el pode acionar o menu Contabilizar para contabilizar os 
  * o sistema contabilizara esses resgistros a espera pela produção do poço.
  */
@@ -184,7 +184,7 @@ function cronogramaContabilizar() {
     }
   });
 
-	SpreadsheetApp.getActiveSpreadsheet().toast('O sistema contabilizou os ganhos dos associados', 'Contabilizar', 3);
+	SpreadsheetApp.getActiveSpreadsheet().toast('O sistema contabilizou os ganhos doscolaboradores', 'Contabilizar', 3);
 }
 
 /****************************************************************************

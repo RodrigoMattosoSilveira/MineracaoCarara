@@ -9,14 +9,14 @@ function pixExecute() {
 	// 	.alert('You clicked PixExecute');
 	switchToTab("Pix");
 
-	if (PixAssociadoRange.getValue() == "") {
-		SpreadsheetApp.getUi().alert("O Associado deve ser preenchido.");
+	if (PixColaboradorRange.getValue() == "") {
+		SpreadsheetApp.getUi().alert("OColaboradordeve ser preenchido.");
 		return null;
 	}
 
 	// We need to build one record for each item in PixDespesasRange
 	var PixData 		= PixDataRange.getValues();
-	var PixAssociado	= PixAssociadoRange.getValue();
+	var PixColaborador	= PixColaboradorRange.getValue();
 	var PixEstadia 		= PixEstadiaRange.getValue();
 	var PixMoeda 		= PixMoedaRange.getValue();
 	var PixDespesas     = PixDespesasRange.getValues();
@@ -42,7 +42,7 @@ function pixExecute() {
 		      
 		contaCorrenteRegistro = [];
 		contaCorrenteRegistro[contasCorrentesDataCol]        		= PixData;
-		contaCorrenteRegistro[contasCorrentesNomeCol]       	 	= PixAssociado
+		contaCorrenteRegistro[contasCorrentesNomeCol]       	 	= PixColaborador
 		contaCorrenteRegistro[contasCorrentesEstadiaCol]     		= PixEstadia
 		contaCorrenteRegistro[contasCorrentesMetodoCol]      		= 'Pix';
 		contaCorrenteRegistro[contasCorrentesMoedaCol]       		= PixMoeda;
@@ -65,11 +65,11 @@ function pixExecute() {
 	// Limpe o formulário PIX e informe ao usuário que o sistema concluiu a operação
 	limparFormularioPix ();	
 	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-		.alert('O sistema lancou o PIX do ' + PixAssociado);
+		.alert('O sistema lancou o PIX do ' + PixColaborador);
 }
 
 function limparFormularioPix () {
-	PixAssociadoRange.setValue("");
+	PixColaboradorRange.setValue("");
 	PixMoedaRange.setValue("Real");
 	PixItemsRange.setValue("");
 	PixRealRange.setValue("");

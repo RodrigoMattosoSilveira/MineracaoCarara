@@ -9,12 +9,12 @@ function folgaExecute() {
 	// 	.alert('You clicked FolgaExecute');
 	switchToTab("Folga");
 
-	if (FolgaAssociadoRange.getValue() == "") {
+	if (FolgaColaboradorRange.getValue() == "") {
 		SpreadsheetApp.getUi().alert("O Assiciado deve ser preenchido.");
 		return null;
 	}
 	if (FolgaPagementoRange.getValue() != "Porcentagem") {
-		SpreadsheetApp.getUi().alert("O Associado precisa ser comissionado.");
+		SpreadsheetApp.getUi().alert("OColaboradorprecisa ser comissionado.");
 		return null;
 	}
 	if (FolgaSubstituidoRange.getValue() == "") {
@@ -28,7 +28,7 @@ function folgaExecute() {
 
 	// We need to build one record for each item in FolgaDespesasRange
 	var FolgaData 		= FolgaDataRange.getValues();
-	var FolgaAssociado	= FolgaAssociadoRange.getValue();
+	var FolgaColaborador	= FolgaColaboradorRange.getValue();
 	var FolgaEstadia 		= FolgaEstadiaRange.getValue();
 	var FolgaMoeda 		= FolgaMoedaRange.getValue();
 	var FolgaDespesas     = FolgaDespesasRange.getValues();
@@ -54,7 +54,7 @@ function folgaExecute() {
 		      
 		contaCorrenteRegistro = [];
 		contaCorrenteRegistro[contasCorrentesDataCol]        		= FolgaData;
-		contaCorrenteRegistro[contasCorrentesNomeCol]       	 	= FolgaAssociado
+		contaCorrenteRegistro[contasCorrentesNomeCol]       	 	= FolgaColaborador
 		contaCorrenteRegistro[contasCorrentesEstadiaCol]     		= FolgaEstadia
 		contaCorrenteRegistro[contasCorrentesMetodoCol]      		= 'Folga';
 		contaCorrenteRegistro[contasCorrentesMoedaCol]       		= FolgaMoeda;
@@ -77,11 +77,11 @@ function folgaExecute() {
 	// Limpe o formulário Folga e informe ao usuário que o sistema concluiu a operação
 	limparFormularioFolga();
 	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-		.alert('O sistema lancou a despesa do pagamento da folga de ' + FolgaAssociado);
+		.alert('O sistema lancou a despesa do pagamento da folga de ' + FolgaColaborador);
 }
 
 function limparFormularioFolga() {
-	FolgaAssociadoRange.setValue("");
+	FolgaColaboradorRange.setValue("");
 	FolgaMoedaRange.setValue("Real");
 	FolgaItemsRange.setValue("");
 	FolgaRealRange.setValue("");

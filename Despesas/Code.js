@@ -11,7 +11,7 @@ function despesasGetSpreaSheet() {
 const despesasCantinaTab = despesasSpreadSheet.getSheetByName("Cantina");
 const CantinaDataRange = despesasCantinaTab.getRange("CantinaData");
 
-const CantinaAssociadoRange 	= despesasCantinaTab.getRange("CantinaAssociado");
+const CantinaColaboradorRange 	= despesasCantinaTab.getRange("CantinaColaborador");
 const CantinaEstadiaRange 		= despesasCantinaTab.getRange("CantinaEstadia");
 const CantinaPagementoRange 	= despesasCantinaTab.getRange("CantinaPagemento");
 const CantinaMoedaRange 		= despesasCantinaTab.getRange("CantinaMoeda");
@@ -33,7 +33,7 @@ const CantinaDespesasTotaOurolCol 	= 5;
 const despesasPixTab = despesasSpreadSheet.getSheetByName("Pix");
 const PixDataRange = despesasPixTab.getRange("PixData");
 
-const PixAssociadoRange   	= despesasPixTab.getRange("PixAssociado");
+const PixColaboradorRange   = despesasPixTab.getRange("PixColaborador");
 const PixEstadiaRange     	= despesasPixTab.getRange("PixEstadia");
 const PixPagementoRange   	= despesasPixTab.getRange("PixPagamento");
 const PixMoedaRange     	= despesasPixTab.getRange("PixMoeda");
@@ -56,10 +56,10 @@ const PixDespesasTotaOurolCol   = 5;
 const despesasDiversosTab = despesasSpreadSheet.getSheetByName("Diversos");
 const DiversosDataRange = despesasDiversosTab.getRange("DiversosData");
 
-const DiversosAssociadoRange     = despesasDiversosTab.getRange("DiversosAssociado");
+const DiversosColaboradorRange   = despesasDiversosTab.getRange("DiversosColaborador");
 const DiversosEstadiaRange       = despesasDiversosTab.getRange("DiversosEstadia");
 const DiversosPagementoRange     = despesasDiversosTab.getRange("DiversosPagamento");
-const DiversosMoedaRange       = despesasDiversosTab.getRange("DiversosMoeda");
+const DiversosMoedaRange         = despesasDiversosTab.getRange("DiversosMoeda");
 const DiversosDespesasRange      = despesasDiversosTab.getRange("DiversosDespesas");
 const DiversosComentarioRange    = despesasDiversosTab.getRange("DiversosComentario");
 
@@ -79,14 +79,14 @@ const DiversosDespesasTotaOurolCol   = 5;
 despesasFolgaTab = despesasSpreadSheet.getSheetByName("Folga");
 const FolgaDataRange = despesasFolgaTab.getRange("FolgaData");
 
-const FolgaAssociadoRange     = despesasFolgaTab.getRange("FolgaAssociado");
-const FolgaEstadiaRange       = despesasFolgaTab.getRange("FolgaEstadia");
-const FolgaPagementoRange     = despesasFolgaTab.getRange("FolgaPagamento");
-const FolgaMoedaRange       = despesasFolgaTab.getRange("FolgaMoeda");
-const FolgaDespesasRange      = despesasFolgaTab.getRange("FolgaDespesas");
-const FolgaSubstituidoRange      = despesasFolgaTab.getRange("FolgaSubstituido");
-const FolgaSubstituidoDiariaRange      = despesasFolgaTab.getRange("FolgaSubstituidoDiaria");
-const FolgaComentarioRange    = despesasFolgaTab.getRange("FolgaComentario");
+const FolgaColaboradorRange        = despesasFolgaTab.getRange("FolgaColaborador");
+const FolgaEstadiaRange            = despesasFolgaTab.getRange("FolgaEstadia");
+const FolgaPagementoRange          = despesasFolgaTab.getRange("FolgaPagamento");
+const FolgaMoedaRange              = despesasFolgaTab.getRange("FolgaMoeda");
+const FolgaDespesasRange           = despesasFolgaTab.getRange("FolgaDespesas");
+const FolgaSubstituidoRange        = despesasFolgaTab.getRange("FolgaSubstituido");
+const FolgaSubstituidoDiariaRange  = despesasFolgaTab.getRange("FolgaSubstituidoDiaria");
+const FolgaComentarioRange         = despesasFolgaTab.getRange("FolgaComentario");
 
 const FolgaItemsRange = despesasFolgaTab.getRange("FolgaItems");
 const FolgaRealRange = despesasFolgaTab.getRange("FolgaReal");
