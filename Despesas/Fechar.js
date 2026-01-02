@@ -40,7 +40,7 @@ function fecharGatilhoCompletar() {
 	// Compute outstanding totals
 	const contasCorrentesDadosRange =   CararaLibrary.cc_getTransacoesRendasDespesasRange();
 	const contasCorrentesDadosRangeVals =   contasCorrentesDadosRange.getValues();
-	const creditosDebitos = CararaLibrary.resumirContaCorrenteAssociado(FecharColaborador, FecharEstadia, contasCorrentesDadosRangeVals);
+	const creditosDebitos = CararaLibrary.resumirContaCorrenteColaborador(FecharColaborador, FecharEstadia, contasCorrentesDadosRangeVals);
 
 	//  Obtenha e preencha a area do formularon a incluir as informations a
 	// cerca dos debitos e creditos docolaborador
@@ -96,7 +96,7 @@ function fecharExecute() {
 
 	// Compute outstanding totals
 	const contasCorrentesDadosRange =   CararaLibrary.cc_getTransacoesRendasDespesasRange().getValues();
-	const creditosDebitos = CararaLibrary.resumirContaCorrenteAssociado(FecharColaborador, FecharEstadia, contasCorrentesDadosRange);
+	const creditosDebitos = CararaLibrary.resumirContaCorrenteColaborador(FecharColaborador, FecharEstadia, contasCorrentesDadosRange);
 	const creditoReal		= creditosDebitos["Credito"]["Real"];
 	const creditoOuro 		= creditosDebitos["Credito"]["Ouro"];
 	const debitoReal 		= creditosDebitos["Debito"]["Real"];
