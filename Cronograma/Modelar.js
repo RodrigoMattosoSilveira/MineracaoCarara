@@ -73,7 +73,7 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 				planejarGamaRegistro.push(elemento[MODELOS_NOME]);
 				planejarGamaRegistro.push(elemento[MODELOS_INICIO]);
 				planejarGamaRegistro.push(elemento[MODELOS_METODO]);
-				planejarGamaRegistro.push(elemento[MODELOS_AREA]);
+				planejarGamaRegistro.push(elemento[MODELOS_SETOR]);
 				planejarGamaRegistro.push(elemento[MODELOS_LOCAL]);
 				planejarGamaRegistro.push(elemento[MODELOS_TAREFA]);
 				planejarGamaRegistro.push(elemento[MODELOS_REMUNERACAO]);
@@ -96,7 +96,7 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 					planejarGamaRegistro.push(elemento[ESTADIAS_NOME]);
 					planejarGamaRegistro.push(elemento[ESTADIAS_INICIO]);
 					planejarGamaRegistro.push(elemento[ESTADIAS_METODO]);
-					planejarGamaRegistro.push(elemento[ESTADIAS_AREA]);
+					planejarGamaRegistro.push(elemento[ESTADIAS_SETOR]);
 					planejarGamaRegistro.push(elemento[ESTADIAS_LOCAL]);
 					planejarGamaRegistro.push(elemento[ESTADIAS_TAREFA]);
 					planejarGamaRegistro.push(elemento[ESTADIAS_REMUNERACAO]);
@@ -112,7 +112,7 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			// Estabelecer validação de colunas de suas células ativas
 			estabelederValidacaoDados(planejarPlanilha, PLANEJAR_ACAO+1,   PLANEJAR_ACOES_VALIDAS);
 			estabelederValidacaoDados(planejarPlanilha, PLANEJAR_METODO+1, PLANEJAR_METODOS_VALIDOS);
-			estabelederValidacaoDados(planejarPlanilha, PLANEJAR_AREA+1,   PLANEJAR_AREAS_VALIDAS);
+			estabelederValidacaoDados(planejarPlanilha, PLANEJAR_SETOR+1,  PLANEJAR_SETORES_VALIDOS);
 			estabelederValidacaoDados(planejarPlanilha, PLANEJAR_LOCAL+1,  PLANEJAR_LOCAIS_VALIDOS);
 			estabelederValidacaoDados(planejarPlanilha, PLANEJAR_TAREFA+1, PLANEJAR_TAREFAS_VALIDAS);
 

@@ -20,7 +20,7 @@ function cronogramaInformar() {
     ativosInformar.forEach( elemento => {
         let informarRegistro = [];
         informarRegistro[PDF_NOME] = elemento[ATIVOS_NOME];
-        informarRegistro[PDF_AREA] = elemento[ATIVOS_AREA];
+        informarRegistro[PDF_SETOR] = elemento[ATIVOS_SETOR];
         informarRegistro[PDF_LOCAL] = elemento[ATIVOS_LOCAL];
         informarRegistro[PDF_TAREFA] = elemento[ATIVOS_TAREFA];
         informarRegistros.push(informarRegistro);
