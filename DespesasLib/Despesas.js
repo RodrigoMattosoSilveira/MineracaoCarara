@@ -3,7 +3,7 @@
 ID 		              = "1XwjBUJYG4VLN0ZaG0EFzKljWk9VdGvePaDO9Nwd70G4";
 FECHAR_SHEET_NAME     = "Fechar";
 DADOS_RANGE_NAME      = "FecharDados";
-ASSOCIADO_RANGE_NAME  = "FecharAssociado";
+COLABORADOR_RANGE_NAME  = "FecharColaborador";
 COMENTARIO_RANGE_NAME = "FecharComentario";
 DATA_RANGE_NAME       = "FecharData";
 ESTADIA_RANGE_NAM     = "FecharEstadia";

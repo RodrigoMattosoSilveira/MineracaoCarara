@@ -49,7 +49,7 @@ function meuOnEditGatilho(e) {
     message += "Nao ha nehuma trasacao a ser processada";
     console.error(message); 
   }
-  var creditosDebitos = resumirContaCorrenteAssociado(nome, estadia, trasactions);
+  var creditosDebitos = resumirContaCorrenteColaborador(nome, estadia, trasactions);
   contasCorrentesSheet.getRangeByName(contasCorrentesCreditoReal).setValues([[creditosDebitos["Credito"]["Real"]]]);
   contasCorrentesSheet.getRangeByName(contasCorrentesCreditoOuro).setValues([[creditosDebitos["Credito"]["Ouro"]]]);
   contasCorrentesSheet.getRangeByName(contasCorrentesDebitoReal).setValues([[creditosDebitos["Debito"]["Real"]]]);
@@ -67,7 +67,7 @@ function meuOnEditGatilho(e) {
 
 }
 
-function resumirContaCorrenteAssociado (nome, estadia, transactions) {
+function resumirContaCorrenteColaborador (nome, estadia, transactions) {
   var estadiaDia = new Date(estadia).getDay();
   var estadiaMes = new Date(estadia).getMonth();
   var estadiaAno = new Date(estadia).getFullYear();
@@ -229,9 +229,9 @@ function valorDoOuroEmReais(ouroGramas) {
 //  A gama Saldo, atualizada
 // * ********************************************************************************
 // 
-function calculeRendasGanhar(nomeAssociado, inicioEstadia) {
-  var metodo        = obtenhaDadoEstadiaAtiva(nomeAssociado, estadiaDadosRangeMetodoCol);
-  var tarefa        = obtenhaDadoEstadiaAtiva(nomeAssociado, estadiaDadosRangeTarefaCol);
+function calculeRendasGanhar(nomeColaborador, inicioEstadia) {
+  var metodo        = obtenhaDadoEstadiaAtiva(nomeColaborador, estadiaDadosRangeMetodoCol);
+  var tarefa        = obtenhaDadoEstadiaAtiva(nomeColaborador, estadiaDadosRangeTarefaCol);
   var rendasFuturas = {
   "Real": 0.00,
   "Ouro": 0.00
@@ -240,15 +240,15 @@ function calculeRendasGanhar(nomeAssociado, inicioEstadia) {
   var saldoGanhar = 0.00;
   switch (metodo) {
     case "Diária":
-      saldoGanhar = calculeDiariaGanhar(nomeAssociado, inicioEstadia, metodo, tarefa);
+      saldoGanhar = calculeDiariaGanhar(nomeColaborador, inicioEstadia, metodo, tarefa);
     rendasFuturas["Real"]= saldoGanhar;
       break;
     case "Salário":
-      saldoGanhar = calculeSalarioGanhar(nomeAssociado, inicioEstadia, metodo, tarefa);
+      saldoGanhar = calculeSalarioGanhar(nomeColaborador, inicioEstadia, metodo, tarefa);
     rendasFuturas["Real"]= saldoGanhar;
       break;
     case "Porcentagem":
-      saldoGanhar = calculeGramasOuroGanhar(nomeAssociado, inicioEstadia, metodo, tarefa);
+      saldoGanhar = calculeGramasOuroGanhar(nomeColaborador, inicioEstadia, metodo, tarefa);
     rendasFuturas["Ouro"]= saldoGanhar;
       break;
     default:
@@ -260,21 +260,21 @@ function calculeRendasGanhar(nomeAssociado, inicioEstadia) {
 
 // *********************************************************************************
 // obtenhaDadoEstadiaAtiva
-// Obtenha o dado com o nome em nomeAssociado, e a coluna em dadoColuna. Note que
+// Obtenha o dado com o nome em nomeColaborador, e a coluna em dadoColuna. Note que
 // essa funcao so fornece dados paracolaboradores com estadias ativas
 // 
 // Input
-//    nomeAssociado
+//    nomeColaborador
 //    dadoColumna
 // Output
 //  O dado na linha com o nome docolaborador, e a coluna do dadoColuna; campo em
-//  branco no caso the nao have estadia ativa para nomeAssociado
+//  branco no caso the nao have estadia ativa para nomeColaborador
 //
 //  Note que os valores para access a planilha Estadia encontram-se no arquivo 
 //  Estadia.gs
 // * ********************************************************************************
 // 
-function obtenhaDadoEstadiaAtiva(nomeAssociado, dadoColumna) {
+function obtenhaDadoEstadiaAtiva(nomeColaborador, dadoColumna) {
   var dadoProcurado = "";
   var achou = false
   estadiaDadosVals.forEach(function (estadiaDadosRegistro) {
@@ -282,7 +282,7 @@ function obtenhaDadoEstadiaAtiva(nomeAssociado, dadoColumna) {
         estadiaDadosRegistro[estadiaDadosRangeNomeCol] != "Nome" && 
         estadiaDadosRegistro[estadiaDadosRangeNomeCol] != "" &&
         estadiaDadosRegistro[estadiaDadosRangeFechadaCol] == "")  {
-      if (nomeAssociado == estadiaDadosRegistro[estadiaDadosRangeNomeCol]) {
+      if (nomeColaborador == estadiaDadosRegistro[estadiaDadosRangeNomeCol]) {
         achou = true;
         dadoProcurado = estadiaDadosRegistro[dadoColumna];
       }
@@ -295,7 +295,7 @@ function obtenhaDadoEstadiaAtiva(nomeAssociado, dadoColumna) {
 // calculeDiariaGanhar
 // 
 // Input
-//    nomeAssociado
+//    nomeColaborador
 //    inicioEstadia
 //    metodo
 //    tarefa
@@ -304,7 +304,7 @@ function obtenhaDadoEstadiaAtiva(nomeAssociado, dadoColumna) {
 //
 // * ********************************************************************************
 // 
-function calculeDiariaGanhar (nomeAssociado,  inicioEstadia, metodo, tarefa) {
+function calculeDiariaGanhar (nomeColaborador,  inicioEstadia, metodo, tarefa) {
   var diariaGanhar = 0;
   var diaria = obtenhaRemuneracao (metodo, tarefa)
   var fimEstadia = inicioEstadia.addDays(90)
@@ -319,7 +319,7 @@ function calculeDiariaGanhar (nomeAssociado,  inicioEstadia, metodo, tarefa) {
 // calculeSalarioGanhar
 // 
 // Input
-//    nomeAssociado
+//    nomeColaborador
 //    inicioEstadia
 //    metodo
 //    tarefa
@@ -329,7 +329,7 @@ function calculeDiariaGanhar (nomeAssociado,  inicioEstadia, metodo, tarefa) {
 //
 // * ********************************************************************************
 // 
-function calculeSalarioGanhar(nomeAssociado,  inicioEstadia, metodo, tarefa){
+function calculeSalarioGanhar(nomeColaborador,  inicioEstadia, metodo, tarefa){
   var salarioGanhar = 0;
   var mesesRestantes = 0;
   var salario = obtenhaRemuneracao (metodo, tarefa)
@@ -345,19 +345,19 @@ function calculeSalarioGanhar(nomeAssociado,  inicioEstadia, metodo, tarefa){
 // calculeGramasOuroGanhar
 // 
 // Input
-//    nomeAssociado
+//    nomeColaborador
 // Output
 //  O saldo tocolaborador, calculado como um trabalhador on poco, que recebe baseado,\
 //  na producao diaria de ouro 
 //
 // * ********************************************************************************
 // 
-function calculeGramasOuroGanhar(nomeAssociado,  inicioEstadia, metodo, tarefa) {
+function calculeGramasOuroGanhar(nomeColaborador,  inicioEstadia, metodo, tarefa) {
   var gramasEstimadasGanhar = 0;
   var diasRestantes = 0;
   var hoje = new Date();
   var producaoOuroRegistro = [];
-  var estimativaDeCotaDiariaAssociado = 0.00
+  var estimativaDeCotaDiariaColaborador = 0.00
   var estimativaDoValorGanhar = 0.00
 
   //  Calcule o número de dias restantes nessa estadia
@@ -370,7 +370,7 @@ function calculeGramasOuroGanhar(nomeAssociado,  inicioEstadia, metodo, tarefa) 
 
   // Obtenha a media de producao de ouro alocada aoscolaboradores
   producaoOuroRegistro = obtenhaProducaoOuro(hoje);
-  estimativaDeCotaDiariaAssociado = producaoOuroRegistro[producaoPosAssociadosMediaCol]
+  estimativaDeCotaDiariaColaborador = producaoOuroRegistro[producaoPosColaboradoresMediaCol]
 
   // Obtenha a cotacao do ouro hoje
   // cotacaoOuroRegistro = obtenhaCotacaoOuro(hoje);
@@ -378,7 +378,7 @@ function calculeGramasOuroGanhar(nomeAssociado,  inicioEstadia, metodo, tarefa) 
   cotacaoOuro = obtenhaCotacaoOuroSimples();
 
   //  Calcule of valor estimado a ser ganho, no valor do ouro
-  var gramasEstimadasGanhar = estimativaDeCotaDiariaAssociado * diasRestantes * porcentagem;
+  var gramasEstimadasGanhar = estimativaDeCotaDiariaColaborador * diasRestantes * porcentagem;
   // estimativaDoValorGanhar = gramasEstimadasGanhar*cotacaoOuro;
 
   return gramasEstimadasGanhar;

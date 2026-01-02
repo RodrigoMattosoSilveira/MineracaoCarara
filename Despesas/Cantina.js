@@ -9,14 +9,14 @@ function cantinaExecute() {
 	// 	.alert('You clicked cantinaExecute');
 	switchToTab("Cantina");
 
-	if (CantinaAssociadoRange.getValue() == "") {
+	if (CantinaColaboradorRange.getValue() == "") {
 		SpreadsheetApp.getUi().alert("OColaboradordeve ser preenchido.");
 		return null;
 	}
 
 	// We need to build one record for each item in CantinaDespesasRange
 	var cantinaData 		= CantinaDataRange.getValues();
-	var cantinaAssociado	= CantinaAssociadoRange.getValue();
+	var cantinaColaborador	= CantinaColaboradorRange.getValue();
 	var cantinaEstadia 		= CantinaEstadiaRange.getValue();
 	var cantinaPagemento 	= CantinaPagementoRange.getValue();
 	var cantinaMoeda 		= CantinaMoedaRange.getValue();
@@ -43,7 +43,7 @@ function cantinaExecute() {
 		      
 		contaCorrenteRegistro = [];
 		contaCorrenteRegistro[contasCorrentesDataCol]        		= cantinaData;
-		contaCorrenteRegistro[contasCorrentesNomeCol]       	 	= cantinaAssociado
+		contaCorrenteRegistro[contasCorrentesNomeCol]       	 	= cantinaColaborador
 		contaCorrenteRegistro[contasCorrentesEstadiaCol]     		= cantinaEstadia
 		contaCorrenteRegistro[contasCorrentesMetodoCol]      		= 'Cantina';
 		contaCorrenteRegistro[contasCorrentesMoedaCol]       		= cantinaMoeda;
@@ -66,11 +66,11 @@ function cantinaExecute() {
 	// Limpe o formulário da cantina e informe ao usuário que o sistema concluiu a operação
 	clearCantinaForm();
 	SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-		.alert('O sistema lancou as despesas de cantina do ' + cantinaAssociado);
+		.alert('O sistema lancou as despesas de cantina do ' + cantinaColaborador);
 }
 
 function clearCantinaForm () {
-	CantinaAssociadoRange.setValue("");
+	CantinaColaboradorRange.setValue("");
 	CantinaMoedaRange.setValue("Real");
 	CantinaItemsRange.setValue("");
 	CantinaQuantidadesRange.setValue("");
