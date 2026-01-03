@@ -41,6 +41,7 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 	switch (acaoSelecionada) {
 		case 'Planejar':
 			let planejarGamaVals = [];
+			let estadiaGamaVals = [];
 			let planejarGamaRegistro = [];
 			let planejarNomeInicioKeys = [];
 
@@ -49,11 +50,17 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			// 	  - Limpar todos os registros na planilha Cronograma!Planejar;
 			//    - Definir o atributo Acao do registro a incluir na planilha
 			//      Cronograma!Planejar do seguinte modo:
-			//        - Definir seu atributo Ação como Incluir, caso o 
-			//         colaborador tiver um registro correspondente na planilha
-			//          Cronograma!Modelos com o atributo de Período 
-			//          correspondente ao Período que está sendo planejado;
-			// 		  - Caso contrário, definir seu atributo Ação como Excluir
+			//        - Incluir, caso o colaborador tiver um registro 
+			//          correspondente na planilha Cronograma!Modelos com o 
+			//          atributo de Período correspondente ao Período que está 
+			//          sendo planejado;
+			// 		  -  Excluir, Caso contrário;
+	        //    - Mantenha os atributos Nome e Começo como estão na aba 
+			//      Estadia;
+			//    - Se os atributos Método | Setor | Local | Tarefa | 
+			//      Remuneração | Comentário na aba Planejar diferirem de seus 
+			//      equivalentes na aba Estadia, destaque-os em amarelo na aba 
+			//      Planejar;	
 			// 
 			// Observe que os registros na planilha Cronograma!Estadia
 			// representam um subconjunto dos registros da planilha 
@@ -61,17 +68,18 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 			//  
 			obterPlanejarGama() !== null ? obterPlanejarGama().clear({contentsOnly: true}) : null;
 
-			// Construa uma matriz de todos oscolaboradores na planilha 
+			// Construa uma matriz de todos os colaboradores na planilha 
 			// Cronograma!Modelos cujo atributo de período corresponde ao 
 			// período que está sendo planejado
 			const modelosGamaVals = obterModelosGamaVals().filter( elemento => elemento[MODELOS_PERIODO] === periodo);
 			modelosGamaVals.forEach(elemento => {
+				let colaborador = obterEstadiaGamaRegistroNome(elemento[MODELOS_NOME])
 				planejarGamaRegistro = [...[]];
 				planejarGamaRegistro.push("Incluir")
 				planejarGamaRegistro.push(dataStr)
 				planejarGamaRegistro.push(periodo)
 				planejarGamaRegistro.push(elemento[MODELOS_NOME]);
-				planejarGamaRegistro.push(elemento[MODELOS_INICIO]);
+				planejarGamaRegistro.push(colaborador[ESTADIAS_INICIO]); // preservando o início da Estadia
 				planejarGamaRegistro.push(elemento[MODELOS_METODO]);
 				planejarGamaRegistro.push(elemento[MODELOS_SETOR]);
 				planejarGamaRegistro.push(elemento[MODELOS_LOCAL]);

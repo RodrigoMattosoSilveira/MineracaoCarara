@@ -45,6 +45,12 @@ const obterEstadiasGamaVals = () => {
 	let  gama = obterEstadiasGama();
 	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[ESTADIAS_NOME] !== '' && elemento[ESTADIAS_NOME] !== 'Nome') : [];
 }
+let estadiaGamaVals = obterEstadiasGamaVals().sort((a, b) => {
+	return a[ESTADIAS_NOME].localeCompare(b[ESTADIAS_NOME])
+});;
+const obterEstadiaGamaRegistroNome = (nome) => {
+	return estadiaGamaVals.find((element) => element[ESTADIAS_NOME] == nome)
+}
 
 const MODELOS_PLANILHA = "Modelos";
 const MODELOS_GAMA = "Modelos";
