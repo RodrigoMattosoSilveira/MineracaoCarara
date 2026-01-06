@@ -68,7 +68,7 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 	switch (acaoSelecionada) {
 		case 'Planejar':
 			let estadias = obterEstadiasGama();
-			let plano = obterPlanejarGama().clear({ contentsOnly: false });
+			let plano = obterPlanejarGama().clear();
 			for (let linha = 1; ; linha++) {
 				// Obter o nome do colaborador
 				let nome = estadias.getCell(linha, ESTADIAS_NOME+1).getValue().toString().trim();
@@ -241,7 +241,7 @@ function construirProsseguirMenssagem(acao, data, periodo, ordem) {
 }
 function usarEstadia(estadiaRegistro, plano, linha, dataStr, periodo) {
 	// ACAO 
-	plano.getCell(linha, PLANEJAR_ACAO+1).setValue("Excluir")
+	plano.getCell(linha, PLANEJAR_ACAO+1).setValue("Excluir").setBackground('#ff0000')
 
 	// DATA
 	plano.getCell(linha, PLANEJAR_DATA+1).setValue(dataStr)
@@ -273,14 +273,18 @@ function usarEstadia(estadiaRegistro, plano, linha, dataStr, periodo) {
 
 function usarModelo(estadiaRegistro, modeloRegistro, plano, linha, dataStr, periodo) {
 	// ACAO 
-	let acao = (modeloRegistro[MODELOS_PERIODO] === periodo) ? "Incluir" : "Excluir"
-	plano.getCell(linha, PLANEJAR_ACAO+1).setValue(acao)
+	if (modeloRegistro[MODELOS_PERIODO] === periodo) {
+		plano.getCell(linha, PLANEJAR_ACAO+1).setValue("Incluir").setBackground('#00ff00')
+	}
+	else {
+		plano.getCell(linha, PLANEJAR_ACAO+1).setValue( "Excluir").setBackground('#ff0000')
+	}
 
 	// DATA
 	plano.getCell(linha, PLANEJAR_DATA+1).setValue(dataStr)
 
 	// PERIODO
-	plano.getCell(linha, PLANEJAR_PERIODO+1).setValue(periodo)
+	plano.getCell(linha, PLANEJAR_PERIODO+1).setValue(modeloRegistro[MODELOS_PERIODO])
 
 	// NOME
 	plano.getCell(linha, PLANEJAR_NOME+1).setValue(modeloRegistro[MODELOS_NOME]);
@@ -309,6 +313,6 @@ function definirPlanoAjudante (pGama, planoLinha, planoColumna, mRegistro, mColu
     let cell = pGama.getCell(planoLinha, planoColumna+1);
 	cell.setValue(mRegistro[mColuna]);
 	if (eRegistro[eColuna] !== mRegistro[mColuna]) {
-		cell.setBackground('#FFFFF0')
+		cell.setBackground('#FFFF00')
 	}
 }
