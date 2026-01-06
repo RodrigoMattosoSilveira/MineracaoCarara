@@ -51,7 +51,7 @@ function cronogramaContabilizar() {
 	  const datastr           = CararaLibrary.dateToString(elemento[ATIVOS_DATA]);
 	  const poco              = elemento[ATIVOS_LOCAL];
     const metodo            = elemento[ATIVOS_METODO];
-    const area              = elemento[ATIVOS_AREA];
+    const setor              = elemento[ATIVOS_SETOR];
     const local             = elemento[ATIVOS_LOCAL];
     const tarefa            = elemento[ATIVOS_TAREFA];
     const chave             = datastr + elemento[ATIVOS_PERIODO] + elemento[ATIVOS_NOME];
@@ -65,7 +65,7 @@ function cronogramaContabilizar() {
       contaCorrenteRegistro[contasCorrentesMetodoCol]      = elemento[ATIVOS_METODO];
       contaCorrenteRegistro[contasCorrentesCreditDebitCol] = "Credito"
       contaCorrenteRegistro[contasCorrentesComentariosCol] = elemento[ATIVOS_COMENTARIOS];
-      contaCorrenteRegistro[contasCorrentesItemCol]        = area + "/" + local + "/" + tarefa
+      contaCorrenteRegistro[contasCorrentesItemCol]        = setor + "/" + local + "/" + tarefa
       switch (metodo) { 
         case "Diária":
           // Moeda Real
@@ -163,7 +163,7 @@ function cronogramaContabilizar() {
   obterAtivosGama().clear({contentsOnly:true, validationsOnly:true});
   copiarGamaValsParaPlanilha(ativosPlanilha, newAtivosGamaVals);    
 	estabelederValidacaoDados(ativosPlanilha, ATIVOS_METODO+1, 	ATIVOS_METODOS_VALIDOS);
-	estabelederValidacaoDados(ativosPlanilha, ATIVOS_AREA+1, 	ATIVOS_AREAS_VALIDAS);
+	estabelederValidacaoDados(ativosPlanilha, ATIVOS_SETOR+1, 	ATIVOS_SETORES_VALIDOS);
 	estabelederValidacaoDados(ativosPlanilha, ATIVOS_LOCAL+1, 	ATIVOS_LOCAIS_VALIDOS);
 	estabelederValidacaoDados(ativosPlanilha, ATIVOS_TAREFA+1, 	ATIVOS_TAREFAS_VALIDAS);
   ativoGama = obterAtivosGama

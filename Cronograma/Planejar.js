@@ -61,7 +61,7 @@ function cronogramaPlanejar() {
 	let ativosPlanilha = obterAtivosPlanilha();
 	copiarGamaValsParaPlanilha(ativosPlanilha, ativosGamaVals);
 	estabelederValidacaoDados(ativosPlanilha, ATIVOS_METODO+1, 	ATIVOS_METODOS_VALIDOS);
-	estabelederValidacaoDados(ativosPlanilha, ATIVOS_AREA+1, 	ATIVOS_AREAS_VALIDAS);
+	estabelederValidacaoDados(ativosPlanilha, ATIVOS_SETOR+1, 	ATIVOS_SETORES_VALIDOS);
 	estabelederValidacaoDados(ativosPlanilha, ATIVOS_LOCAL+1, 	ATIVOS_LOCAIS_VALIDOS);
 	estabelederValidacaoDados(ativosPlanilha, ATIVOS_TAREFA+1, 	ATIVOS_TAREFAS_VALIDAS);
 	

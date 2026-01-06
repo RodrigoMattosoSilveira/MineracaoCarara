@@ -34,7 +34,7 @@ const ESTADIAS_GAMA = "Estadias";
 const ESTADIAS_NOME = 0;
 const ESTADIAS_INICIO = 1;
 const ESTADIAS_METODO = 2;
-const ESTADIAS_AREA = 3;
+const ESTADIAS_SETOR = 3;
 const ESTADIAS_LOCAL = 4;
 const ESTADIAS_TAREFA = 5;
 const ESTADIAS_REMUNERACAO = 6;
@@ -45,6 +45,12 @@ const obterEstadiasGamaVals = () => {
 	let  gama = obterEstadiasGama();
 	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[ESTADIAS_NOME] !== '' && elemento[ESTADIAS_NOME] !== 'Nome') : [];
 }
+let estadiaGamaVals = obterEstadiasGamaVals().sort((a, b) => {
+	return a[ESTADIAS_NOME].localeCompare(b[ESTADIAS_NOME])
+});;
+const obterEstadiaGamaRegistroNome = (nome) => {
+	return estadiaGamaVals.find((element) => element[ESTADIAS_NOME] == nome)
+}
 
 const MODELOS_PLANILHA = "Modelos";
 const MODELOS_GAMA = "Modelos";
@@ -52,7 +58,7 @@ const MODELOS_PERIODO = 0;
 const MODELOS_NOME = 1;
 const MODELOS_INICIO = 2;
 const MODELOS_METODO = 3;
-const MODELOS_AREA = 4;
+const MODELOS_SETOR = 4;
 const MODELOS_LOCAL = 5;
 const MODELOS_TAREFA = 6;
 const MODELOS_REMUNERACAO =7;
@@ -63,10 +69,12 @@ const obterModelosGamaVals = () => {
 	let  gama = obterModelosGama();
 	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[MODELOS_NOME] !== '') : [];
 }
+let modeloGamaVals = obterModelosGamaVals().sort((a, b) => {
+	return a[MODELOS_NOME].localeCompare(b[MODELOS_NOME])
+});;
 const obterModelosNomeInicioKeys = () => {
 	const keys = [];
-	let vals = obterModelosGamaVals();
-	vals.forEach(elemento => {
+	modeloGamaVals.forEach(elemento => {
 		let key = '' + elemento[MODELOS_NOME] +  CararaLibrary.dateToString(elemento[MODELOS_INICIO]);
 		if (keys.indexOf(key) == -1) {
 			keys.push(key); 
@@ -74,13 +82,16 @@ const obterModelosNomeInicioKeys = () => {
 	});
 	return keys;
 }
+const obterModelosGamaRegistroNome = (nome) => {
+	return obterModelosGamaVals().find((element) => element[MODELOS_NOME] == nome)
+}
 
 const PLANEJAR_PLANILHA = "Planejar";
 const PLANEJAR_GAMA = "Planejar";
 const PLANEJAR_ACAO_GAMA = "PlanejarAcao"
 const PLANEJAR_ACOES_VALIDAS = "AcoesValidas"
 const PLANEJAR_METODOS_VALIDOS = "MetodosValidos"
-const PLANEJAR_AREAS_VALIDAS = "AreasValidas"
+const PLANEJAR_SETORES_VALIDOS = "SetoresValidos"
 const PLANEJAR_LOCAIS_VALIDOS = "LocaisValidos"
 const PLANEJAR_TAREFAS_VALIDAS = "TarefasValidas"
 const PLANEJAR_ACAO = 0;
@@ -89,7 +100,7 @@ const PLANEJAR_PERIODO = 2;
 const PLANEJAR_NOME = 3;
 const PLANEJAR_INICIO = 4;
 const PLANEJAR_METODO = 5;
-const PLANEJAR_AREA = 6;
+const PLANEJAR_SETOR = 6;
 const PLANEJAR_LOCAL = 7;
 const PLANEJAR_TAREFA = 8;
 const PLANEJAR_REMUNERACAO = 9;
@@ -122,6 +133,10 @@ const obterPlanejarNomeInicioKeys = () => {
 	});
 	return keys;
 }
+const obterPlanejarIncluir = () => {
+	let vals = obterPlanejarGamaVals();
+	return vals.filter( elemento => elemento[PLANEJAR_ACAO] === 'Incluir' );
+}
 
 const ATIVOS_PLANILHA = "Ativos";
 const ATIVOS_GAMA = "Ativos";
@@ -131,14 +146,14 @@ const ATIVOS_PERIODO = 2;
 const ATIVOS_NOME = 3;
 const ATIVOS_INICIO = 4;
 const ATIVOS_METODO = 5;
-const ATIVOS_AREA = 6;
+const ATIVOS_SETOR = 6;
 const ATIVOS_LOCAL = 7;
 const ATIVOS_TAREFA = 8;
 const ATIVOS_REMUNERACAO = 9;
 const ATIVOS_COMENTARIOS = 10;
 const ATIVOS_ORDEM = 11;
 const ATIVOS_METODOS_VALIDOS = "MetodosValidos"
-const ATIVOS_AREAS_VALIDAS = "AreasValidas"
+const ATIVOS_SETORES_VALIDOS = "SetoresValidos"
 const ATIVOS_LOCAIS_VALIDOS = "LocaisValidos"
 const ATIVOS_TAREFAS_VALIDAS = "TarefasValidas"
 const obterAtivosPlanilha = () => obterGoogleSheet().getSheetByName(ATIVOS_PLANILHA);
@@ -179,7 +194,7 @@ const PDF_GAMA = "PDFInformar";
 const PDF_EXPORTAR = "PDFExportar";
 const PDF_HEADER = "PDFHeader";
 const PDF_NOME = 0;
-const PDF_AREA = 1;
+const PDF_SETOR = 1;
 const PDF_LOCAL = 2;
 const PDF_TAREFA = 3;
 const obterPdfPlanilha = () 	=> obterGoogleSheet().getSheetByName(PDF_PLANILHA);
