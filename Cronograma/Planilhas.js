@@ -133,6 +133,10 @@ const obterPlanejarNomeInicioKeys = () => {
 	});
 	return keys;
 }
+const obterPlanejarIncluir = () => {
+	let vals = obterPlanejarGamaVals();
+	return vals.filter( elemento => elemento[PLANEJAR_ACAO] === 'Incluir' );
+}
 
 const ATIVOS_PLANILHA = "Ativos";
 const ATIVOS_GAMA = "Ativos";

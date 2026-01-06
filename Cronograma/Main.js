@@ -1,21 +1,4 @@
 // ****************************************************************************
-// Menu - This is a set of functions
-// ****************************************************************************
-// 
-function onOpen(e) {
-  var ui = SpreadsheetApp.getUi();
-
-  // Or DocumentApp, SlidesApp or FormApp.
-	ui.createMenu('Cronograma')
-		.addItem('Modelar', 'cronogramaModelar')
-		.addItem('Planejar', 'cronogramaPlanejar')
-		.addItem('Informar', 'cronogramaInformar')
-		.addItem('Contabilizar', 'cronogramaContabilizar')
-	.addToUi();
-}
-
-
-// ****************************************************************************
 // publicarCronograma - O sistema executa essa lógica depois que o usuário opta 
 // por ignorar o planejamento do cronograma para essa data e período
 // Input
