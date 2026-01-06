@@ -69,16 +69,21 @@ const obterModelosGamaVals = () => {
 	let  gama = obterModelosGama();
 	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[MODELOS_NOME] !== '') : [];
 }
+let modeloGamaVals = obterModelosGamaVals().sort((a, b) => {
+	return a[MODELOS_NOME].localeCompare(b[MODELOS_NOME])
+});;
 const obterModelosNomeInicioKeys = () => {
 	const keys = [];
-	let vals = obterModelosGamaVals();
-	vals.forEach(elemento => {
+	modeloGamaVals.forEach(elemento => {
 		let key = '' + elemento[MODELOS_NOME] +  CararaLibrary.dateToString(elemento[MODELOS_INICIO]);
 		if (keys.indexOf(key) == -1) {
 			keys.push(key); 
 		}
 	});
 	return keys;
+}
+const obterModelosGamaRegistroNome = (nome) => {
+	return obterModelosGamaVals().find((element) => element[MODELOS_NOME] == nome)
 }
 
 const PLANEJAR_PLANILHA = "Planejar";

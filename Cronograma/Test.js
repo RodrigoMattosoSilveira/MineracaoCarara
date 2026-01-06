@@ -1,4 +1,11 @@
 const EPSILON = 0.00001;
+const cronogramaModelarProsseguirTeste = () => {
+	let documentProperties = PropertiesService.getDocumentProperties();
+	documentProperties.setProperty('DATA', "01/02/2026");
+	documentProperties.setProperty('PERIODO', "Diurno");
+	documentProperties.setProperty('ORDEM', 1);
+  	cronogramaModelarProsseguir("Planejar");
+}
 const obterProducaoPocosTestes = () => {
   let dataProcurada = '9/5/2025'
 	let producao = Producao.obterProducaoPocos("9/5/2025");
@@ -66,9 +73,6 @@ const sorAtivosMaisAntigoTeste = () => {
 		console.error(" ✖︎  sorAativosMaisAntigoTeste")
 }
 
-const cronogramaModelarProsseguirTeste = () => {
-  cronogramaModelarProsseguir("Planejar");
-}
 const gamaPublicadosTemChaveDataPeriodoTeste = () => {
   let valido = gamaPublicadosTemChaveDataPeriodo('02/08/2025Diurno')
 	!valido ? 

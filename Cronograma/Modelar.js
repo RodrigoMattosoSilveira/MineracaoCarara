@@ -38,92 +38,59 @@ const cronogramaModelarProsseguir = (acaoSelecionada) => {
 	let ordem = Math.trunc(getOrdem());
 	let menssagem = '';
 	let resultado = '';
+
+	// I'll use the following data elements:
+	// - periodoEmPlanejamento: contém o nome do período que está sendo 
+	//   planejado;
+	// - modelarGama: os registros do planejamento mais recente para cada
+	//   período;
+	// - estadiaGama: os registros de todos os colaboradores disponíveis para o
+	//   trabalhado
+	// - planejarGama: os registros que retratam o cronograma sugerido do 
+	//   período
+	//  
+	// I'll use the following algorithm
+	// Para cada colaborador em estadiaGama
+	//    Se colaboradorEstadia estiver em modelosGama
+	//       adicionar o colaboradorModelos ao planejarGama
+	//       definir colaboradorPlanejar[Planejar_INICIO] = colaboradorEstadia[PLANEJAR_INICIO]
+	//       se colaboradorModelos[MODELOS_PERIODO] == periodoEmPlananejamento
+	//          definir colaboradorPlanejar[PLANEJAR_ACAO] = "Incluir"
+	//       senão
+	//          definir colaboradorPlanejar[PLANEJAR_ACAO] = "Excluir"
+	//       fim
+	//    senão
+	//       adicionar o colaboradorEstadia ao planejarGama
+	//       definir colaboradorPlanejar[PLANEJAR_ACAO] = "Excluir"
+	//       definir colaboradorPlanejar[PLANEJAR_PERIODO] = periodoEmPlananejamento
+	//    fim
+	// fim
 	switch (acaoSelecionada) {
 		case 'Planejar':
-			let planejarGamaVals = [];
-			let estadiaGamaVals = [];
-			let planejarGamaRegistro = [];
-			let planejarNomeInicioKeys = [];
+			let estadias = obterEstadiasGama();
+			let plano = obterPlanejarGama().clear({ contentsOnly: false });
+			for (let linha = 1; ; linha++) {
+				// Obter o nome do colaborador
+				let nome = estadias.getCell(linha, ESTADIAS_NOME+1).getValue().toString().trim();
 
-			// Construir a planilha Cronograma!Planejar, incluindo todos os 
-			// registros ativos da planilha Cronograma!Estadia, 
-			// 	  - Limpar todos os registros na planilha Cronograma!Planejar;
-			//    - Definir o atributo Acao do registro a incluir na planilha
-			//      Cronograma!Planejar do seguinte modo:
-			//        - Incluir, caso o colaborador tiver um registro 
-			//          correspondente na planilha Cronograma!Modelos com o 
-			//          atributo de Período correspondente ao Período que está 
-			//          sendo planejado;
-			// 		  -  Excluir, Caso contrário;
-	        //    - Mantenha os atributos Nome e Começo como estão na aba 
-			//      Estadia;
-			//    - Se os atributos Método | Setor | Local | Tarefa | 
-			//      Remuneração | Comentário na aba Planejar diferirem de seus 
-			//      equivalentes na aba Estadia, destaque-os em amarelo na aba 
-			//      Planejar;	
-			// 
-			// Observe que os registros na planilha Cronograma!Estadia
-			// representam um subconjunto dos registros da planilha 
-			// Estadia!Dados, onde filtramos aqueles com estadias expiradas.
-			//  
-			obterPlanejarGama() !== null ? obterPlanejarGama().clear({contentsOnly: true}) : null;
+				// Processamos todos colaboradores? Sim --> terminamos; caso contrario, prossiga
+				if (nome == "") break;
 
-			// Construa uma matriz de todos os colaboradores na planilha 
-			// Cronograma!Modelos cujo atributo de período corresponde ao 
-			// período que está sendo planejado
-			const modelosGamaVals = obterModelosGamaVals().filter( elemento => elemento[MODELOS_PERIODO] === periodo);
-			modelosGamaVals.forEach(elemento => {
-				let colaborador = obterEstadiaGamaRegistroNome(elemento[MODELOS_NOME])
-				planejarGamaRegistro = [...[]];
-				planejarGamaRegistro.push("Incluir")
-				planejarGamaRegistro.push(dataStr)
-				planejarGamaRegistro.push(periodo)
-				planejarGamaRegistro.push(elemento[MODELOS_NOME]);
-				planejarGamaRegistro.push(colaborador[ESTADIAS_INICIO]); // preservando o início da Estadia
-				planejarGamaRegistro.push(elemento[MODELOS_METODO]);
-				planejarGamaRegistro.push(elemento[MODELOS_SETOR]);
-				planejarGamaRegistro.push(elemento[MODELOS_LOCAL]);
-				planejarGamaRegistro.push(elemento[MODELOS_TAREFA]);
-				planejarGamaRegistro.push(elemento[MODELOS_REMUNERACAO]);
-				planejarGamaRegistro.push(elemento[MODELOS_COMENTARIOS]);
-				planejarGamaVals.push([...planejarGamaRegistro]);
+				// Processar esse colaborador
+				let modeloRegistro = obterModelosGamaRegistroNome(nome);
 
-				planejarNomeInicioKeys.push(elemento[MODELOS_NOME] +  CararaLibrary.dateToString(elemento[ESTADIAS_INICIO]));
-
-			});
-
-			let estadiasGamaVals = obterEstadiasGamaVals();
-			estadiasGamaVals.forEach(elemento => {
-				planejarGamaRegistro = [...[]];
-
-				key = '' + elemento[ESTADIAS_NOME] +  CararaLibrary.dateToString(elemento[MODELOS_INICIO]);
-				if (planejarNomeInicioKeys.indexOf(key) === -1) {
-					planejarGamaRegistro.push("Excluir")
-					planejarGamaRegistro.push(dataStr)
-					planejarGamaRegistro.push(periodo)
-					planejarGamaRegistro.push(elemento[ESTADIAS_NOME]);
-					planejarGamaRegistro.push(elemento[ESTADIAS_INICIO]);
-					planejarGamaRegistro.push(elemento[ESTADIAS_METODO]);
-					planejarGamaRegistro.push(elemento[ESTADIAS_SETOR]);
-					planejarGamaRegistro.push(elemento[ESTADIAS_LOCAL]);
-					planejarGamaRegistro.push(elemento[ESTADIAS_TAREFA]);
-					planejarGamaRegistro.push(elemento[ESTADIAS_REMUNERACAO]);
-					planejarGamaRegistro.push(elemento[ESTADIAS_COMENTARIOS]);
-					planejarGamaVals.push([...planejarGamaRegistro]);				
-					}
-			});
-
-			// Copiar os registros formatados para a planilha Planejar
-			let planejarPlanilha = obterPlanejarPlanilha();
-			copiarGamaValsParaPlanilha(planejarPlanilha, planejarGamaVals)
-
-			// Estabelecer validação de colunas de suas células ativas
-			estabelederValidacaoDados(planejarPlanilha, PLANEJAR_ACAO+1,   PLANEJAR_ACOES_VALIDAS);
-			estabelederValidacaoDados(planejarPlanilha, PLANEJAR_METODO+1, PLANEJAR_METODOS_VALIDOS);
-			estabelederValidacaoDados(planejarPlanilha, PLANEJAR_SETOR+1,  PLANEJAR_SETORES_VALIDOS);
-			estabelederValidacaoDados(planejarPlanilha, PLANEJAR_LOCAL+1,  PLANEJAR_LOCAIS_VALIDOS);
-			estabelederValidacaoDados(planejarPlanilha, PLANEJAR_TAREFA+1, PLANEJAR_TAREFAS_VALIDAS);
-
+				// Caso haja um registro em Modelos com esse nome, incluir of registro de 
+				// Modelo para o periodo em planejamento; caso nao nao haja um registro em
+				// Modelos com esse nome, incluir o registro em Estadia (representado por 
+				// linhaEstadia) 
+				let estadiaRegistro = obterEstadiaGamaRegistroNome(nome);
+				if (typeof modeloRegistro === "undefined") {		 
+					usarEstadia(estadiaRegistro, plano, linha, dataStr, periodo)
+				}
+				else {
+					usarModelo(estadiaRegistro, modeloRegistro, plano, linha, dataStr, periodo);
+				}
+			}
 			// Ativar a planilha Planejar
 			CararaLibrary.activateSheet("Planejar");
 
@@ -271,4 +238,77 @@ function construirProsseguirMenssagem(acao, data, periodo, ordem) {
 	menssagem += "Ordem: " + ordem;
 
 	return menssagem;
+}
+function usarEstadia(estadiaRegistro, plano, linha, dataStr, periodo) {
+	// ACAO 
+	plano.getCell(linha, PLANEJAR_ACAO+1).setValue("Excluir")
+
+	// DATA
+	plano.getCell(linha, PLANEJAR_DATA+1).setValue(dataStr)
+
+	// PERIODO
+	plano.getCell(linha, PLANEJAR_PERIODO+1).setValue(periodo)
+
+	// NOME
+	plano.getCell(linha, PLANEJAR_NOME+1).setValue(estadiaRegistro[ESTADIAS_NOME]);
+
+	// METODO
+	plano.getCell(linha, PLANEJAR_METODO+1).setValue(estadiaRegistro[ESTADIAS_METODO]);
+
+	// SETOR
+	plano.getCell(linha, PLANEJAR_SETOR+1).setValue(estadiaRegistro[ESTADIAS_SETOR]);
+
+	// LOCAL
+	plano.getCell(linha, PLANEJAR_LOCAL+1).setValue(estadiaRegistro[ESTADIAS_LOCAL]);
+
+	// TAREFA
+	plano.getCell(linha, PLANEJAR_TAREFA+1).setValue(estadiaRegistro[ESTADIAS_TAREFA]);
+
+	// REMUNERACAO
+	plano.getCell(linha, PLANEJAR_REMUNERACAO+1).setValue(estadiaRegistro[ESTADIAS_REMUNERACAO]);
+
+	// COMENTARIOS
+	plano.getCell(linha, PLANEJAR_COMENTARIOS+1).setValue(estadiaRegistro[ESTADIAS_COMENTARIOS]);
+}
+
+function usarModelo(estadiaRegistro, modeloRegistro, plano, linha, dataStr, periodo) {
+	// ACAO 
+	let acao = (modeloRegistro[MODELOS_PERIODO] === periodo) ? "Incluir" : "Excluir"
+	plano.getCell(linha, PLANEJAR_ACAO+1).setValue(acao)
+
+	// DATA
+	plano.getCell(linha, PLANEJAR_DATA+1).setValue(dataStr)
+
+	// PERIODO
+	plano.getCell(linha, PLANEJAR_PERIODO+1).setValue(periodo)
+
+	// NOME
+	plano.getCell(linha, PLANEJAR_NOME+1).setValue(modeloRegistro[MODELOS_NOME]);
+
+	// METODO
+	definirPlanoAjudante (plano, linha, PLANEJAR_METODO,     modeloRegistro, MODELOS_METODO,       estadiaRegistro, ESTADIAS_METODO)
+
+	// SETOR
+	definirPlanoAjudante (plano, linha, PLANEJAR_SETOR,      modeloRegistro, MODELOS_SETOR,        estadiaRegistro, ESTADIAS_SETOR)
+
+	// LOCAL
+	definirPlanoAjudante (plano, linha, PLANEJAR_LOCAL,       modeloRegistro, MODELOS_LOCAL,       estadiaRegistro, ESTADIAS_LOCAL)
+
+	// TAREFA
+	definirPlanoAjudante (plano, linha, PLANEJAR_TAREFA,       modeloRegistro, MODELOS_TAREFA,      estadiaRegistro, ESTADIAS_TAREFA)
+
+	// REMUNERACAO
+	definirPlanoAjudante (plano, linha, PLANEJAR_REMUNERACAO, modeloRegistro, MODELOS_REMUNERACAO, estadiaRegistro, ESTADIAS_REMUNERACAO)
+
+	// COMENTARIOS
+	definirPlanoAjudante (plano, linha, PLANEJAR_COMENTARIOS, modeloRegistro, MODELOS_COMENTARIOS, estadiaRegistro, ESTADIAS_COMENTARIOS)
+}
+
+
+function definirPlanoAjudante (pGama, planoLinha, planoColumna, mRegistro, mColuna, eRegistro, eColuna) {
+    let cell = pGama.getCell(planoLinha, planoColumna+1);
+	cell.setValue(mRegistro[mColuna]);
+	if (eRegistro[eColuna] !== mRegistro[mColuna]) {
+		cell.setBackground('#FFFFF0')
+	}
 }
