@@ -49,7 +49,6 @@ function cronogramaContabilizar() {
   let registrosNaoContabilizados = [];
 	informarAtivosGamaVals.forEach( elemento => {
 	  const datastr           = CararaLibrary.dateToString(elemento[ATIVOS_DATA]);
-	  const poco              = elemento[ATIVOS_LOCAL];
     const metodo            = elemento[ATIVOS_METODO];
     const setor              = elemento[ATIVOS_SETOR];
     const local             = elemento[ATIVOS_LOCAL];
