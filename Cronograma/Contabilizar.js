@@ -145,9 +145,11 @@ function cronogramaContabilizar() {
   })
 
   // Append
-  var contaCorrentesDados = contaCorrentesIDSS.getSheetByName("Dados");
-  var lastRow = contaCorrentesDados.getLastRow();
-  contaCorrentesDados.getRange(lastRow + 1, 1, contasCorrentesRangeDados.length, contasCorrentesRangeDados[0].length).setValues(contasCorrentesRangeDados)
+  if (contasCorrentesRangeDados.length > 0) {
+    var contaCorrentesDados = contaCorrentesIDSS.getSheetByName("Dados");
+    var lastRow = contaCorrentesDados.getLastRow();
+    contaCorrentesDados.getRange(lastRow + 1, 1, contasCorrentesRangeDados.length, contasCorrentesRangeDados[0].length).setValues(contasCorrentesRangeDados)
+  }
 
   // Remover os registros contabilizados da planilha Cronograma!Ativos
   let newAtivosGamaVals = []    
