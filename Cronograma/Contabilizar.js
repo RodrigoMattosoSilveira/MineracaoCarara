@@ -11,7 +11,7 @@
  * registros.
  * 
  * Uma vez que ocolaborador responsável registra a produção de um poço para um 
- * determinado dia, el pode acionar o menu Contabilizar para contabilizar os 
+ * determinado dia, ele pode acionar o menu Contabilizar para contabilizar os 
  * o sistema contabilizara esses resgistros a espera pela produção do poço.
  */
 function cronogramaContabilizar() {
