@@ -23,7 +23,7 @@ function cronogramaContabilizar() {
 	let ativosGamaVals = obterAtivosGamaVals();
 	let informarAtivosGamaVals = ativosGamaVals.filter( elemento => 'Inspecionar' === elemento[ATIVOS_ESTADO]);
 	if (informarAtivosGamaVals.length === 0) {
-		SpreadsheetApp.getActiveSpreadsheet().toast('Não há registros para Inspecionar', 'Inspecional', 3);
+		SpreadsheetApp.getActiveSpreadsheet().toast('Não há registros para Inspecionar', 'Inspecionar', 3);
 		return;
 	}
 
