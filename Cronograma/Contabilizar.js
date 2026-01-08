@@ -11,8 +11,8 @@
  * registros.
  * 
  * Uma vez que ocolaborador responsável registra a produção de um poço para um 
- * determinado dia, el pode acionar o menu Contabilizar para contabilizar os 
- * o sistema contabilizara esses resgistros a espera pela produção do poço.
+ * determinado dia, ele pode acionar o menu Contabilizar para contabilizar os 
+ * os resgistros a espera pela produção do poço.
  */
 function cronogramaContabilizar() {
     SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Contabilizar', 3);
@@ -23,7 +23,7 @@ function cronogramaContabilizar() {
 	let ativosGamaVals = obterAtivosGamaVals();
 	let informarAtivosGamaVals = ativosGamaVals.filter( elemento => 'Inspecionar' === elemento[ATIVOS_ESTADO]);
 	if (informarAtivosGamaVals.length === 0) {
-		SpreadsheetApp.getActiveSpreadsheet().toast('Não há registros para Inspecionar', 'Inspecional', 3);
+		SpreadsheetApp.getActiveSpreadsheet().toast('Não há registros para Inspecionar', 'Inspecionar', 3);
 		return;
 	}
 
@@ -49,7 +49,6 @@ function cronogramaContabilizar() {
   let registrosNaoContabilizados = [];
 	informarAtivosGamaVals.forEach( elemento => {
 	  const datastr           = CararaLibrary.dateToString(elemento[ATIVOS_DATA]);
-	  const poco              = elemento[ATIVOS_LOCAL];
     const metodo            = elemento[ATIVOS_METODO];
     const setor              = elemento[ATIVOS_SETOR];
     const local             = elemento[ATIVOS_LOCAL];
