@@ -289,6 +289,9 @@ function usarModelo(estadiaRegistro, modeloRegistro, plano, linha, dataStr, peri
 	// NOME
 	plano.getCell(linha, PLANEJAR_NOME+1).setValue(modeloRegistro[MODELOS_NOME]);
 
+	// Começo
+	plano.getCell(linha, PLANEJAR_INICIO+1).setValue(modeloRegistro[MODELOS_INICIO]);
+
 	// METODO
 	definirPlanoAjudante (plano, linha, PLANEJAR_METODO,     modeloRegistro, MODELOS_METODO,       estadiaRegistro, ESTADIAS_METODO)
 
