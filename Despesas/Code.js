@@ -121,36 +121,36 @@ const contasCorrentesTotalRealCol         	= 10; // Real
 const contasCorrentesTotalOuroCol         	= 11; // Gramas de ouro
 const contasCorrentesComentariosCol       	= 12
 
-function onOpen(e) {
-  var ui = SpreadsheetApp.getUi();
+// function onOpen(e) {
+//   var ui = SpreadsheetApp.getUi();
 
-  // Or DocumentApp, SlidesApp or FormApp.
-		ui.createMenu('Despesa')
-		.addSubMenu(ui.createMenu('Cantina')
-			.addItem('Cantina Prepare', 'cantinaPrepare')
-			.addItem('Cantina Execute', 'cantinaExecute')
-		)
-		.addSubMenu(ui.createMenu('PIX')
-			.addItem('PIX Prepare', 'pixPrepare')
-			.addItem('PIX Execute', 'pixExecute')
-		)	
+//   // Or DocumentApp, SlidesApp or FormApp.
+// 		ui.createMenu('Despesa')
+// 		.addSubMenu(ui.createMenu('Cantina')
+// 			.addItem('Cantina Prepare', 'cantinaPrepare')
+// 			.addItem('Cantina Execute', 'cantinaExecute')
+// 		)
+// 		.addSubMenu(ui.createMenu('PIX')
+// 			.addItem('PIX Prepare', 'pixPrepare')
+// 			.addItem('PIX Execute', 'pixExecute')
+// 		)	
 
-		.addSubMenu(ui.createMenu('Diversos')
-			.addItem('Diversos Prepare', 'diversosPrepare')
-			.addItem('Diversos Execute', 'diversosExecute')
-		)
+// 		.addSubMenu(ui.createMenu('Diversos')
+// 			.addItem('Diversos Prepare', 'diversosPrepare')
+// 			.addItem('Diversos Execute', 'diversosExecute')
+// 		)
 
-		.addSubMenu(ui.createMenu('Folga')
-			.addItem('Folga Prepare', 'folgaPrepare')
-			.addItem('Folga Execute', 'folgaExecute')
-		)
-		.addSubMenu(ui.createMenu('Fechar')
-			.addItem('Prepare', 'fecharPrepare')
-			.addItem('Feche', 'fecharExecute')
-		)
+// 		.addSubMenu(ui.createMenu('Folga')
+// 			.addItem('Folga Prepare', 'folgaPrepare')
+// 			.addItem('Folga Execute', 'folgaExecute')
+// 		)
+// 		.addSubMenu(ui.createMenu('Fechar')
+// 			.addItem('Prepare', 'fecharPrepare')
+// 			.addItem('Feche', 'fecharExecute')
+// 		)
 
-		.addToUi();
-}
+// 		.addToUi();
+// }
 
 function switchToTab(sheetName) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
