@@ -3,18 +3,18 @@
 
 // Contas Correntes - CC_SHEET_ID
 // 
-const CC_SHEET_ID								= "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
-const CC_TAB_NAME			    				= "ContasCorrentes"
-const contasCorentesRange						= "Dados";
-const contasCorrentesNome          				= "ContasCorrentesNome";
-const contasCorrentesEstadia        			= "ContasCorrentesEstadia";
+const CC_SHEET_ID								            = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
+const CC_TAB_NAME			    				          = "ContasCorrentes"
+const contasCorentesDadosRange						  = "Dados";
+const contasCorrentesNome          				  = "ContasCorrentesNome";
+const contasCorrentesEstadia        			  = "ContasCorrentesEstadia";
 const CC_TRANSACOES_RENDAS_DESPESAS_RANGE_NAME	= "TransacoesRendasDepesas";  
-const contasCorrentesCreditoReal         	= "CreditoReal";
+const contasCorrentesCreditoReal         	  = "CreditoReal";
 const contasCorrentesCreditoOuro          	= "CreditoOuro";
 const contasCorrentesDebitoReal           	= "DebitoReal"; 
 const contasCorrentesDebitoOuro           	= "DebitoOuro";
 const contasCorrentesDataCol              	= 0;
-const contasCorrentesNomeCol             	= 1;
+const contasCorrentesNomeCol              	= 1;
 const contasCorrentesEstadiaCol           	= 2;
 const contasCorrentesMetodoCol            	= 3;  // Diaria, Salario, Porcentagem, Cantina, PIX, Diversos
 const contasCorrentesMoedaCol             	= 4   // Real, Ouro
@@ -22,7 +22,7 @@ const contasCorrentesCreditDebitCol       	= 5;  // Credito, Debito
 const contasCorrentesItemCol              	= 6;
 const contasCorrentesPrecoUnidadeRealCol  	= 7;  // Real
 const contasCorrentesPrecoUnidadeOuroCol  	= 8;  // Gramas de ouro 
-const contasCorrentesItemQtdCol          	 = 9;
+const contasCorrentesItemQtdCol          	  = 9;
 const contasCorrentesTotalRealCol         	= 10; // Real
 const contasCorrentesTotalOuroCol         	= 11; // Gramas de ouro
 const contasCorrentesComentariosCol       	= 12;
@@ -44,7 +44,7 @@ function cc_getDadosSheetRange() {
 }
 function cc_getTransacoesRendasDespesasRange() {
 	let spreadSheet = cc_getSpreadSheet();
-	return spreadSheet.getRangeByName(CC_TRANSACOES_RENDAS_DESPESAS_RANGE_NAME);
+	return spreadSheet.getRangeByName(contasCorentesDadosRange);
 }
 
 /* ********************************************************************************************************************* */
@@ -158,4 +158,84 @@ function resumirContaCorrenteColaborador (nome, estadia, transactions) {
     }
   }
   return creditosDebitosRealOuro;
+}
+
+/* ********************************************************************************************************************* */
+// CalcularSaldoContasCorrentes
+//    Calcula o saldo de um Colaborador em uma determinada estadia
+// 
+// Input:
+//    nome (String)       - O nome to Colaborador
+//    estadia (string)    - A data da estadia do Colaborador
+//
+// Output:
+//    saldo (Object) - Um object com os saldos desejados, ou null in caso de erro:
+//    var saldo = {
+//        Real: 0,
+//        Ouro: 0
+//    }
+// ********************************************************************************************************************* */
+// 
+function CalcularSaldoContasCorrentes(nome, estadia) {
+  // Iniializamos os sumarios 
+  let saldo = {
+    Real: 0,
+    Ouro: 0
+  }
+
+
+  let contasCorrentesDadosRange = cc_getTransacoesRendasDespesasRange();
+  let transactions = contasCorrentesDadosRange.getValues();
+  
+  if (transactions.length == 0) { 
+    return null;
+  }
+
+  // 
+  var filteredTransactions = transactions.filter(function(transaction) {
+    let estadiaDateStr = dateToString(transaction[contasCorrentesEstadiaCol]);
+    return transaction[contasCorrentesNomeCol] == nome && estadiaDateStr == estadia;
+  });
+  if (filteredTransactions.length == 0) {
+    return null;
+  }
+
+  for (var i=0; i < filteredTransactions.length; i++) {
+    var creditoDebito = filteredTransactions[i][contasCorrentesCreditDebitCol]
+    switch (creditoDebito) {
+      case "Credito":
+            var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
+            switch (moeda) {
+          case "Real":
+            saldo["Real"] += filteredTransactions[i][contasCorrentesTotalRealCol];
+            break;
+          case "Ouro":
+            saldo["Ouro"] += filteredTransactions[i][contasCorrentesTotalOuroCol];
+            break;
+          default:
+            return null;
+        }
+        break;
+      case "Debito":
+            var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
+        switch (moeda) {
+          case "Real":
+             saldo["Real"] -= filteredTransactions[i][contasCorrentesTotalRealCol];
+            break;
+         case "Ouro":
+            saldo["Ouro"] -= filteredTransactions[i][contasCorrentesTotalOuroCol];
+            break;
+          default:
+            return null;
+        }
+        break;
+     default:
+        return null;
+    }
+  }
+  return saldo;
+}
+
+function Test() {
+  return 42;
 }

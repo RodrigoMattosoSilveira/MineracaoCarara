@@ -17,6 +17,8 @@ const CantinaPagementoRange 	= despesasCantinaTab.getRange("CantinaPagemento");
 const CantinaMoedaRange 		= despesasCantinaTab.getRange("CantinaMoeda");
 const CantinaDespesasRange 		= despesasCantinaTab.getRange("CantinaDespesas");
 const CantinaComentarioRange	= despesasCantinaTab.getRange("CantinaComentario");
+const CantinaSaldoRange 		= despesasCantinaTab.getRange("CantinaSaldo");
+const CantinaAGanharRange 		= despesasCantinaTab.getRange("CantinaAGanhar");
 
 const CantinaItemsRange = despesasCantinaTab.getRange("CantinaItems");
 const CantinaQuantidadesRange = despesasCantinaTab.getRange("CantinaQuantidades");

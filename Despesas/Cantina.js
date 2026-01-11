@@ -1,5 +1,16 @@
+function onEdit(e) {
+  let sheet = e.source.getActiveSheet();
+  let range = e.range;
+  let colaboradorNome = e.value;
+
+  // Check if the edited cell is within the Cantina Items or Quantities range
+  if (sheet.getName() === "Cantina") {
+	var cantinaItemsRange = sheet.getRange("CantinaItems");
+	var cantinaQuantitiesRange = sheet.getRange("CantinaQuantities");
+  }
+}
 function cantinaPrepare() {
-	// Navegue para o formulário Cantina e limpe o mesmo
+	// Navegue para o formulário Cantina e limpe o mesmooooo
   	switchToTab("Cantina");
 	clearCantinaForm();
 }
@@ -10,7 +21,7 @@ function cantinaExecute() {
 	switchToTab("Cantina");
 
 	if (CantinaColaboradorRange.getValue() == "") {
-		SpreadsheetApp.getUi().alert("OColaboradordeve ser preenchido.");
+		SpreadsheetApp.getUi().alert("O Colaboradordeve ser preenchido.");
 		return null;
 	}
 
@@ -19,6 +30,8 @@ function cantinaExecute() {
 	var cantinaColaborador	= CantinaColaboradorRange.getValue();
 	var cantinaEstadia 		= CantinaEstadiaRange.getValue();
 	var cantinaPagemento 	= CantinaPagementoRange.getValue();
+	var cantinaSaldo 		= CalcularSaldoContasCorrentes(cantinaColaborador, cantinaEstadia);
+	var cantinaAGanhar 		= 0
 	var cantinaMoeda 		= CantinaMoedaRange.getValue();
 	var cantinaDespesas     = CantinaDespesasRange.getValues();
 	var cantinaDespesasFiltrados = cantinaDespesas.filter(function(transaction) {
