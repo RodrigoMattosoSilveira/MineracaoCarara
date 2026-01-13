@@ -1,14 +1,3 @@
-function onEdit(e) {
-  let sheet = e.source.getActiveSheet();
-  let range = e.range;
-  let colaboradorNome = e.value;
-
-  // Check if the edited cell is within the Cantina Items or Quantities range
-  if (sheet.getName() === "Cantina") {
-	var cantinaItemsRange = sheet.getRange("CantinaItems");
-	var cantinaQuantitiesRange = sheet.getRange("CantinaQuantities");
-  }
-}
 function cantinaPrepare() {
 	// Navegue para o formulário Cantina e limpe o mesmooooo
   	switchToTab("Cantina");

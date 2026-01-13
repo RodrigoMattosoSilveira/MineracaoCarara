@@ -1,3 +1,3 @@
-function onOpenTesst () {
-	onOpen()
+function GetSaldoTest () {
+	GetSaldo();
 }

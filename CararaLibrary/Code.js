@@ -129,3 +129,79 @@ if (typeof module !== 'undefined') module.exports = {
     dateToString,
     numeroParaLetra,
 }
+
+/* ********************************************************************************************************************* */
+// CalcularSaldoContasCorrentes
+//    Calcula o saldo de um Colaborador em uma determinada estadia
+// 
+// Input:
+//    nome (String)       - O nome to Colaborador
+//    estadia (string)    - A data da estadia do Colaborador
+//
+// Output:
+//    saldo (Object) - Um object com os saldos desejados, ou null in caso de erro:
+//    var saldo = {
+//        Real: 0,
+//        Ouro: 0
+//    }
+// ********************************************************************************************************************* */
+// 
+function calcularSaldoContasCorrentes(nome, estadia) {
+  // Iniializamos os sumarios 
+  let saldo = {
+    Real: 0,
+    Ouro: 0
+  }
+
+
+  let contasCorrentesDadosRange = cc_getTransacoesRendasDespesasRange();
+  let transactions = contasCorrentesDadosRange.getValues();
+  
+  if (transactions.length == 0) { 
+    return null;
+  }
+
+  // 
+  var filteredTransactions = transactions.filter(function(transaction) {
+    let estadiaDateStr = dateToString(transaction[contasCorrentesEstadiaCol]);
+    return transaction[contasCorrentesNomeCol] == nome && estadiaDateStr == estadia;
+  });
+  if (filteredTransactions.length == 0) {
+    return null;
+  }
+
+  for (var i=0; i < filteredTransactions.length; i++) {
+    var creditoDebito = filteredTransactions[i][contasCorrentesCreditDebitCol]
+    switch (creditoDebito) {
+      case "Credito":
+            var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
+            switch (moeda) {
+          case "Real":
+            saldo["Real"] += filteredTransactions[i][contasCorrentesTotalRealCol];
+            break;
+          case "Ouro":
+            saldo["Ouro"] += filteredTransactions[i][contasCorrentesTotalOuroCol];
+            break;
+          default:
+            return null;
+        }
+        break;
+      case "Debito":
+            var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
+        switch (moeda) {
+          case "Real":
+             saldo["Real"] -= filteredTransactions[i][contasCorrentesTotalRealCol];
+            break;
+         case "Ouro":
+            saldo["Ouro"] -= filteredTransactions[i][contasCorrentesTotalOuroCol];
+            break;
+          default:
+            return null;
+        }
+        break;
+     default:
+        return null;
+    }
+  }
+  return saldo;
+}

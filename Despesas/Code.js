@@ -8,16 +8,17 @@ function despesasGetSpreaSheet() {
 
 // *** Layout do formulário Cantina
 // 
-const despesasCantinaTab = despesasSpreadSheet.getSheetByName("Cantina");
-const CantinaDataRange = despesasCantinaTab.getRange("CantinaData");
+const despesasCantinaTab      = despesasSpreadSheet.getSheetByName("Cantina");
+const CantinaDataRange        = despesasCantinaTab.getRange("CantinaData");
 
-const CantinaColaboradorRange 	= despesasCantinaTab.getRange("CantinaColaborador");
+const CantinaColaboradorRange = despesasCantinaTab.getRange("CantinaColaborador");
 const CantinaEstadiaRange 		= despesasCantinaTab.getRange("CantinaEstadia");
 const CantinaPagementoRange 	= despesasCantinaTab.getRange("CantinaPagemento");
-const CantinaMoedaRange 		= despesasCantinaTab.getRange("CantinaMoeda");
+const CantinaMoedaRange 		  = despesasCantinaTab.getRange("CantinaMoeda");
 const CantinaDespesasRange 		= despesasCantinaTab.getRange("CantinaDespesas");
 const CantinaComentarioRange	= despesasCantinaTab.getRange("CantinaComentario");
-const CantinaSaldoRange 		= despesasCantinaTab.getRange("CantinaSaldo");
+const CantinaSaldoOuroRange 	= despesasCantinaTab.getRange("CantinaSaldoOuro");
+const CantinaSaldoRealRange 	= despesasCantinaTab.getRange("CantinaSaldoReal");
 const CantinaAGanharRange 		= despesasCantinaTab.getRange("CantinaAGanhar");
 
 const CantinaItemsRange = despesasCantinaTab.getRange("CantinaItems");
@@ -123,37 +124,61 @@ const contasCorrentesTotalRealCol         	= 10; // Real
 const contasCorrentesTotalOuroCol         	= 11; // Gramas de ouro
 const contasCorrentesComentariosCol       	= 12
 
-// function onOpen(e) {
-//   var ui = SpreadsheetApp.getUi();
+const ESTADIAS_GAMA        = "EstadiaGamaLocal";
+const ESTADIAS_NOME        = 0;
+const ESTADIAS_INICIO      = 1;
+const ESTADIAS_METODO      = 2;
+const ESTADIAS_SETOR       = 3;
+const ESTADIAS_LOCAL       = 4;
+const ESTADIAS_TAREFA      = 5;
+const ESTADIAS_REMUNERACAO = 6;
+const ESTADIAS_COMENTARIOS = 7;
 
-//   // Or DocumentApp, SlidesApp or FormApp.
-// 		ui.createMenu('Despesa')
-// 		.addSubMenu(ui.createMenu('Cantina')
-// 			.addItem('Cantina Prepare', 'cantinaPrepare')
-// 			.addItem('Cantina Execute', 'cantinaExecute')
-// 		)
-// 		.addSubMenu(ui.createMenu('PIX')
-// 			.addItem('PIX Prepare', 'pixPrepare')
-// 			.addItem('PIX Execute', 'pixExecute')
-// 		)	
-
-// 		.addSubMenu(ui.createMenu('Diversos')
-// 			.addItem('Diversos Prepare', 'diversosPrepare')
-// 			.addItem('Diversos Execute', 'diversosExecute')
-// 		)
-
-// 		.addSubMenu(ui.createMenu('Folga')
-// 			.addItem('Folga Prepare', 'folgaPrepare')
-// 			.addItem('Folga Execute', 'folgaExecute')
-// 		)
-// 		.addSubMenu(ui.createMenu('Fechar')
-// 			.addItem('Prepare', 'fecharPrepare')
-// 			.addItem('Feche', 'fecharExecute')
-// 		)
-
-// 		.addToUi();
-// }
-
+function GetSaldo() {
+  // const ss = SpreadsheetApp.getActiveSpreadsheet();
+  // sheetName = sheetName || ss.getActiveSheet().getName();
+  sheetName = "Cantina"
+  let  colaboradorNome;
+  let  colaboradoEstadia;
+  let  saldoOuroRange;
+  let  saldoRealRange;
+  switch (sheetName) {
+    case "Cantina":
+      colaboradorNome   = CantinaColaboradorRange.getValue();
+      colaboradoEstadia = CantinaEstadiaRange.getValue();
+      saldoOuroRange    = CantinaSaldoOuroRange;
+      saldoRealRange    = CantinaSaldoRealRange;
+      break;
+    case "Pix":
+      colaboradorNome   = PixColaboradorRange.getValue();
+      colaboradoEstadia = PixEstadiaRange.getValue();
+      saldoOuroRange    = PixSaldoOuroRange;
+      saldoRealRange    = PixSaldoRealRange;
+      break;
+    case "Diversos":
+      colaboradorNome   = DiversosColaboradorRange.getValue();
+      colaboradoEstadia = DiversosEstadiaRange.getValue();
+      saldoOuroRange    = DiversosSaldoOuroRange;
+      saldoRealRange    = DiversosSaldoRealRange;
+      break;
+    case "Folga":
+      colaboradorNome   = FolgaColaboradorRange.getValue();
+      colaboradoEstadia = FolgaEstadiaRange.getValue();
+      saldoOuroRange    = FolgaSaldoOuroRange;
+      saldoRealRange    = FolgaSaldoRealRange;
+      break;
+    default:
+      return {
+        Real: 0,
+        Ouro: 0
+      };
+  }
+	let saldo = CararaLibrary.calcularSaldoContasCorrentes(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia));
+	if (saldo) {
+    saldoOuroRange.setValue(saldo.Ouro);
+    saldoRealRange.setValue(saldo.Real);
+  }
+}
 function switchToTab(sheetName) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = spreadsheet.getSheetByName(sheetName);
