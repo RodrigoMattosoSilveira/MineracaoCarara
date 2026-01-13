@@ -77,4 +77,6 @@ function clearCantinaForm () {
 	CantinaItemsRange.setValue("");
 	CantinaQuantidadesRange.setValue("");
 	CantinaComentarioRange.setValue("");
+	CantinaSaldoOuroRange.setValue("");
+	CantinaSaldoRealRange.setValue("");
 }
