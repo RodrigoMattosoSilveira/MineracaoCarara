@@ -19,8 +19,6 @@ const CantinaDespesasRange 		= despesasCantinaTab.getRange("CantinaDespesas");
 const CantinaComentarioRange	= despesasCantinaTab.getRange("CantinaComentario");
 const CantinaSaldoOuroRange 	= despesasCantinaTab.getRange("CantinaSaldoOuro");
 const CantinaSaldoRealRange 	= despesasCantinaTab.getRange("CantinaSaldoReal");
-const CantinaAGanharRange 		= despesasCantinaTab.getRange("CantinaAGanhar");
-
 const CantinaItemsRange = despesasCantinaTab.getRange("CantinaItems");
 const CantinaQuantidadesRange = despesasCantinaTab.getRange("CantinaQuantidades");
 
@@ -39,13 +37,15 @@ const PixDataRange = despesasPixTab.getRange("PixData");
 const PixColaboradorRange   = despesasPixTab.getRange("PixColaborador");
 const PixEstadiaRange     	= despesasPixTab.getRange("PixEstadia");
 const PixPagementoRange   	= despesasPixTab.getRange("PixPagamento");
-const PixMoedaRange     	= despesasPixTab.getRange("PixMoeda");
+const PixMoedaRange     	  = despesasPixTab.getRange("PixMoeda");
 const PixDespesasRange    	= despesasPixTab.getRange("PixDespesas");
 const PixComentarioRange  	= despesasPixTab.getRange("PixComentario");
 
 const PixItemsRange = despesasPixTab.getRange("PixItems");
 const PixRealRange = despesasPixTab.getRange("PixReal");
 const PixQuantidadesRange = despesasPixTab.getRange("PixQuantidades");
+const PixSaldoOuroRange 	= despesasPixTab.getRange("PixSaldoOuro");
+const PixSaldoRealRange 	= despesasPixTab.getRange("PixSaldoReal");
 
 const PixDespesasItemCol        = 0;  
 const PixDespesasRealol         = 1;
@@ -135,13 +135,14 @@ const ESTADIAS_REMUNERACAO = 6;
 const ESTADIAS_COMENTARIOS = 7;
 
 function GetSaldo() {
-  // const ss = SpreadsheetApp.getActiveSpreadsheet();
-  // sheetName = sheetName || ss.getActiveSheet().getName();
-  sheetName = "Cantina"
+  // sheetName = "Cantina"
   let  colaboradorNome;
   let  colaboradoEstadia;
   let  saldoOuroRange;
   let  saldoRealRange;
+
+  let ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheetName = ss.getActiveSheet().getName();
   switch (sheetName) {
     case "Cantina":
       colaboradorNome   = CantinaColaboradorRange.getValue();
