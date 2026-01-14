@@ -42,10 +42,10 @@ const PixDespesasRange    	= despesasPixTab.getRange("PixDespesas");
 const PixComentarioRange  	= despesasPixTab.getRange("PixComentario");
 
 const PixItemsRange = despesasPixTab.getRange("PixItems");
-const PixRealRange = despesasPixTab.getRange("PixReal");
-const PixQuantidadesRange = despesasPixTab.getRange("PixQuantidades");
-const PixSaldoOuroRange 	= despesasPixTab.getRange("PixSaldoOuro");
-const PixSaldoRealRange 	= despesasPixTab.getRange("PixSaldoReal");
+const PixRealRange          = despesasPixTab.getRange("PixReal");
+const PixQuantidadesRange   = despesasPixTab.getRange("PixQuantidades");
+const PixSaldoOuroRange 	  = despesasPixTab.getRange("PixSaldoOuro");
+const PixSaldoRealRange 	  = despesasPixTab.getRange("PixSaldoReal");
 
 const PixDespesasItemCol        = 0;  
 const PixDespesasRealol         = 1;
@@ -65,6 +65,8 @@ const DiversosPagementoRange     = despesasDiversosTab.getRange("DiversosPagamen
 const DiversosMoedaRange         = despesasDiversosTab.getRange("DiversosMoeda");
 const DiversosDespesasRange      = despesasDiversosTab.getRange("DiversosDespesas");
 const DiversosComentarioRange    = despesasDiversosTab.getRange("DiversosComentario");
+const DiversosSaldoOuroRange     = despesasDiversosTab.getRange("DiversosSaldoOuro");
+const DiversosSaldoRealRange     = despesasDiversosTab.getRange("DiversosSaldoReal");
 
 const DiversosItemsRange = despesasDiversosTab.getRange("DiversosItems");
 const DiversosRealRange = despesasDiversosTab.getRange("DiversosReal");
