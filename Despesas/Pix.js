@@ -77,4 +77,6 @@ function limparFormularioPix () {
 	PixComentarioRange.setValue("");
 	PixSaldoOuroRange.setValue("");
 	PixSaldoRealRange.setValue("");
+	PixFuturoOuroRange.setValue("");
+	PixFuturoRealRange.setValue("");
 }

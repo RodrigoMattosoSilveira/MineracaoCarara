@@ -5,9 +5,10 @@ function calcularSaldoContasCorrentesTest() {
 	if (!saldo) {
 		throw new Error(`calcularSaldoContasCorrentesTest Teste falhou: Nenhum saldo retornado para ${nome} em ${estadia}.`);
 	}
-	let expectedSaldo = { Real: 10.00, Ouro: 0.00 };
-	if (saldo.Real !== expectedSaldo.Real && saldo.Ouro !== expectedSaldo.Ouro) {
-		throw new Error(`calcularSaldoContasCorrentesTest Teste falhou: Saldo incorreto para ${nome} em ${estadia}. Esperado: { Real: ${expectedSaldo.Real}, Ouro: ${expectedSaldo.Ouro} }, Obtido: { Real: ${saldo.Real}, Ouro: ${saldo.Ouro} }`);
+	let expectedSaldo = { ganho: { real: 10.00, ouro: 0.00 }, futuro: { real: 0.00, ouro: 0 } };
+	if (saldo.ganho.real !== expectedSaldo.ganho.real && saldo.ganho.ouro !== expectedSaldo.ganho.ouro &&
+	    saldo.futuro.real !== expectedSaldo.futuro.real && saldo.futuro.ouro !== expectedSaldo.futuro.ouro	) {
+		throw new Error(`calcularSaldoContasCorrentesTest Teste falhou: Saldo incorreto para ${nome} em ${estadia}. Esperado: { Real: ${expectedSaldo.ganho.real}, Ouro: ${expectedSaldo.ganho.ouro} }, Obtido: { Real: ${saldo.ganho.real}, Ouro: ${saldo.ganho.ouro} }`);
 	}
 	Logger.log("calcularSaldoContasCorrentesTest passes")
 }

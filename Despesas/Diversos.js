@@ -82,4 +82,6 @@ function limparFormularioDiversos() {
 	DiversosComentarioRange.setValue("");	
 	DiversosSaldoOuroRange.setValue("");
 	DiversosSaldoRealRange.setValue("");
+	DiversosFuturoRealRange.setValue("");
+	DiversosFuturoOuroRange.setValue("");
 }
