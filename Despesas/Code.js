@@ -181,22 +181,22 @@ function GetSaldo() {
       break;
     default:
       return {
-        ganho: {
-          real: 0,
-          ouro: 0
+        auferidas: {
+          ouro: 0,
+          real: 0
         },
-        futuro: {
-          real: 0,
-          ouro: 0
+        futuras: {
+          ouro: 0,
+          real: 0
         }
       };
   }
-	let cc = CararaLibrary.calcularSaldoContasCorrentes(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia));
-	if (cc != null) {
-    saldoOuroRange.setValue(cc.ganho.ouro );
-    saldoRealRange.setValue(cc.ganho.real);
-    futuroOuroRange.setValue(cc.futuro.ouro);
-    futuroRealRange.setValue(cc.futuro.real);
+	let rendas = CararaLibrary.calcularSaldoContasCorrentes(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia));
+	if (rendas != null) {
+    saldoOuroRange.setValue(rendas.auferidas.ouro );
+    saldoRealRange.setValue(rendas.auferidas.real);
+    futuroOuroRange.setValue(rendas.futuras.ouro);
+    futuroRealRange.setValue(rendas.futuras.real);
   }
 }
 function switchToTab(sheetName) {

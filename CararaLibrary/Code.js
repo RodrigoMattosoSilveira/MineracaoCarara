@@ -147,19 +147,26 @@ if (typeof module !== 'undefined') module.exports = {
 // ********************************************************************************************************************* */
 // 
 function calcularSaldoContasCorrentes(nome, estadia) {
+
   // Iniializamos os sumarios 
-  let saldo = {
-    ganho: {
+  let rendas = {
+    auferidas: {
       real: 0,
       ouro: 0
     },
-    futuro: {
+    futuras: {
       real: 0,
       ouro: 0
     }
   };
 
-  // calcular ganhos
+  rendas = {...calcularRendasAuferidas(nome, estadia, rendas)};
+  rendas = {...calcularRendasFuturas(nome, estadia, rendas)};
+  return rendas;
+}
+
+function calcularRendasAuferidas(nome, estadia, rendas) {
+ // calcular ganhos
   let contasCorrentesDadosRange = cc_getTransacoesRendasDespesasRange();
   let transactions = contasCorrentesDadosRange.getValues();
 
@@ -175,10 +182,10 @@ function calcularSaldoContasCorrentes(nome, estadia) {
             var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
             switch (moeda) {
           case "Real":
-            saldo.ganho["real"] += filteredTransactions[i][contasCorrentesTotalRealCol];
+            rendas.auferidas["real"] += filteredTransactions[i][contasCorrentesTotalRealCol];
             break;
           case "Ouro":
-            saldo.ganho["ouro"] += filteredTransactions[i][contasCorrentesTotalOuroCol];
+            rendas.auferidas["ouro"] += filteredTransactions[i][contasCorrentesTotalOuroCol];
             break;
           default:
             return null;
@@ -188,10 +195,10 @@ function calcularSaldoContasCorrentes(nome, estadia) {
             var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
         switch (moeda) {
           case "Real":
-             saldo.ganho["real"] -= filteredTransactions[i][contasCorrentesTotalRealCol];
+             rendas.auferidas["real"] -= filteredTransactions[i][contasCorrentesTotalRealCol];
             break;
          case "Ouro":
-            saldo.ganho["ouro"] -= filteredTransactions[i][contasCorrentesTotalOuroCol];
+            rendas.auferidas["ouro"] -= filteredTransactions[i][contasCorrentesTotalOuroCol];
             break;
           default:
             return null;
@@ -201,7 +208,9 @@ function calcularSaldoContasCorrentes(nome, estadia) {
         return null;
     }
   }
-
-  // calcular futuro
-  return saldo;
+  return rendas;
+}
+function calcularRendasFuturas(nome, estadia, rendas) {
+  
+  return rendas;
 }
