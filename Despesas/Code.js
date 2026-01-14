@@ -19,6 +19,9 @@ const CantinaDespesasRange 		= despesasCantinaTab.getRange("CantinaDespesas");
 const CantinaComentarioRange	= despesasCantinaTab.getRange("CantinaComentario");
 const CantinaSaldoOuroRange 	= despesasCantinaTab.getRange("CantinaSaldoOuro");
 const CantinaSaldoRealRange 	= despesasCantinaTab.getRange("CantinaSaldoReal");
+const CantinaFuturoOuroRange 	= despesasCantinaTab.getRange("CantinaFuturoOuro");
+const CantinaFuturoRealRange 	= despesasCantinaTab.getRange("CantinaFuturoReal");
+
 const CantinaItemsRange = despesasCantinaTab.getRange("CantinaItems");
 const CantinaQuantidadesRange = despesasCantinaTab.getRange("CantinaQuantidades");
 
@@ -46,6 +49,8 @@ const PixRealRange          = despesasPixTab.getRange("PixReal");
 const PixQuantidadesRange   = despesasPixTab.getRange("PixQuantidades");
 const PixSaldoOuroRange 	  = despesasPixTab.getRange("PixSaldoOuro");
 const PixSaldoRealRange 	  = despesasPixTab.getRange("PixSaldoReal");
+const PixFuturoOuroRange 	  = despesasPixTab.getRange("PixFuturoOuro");
+const PixFuturoRealRange 	  = despesasPixTab.getRange("PixFuturoReal");
 
 const PixDespesasItemCol        = 0;  
 const PixDespesasRealol         = 1;
@@ -67,6 +72,8 @@ const DiversosDespesasRange      = despesasDiversosTab.getRange("DiversosDespesa
 const DiversosComentarioRange    = despesasDiversosTab.getRange("DiversosComentario");
 const DiversosSaldoOuroRange     = despesasDiversosTab.getRange("DiversosSaldoOuro");
 const DiversosSaldoRealRange     = despesasDiversosTab.getRange("DiversosSaldoReal");
+const DiversosFuturoOuroRange 	= despesasDiversosTab.getRange("DiversosFuturoOuro");
+const DiversosFuturoRealRange 	= despesasDiversosTab.getRange("DiversosFuturoReal");
 
 const DiversosItemsRange = despesasDiversosTab.getRange("DiversosItems");
 const DiversosRealRange = despesasDiversosTab.getRange("DiversosReal");
@@ -142,6 +149,8 @@ function GetSaldo() {
   let  colaboradoEstadia;
   let  saldoOuroRange;
   let  saldoRealRange;
+  let  futuroOuroRange;
+  let  futuroRealRange;
 
   let ss = SpreadsheetApp.getActiveSpreadsheet();
   let sheetName = ss.getActiveSheet().getName();
@@ -151,35 +160,43 @@ function GetSaldo() {
       colaboradoEstadia = CantinaEstadiaRange.getValue();
       saldoOuroRange    = CantinaSaldoOuroRange;
       saldoRealRange    = CantinaSaldoRealRange;
+      futuroOuroRange   = CantinaFuturoOuroRange;
+      futuroRealRange   = CantinaFuturoRealRange;
       break;
     case "Pix":
       colaboradorNome   = PixColaboradorRange.getValue();
       colaboradoEstadia = PixEstadiaRange.getValue();
       saldoOuroRange    = PixSaldoOuroRange;
       saldoRealRange    = PixSaldoRealRange;
+      futuroOuroRange   = PixFuturoOuroRange;
+      futuroRealRange   = PixFuturoRealRange;
       break;
     case "Diversos":
       colaboradorNome   = DiversosColaboradorRange.getValue();
       colaboradoEstadia = DiversosEstadiaRange.getValue();
       saldoOuroRange    = DiversosSaldoOuroRange;
       saldoRealRange    = DiversosSaldoRealRange;
-      break;
-    case "Folga":
-      colaboradorNome   = FolgaColaboradorRange.getValue();
-      colaboradoEstadia = FolgaEstadiaRange.getValue();
-      saldoOuroRange    = FolgaSaldoOuroRange;
-      saldoRealRange    = FolgaSaldoRealRange;
+      futuroOuroRange   = DiversosFuturoOuroRange;
+      futuroRealRange   = DiversosFuturoRealRange;
       break;
     default:
       return {
-        Real: 0,
-        Ouro: 0
+        Saldo: {
+          Real: 0,
+          Ouro: 0
+        },
+        Futuro: {
+          Real: 0,
+          Ouro: 0
+        }
       };
   }
-	let saldo = CararaLibrary.calcularSaldoContasCorrentes(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia));
-	if (saldo) {
-    saldoOuroRange.setValue(saldo.Ouro);
-    saldoRealRange.setValue(saldo.Real);
+	let cc = CararaLibrary.calcularSaldoContasCorrentes(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia));
+	if (cc != null) {
+    saldoOuroRange.setValue(cc.Saldo.Ouro);
+    saldoRealRange.setValue(cc.Saldo.Real);
+    futuroOuroRange.setValue(cc.Futuro.Ouro);
+    futuroRealRange.setValue(cc.Futuro.Real);
   }
 }
 function switchToTab(sheetName) {
