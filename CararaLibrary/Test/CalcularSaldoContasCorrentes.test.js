@@ -1,4 +1,25 @@
-function calcularSaldoContasCorrentesTest() {
+function calcularRendasFuturasOuroTeste() {
+	  let expectedRendas = {
+    auferidas: {
+      ouro: 0,
+      real: 0
+    },
+    futuras: {
+      ouro: 0,
+      real: 0
+    }
+  };
+  
+  let nome = "Raul Vicente Heitor da Mata";
+	let estadia = dateToString("11/15/2025");
+	let rendas = calcularRendasFuturasOuro(nome, estadia)
+
+  typeof rendas !== 'undefined' ? 
+		console.info(" ✔︎ rendas definidas") :
+		console.error(" ✖︎  rendas indefinidas definidas");  
+
+}
+function calcularSaldoContasCorrentesTest1() {
 	let nome = "Enzo Marcos Vinicius Ferreira";
 	let estadia = dateToString("11/30/2025");
 	let rendas = calcularSaldoContasCorrentes(nome, estadia);
