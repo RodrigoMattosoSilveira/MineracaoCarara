@@ -1,4 +1,9 @@
 const EPSILON = 0.00001;
+const obterProducaoDataPocoPeriodoChaveTest = () => {
+  let chave = "01/03/2026Poço_2Diurno"
+  obterProducaoDataPocoPeriodoChave(chave)
+}
+
 const producaoRegistrarProsseguirTeste = () => {
   matriz = [
     ['13/09/2025', 'Poço_1', 'Diurno', '0.45'], 

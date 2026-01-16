@@ -92,7 +92,7 @@ function obterProducaoDataPocoPeriodo(data, poco, periodo) {
 }
 function obterProducaoDataPocoPeriodoChave(chave) {
 	let matrizProducao = obterProducaoGamaVals().filter((registro) => {
-		dataChave = CararaLibrary.dateToString(registro[PRODUCAO_DATA_COL]) + registro[PRODUCAO_POCO_NOME_COL] +  registro[PRODUCAO_PERIODO_NOME_COL];	
+		let dataChave = CararaLibrary.dateToString(registro[PRODUCAO_DATA_COL]) + registro[PRODUCAO_POCO_NOME_COL] +  registro[PRODUCAO_PERIODO_NOME_COL];	
 		return chave === dataChave;		
 	});  
 	return  matrizProducao.length === 1 ? matrizProducao[0][PRODUCAO_QUANTIDADE_COL] : null;

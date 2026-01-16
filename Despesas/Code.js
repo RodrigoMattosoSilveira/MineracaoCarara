@@ -8,15 +8,19 @@ function despesasGetSpreaSheet() {
 
 // *** Layout do formulário Cantina
 // 
-const despesasCantinaTab = despesasSpreadSheet.getSheetByName("Cantina");
-const CantinaDataRange = despesasCantinaTab.getRange("CantinaData");
+const despesasCantinaTab      = despesasSpreadSheet.getSheetByName("Cantina");
+const CantinaDataRange        = despesasCantinaTab.getRange("CantinaData");
 
-const CantinaColaboradorRange 	= despesasCantinaTab.getRange("CantinaColaborador");
+const CantinaColaboradorRange = despesasCantinaTab.getRange("CantinaColaborador");
 const CantinaEstadiaRange 		= despesasCantinaTab.getRange("CantinaEstadia");
 const CantinaPagementoRange 	= despesasCantinaTab.getRange("CantinaPagemento");
-const CantinaMoedaRange 		= despesasCantinaTab.getRange("CantinaMoeda");
+const CantinaMoedaRange 		  = despesasCantinaTab.getRange("CantinaMoeda");
 const CantinaDespesasRange 		= despesasCantinaTab.getRange("CantinaDespesas");
 const CantinaComentarioRange	= despesasCantinaTab.getRange("CantinaComentario");
+const CantinaSaldoOuroRange 	= despesasCantinaTab.getRange("CantinaSaldoOuro");
+const CantinaSaldoRealRange 	= despesasCantinaTab.getRange("CantinaSaldoReal");
+const CantinaFuturoOuroRange 	= despesasCantinaTab.getRange("CantinaFuturoOuro");
+const CantinaFuturoRealRange 	= despesasCantinaTab.getRange("CantinaFuturoReal");
 
 const CantinaItemsRange = despesasCantinaTab.getRange("CantinaItems");
 const CantinaQuantidadesRange = despesasCantinaTab.getRange("CantinaQuantidades");
@@ -36,13 +40,17 @@ const PixDataRange = despesasPixTab.getRange("PixData");
 const PixColaboradorRange   = despesasPixTab.getRange("PixColaborador");
 const PixEstadiaRange     	= despesasPixTab.getRange("PixEstadia");
 const PixPagementoRange   	= despesasPixTab.getRange("PixPagamento");
-const PixMoedaRange     	= despesasPixTab.getRange("PixMoeda");
+const PixMoedaRange     	  = despesasPixTab.getRange("PixMoeda");
 const PixDespesasRange    	= despesasPixTab.getRange("PixDespesas");
 const PixComentarioRange  	= despesasPixTab.getRange("PixComentario");
 
 const PixItemsRange = despesasPixTab.getRange("PixItems");
-const PixRealRange = despesasPixTab.getRange("PixReal");
-const PixQuantidadesRange = despesasPixTab.getRange("PixQuantidades");
+const PixRealRange          = despesasPixTab.getRange("PixReal");
+const PixQuantidadesRange   = despesasPixTab.getRange("PixQuantidades");
+const PixSaldoOuroRange 	  = despesasPixTab.getRange("PixSaldoOuro");
+const PixSaldoRealRange 	  = despesasPixTab.getRange("PixSaldoReal");
+const PixFuturoOuroRange 	  = despesasPixTab.getRange("PixFuturoOuro");
+const PixFuturoRealRange 	  = despesasPixTab.getRange("PixFuturoReal");
 
 const PixDespesasItemCol        = 0;  
 const PixDespesasRealol         = 1;
@@ -62,6 +70,10 @@ const DiversosPagementoRange     = despesasDiversosTab.getRange("DiversosPagamen
 const DiversosMoedaRange         = despesasDiversosTab.getRange("DiversosMoeda");
 const DiversosDespesasRange      = despesasDiversosTab.getRange("DiversosDespesas");
 const DiversosComentarioRange    = despesasDiversosTab.getRange("DiversosComentario");
+const DiversosSaldoOuroRange     = despesasDiversosTab.getRange("DiversosSaldoOuro");
+const DiversosSaldoRealRange     = despesasDiversosTab.getRange("DiversosSaldoReal");
+const DiversosFuturoOuroRange 	= despesasDiversosTab.getRange("DiversosFuturoOuro");
+const DiversosFuturoRealRange 	= despesasDiversosTab.getRange("DiversosFuturoReal");
 
 const DiversosItemsRange = despesasDiversosTab.getRange("DiversosItems");
 const DiversosRealRange = despesasDiversosTab.getRange("DiversosReal");
@@ -121,37 +133,72 @@ const contasCorrentesTotalRealCol         	= 10; // Real
 const contasCorrentesTotalOuroCol         	= 11; // Gramas de ouro
 const contasCorrentesComentariosCol       	= 12
 
-function onOpen(e) {
-  var ui = SpreadsheetApp.getUi();
+const ESTADIAS_GAMA        = "EstadiaGamaLocal";
+const ESTADIAS_NOME        = 0;
+const ESTADIAS_INICIO      = 1;
+const ESTADIAS_METODO      = 2;
+const ESTADIAS_SETOR       = 3;
+const ESTADIAS_LOCAL       = 4;
+const ESTADIAS_TAREFA      = 5;
+const ESTADIAS_REMUNERACAO = 6;
+const ESTADIAS_COMENTARIOS = 7;
 
-  // Or DocumentApp, SlidesApp or FormApp.
-		ui.createMenu('Despesa')
-		.addSubMenu(ui.createMenu('Cantina')
-			.addItem('Cantina Prepare', 'cantinaPrepare')
-			.addItem('Cantina Execute', 'cantinaExecute')
-		)
-		.addSubMenu(ui.createMenu('PIX')
-			.addItem('PIX Prepare', 'pixPrepare')
-			.addItem('PIX Execute', 'pixExecute')
-		)	
+function GetSaldo() {
+  // sheetName = "Cantina"
+  let  colaboradorNome;
+  let  colaboradoEstadia;
+  let  saldoOuroRange;
+  let  saldoRealRange;
+  let  futuroOuroRange;
+  let  futuroRealRange;
 
-		.addSubMenu(ui.createMenu('Diversos')
-			.addItem('Diversos Prepare', 'diversosPrepare')
-			.addItem('Diversos Execute', 'diversosExecute')
-		)
-
-		.addSubMenu(ui.createMenu('Folga')
-			.addItem('Folga Prepare', 'folgaPrepare')
-			.addItem('Folga Execute', 'folgaExecute')
-		)
-		.addSubMenu(ui.createMenu('Fechar')
-			.addItem('Prepare', 'fecharPrepare')
-			.addItem('Feche', 'fecharExecute')
-		)
-
-		.addToUi();
+  let ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheetName = ss.getActiveSheet().getName();
+  switch (sheetName) {
+    case "Cantina":
+      colaboradorNome   = CantinaColaboradorRange.getValue();
+      colaboradoEstadia = CantinaEstadiaRange.getValue();
+      saldoOuroRange    = CantinaSaldoOuroRange;
+      saldoRealRange    = CantinaSaldoRealRange;
+      futuroOuroRange   = CantinaFuturoOuroRange;
+      futuroRealRange   = CantinaFuturoRealRange;
+      break;
+    case "Pix":
+      colaboradorNome   = PixColaboradorRange.getValue();
+      colaboradoEstadia = PixEstadiaRange.getValue();
+      saldoOuroRange    = PixSaldoOuroRange;
+      saldoRealRange    = PixSaldoRealRange;
+      futuroOuroRange   = PixFuturoOuroRange;
+      futuroRealRange   = PixFuturoRealRange;
+      break;
+    case "Diversos":
+      colaboradorNome   = DiversosColaboradorRange.getValue();
+      colaboradoEstadia = DiversosEstadiaRange.getValue();
+      saldoOuroRange    = DiversosSaldoOuroRange;
+      saldoRealRange    = DiversosSaldoRealRange;
+      futuroOuroRange   = DiversosFuturoOuroRange;
+      futuroRealRange   = DiversosFuturoRealRange;
+      break;
+    default:
+      return {
+        auferidas: {
+          ouro: 0,
+          real: 0
+        },
+        futuras: {
+          ouro: 0,
+          real: 0
+        }
+      };
+  }
+	let rendas = CararaLibrary.calcularSaldoContasCorrentes(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia));
+	if (rendas != null) {
+    saldoOuroRange.setValue(rendas.auferidas.ouro );
+    saldoRealRange.setValue(rendas.auferidas.real);
+    futuroOuroRange.setValue(rendas.futuras.ouro);
+    futuroRealRange.setValue(rendas.futuras.real);
+  }
 }
-
 function switchToTab(sheetName) {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = spreadsheet.getSheetByName(sheetName);

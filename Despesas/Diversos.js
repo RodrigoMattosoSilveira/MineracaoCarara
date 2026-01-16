@@ -80,4 +80,8 @@ function limparFormularioDiversos() {
 	DiversosRealRange.setValue("");
 	DiversosQuantidadesRange.setValue("");
 	DiversosComentarioRange.setValue("");	
+	DiversosSaldoOuroRange.setValue("");
+	DiversosSaldoRealRange.setValue("");
+	DiversosFuturoRealRange.setValue("");
+	DiversosFuturoOuroRange.setValue("");
 }

@@ -152,38 +152,39 @@ function cronogramaContabilizar() {
   }
 
   // Remover os registros contabilizados da planilha Cronograma!Ativos
-  let newAtivosGamaVals = []    
-  let registrosContabilizadosChaves = registrosContabilizados.map( elemento => 
+    let registrosContabilizadosChaves = registrosContabilizados.map( elemento => 
     CararaLibrary.dateToString(elemento[ATIVOS_DATA]) + elemento[ATIVOS_PERIODO] + elemento[ATIVOS_NOME]
   );
+	let ativosPlanilha = obterAtivosPlanilha();
+	obterAtivosGama().clear({contentsOnly:true, validationsOnly:true});
+  let newAtivosGamaVals = []   
   ativosGamaVals.forEach( registroAtivo => {
     let chaveAtivo = CararaLibrary.dateToString(registroAtivo[ATIVOS_DATA]) + registroAtivo[ATIVOS_PERIODO] + registroAtivo[ATIVOS_NOME];
     registrosContabilizadosChaves.indexOf(chaveAtivo) === -1 ? newAtivosGamaVals.push([...registroAtivo]) : null;
   });
-  let ativosPlanilha = obterAtivosPlanilha();
-  obterAtivosGama().clear({contentsOnly:true, validationsOnly:true});
-  copiarGamaValsParaPlanilha(ativosPlanilha, newAtivosGamaVals);    
-	estabelederValidacaoDados(ativosPlanilha, ATIVOS_METODO+1, 	ATIVOS_METODOS_VALIDOS);
-	estabelederValidacaoDados(ativosPlanilha, ATIVOS_SETOR+1, 	ATIVOS_SETORES_VALIDOS);
-	estabelederValidacaoDados(ativosPlanilha, ATIVOS_LOCAL+1, 	ATIVOS_LOCAIS_VALIDOS);
-	estabelederValidacaoDados(ativosPlanilha, ATIVOS_TAREFA+1, 	ATIVOS_TAREFAS_VALIDAS);
-  ativoGama = obterAtivosGama
-  ativoGama().setBackground('#ffffff');
+  if (newAtivosGamaVals.length > 0) {
+	  copiarGamaValsParaPlanilha(ativosPlanilha, newAtivosGamaVals);    
+		estabelederValidacaoDados(ativosPlanilha, ATIVOS_METODO+1, 	ATIVOS_METODOS_VALIDOS);
+		estabelederValidacaoDados(ativosPlanilha, ATIVOS_SETOR+1, 	ATIVOS_SETORES_VALIDOS);
+		estabelederValidacaoDados(ativosPlanilha, ATIVOS_LOCAL+1, 	ATIVOS_LOCAIS_VALIDOS);
+		estabelederValidacaoDados(ativosPlanilha, ATIVOS_TAREFA+1, 	ATIVOS_TAREFAS_VALIDAS);
+	  ativoGama = obterAtivosGama
+	  ativoGama().setBackground('#ffffff');
 
-
-  // Destaque os resgisters que aguardam a produção do poço
-  ativosGamaVals = obterAtivosGamaVals();
-  let ativosSheet = obterAtivosPlanilha();
-  let ultimaAtivoCol = obterAtivosGama().getLastColumn();
-  registrosNaoContabilizados.forEach( chaveNaoContabilizada => {
-    for (let i = 0; i < ativosGamaVals.length; i++) {
-      let chaveAtivos = CararaLibrary.dateToString(ativosGamaVals[i][ATIVOS_DATA]) + ativosGamaVals[i][ATIVOS_PERIODO] + ativosGamaVals[i][ATIVOS_NOME];
-      if (chaveAtivos === chaveNaoContabilizada) { 
-        let row = ativosSheet.setActiveRange(ativosSheet.getRange(i + 2, 1, 1, ultimaAtivoCol));
-        row.setBackground('#fde9e9'); 
-      }
-    }
-  });
+	  // Destaque os resgisters que aguardam a produção do poço
+	  ativosGamaVals = obterAtivosGamaVals();
+	  let ativosSheet = obterAtivosPlanilha();
+	  let ultimaAtivoCol = obterAtivosGama().getLastColumn();
+	  registrosNaoContabilizados.forEach( chaveNaoContabilizada => {
+	    for (let i = 0; i < ativosGamaVals.length; i++) {
+	      let chaveAtivos = CararaLibrary.dateToString(ativosGamaVals[i][ATIVOS_DATA]) + ativosGamaVals[i][ATIVOS_PERIODO] + ativosGamaVals[i][ATIVOS_NOME];
+	      if (chaveAtivos === chaveNaoContabilizada) { 
+	        let row = ativosSheet.setActiveRange(ativosSheet.getRange(i + 2, 1, 1, ultimaAtivoCol));
+	        row.setBackground('#fde9e9'); 
+	      }
+	    }
+	  });
+  }
 
 	SpreadsheetApp.getActiveSpreadsheet().toast('O sistema contabilizou os ganhos doscolaboradores', 'Contabilizar', 3);
 }

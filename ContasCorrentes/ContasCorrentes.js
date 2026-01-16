@@ -307,7 +307,8 @@ function obtenhaDadoEstadiaAtiva(nomeColaborador, dadoColumna) {
 function calculeDiariaGanhar (nomeColaborador,  inicioEstadia, metodo, tarefa) {
   var diariaGanhar = 0;
   var diaria = obtenhaRemuneracao (metodo, tarefa)
-  var fimEstadia = inicioEstadia.addDays(90)
+  let fimEstadia = new Date(inicioEstadia);
+  fimEstadia.setDate(fimEstadia.getDate() + 90);
   var timeDifference = Math.abs(fimEstadia.getTime() - Date.now());
   var diasRestantes = Math.ceil(timeDifference / (1000 * 3600 * 24)); 
 
@@ -333,7 +334,8 @@ function calculeSalarioGanhar(nomeColaborador,  inicioEstadia, metodo, tarefa){
   var salarioGanhar = 0;
   var mesesRestantes = 0;
   var salario = obtenhaRemuneracao (metodo, tarefa)
-  var fimEstadia = inicioEstadia.addDays(90)
+  let fimEstadia = new Date(inicioEstadia);
+  fimEstadia.setDate(fimEstadia.getDate() + 90);
   var timeDifference = Math.abs(fimEstadia.getTime() - Date.now());
   var diasRestantes = Math.ceil(timeDifference / (1000 * 3600 * 24));
 
@@ -361,7 +363,8 @@ function calculeGramasOuroGanhar(nomeColaborador,  inicioEstadia, metodo, tarefa
   var estimativaDoValorGanhar = 0.00
 
   //  Calcule o número de dias restantes nessa estadia
-  var fimEstadia = inicioEstadia.addDays(90)
+  let fimEstadia = new Date(inicioEstadia);
+  fimEstadia.setDate(fimEstadia.getDate() + 90);
   var timeDifference = Math.abs(fimEstadia.getTime() - Date.now());
   var diasRestantes = Math.ceil(timeDifference / (1000 * 3600 * 24));
 

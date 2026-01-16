@@ -3,18 +3,18 @@
 
 // Contas Correntes - CC_SHEET_ID
 // 
-const CC_SHEET_ID								= "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
-const CC_TAB_NAME			    				= "ContasCorrentes"
-const contasCorentesRange						= "Dados";
-const contasCorrentesNome          				= "ContasCorrentesNome";
-const contasCorrentesEstadia        			= "ContasCorrentesEstadia";
+const CC_SHEET_ID								            = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
+const CC_TAB_NAME			    				          = "ContasCorrentes"
+const contasCorentesDadosRange						  = "Dados";
+const contasCorrentesNome          				  = "ContasCorrentesNome";
+const contasCorrentesEstadia        			  = "ContasCorrentesEstadia";
 const CC_TRANSACOES_RENDAS_DESPESAS_RANGE_NAME	= "TransacoesRendasDepesas";  
-const contasCorrentesCreditoReal         	= "CreditoReal";
+const contasCorrentesCreditoReal         	  = "CreditoReal";
 const contasCorrentesCreditoOuro          	= "CreditoOuro";
 const contasCorrentesDebitoReal           	= "DebitoReal"; 
 const contasCorrentesDebitoOuro           	= "DebitoOuro";
 const contasCorrentesDataCol              	= 0;
-const contasCorrentesNomeCol             	= 1;
+const contasCorrentesNomeCol              	= 1;
 const contasCorrentesEstadiaCol           	= 2;
 const contasCorrentesMetodoCol            	= 3;  // Diaria, Salario, Porcentagem, Cantina, PIX, Diversos
 const contasCorrentesMoedaCol             	= 4   // Real, Ouro
@@ -22,7 +22,7 @@ const contasCorrentesCreditDebitCol       	= 5;  // Credito, Debito
 const contasCorrentesItemCol              	= 6;
 const contasCorrentesPrecoUnidadeRealCol  	= 7;  // Real
 const contasCorrentesPrecoUnidadeOuroCol  	= 8;  // Gramas de ouro 
-const contasCorrentesItemQtdCol          	 = 9;
+const contasCorrentesItemQtdCol          	  = 9;
 const contasCorrentesTotalRealCol         	= 10; // Real
 const contasCorrentesTotalOuroCol         	= 11; // Gramas de ouro
 const contasCorrentesComentariosCol       	= 12;
@@ -44,7 +44,7 @@ function cc_getDadosSheetRange() {
 }
 function cc_getTransacoesRendasDespesasRange() {
 	let spreadSheet = cc_getSpreadSheet();
-	return spreadSheet.getRangeByName(CC_TRANSACOES_RENDAS_DESPESAS_RANGE_NAME);
+	return spreadSheet.getRangeByName(contasCorentesDadosRange);
 }
 
 /* ********************************************************************************************************************* */
@@ -158,4 +158,8 @@ function resumirContaCorrenteColaborador (nome, estadia, transactions) {
     }
   }
   return creditosDebitosRealOuro;
+}
+
+function Test() {
+  return 42;
 }

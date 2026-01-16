@@ -129,3 +129,178 @@ if (typeof module !== 'undefined') module.exports = {
     dateToString,
     numeroParaLetra,
 }
+
+/* ********************************************************************************************************************* */
+// CalcularSaldoContasCorrentes
+//    Calcula o saldo de um Colaborador em uma determinada estadia
+// 
+// Input:
+//    nome (String)       - O nome to Colaborador
+//    estadia (string)    - A data da estadia do Colaborador
+//
+// Output:
+//    saldo (Object) - Um object com os saldos desejados, ou null in caso de erro:
+//    var saldo = {
+//        Real: 0,
+//        Ouro: 0
+//    }
+// ********************************************************************************************************************* */
+// 
+function calcularSaldoContasCorrentes(nome, estadia) {
+
+  // Iniializamos os sumarios 
+  let rendas = {
+    auferidas: {
+      real: 0,
+      ouro: 0
+    },
+    futuras: {
+      real: 0,
+      ouro: 0
+    }
+  };
+
+  rendas = {...calcularRendasAuferidas(nome, estadia, rendas)};
+  rendas = {...calcularRendasFuturas(nome, estadia, rendas)};
+  return rendas;
+}
+
+function calcularRendasAuferidas(nome, estadia, rendas) {
+ // calcular ganhos
+  let contasCorrentesDadosRange = cc_getTransacoesRendasDespesasRange();
+  let transactions = contasCorrentesDadosRange.getValues();
+
+  var filteredTransactions = transactions.filter(function(transaction) {
+    let estadiaDateStr = dateToString(transaction[contasCorrentesEstadiaCol]);
+    return transaction[contasCorrentesNomeCol] == nome && estadiaDateStr == estadia;
+  });
+
+  for (var i=0; i < filteredTransactions.length; i++) {
+    var creditoDebito = filteredTransactions[i][contasCorrentesCreditDebitCol]
+    switch (creditoDebito) {
+      case "Credito":
+            var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
+            switch (moeda) {
+          case "Real":
+            rendas.auferidas["real"] += filteredTransactions[i][contasCorrentesTotalRealCol];
+            break;
+          case "Ouro":
+            rendas.auferidas["ouro"] += filteredTransactions[i][contasCorrentesTotalOuroCol];
+            break;
+          default:
+            return null;
+        }
+        break;
+      case "Debito":
+            var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
+        switch (moeda) {
+          case "Real":
+             rendas.auferidas["real"] -= filteredTransactions[i][contasCorrentesTotalRealCol];
+            break;
+         case "Ouro":
+            rendas.auferidas["ouro"] -= filteredTransactions[i][contasCorrentesTotalOuroCol];
+            break;
+          default:
+            return null;
+        }
+        break;
+     default:
+        return null;
+    }
+  }
+  return rendas;
+}
+function calcularRendasFuturas(nome, estadia, rendas) {
+  let metodo      = obtenhaDadoEstadiaAtiva(nome, estadiaDadosRangeMetodoCol);
+  let saldoGanhar = 0.00;
+  switch (metodo) {
+    case "Diária":
+      saldoGanhar = calcularRendasFuturasDiaria(nome, estadia)
+      rendas.futuras["real"]= saldoGanhar;
+      break;
+    case "Salário":
+      saldoGanhar = calcularRendasFuturasSalario(nome, estadia);
+      rendas.futuras["real"]= saldoGanhar;
+      break;
+    case "Porcentagem":
+      saldoGanhar = calcularRendasFuturasOuro(nome, estadia);
+      rendas.futuras["ouro"]= saldoGanhar;
+      break;
+    default:
+      break;
+  }
+
+  return rendas;
+}
+
+function calcularRendasFuturasDiaria(nome, inicioEstadia) {
+  let diariaGanhar = 0;
+  let estadiaRegistro = obterEstadiaGamaRegistroNome(nome);
+  let diaria = estadiaRegistro[ESTADIAS_REMUNERACAO];
+  let fimEstadia = new Date(inicioEstadia);
+  fimEstadia.setDate(fimEstadia.getDate() + 90);
+  let timeDifference = Math.abs(fimEstadia.getTime() - Date.now());
+  let diasRestantes = Math.ceil(timeDifference / (1000 * 3600 * 24)); 
+
+  diariaGanhar = diasRestantes * diaria;
+  return diariaGanhar;
+}
+function calcularRendasFuturasSalario(nome, inicioEstadia) {
+  let salarioGanhar = 0;
+  let estadiaRegistro = obterEstadiaGamaRegistroNome(nome);
+  let salario = estadiaRegistro[ESTADIAS_REMUNERACAO];
+  let fimEstadia = new Date(inicioEstadia);
+  fimEstadia.setDate(fimEstadia.getDate() + 90);
+  let timeDifference = Math.abs(fimEstadia.getTime() - Date.now());
+  let diasRestantes = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+  salarioGanhar = diasRestantes * salario / 30;
+  return salarioGanhar;
+}
+function calcularRendasFuturasOuro(nome, inicioEstadia) {
+  var gramasEstimadasGanhar = 0;
+  var diasRestantes = 0;
+  var hoje = new Date();
+  var producaoOuroRegistro = [];
+  var estimativaDeCotaDiariaColaborador = 0.00
+  var estimativaDoValorGanhar = 0.00
+
+  //  Calcule o número de dias restantes nessa estadia
+  let fimEstadia = new Date(inicioEstadia);
+  fimEstadia.setDate(fimEstadia.getDate() + 90);
+  var timeDifference = Math.abs(fimEstadia.getTime() - Date.now());
+  var diasRestantes = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+  // Obtenha a porcentagem da producao alocada ao associadp
+  let estadiaRegistro = obterEstadiaGamaRegistroNome(nome);
+  let poco = estadiaRegistro[ESTADIAS_LOCAL];
+  var porcentagem = estadiaRegistro[ESTADIAS_REMUNERACAO];
+
+  // Obtenha a media de producao de ouro do poço nos ultimos 10 dias
+  let mediaDeProducao = obterProducaoPocoRecenteMedia(poco, 10);
+
+  //  Calcule of valor estimado a ser ganho, no valor do ouro
+  var gramasEstimadasGanhar = estimativaDeCotaDiariaColaborador * diasRestantes * porcentagem;
+
+  return gramasEstimadasGanhar;
+}
+
+/**
+ * Retorna um novo objeto Date representando hoje menos o número de dias 
+ * informado.
+ * @param {number} dias - Número de dias a subtrair (deve ser um número inteiro 
+ * não negativo)
+ * @returns {Date} - A data resultante
+ */
+function getDateMinusDays(dias) {
+    // Input validation
+    if (typeof dias !== 'number' || !Number.isInteger(dias) || dias < 0) {
+        throw new Error("dias must be a non-negative integer.");
+    }
+
+    const today = new Date(); // Current date and time
+    const result = new Date(today); // Clone to avoid mutating original
+    result.setDate(result.getDate() - dias); // Subtract days
+    return result;
+}
+
