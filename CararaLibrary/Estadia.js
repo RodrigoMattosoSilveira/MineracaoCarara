@@ -9,7 +9,7 @@ const ESTADIAS_TAREFA       = 5;
 const ESTADIAS_REMUNERACAO  = 6;
 const ESTADIAS_COMENTARIOS  = 7;
 
-function obterEstadiasPlanilha () { SpreadsheetApp.getActiveSpreadsheet().getSheetById(ESTADIAS_ID); }
+function obterEstadiasPlanilha () { SpreadsheetApp.openById(ESTADIAS_ID); }
 function obterEstadiasGama () { obterEstadiasPlanilha().getRangeByName(ESTADIAS_GAMA); }
 function obterEstadiasGamaVals () {
 	let  gama = obterEstadiasGama();
