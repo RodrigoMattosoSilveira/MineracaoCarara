@@ -211,7 +211,7 @@ function calcularRendasAuferidas(nome, estadia, rendas) {
   return rendas;
 }
 function calcularRendasFuturas(nome, estadia, rendas) {
-  let metodo      = obtenhaDadoEstadiaAtiva(nome, estadiaDadosRangeMetodoCol);
+  let metodo      = obterEstadiaGamaRegistroNome(nome)[ESTADIAS_METODO];
   let saldoGanhar = 0.00;
   switch (metodo) {
     case "Diária":
@@ -260,10 +260,6 @@ function calcularRendasFuturasSalario(nome, inicioEstadia) {
 function calcularRendasFuturasOuro(nome, inicioEstadia) {
   var gramasEstimadasGanhar = 0;
   var diasRestantes = 0;
-  var hoje = new Date();
-  var producaoOuroRegistro = [];
-  var estimativaDeCotaDiariaColaborador = 0.00
-  var estimativaDoValorGanhar = 0.00
 
   //  Calcule o número de dias restantes nessa estadia
   let fimEstadia = new Date(inicioEstadia);
@@ -280,7 +276,7 @@ function calcularRendasFuturasOuro(nome, inicioEstadia) {
   let mediaDeProducao = obterProducaoPocoRecenteMedia(poco, 10);
 
   //  Calcule of valor estimado a ser ganho, no valor do ouro
-  var gramasEstimadasGanhar = estimativaDeCotaDiariaColaborador * diasRestantes * porcentagem;
+  var gramasEstimadasGanhar = mediaDeProducao * diasRestantes * porcentagem;
 
   return gramasEstimadasGanhar;
 }
