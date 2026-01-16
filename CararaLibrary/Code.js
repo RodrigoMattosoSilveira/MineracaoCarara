@@ -235,7 +235,7 @@ function calcularRendasFuturas(nome, estadia, rendas) {
 
 function calcularRendasFuturasDiaria(nome, inicioEstadia) {
   let diariaGanhar = 0;
-  let estadiaRegistro = Referencia.obterEstadiaGamaRegistroNome(nome);
+  let estadiaRegistro = obterEstadiaGamaRegistroNome(nome);
   let diaria = estadiaRegistro[ESTADIAS_REMUNERACAO];
   let fimEstadia = new Date(inicioEstadia);
   fimEstadia.setDate(fimEstadia.getDate() + 90);
@@ -247,7 +247,7 @@ function calcularRendasFuturasDiaria(nome, inicioEstadia) {
 }
 function calcularRendasFuturasSalario(nome, inicioEstadia) {
   let salarioGanhar = 0;
-  let estadiaRegistro = Referencia.obterEstadiaGamaRegistroNome(nome);
+  let estadiaRegistro = obterEstadiaGamaRegistroNome(nome);
   let salario = estadiaRegistro[ESTADIAS_REMUNERACAO];
   let fimEstadia = new Date(inicioEstadia);
   fimEstadia.setDate(fimEstadia.getDate() + 90);
@@ -272,12 +272,12 @@ function calcularRendasFuturasOuro(nome, inicioEstadia) {
   var diasRestantes = Math.ceil(timeDifference / (1000 * 3600 * 24));
 
   // Obtenha a porcentagem da producao alocada ao associadp
-  let estadiaRegistro = Referencia.obterEstadiaGamaRegistroNome(nome);
+  let estadiaRegistro = obterEstadiaGamaRegistroNome(nome);
   let poco = estadiaRegistro[ESTADIAS_LOCAL];
   var porcentagem = estadiaRegistro[ESTADIAS_REMUNERACAO];
 
   // Obtenha a media de producao de ouro do poço nos ultimos 10 dias
-  let mediaDeProducao = Referencia.obterProducaoPocoRecenteMedia(poco, 10);
+  let mediaDeProducao = obterProducaoPocoRecenteMedia(poco, 10);
 
   //  Calcule of valor estimado a ser ganho, no valor do ouro
   var gramasEstimadasGanhar = estimativaDeCotaDiariaColaborador * diasRestantes * porcentagem;
