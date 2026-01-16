@@ -18,9 +18,6 @@ function cantinaExecute() {
 	var cantinaData 		= CantinaDataRange.getValues();
 	var cantinaColaborador	= CantinaColaboradorRange.getValue();
 	var cantinaEstadia 		= CantinaEstadiaRange.getValue();
-	var cantinaPagemento 	= CantinaPagementoRange.getValue();
-	var cantinaSaldo 		= CalcularSaldoContasCorrentes(cantinaColaborador, cantinaEstadia);
-	var cantinaAGanhar 		= 0
 	var cantinaMoeda 		= CantinaMoedaRange.getValue();
 	var cantinaDespesas     = CantinaDespesasRange.getValues();
 	var cantinaDespesasFiltrados = cantinaDespesas.filter(function(transaction) {
