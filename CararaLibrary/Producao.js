@@ -31,7 +31,7 @@ const obterProducaoPoco = (poco) => {
  * diária do poço nos últimos 
  */
 const obterProducaoPocoRecente = (poco, dias) => {
-	let dataLimite    = CararaLibrary.getDateMinusDays(dias);
+	let dataLimite    = getDateMinusDays(dias);
 	let producaoPoco = obterProducaoPoco(poco);
 	let dataHoje = new Date();
 	return  (producaoPoco !== null) ? producaoPoco.filter( elemento => {
