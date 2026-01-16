@@ -272,7 +272,7 @@ function calcularRendasFuturasOuro(nome, inicioEstadia) {
   var diasRestantes = Math.ceil(timeDifference / (1000 * 3600 * 24));
 
   // Obtenha a porcentagem da producao alocada ao associadp
-  let estadiaRegistro = bterEstadiaGamaRegistroNome(nome);
+  let estadiaRegistro = obterEstadiaGamaRegistroNome(nome);
   let poco = estadiaRegistro[ESTADIAS_LOCAL];
   var porcentagem = estadiaRegistro[ESTADIAS_REMUNERACAO];
 
