@@ -35,18 +35,20 @@ const CantinaDespesasTotaOurolCol 	= 5;
 // *** Layout do formulário PIX
 // 
 const despesasPixTab = despesasSpreadSheet.getSheetByName("Pix");
-const PixDataRange = despesasPixTab.getRange("PixData");
 
-const PixColaboradorRange   = despesasPixTab.getRange("PixColaborador");
-const PixEstadiaRange     	= despesasPixTab.getRange("PixEstadia");
-const PixPagementoRange   	= despesasPixTab.getRange("PixPagamento");
-const PixMoedaRange     	  = despesasPixTab.getRange("PixMoeda");
-const PixDespesasRange    	= despesasPixTab.getRange("PixDespesas");
-const PixComentarioRange  	= despesasPixTab.getRange("PixComentario");
+const PixDataRange 	          = despesasPixTab.getRange("PixData");
+const PixColaboradorRange     = despesasPixTab.getRange("PixColaborador");
+const PixEstadiaRange     	  = despesasPixTab.getRange("PixEstadia");
+const PixPagementoRange   	  = despesasPixTab.getRange("PixPagamento");
+const PixComentarioRange  	  = despesasPixTab.getRange("PixComentario");
 
-const PixItemsRange = despesasPixTab.getRange("PixItems");
-const PixRealRange          = despesasPixTab.getRange("PixReal");
-const PixQuantidadesRange   = despesasPixTab.getRange("PixQuantidades");
+const PixDespesasRange    	   = despesasPixTab.getRange("PixDespesas");
+const PixDespesaRealRange      = despesasPixTab.getRange("PixDespesaReal");
+const PixDespesaOuroRange      = despesasPixTab.getRange("PixDespesaOuro");
+const PixDespesaTotalRealRange = despesasPixTab.getRange("PixDespesaTotalReal");
+const PixDespesaTotalOuroRange = despesasPixTab.getRange("PixDespesaTotalOuro");
+
+const PixMoedaRange 	      = despesasPixTab.getRange("PixMoeda");
 const PixSaldoOuroRange 	  = despesasPixTab.getRange("PixSaldoOuro");
 const PixSaldoRealRange 	  = despesasPixTab.getRange("PixSaldoReal");
 const PixFuturoOuroRange 	  = despesasPixTab.getRange("PixFuturoOuro");

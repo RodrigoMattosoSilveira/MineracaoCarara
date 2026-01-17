@@ -10,18 +10,18 @@ function pixExecute() {
 	switchToTab("Pix");
 
 	if (PixColaboradorRange.getValue() == "") {
-		SpreadsheetApp.getUi().alert("OColaboradordeve ser preenchido.");
+		SpreadsheetApp.getUi().alert("O Colaborador deve ser preenchido.");
 		return null;
 	}
 
 	// We need to build one record for each item in PixDespesasRange
-	var PixData 		= PixDataRange.getValues();
+	let PixData 		= PixDataRange.getValue();
 	var PixColaborador	= PixColaboradorRange.getValue();
 	var PixEstadia 		= PixEstadiaRange.getValue();
 	var PixMoeda 		= PixMoedaRange.getValue();
 	var PixDespesas     = PixDespesasRange.getValues();
 	var PixDespesasFiltrados = PixDespesas.filter(function(transaction) {
-    	return transaction[PixDespesasItemCol ] != "";
+    	return transaction[PixDespesasRealol] != "";
   	});
 	if (PixDespesasFiltrados.length == 0) {
 		var message = "";
@@ -36,7 +36,7 @@ function pixExecute() {
 		var item 		= transaction[PixDespesasItemCol];
 		var real 		= transaction[PixDespesasRealol];
 		var ouro 		= transaction[PixDespesasOuroCol];
-		var qtd 		= transaction[PixDespesasQTDCol];
+		var qtd 		= 1;
 		var totalReal 	= transaction[PixDespesasTotalRealCol];
 		var totalOuro 	= transaction[PixDespesasTotaOurolCol];
 		      
@@ -48,11 +48,22 @@ function pixExecute() {
 		contaCorrenteRegistro[contasCorrentesMoedaCol]       		= PixMoeda;
 		contaCorrenteRegistro[contasCorrentesCreditDebitCol] 		= 'Debito';
 		contaCorrenteRegistro[contasCorrentesItemCol]       		= item;
-		contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] 	= real;
-		contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] 	= ouro;
-		contaCorrenteRegistro[contasCorrentesItemQtdCol]         	= qtd;	
-		contaCorrenteRegistro[contasCorrentesTotalRealCol] 			= totalReal;
-		contaCorrenteRegistro[contasCorrentesTotalOuroCol] 			= totalOuro;
+		if (PixMoeda == "Real") {
+			contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol]  	= real;
+			contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol]  	= 0;
+		} else {
+
+			contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol]  	= 0;
+			contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol]  	= ouro;
+		}
+		contaCorrenteRegistro[contasCorrentesItemQtdCol]         	= qtd;
+		if (PixMoeda == "Real") {
+			contaCorrenteRegistro[contasCorrentesTotalRealCol]         	= totalReal;
+			contaCorrenteRegistro[contasCorrentesTotalOuroCol]         	= 0;
+		} else {
+			contaCorrenteRegistro[contasCorrentesTotalRealCol]         	= 0;
+			contaCorrenteRegistro[contasCorrentesTotalOuroCol]         	= totalOuro;
+		}
 		contaCorrenteRegistro[contasCorrentesComentariosCol] 		= PixComentario;
 
 		// Add the record to the range
@@ -70,13 +81,13 @@ function pixExecute() {
 
 function limparFormularioPix () {
 	PixColaboradorRange.setValue("");
-	PixMoedaRange.setValue("Real");
-	PixItemsRange.setValue("");
-	PixRealRange.setValue("");
-	PixQuantidadesRange.setValue("");
-	PixComentarioRange.setValue("");
+
 	PixSaldoOuroRange.setValue("");
 	PixSaldoRealRange.setValue("");
 	PixFuturoOuroRange.setValue("");
 	PixFuturoRealRange.setValue("");
+
+	PixDespesaRealRange.setValue("");
+
+	PixComentarioRange.setValue("");
 }
