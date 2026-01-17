@@ -10,11 +10,11 @@ function folgaExecute() {
 	switchToTab("Folga");
 
 	if (FolgaColaboradorRange.getValue() == "") {
-		SpreadsheetApp.getUi().alert("O Assiciado deve ser preenchido.");
+		SpreadsheetApp.getUi().alert("O Colaborador deve ser preenchido.");
 		return null;
 	}
 	if (FolgaPagementoRange.getValue() != "Porcentagem") {
-		SpreadsheetApp.getUi().alert("OColaboradorprecisa ser comissionado.");
+		SpreadsheetApp.getUi().alert("O Colaborador precisa ser comissionado.");
 		return null;
 	}
 	if (FolgaSubstituidoRange.getValue() == "") {

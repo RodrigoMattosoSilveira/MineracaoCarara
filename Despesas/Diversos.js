@@ -11,7 +11,7 @@ function diversosExecute() {
 	switchToTab("Diversos");
 
 	if (DiversosColaboradorRange.getValue() == "") {
-		SpreadsheetApp.getUi().alert("OColaboradordeve ser preenchido.");
+		SpreadsheetApp.getUi().alert("O Colaborador deve ser preenchido.");
 		return null;
 	}	
 
