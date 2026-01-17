@@ -18,11 +18,11 @@ function folgaExecute() {
 		return null;
 	}
 	if (FolgaSubstituidoRange.getValue() == "") {
-		SpreadsheetApp.getUi().alert("O  substituto do comissionado deve ser preenchido.");
+		SpreadsheetApp.getUi().alert("O substituto do comissionado deve ser preenchido.");
 		return null;
 	}
 		if (FolgaSubstituidoDiariaRange.getValue() == "Porcetagem") {
-		SpreadsheetApp.getUi().alert("O  substituto do comissionado nao pode ser commissionado.");
+		SpreadsheetApp.getUi().alert("O substituto do comissionado nao pode ser commissionado.");
 		return null;
 	}
 
