@@ -53,11 +53,18 @@ function diversosExecute() {
 		contaCorrenteRegistro[contasCorrentesMoedaCol]       		= DiversosMoeda;
 		contaCorrenteRegistro[contasCorrentesCreditDebitCol] 		= 'Debito';
 		contaCorrenteRegistro[contasCorrentesItemCol]       		= item;
-		contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] 	= real;
-		contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] 	= ouro;
 		contaCorrenteRegistro[contasCorrentesItemQtdCol]         	= qtd;	
-		contaCorrenteRegistro[contasCorrentesTotalRealCol] 			= totalReal;
-		contaCorrenteRegistro[contasCorrentesTotalOuroCol] 			= totalOuro;
+		if (DiversosMoeda == 'Real') {
+			contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] 	= real;
+			contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] 	= 0;
+			contaCorrenteRegistro[contasCorrentesTotalRealCol] 			= totalReal;
+			contaCorrenteRegistro[contasCorrentesTotalOuroCol] 			= 0;
+		} else {
+			contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] 	= 0;
+			contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] 	= ouro;
+			contaCorrenteRegistro[contasCorrentesTotalRealCol] 			= 0;
+			contaCorrenteRegistro[contasCorrentesTotalOuroCol] 			= totalOuro;
+		}
 		contaCorrenteRegistro[contasCorrentesComentariosCol] 		= DiversosComentario;
 
 		// Add the record to the range
