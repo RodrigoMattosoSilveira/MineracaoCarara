@@ -60,11 +60,18 @@ function folgaExecute() {
 		contaCorrenteRegistro[contasCorrentesMoedaCol]       		= FolgaMoeda;
 		contaCorrenteRegistro[contasCorrentesCreditDebitCol] 		= 'Debito';
 		contaCorrenteRegistro[contasCorrentesItemCol]       		= item;
-		contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] 	= real;
-		contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] 	= ouro;
 		contaCorrenteRegistro[contasCorrentesItemQtdCol]         	= qtd;	
-		contaCorrenteRegistro[contasCorrentesTotalRealCol] 			= totalReal;
-		contaCorrenteRegistro[contasCorrentesTotalOuroCol] 			= totalOuro;
+		if (FolgaMoeda == 'Real') {
+			contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] 	= real;
+			contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] 	= 0;
+			contaCorrenteRegistro[contasCorrentesTotalRealCol] 			= totalReal;
+			contaCorrenteRegistro[contasCorrentesTotalOuroCol] 			= 0;
+		} else {
+			contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] 	= 0;
+			contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] 	= ouro;
+			contaCorrenteRegistro[contasCorrentesTotalRealCol] 			= 0;
+			contaCorrenteRegistro[contasCorrentesTotalOuroCol] 			= totalOuro;
+		}
 		contaCorrenteRegistro[contasCorrentesComentariosCol] 		= FolgaComentario;
 
 		// Add the record to the range
@@ -83,9 +90,13 @@ function folgaExecute() {
 function limparFormularioFolga() {
 	FolgaColaboradorRange.setValue("");
 	FolgaMoedaRange.setValue("Real");
-	FolgaItemsRange.setValue("");
 	FolgaRealRange.setValue("");
-	FolgaQuantidadesRange.setValue("");
 	FolgaSubstituidoRange.setValue("");
 	FolgaComentarioRange.setValue("");
+
+	FolgaSaldoOuroRange.setValue("");
+	FolgaSaldoRealRange.setValue("");
+	FolgaFuturoRealRange.setValue("");
+	FolgaFuturoOuroRange.setValue("");
+
 }

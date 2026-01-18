@@ -101,6 +101,10 @@ const FolgaDespesasRange           = despesasFolgaTab.getRange("FolgaDespesas");
 const FolgaSubstituidoRange        = despesasFolgaTab.getRange("FolgaSubstituido");
 const FolgaSubstituidoDiariaRange  = despesasFolgaTab.getRange("FolgaSubstituidoDiaria");
 const FolgaComentarioRange         = despesasFolgaTab.getRange("FolgaComentario");
+const FolgaSaldoOuroRange          = despesasFolgaTab.getRange("FolgaSaldoOuro");
+const FolgaSaldoRealRange          = despesasFolgaTab.getRange("FolgaSaldoReal");
+const FolgaFuturoOuroRange 	       = despesasFolgaTab.getRange("FolgaFuturoOuro");
+const FolgaFuturoRealRange 	       = despesasFolgaTab.getRange("FolgaFuturoReal");
 
 const FolgaItemsRange = despesasFolgaTab.getRange("FolgaItems");
 const FolgaRealRange = despesasFolgaTab.getRange("FolgaReal");
@@ -181,7 +185,14 @@ function GetSaldo() {
       futuroOuroRange   = DiversosFuturoOuroRange;
       futuroRealRange   = DiversosFuturoRealRange;
       break;
-    default:
+    case "Cambio":
+      colaboradorNome   = CambioColaboradorRange.getValue();
+      colaboradoEstadia = CambioEstadiaRange.getValue();
+      saldoOuroRange    = CambioSaldoOuroRange;
+      saldoRealRange    = CambioSaldoRealRange;
+      futuroOuroRange   = CambioFuturoOuroRange;
+      futuroRealRange   = CambioFuturoRealRange;
+      break;    default:
       return {
         auferidas: {
           ouro: 0,
