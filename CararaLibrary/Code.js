@@ -148,29 +148,56 @@ if (typeof module !== 'undefined') module.exports = {
 // 
 function calcularSaldoContasCorrentes(nome, estadia) {
 
-  // Iniializamos os sumarios 
-  let rendas = {
-    auferidas: {
-      real: 0,
-      ouro: 0
+  rendas = {...calcularRendas(nome, estadia)};
+  return {
+    auferidas: {  
+      Real: rendas.auferidas.Real.credito - rendas.auferidas.Real.debito, 
+      Ouro: rendas.auferidas.Ouro.credito - rendas.auferidas.Ouro.debito
     },
-    futuras: {
-      real: 0,
-      ouro: 0
-    }
-  };
-
-  rendas = {...calcularRendasAuferidas(nome, estadia, rendas)};
-  rendas = {...calcularRendasFuturas(nome, estadia, rendas)};
-  return rendas;
+    futuras: {...rendas.futuras},
+  }
 }
 
-function calcularRendasAuferidas(nome, estadia, rendas) {
- // calcular ganhos
-  let contasCorrentesDadosRange = cc_getTransacoesRendasDespesasRange();
-  let transactions = contasCorrentesDadosRange.getValues();
+/**
+ *  Calcula as rendas auferidas e futuras de um colaborador em uma determinada estadia
+ * @param {string} nome - Nome do colaborador
+ * @param {string} estadia - Data da estadia do colaborador
+ * @returns {object} - um object com os saldos auferidos e futuros
+ * {
+ *    auferidas: {
+ *      Real: { credito: 0, debito: 0 },  
+ *      Ouro: { credito: 0, debito: 0 }
+ *    },
+ *    futuras: { Real: 0, Ouro: 0 }
+ * }
+ */
+function calcularRendas(nome, estadia) {
+  let rendas = {
+    auferidas: {
+      Real: { credito: 0, debito: 0 },
+      Ouro: { credito: 0, debito: 0 }
+    },
+    futuras: { Real: 0, Ouro: 0 }
+  };
 
-  var filteredTransactions = transactions.filter(function(transaction) {
+  let auferidas = {...calcularRendasAuferidas(nome, estadia)};
+  let futuras = {...calcularRendasFuturas(nome, estadia)};
+  return {
+    auferidas: {...auferidas},
+    futuras: {...futuras}
+  };
+}
+
+function calcularRendasAuferidas(nome, estadia) {
+  //  Inicialize os valores de retorno  
+  let auferidas = {
+    Real: { credito: 0, debito: 0 },
+    Ouro: { credito: 0, debito: 0 }
+  };
+
+  let contasCorrentesDadosRange = cc_getTransacoesRendasDespesasRange();
+  let transactions              = contasCorrentesDadosRange.getValues()
+  var filteredTransactions      = transactions.filter(function(transaction) {
     let estadiaDateStr = dateToString(transaction[contasCorrentesEstadiaCol]);
     return transaction[contasCorrentesNomeCol] == nome && estadiaDateStr == estadia;
   });
@@ -179,26 +206,26 @@ function calcularRendasAuferidas(nome, estadia, rendas) {
     var creditoDebito = filteredTransactions[i][contasCorrentesCreditDebitCol]
     switch (creditoDebito) {
       case "Credito":
-            var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
-            switch (moeda) {
+        var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
+        switch (moeda) {
           case "Real":
-            rendas.auferidas["real"] += filteredTransactions[i][contasCorrentesTotalRealCol];
+            auferidas["Real"]["credito"] += filteredTransactions[i][contasCorrentesTotalRealCol];
             break;
           case "Ouro":
-            rendas.auferidas["ouro"] += filteredTransactions[i][contasCorrentesTotalOuroCol];
+            auferidas["Ouro"]["credito"] += filteredTransactions[i][contasCorrentesTotalOuroCol];
             break;
           default:
             return null;
         }
         break;
       case "Debito":
-            var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
+        var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
         switch (moeda) {
           case "Real":
-             rendas.auferidas["real"] -= filteredTransactions[i][contasCorrentesTotalRealCol];
+            auferidas["Real"]["debito"] += filteredTransactions[i][contasCorrentesTotalRealCol];
             break;
          case "Ouro":
-            rendas.auferidas["ouro"] -= filteredTransactions[i][contasCorrentesTotalOuroCol];
+            auferidas["Ouro"]["debito"] += filteredTransactions[i][contasCorrentesTotalOuroCol];
             break;
           default:
             return null;
@@ -208,29 +235,31 @@ function calcularRendasAuferidas(nome, estadia, rendas) {
         return null;
     }
   }
-  return rendas;
+  return auferidas;
 }
-function calcularRendasFuturas(nome, estadia, rendas) {
+
+function calcularRendasFuturas(nome, estadia) {
   let metodo      = obterEstadiaGamaRegistroNome(nome)[ESTADIAS_METODO];
   let saldoGanhar = 0.00;
+  let futuras = { Real: 0.00, Ouro: 0.00 };
   switch (metodo) {
     case "Diária":
       saldoGanhar = calcularRendasFuturasDiaria(nome, estadia)
-      rendas.futuras["real"]= saldoGanhar;
+      futuras["Real"]= saldoGanhar;
       break;
     case "Salário":
       saldoGanhar = calcularRendasFuturasSalario(nome, estadia);
-      rendas.futuras["real"]= saldoGanhar;
+      futuras["Real"]= saldoGanhar;
       break;
     case "Porcentagem":
       saldoGanhar = calcularRendasFuturasOuro(nome, estadia);
-      rendas.futuras["ouro"]= saldoGanhar;
+      futuras["Ouro"]= saldoGanhar;
       break;
     default:
       break;
   }
 
-  return rendas;
+  return futuras;
 }
 
 function calcularRendasFuturasDiaria(nome, inicioEstadia) {
@@ -272,10 +301,10 @@ function calcularRendasFuturasOuro(nome, inicioEstadia) {
   let poco = estadiaRegistro[ESTADIAS_LOCAL];
   var porcentagem = estadiaRegistro[ESTADIAS_REMUNERACAO];
 
-  // Obtenha a media de producao de ouro do poço nos ultimos 10 dias
+  // Obtenha a media de producao de Ouro do poço nos ultimos 10 dias
   let mediaDeProducao = obterProducaoPocoRecenteMedia(poco, 10);
 
-  //  Calcule of valor estimado a ser ganho, no valor do ouro
+  //  Calcule of valor estimado a ser ganho, no valor do Ouro
   var gramasEstimadasGanhar = mediaDeProducao * diasRestantes * porcentagem;
 
   return gramasEstimadasGanhar;
@@ -299,4 +328,3 @@ function getDateMinusDays(dias) {
     result.setDate(result.getDate() - dias); // Subtract days
     return result;
 }
-

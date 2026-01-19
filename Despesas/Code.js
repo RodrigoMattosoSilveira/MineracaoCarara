@@ -162,10 +162,10 @@ const contasCorrentesMoedaCol             	= 4   // Real, Ouro
 const contasCorrentesCreditDebitCol       	= 5;  // Credito, Debito
 const contasCorrentesItemCol              	= 6;
 const contasCorrentesPrecoUnidadeRealCol  	= 7;  // Real
-const contasCorrentesPrecoUnidadeOuroCol  	= 8;  // Gramas de ouro 
+const contasCorrentesPrecoUnidadeOuroCol  	= 8;  // Gramas de Ouro 
 const contasCorrentesItemQtdCol           	= 9;
 const contasCorrentesTotalRealCol         	= 10; // Real
-const contasCorrentesTotalOuroCol         	= 11; // Gramas de ouro
+const contasCorrentesTotalOuroCol         	= 11; // Gramas de Ouro
 const contasCorrentesComentariosCol       	= 12
 
 const ESTADIAS_GAMA        = "EstadiaGamaLocal";
@@ -221,24 +221,25 @@ function GetSaldo() {
       saldoRealRange    = CambioSaldoRealRange;
       futuroOuroRange   = CambioFuturoOuroRange;
       futuroRealRange   = CambioFuturoRealRange;
-      break;    default:
+      break;    
+    default:
       return {
         auferidas: {
-          ouro: 0,
-          real: 0
+          Ouro: 0,
+          Real: 0
         },
         futuras: {
-          ouro: 0,
-          real: 0
+          Ouro: 0,
+          Real: 0
         }
       };
   }
 	let rendas = CararaLibrary.calcularSaldoContasCorrentes(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia));
 	if (rendas != null) {
-    saldoOuroRange.setValue(rendas.auferidas.ouro );
-    saldoRealRange.setValue(rendas.auferidas.real);
-    futuroOuroRange.setValue(rendas.futuras.ouro);
-    futuroRealRange.setValue(rendas.futuras.real);
+    saldoOuroRange.setValue(rendas.auferidas.Ouro );
+    saldoRealRange.setValue(rendas.auferidas.Real);
+    futuroOuroRange.setValue(rendas.futuras.Ouro);
+    futuroRealRange.setValue(rendas.futuras.Real);
   }
 }
 function switchToTab(sheetName) {

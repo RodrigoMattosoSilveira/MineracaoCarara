@@ -11,6 +11,7 @@ const obterProducaoGamaVals     = () => {
 	let  gama = _obterProducaoGama();
 	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[PRODUCAO_DATA_COL] !== '' && elemento[PRODUCAO_DATA_COL] !== 'Data') : [];
 }
+
 /**
  *  Obter os registros que representam a produção diária do poço nos últimos 
  * 'dias' dias
