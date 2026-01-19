@@ -89,9 +89,10 @@ function folgaExecute() {
 
 function limparFormularioFolga() {
 	FolgaColaboradorRange.setValue("");
-	FolgaMoedaRange.setValue("Real");
-	FolgaRealRange.setValue("");
+	FolgaMoedaRange.setValue("Ouro");
+
 	FolgaSubstituidoRange.setValue("");
+	
 	FolgaComentarioRange.setValue("");
 
 	FolgaSaldoOuroRange.setValue("");
