@@ -10,19 +10,19 @@ function folgaExecute() {
 	switchToTab("Folga");
 
 	if (FolgaColaboradorRange.getValue() == "") {
-		SpreadsheetApp.getUi().alert("O Assiciado deve ser preenchido.");
+		SpreadsheetApp.getUi().alert("O Colaborador deve ser preenchido.");
 		return null;
 	}
 	if (FolgaPagementoRange.getValue() != "Porcentagem") {
-		SpreadsheetApp.getUi().alert("OColaboradorprecisa ser comissionado.");
+		SpreadsheetApp.getUi().alert("O Colaborador precisa ser comissionado.");
 		return null;
 	}
 	if (FolgaSubstituidoRange.getValue() == "") {
-		SpreadsheetApp.getUi().alert("O  substituto do comissionado deve ser preenchido.");
+		SpreadsheetApp.getUi().alert("O substituto do comissionado deve ser preenchido.");
 		return null;
 	}
 		if (FolgaSubstituidoDiariaRange.getValue() == "Porcetagem") {
-		SpreadsheetApp.getUi().alert("O  substituto do comissionado nao pode ser commissionado.");
+		SpreadsheetApp.getUi().alert("O substituto do comissionado nao pode ser commissionado.");
 		return null;
 	}
 
@@ -60,11 +60,18 @@ function folgaExecute() {
 		contaCorrenteRegistro[contasCorrentesMoedaCol]       		= FolgaMoeda;
 		contaCorrenteRegistro[contasCorrentesCreditDebitCol] 		= 'Debito';
 		contaCorrenteRegistro[contasCorrentesItemCol]       		= item;
-		contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] 	= real;
-		contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] 	= ouro;
 		contaCorrenteRegistro[contasCorrentesItemQtdCol]         	= qtd;	
-		contaCorrenteRegistro[contasCorrentesTotalRealCol] 			= totalReal;
-		contaCorrenteRegistro[contasCorrentesTotalOuroCol] 			= totalOuro;
+		if (FolgaMoeda == 'Real') {
+			contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] 	= real;
+			contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] 	= 0;
+			contaCorrenteRegistro[contasCorrentesTotalRealCol] 			= totalReal;
+			contaCorrenteRegistro[contasCorrentesTotalOuroCol] 			= 0;
+		} else {
+			contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] 	= 0;
+			contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] 	= ouro;
+			contaCorrenteRegistro[contasCorrentesTotalRealCol] 			= 0;
+			contaCorrenteRegistro[contasCorrentesTotalOuroCol] 			= totalOuro;
+		}
 		contaCorrenteRegistro[contasCorrentesComentariosCol] 		= FolgaComentario;
 
 		// Add the record to the range
@@ -82,10 +89,15 @@ function folgaExecute() {
 
 function limparFormularioFolga() {
 	FolgaColaboradorRange.setValue("");
-	FolgaMoedaRange.setValue("Real");
-	FolgaItemsRange.setValue("");
-	FolgaRealRange.setValue("");
-	FolgaQuantidadesRange.setValue("");
+	FolgaMoedaRange.setValue("Ouro");
+
 	FolgaSubstituidoRange.setValue("");
+	
 	FolgaComentarioRange.setValue("");
+
+	FolgaSaldoOuroRange.setValue("");
+	FolgaSaldoRealRange.setValue("");
+	FolgaFuturoRealRange.setValue("");
+	FolgaFuturoOuroRange.setValue("");
+
 }

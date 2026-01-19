@@ -10,7 +10,7 @@ function cantinaExecute() {
 	switchToTab("Cantina");
 
 	if (CantinaColaboradorRange.getValue() == "") {
-		SpreadsheetApp.getUi().alert("O Colaboradordeve ser preenchido.");
+		SpreadsheetApp.getUi().alert("O Colaborador deve ser preenchido.");
 		return null;
 	}
 

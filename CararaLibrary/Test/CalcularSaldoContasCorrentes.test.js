@@ -1,18 +1,38 @@
-function calcularRendasFuturasOuroTeste() {
-	  let expectedRendas = {
+function calcularSaldoContasCorrentesTeste() {
+	let expectedRendas = {
     auferidas: {
-      ouro: 0,
-      real: 0
+      Ouro: 0,
+      Real: 0
     },
     futuras: {
-      ouro: 0,
-      real: 0
+      Ouro: 0,
+      Real: 0
     }
   };
   
-  let nome = "Raul Vicente Heitor da Mata";
-	let estadia = dateToString("11/15/2025");
-	let rendas = calcularRendasFuturasOuro(nome, estadia)
+  let nome = "Severino Severino Iago Rocha";
+	let estadia = dateToString("12/19/2025");
+	let rendas = calcularSaldoContasCorrentes(nome, estadia)
+
+  typeof rendas !== 'undefined' ? 
+		console.info(" ✔︎ rendas definidas") :
+		console.error(" ✖︎  rendas indefinidas definidas"); 
+}
+function calcularRendasTeste() {
+	let expectedRendas = {
+    auferidas: {
+      Ouro: 0,
+      Real: 0
+    },
+    futuras: {
+      Ouro: 0,
+      Real: 0
+    }
+  };
+  
+  let nome = "Severino Severino Iago Rocha";
+	let estadia = dateToString("12/19/2025");
+	let rendas = calcularRendas(nome, estadia)
 
   typeof rendas !== 'undefined' ? 
 		console.info(" ✔︎ rendas definidas") :
@@ -26,10 +46,10 @@ function calcularSaldoContasCorrentesTest1() {
 	if (!rendas) {
 		throw new Error(`calcularSaldoContasCorrentesTest Teste falhou: Nenhum saldo retornado para ${nome} em ${estadia}.`);
 	}
-	let expectedSaldo = { auferidas: { real: 10.00, ouro: 0.00 }, futuras: { real: 0.00, ouro: 0 } };
-	if (rendas.auferidas.real !== expectedSaldo.auferidas.real && rendas.auferidas.ouro !== expectedSaldo.auferidas.ouro &&
-	    rendas.futuras.real !== expectedSaldo.futuras.real && rendas.futuras.ouro !== expectedSaldo.futuras.ouro	) {
-		throw new Error(`calcularSaldoContasCorrentesTest Teste falhou: Saldo incorreto para ${nome} em ${estadia}. Esperado: { Real: ${expectedSaldo.auferidas.real}, Ouro: ${expectedSaldo.auferidas.ouro} }, Obtido: { Real: ${rendas.auferidas.real}, Ouro: ${rendas.auferidas.ouro} }`);
+	let expectedSaldo = { auferidas: { Real: 10.00, Ouro: 0.00 }, futuras: { Real: 0.00, Ouro: 0 } };
+	if (rendas.auferidas.Real !== expectedSaldo.auferidas.Real && rendas.auferidas.Ouro !== expectedSaldo.auferidas.Ouro &&
+	    rendas.futuras.Real !== expectedSaldo.futuras.Real && rendas.futuras.Ouro !== expectedSaldo.futuras.Ouro	) {
+		throw new Error(`calcularSaldoContasCorrentesTest Teste falhou: Saldo incorreto para ${nome} em ${estadia}. Esperado: { Real: ${expectedSaldo.auferidas.Real}, Ouro: ${expectedSaldo.auferidas.Ouro} }, Obtido: { Real: ${rendas.auferidas.Real}, Ouro: ${rendas.auferidas.Ouro} }`);
 	}
 	Logger.log("calcularSaldoContasCorrentesTest passes")
 }
