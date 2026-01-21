@@ -1,9 +1,9 @@
 // *** Identificação da folhas das Despesas
 // 
-const despesasID 		  = "1XwjBUJYG4VLN0ZaG0EFzKljWk9VdGvePaDO9Nwd70G4";
+const despesasID          = "1XwjBUJYG4VLN0ZaG0EFzKljWk9VdGvePaDO9Nwd70G4";
 const despesasSpreadSheet = SpreadsheetApp.openById(despesasID);
 function despesasGetSpreaSheet() {
-	return SpreadsheetApp.openById(despesasID);
+    return SpreadsheetApp.openById(despesasID);
 } 
 
 // *** Layout do formulário Cantina
@@ -12,47 +12,47 @@ const despesasCantinaTab      = despesasSpreadSheet.getSheetByName("Cantina");
 const CantinaDataRange        = despesasCantinaTab.getRange("CantinaData");
 
 const CantinaColaboradorRange = despesasCantinaTab.getRange("CantinaColaborador");
-const CantinaEstadiaRange 		= despesasCantinaTab.getRange("CantinaEstadia");
-const CantinaPagementoRange 	= despesasCantinaTab.getRange("CantinaPagemento");
-const CantinaMoedaRange 		  = despesasCantinaTab.getRange("CantinaMoeda");
-const CantinaDespesasRange 		= despesasCantinaTab.getRange("CantinaDespesas");
-const CantinaComentarioRange	= despesasCantinaTab.getRange("CantinaComentario");
-const CantinaSaldoOuroRange 	= despesasCantinaTab.getRange("CantinaSaldoOuro");
-const CantinaSaldoRealRange 	= despesasCantinaTab.getRange("CantinaSaldoReal");
-const CantinaFuturoOuroRange 	= despesasCantinaTab.getRange("CantinaFuturoOuro");
-const CantinaFuturoRealRange 	= despesasCantinaTab.getRange("CantinaFuturoReal");
+const CantinaEstadiaRange       = despesasCantinaTab.getRange("CantinaEstadia");
+const CantinaPagementoRange     = despesasCantinaTab.getRange("CantinaPagemento");
+const CantinaMoedaRange           = despesasCantinaTab.getRange("CantinaMoeda");
+const CantinaDespesasRange      = despesasCantinaTab.getRange("CantinaDespesas");
+const CantinaComentarioRange    = despesasCantinaTab.getRange("CantinaComentario");
+const CantinaSaldoOuroRange     = despesasCantinaTab.getRange("CantinaSaldoOuro");
+const CantinaSaldoRealRange     = despesasCantinaTab.getRange("CantinaSaldoReal");
+const CantinaFuturoOuroRange    = despesasCantinaTab.getRange("CantinaFuturoOuro");
+const CantinaFuturoRealRange    = despesasCantinaTab.getRange("CantinaFuturoReal");
 
 const CantinaItemsRange = despesasCantinaTab.getRange("CantinaItems");
 const CantinaQuantidadesRange = despesasCantinaTab.getRange("CantinaQuantidades");
 
-const CantinaDespesasItemCol 		= 0;	
-const CantinaDespesasRealol 		= 1;
-const CantinaDespesasOuroCol 		= 2;	
-const CantinaDespesasQTDCol 		= 3
-const CantinaDespesasTotalRealCol 	= 4;
-const CantinaDespesasTotaOurolCol 	= 5;
+const CantinaDespesasItemCol        = 0;    
+const CantinaDespesasRealol         = 1;
+const CantinaDespesasOuroCol        = 2;    
+const CantinaDespesasQTDCol         = 3
+const CantinaDespesasTotalRealCol   = 4;
+const CantinaDespesasTotaOurolCol   = 5;
 
 // *** Layout do formulário PIX
 // 
 const despesasPixTab = despesasSpreadSheet.getSheetByName("Pix");
 
-const PixDataRange 	          = despesasPixTab.getRange("PixData");
+const PixDataRange            = despesasPixTab.getRange("PixData");
 const PixColaboradorRange     = despesasPixTab.getRange("PixColaborador");
-const PixEstadiaRange     	  = despesasPixTab.getRange("PixEstadia");
-const PixPagementoRange   	  = despesasPixTab.getRange("PixPagamento");
-const PixComentarioRange  	  = despesasPixTab.getRange("PixComentario");
+const PixEstadiaRange         = despesasPixTab.getRange("PixEstadia");
+const PixPagementoRange       = despesasPixTab.getRange("PixPagamento");
+const PixComentarioRange      = despesasPixTab.getRange("PixComentario");
 
-const PixDespesasRange    	   = despesasPixTab.getRange("PixDespesas");
+const PixDespesasRange         = despesasPixTab.getRange("PixDespesas");
 const PixDespesaRealRange      = despesasPixTab.getRange("PixDespesaReal");
 const PixDespesaOuroRange      = despesasPixTab.getRange("PixDespesaOuro");
 const PixDespesaTotalRealRange = despesasPixTab.getRange("PixDespesaTotalReal");
 const PixDespesaTotalOuroRange = despesasPixTab.getRange("PixDespesaTotalOuro");
 
-const PixMoedaRange 	      = despesasPixTab.getRange("PixMoeda");
-const PixSaldoOuroRange 	  = despesasPixTab.getRange("PixSaldoOuro");
-const PixSaldoRealRange 	  = despesasPixTab.getRange("PixSaldoReal");
-const PixFuturoOuroRange 	  = despesasPixTab.getRange("PixFuturoOuro");
-const PixFuturoRealRange 	  = despesasPixTab.getRange("PixFuturoReal");
+const PixMoedaRange           = despesasPixTab.getRange("PixMoeda");
+const PixSaldoOuroRange       = despesasPixTab.getRange("PixSaldoOuro");
+const PixSaldoRealRange       = despesasPixTab.getRange("PixSaldoReal");
+const PixFuturoOuroRange      = despesasPixTab.getRange("PixFuturoOuro");
+const PixFuturoRealRange      = despesasPixTab.getRange("PixFuturoReal");
 
 const PixDespesasItemCol        = 0;  
 const PixDespesasRealol         = 1;
@@ -74,8 +74,8 @@ const DiversosDespesasRange      = despesasDiversosTab.getRange("DiversosDespesa
 const DiversosComentarioRange    = despesasDiversosTab.getRange("DiversosComentario");
 const DiversosSaldoOuroRange     = despesasDiversosTab.getRange("DiversosSaldoOuro");
 const DiversosSaldoRealRange     = despesasDiversosTab.getRange("DiversosSaldoReal");
-const DiversosFuturoOuroRange 	= despesasDiversosTab.getRange("DiversosFuturoOuro");
-const DiversosFuturoRealRange 	= despesasDiversosTab.getRange("DiversosFuturoReal");
+const DiversosFuturoOuroRange   = despesasDiversosTab.getRange("DiversosFuturoOuro");
+const DiversosFuturoRealRange   = despesasDiversosTab.getRange("DiversosFuturoReal");
 
 const DiversosItemsRange = despesasDiversosTab.getRange("DiversosItems");
 const DiversosRealRange = despesasDiversosTab.getRange("DiversosReal");
@@ -103,8 +103,8 @@ const FolgaSubstituidoDiariaRange  = despesasFolgaTab.getRange("FolgaSubstituido
 const FolgaComentarioRange         = despesasFolgaTab.getRange("FolgaComentario");
 const FolgaSaldoOuroRange          = despesasFolgaTab.getRange("FolgaSaldoOuro");
 const FolgaSaldoRealRange          = despesasFolgaTab.getRange("FolgaSaldoReal");
-const FolgaFuturoOuroRange 	       = despesasFolgaTab.getRange("FolgaFuturoOuro");
-const FolgaFuturoRealRange 	       = despesasFolgaTab.getRange("FolgaFuturoReal");
+const FolgaFuturoOuroRange         = despesasFolgaTab.getRange("FolgaFuturoOuro");
+const FolgaFuturoRealRange         = despesasFolgaTab.getRange("FolgaFuturoReal");
 
 const FolgaItemsRange = despesasFolgaTab.getRange("FolgaItems");
 const FolgaRealRange = despesasFolgaTab.getRange("FolgaReal");
@@ -127,14 +127,14 @@ const CambioEstadiaRange     = despesasCambioTab.getRange("CambioEstadia");
 const CambioPagementoRange   = despesasCambioTab.getRange("CambioPagamento");
 const CambioComentarioRange  = despesasCambioTab.getRange("CambioComentario");
 
-const CambioDespesasRange    	  = despesasCambioTab.getRange("CambioDespesas");
+const CambioDespesasRange         = despesasCambioTab.getRange("CambioDespesas");
 const CambioDespesaRealRange      = despesasCambioTab.getRange("CambioDespesaReal");
 const CambioDespesaOuroRange      = despesasCambioTab.getRange("CambioDespesaOuro");
 const CambioDespesaTotalRealRange = despesasCambioTab.getRange("CambioDespesaTotalReal");
 const CambioDespesaTotalOuroRange = despesasCambioTab.getRange("CambioDespesaTotalOuro");
 
-const CambioMoedaRange 	    = despesasCambioTab.getRange("CambioMoeda");
-const CambioSaldoOuroRange 	= despesasCambioTab.getRange("CambioSaldoOuro");
+const CambioMoedaRange      = despesasCambioTab.getRange("CambioMoeda");
+const CambioSaldoOuroRange  = despesasCambioTab.getRange("CambioSaldoOuro");
 const CambioSaldoRealRange  = despesasCambioTab.getRange("CambioSaldoReal");
 const CambioFuturoOuroRange = despesasCambioTab.getRange("CambioFuturoOuro");
 const CambioFuturoRealRange = despesasCambioTab.getRange("CambioFuturoReal");
@@ -146,27 +146,55 @@ const CambioDespesasQTDCol         = 3
 const CambioDespesasTotalRealCol   = 4;
 const CambioDespesasTotaOurolCol   = 5;
 
+// *** Layout do formulário Fechar
+// 
+const despesasFecharTab = despesasSpreadSheet.getSheetByName("Fechar");
+
+const FecharDataRange         = despesasFecharTab.getRange("FecharData");
+const FecharColaboradorRange  = despesasFecharTab.getRange("FecharColaborador");
+const FecharEstadiaRange      = despesasFecharTab.getRange("FecharEstadia");
+const FecharComentarioRange   = despesasFecharTab.getRange("FecharComentario");
+
+const FecharDespesasRange           = despesasFecharTab.getRange("FecharDespesas");
+// const FecharDespesaRealRange      = despesasFecharTab.getRange("FecharDespesaReal");
+// const FecharDespesaOuroRange      = despesasFecharTab.getRange("FecharDespesaOuro");
+// const FecharDespesaTotalRealRange = despesasFecharTab.getRange("FecharDespesaTotalReal");
+// const FecharDespesaTotalOuroRange = despesasFecharTab.getRange("FecharDespesaTotalOuro");
+
+// const FecharMoedaRange         = despesasFecharTab.getRange("FecharMoeda");
+const FecharSaldoOuroRange    = despesasFecharTab.getRange("FecharSaldoOuro");
+const FecharSaldoRealRange    = despesasFecharTab.getRange("FecharSaldoReal");
+const FecharFuturoOuroRange   = despesasFecharTab.getRange("FecharFuturoOuro");
+const FecharFuturoRealRange   = despesasFecharTab.getRange("FecharFuturoReal");
+
+const FecharDespesasItemCol        = 0;  
+const FecharDespesasRealol         = 1;
+const FecharDespesasOuroCol        = 2;  
+const FecharDespesasQTDCol         = 3
+const FecharDespesasTotalRealCol   = 4;
+const FecharDespesasTotaOurolCol   = 5;
+
 // *** Identificação da Sheet Contas Correntes
 // 
-const contasCorrentesId 					= "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
-const contasCorrentesSheet 					= SpreadsheetApp.openById(contasCorrentesId);
-const contasCorrentesTab 					= contasCorrentesSheet.getSheetByName("ContasCorrentes");
-const contasCorrentesDadosTab 				= contasCorrentesSheet.getSheetByName("Dados");
-// const contasCorrentesDadosRange 			= contasCorrentesDadosTab.getRange("Dados");
+const contasCorrentesId                     = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
+const contasCorrentesSheet                  = SpreadsheetApp.openById(contasCorrentesId);
+const contasCorrentesTab                    = contasCorrentesSheet.getSheetByName("ContasCorrentes");
+const contasCorrentesDadosTab               = contasCorrentesSheet.getSheetByName("Dados");
+// const contasCorrentesDadosRange          = contasCorrentesDadosTab.getRange("Dados");
 
-const contasCorrentesDataCol              	= 0;
-const contasCorrentesNomeCol              	= 1;
-const contasCorrentesEstadiaCol           	= 2;
-const contasCorrentesMetodoCol            	= 3;  // Diaria, Salario, Porcentagem, Cantina, PIX, Diversos, Voo, Fechar, substitua por outro
-const contasCorrentesMoedaCol             	= 4   // Real, Ouro
-const contasCorrentesCreditDebitCol       	= 5;  // Credito, Debito
-const contasCorrentesItemCol              	= 6;
-const contasCorrentesPrecoUnidadeRealCol  	= 7;  // Real
-const contasCorrentesPrecoUnidadeOuroCol  	= 8;  // Gramas de Ouro 
-const contasCorrentesItemQtdCol           	= 9;
-const contasCorrentesTotalRealCol         	= 10; // Real
-const contasCorrentesTotalOuroCol         	= 11; // Gramas de Ouro
-const contasCorrentesComentariosCol       	= 12
+const contasCorrentesDataCol                = 0;
+const contasCorrentesNomeCol                = 1;
+const contasCorrentesEstadiaCol             = 2;
+const contasCorrentesMetodoCol              = 3;  // Diaria, Salario, Porcentagem, Cantina, PIX, Diversos, Voo, Fechar, substitua por outro
+const contasCorrentesMoedaCol               = 4   // Real, Ouro
+const contasCorrentesCreditDebitCol         = 5;  // Credito, Debito
+const contasCorrentesItemCol                = 6;
+const contasCorrentesPrecoUnidadeRealCol    = 7;  // Real
+const contasCorrentesPrecoUnidadeOuroCol    = 8;  // Gramas de Ouro 
+const contasCorrentesItemQtdCol             = 9;
+const contasCorrentesTotalRealCol           = 10; // Real
+const contasCorrentesTotalOuroCol           = 11; // Gramas de Ouro
+const contasCorrentesComentariosCol         = 12
 
 const ESTADIAS_GAMA        = "EstadiaGamaLocal";
 const ESTADIAS_NOME        = 0;
@@ -222,7 +250,15 @@ function GetSaldo() {
       futuroOuroRange   = CambioFuturoOuroRange;
       futuroRealRange   = CambioFuturoRealRange;
       break;    
-    default:
+     case "Fechar":
+      colaboradorNome   = FecharColaboradorRange.getValue();
+      colaboradoEstadia = FecharEstadiaRange.getValue();
+      saldoOuroRange    = FecharSaldoOuroRange;
+      saldoRealRange    = FecharSaldoRealRange;
+      futuroOuroRange   = FecharFuturoOuroRange;
+      futuroRealRange   = FecharFuturoRealRange;
+      break;    
+   default:
       return {
         auferidas: {
           Ouro: 0,
@@ -234,8 +270,8 @@ function GetSaldo() {
         }
       };
   }
-	let rendas = CararaLibrary.calcularSaldoContasCorrentes(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia));
-	if (rendas != null) {
+    let rendas = CararaLibrary.calcularSaldoContasCorrentes(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia));
+    if (rendas != null) {
     saldoOuroRange.setValue(rendas.auferidas.Ouro );
     saldoRealRange.setValue(rendas.auferidas.Real);
     futuroOuroRange.setValue(rendas.futuras.Ouro);
