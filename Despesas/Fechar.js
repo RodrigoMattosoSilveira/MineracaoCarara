@@ -1,7 +1,13 @@
 function fecharPrepare() {
   // Navegue para o formulário Diversos e limpe o mesmo
-    CararaLibrary.activateSheet("Fechar");
+  CararaLibrary.activateSheet("Fechar");
   limparFormularioFechar();
+
+  // Prencha os saldos atuais do colaborador
+  GetSaldo(); 
+
+  // Preencha a descrição dos pagementos a serem feitos
+  fecharGatilhoCompletar();
 }
 
 function fecharGatilho(e) {
@@ -15,45 +21,42 @@ function fecharGatilho(e) {
 }
 function fecharGatilhoCompletar() {
   // Build Conta Corrent records
-  const FecharData      = FecharDataRange.getValue();
-  const FecharColaborador   = FecharColaboradorRange.getValue();
+  const FecharData        = FecharDataRange.getValue();
+  const FecharColaborador = FecharColaboradorRange.getValue();
   const FecharEstadia     = FecharEstadiaRange.getValue();
-  const FecharComentario    = FecharComentarioRange.getValue();
+  const FecharComentario  = FecharComentarioRange.getValue();
 
-  // Compute outstanding totals
-  const contasCorrentesDadosRange =   CararaLibrary.cc_getTransacoesRendasDespesasRange();
-  const contasCorrentesDadosRangeVals =   contasCorrentesDadosRange.getValues();
-  const creditosDebitos = CararaLibrary.resumirContaCorrenteColaborador(FecharColaborador, FecharEstadia, contasCorrentesDadosRangeVals);
+  // Obtenha os saldos de Reais e Ouro do colaborador
+  let saldoOuro = FecharSaldoOuroRange.getValue();
+  let saldoReal = FecharSaldoRealRange.getValue();
+
+  if (saldoOuro == 0 && saldoReal == 0) {
+    SpreadsheetApp.getUi().alert("Nao ha nehum saldo a ser fechado para o colaborador " + FecharColaborador);
+    return null;
+  }
+
+  if (saldoOuro < 0 || saldoReal < 0) {
+    SpreadsheetApp.getUi().alert("A conta não pode ser encerrada com saldos negativos " + FecharColaborador);
+    return null;
+  }
 
   //  Obtenha e preencha a area do formularon a incluir as informations a
   // cerca dos debitos e creditos docolaborador
-  const fecharDadosRange = despesasSpreadSheet.getRangeByName(FecharDadosRangeName)
-  let fecharDadosRangeVals = fecharDadosRange.getValues();
+  let fecharDadosRangeVals = FecharDadosRange.getValues();
   let i = 0;
-  if (creditosDebitos["Credito"]["Real"] > 0) {
+  if (saldoReal > 0) {
     let formattedPrice = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD'
-    }).format(creditosDebitos["Credito"]["Real"] );
-    fecharDadosRangeVals[i][0] = 'A Mineração Carará pagou aoColaboradorseu credito em Real, ' + formattedPrice;
+    }).format(saldoReal);
+    fecharDadosRangeVals[i][0] = 'A Mineração Carará pagou ao Colaboradorseu credito em Real, ' + formattedPrice;
     i++
   }
-  if (creditosDebitos["Credito"]["Ouro"] > 0) {
-    fecharDadosRangeVals[i][0]  = 'A Mineração Carará pagou aoColaboradorseu credito em Ouro, ' + creditosDebitos["Credito"]["Ouro"] + 'g';
+  if (saldoOuro > 0) {
+    fecharDadosRangeVals[i][0]  = 'A Mineração Carará pagou aoColaboradorseu credito em Ouro, ' + saldoOuro + 'g';
     i++
   }
-  if (creditosDebitos["Debito"]["Real"] > 0) {
-    let formattedPrice = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(creditosDebitos["Debito"]["Real"] );
-    fecharDadosRangeVals[i][0]  = 'O Colaborador pagou a Mineração Carará seu debito em Real, ' + formattedPrice;
-    i++
-  }
-  if (creditosDebitos["Debito"]["Ouro"] > 0) {
-    fecharDadosRangeVals[i][0]  = 'OColaborador pagou a Mineração Carará seu debito em ouro, ' + creditosDebitos["Debito"]["Ouro"] + 'g';
-  }
-  fecharDadosRange.setValues(fecharDadosRangeVals).setFontSize(14);
+  FecharDadosRange.setValues(fecharDadosRangeVals).setFontSize(14);
 
   // despesasSpreadSheet.getRangeByName("FecharSemaforo").setBackground("#00FF00");
 }
@@ -152,7 +155,7 @@ function limparFormularioFechar() {
   FecharFuturoOuroRange.setValue("");
   FecharFuturoRealRange.setValue("");
 
-  FecharDespesasRange.setValue("");
+  FecharDadosRange.setValue("");
 
   FecharComentarioRange.setValue("");
   GetSaldo();

@@ -155,7 +155,7 @@ const FecharColaboradorRange  = despesasFecharTab.getRange("FecharColaborador");
 const FecharEstadiaRange      = despesasFecharTab.getRange("FecharEstadia");
 const FecharComentarioRange   = despesasFecharTab.getRange("FecharComentario");
 
-const FecharDespesasRange           = despesasFecharTab.getRange("FecharDespesas");
+const FecharDadosRange               = despesasFecharTab.getRange("FecharDados");
 // const FecharDespesaRealRange      = despesasFecharTab.getRange("FecharDespesaReal");
 // const FecharDespesaOuroRange      = despesasFecharTab.getRange("FecharDespesaOuro");
 // const FecharDespesaTotalRealRange = despesasFecharTab.getRange("FecharDespesaTotalReal");
