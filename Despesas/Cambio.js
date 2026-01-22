@@ -1,7 +1,7 @@
 function cambioPrepare() {
-	// Navegue para o formulário Diversos e limpe o mesmo
+	// Navegue para o formulário Cambio e limpe o mesmo
  	switchToTab("Cambio");
-	limparFormularioDiversos();
+	limparFormularioCambio();
 }
 
 function cambioExecute() {
