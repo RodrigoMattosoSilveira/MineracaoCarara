@@ -2,6 +2,7 @@ function diversosPrepare() {
 	// Navegue para o formulário Diversos e limpe o mesmo
  	switchToTab("Diversos");
 	limparFormularioDiversos();
+	GetSaldo();
 }
 
 
@@ -81,12 +82,13 @@ function diversosExecute() {
 }
 
 function limparFormularioDiversos() {
-	DiversosColaboradorRange.setValue("");
+	// DiversosColaboradorRange.setValue("");
 	DiversosMoedaRange.setValue("Real");
 	DiversosItemsRange.setValue("");
 	DiversosRealRange.setValue("");
 	DiversosQuantidadesRange.setValue("");
 	DiversosComentarioRange.setValue("");	
+	
 	DiversosSaldoOuroRange.setValue("");
 	DiversosSaldoRealRange.setValue("");
 	DiversosFuturoRealRange.setValue("");

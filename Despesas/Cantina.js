@@ -2,6 +2,7 @@ function cantinaPrepare() {
 	// Navegue para o formulário Cantina e limpe o mesmooooo
   	switchToTab("Cantina");
 	clearCantinaForm();
+	GetSaldo();
 }
 
 function cantinaExecute() {
@@ -69,11 +70,12 @@ function cantinaExecute() {
 }
 
 function clearCantinaForm () {
-	CantinaColaboradorRange.setValue("");
+	// CantinaColaboradorRange.setValue("");
 	CantinaMoedaRange.setValue("Real");
 	CantinaItemsRange.setValue("");
 	CantinaQuantidadesRange.setValue("");
 	CantinaComentarioRange.setValue("");
+
 	CantinaSaldoOuroRange.setValue("");
 	CantinaSaldoRealRange.setValue("");
 	CantinaFuturoOuroRange.setValue("");

@@ -2,6 +2,7 @@ function cambioPrepare() {
 	// Navegue para o formulário Cambio e limpe o mesmo
  	switchToTab("Cambio");
 	limparFormularioCambio();
+	GetSaldo();
 }
 
 function cambioExecute() {
@@ -90,7 +91,7 @@ function cambioExecute() {
 }
 
 function limparFormularioCambio () {
-	CambioColaboradorRange.setValue("");
+	// CambioColaboradorRange.setValue("");
 
 	CambioSaldoOuroRange.setValue("");
 	CambioSaldoRealRange.setValue("");
