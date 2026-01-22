@@ -2,6 +2,7 @@ function pixPrepare() {
 	// Navegue para o formulário :IX e limpe o mesmo
   	switchToTab("Pix");
 	limparFormularioPix ();	
+	GetSaldo();
 }
 
 function pixExecute() {
@@ -80,7 +81,7 @@ function pixExecute() {
 }
 
 function limparFormularioPix () {
-	PixColaboradorRange.setValue("");
+	// PixColaboradorRange.setValue("");
 
 	PixSaldoOuroRange.setValue("");
 	PixSaldoRealRange.setValue("");
