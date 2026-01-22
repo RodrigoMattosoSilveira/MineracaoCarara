@@ -2,6 +2,7 @@ function folgaPrepare() {
 	// Navegue para o formulário Folga e limpe o mesmo
   	switchToTab("Folga");
 	limparFormularioFolga();
+	GetSaldo();
 }
 
 function folgaExecute() {
@@ -88,7 +89,7 @@ function folgaExecute() {
 }
 
 function limparFormularioFolga() {
-	FolgaColaboradorRange.setValue("");
+	// FolgaColaboradorRange.setValue("");
 	FolgaMoedaRange.setValue("Ouro");
 
 	FolgaSubstituidoRange.setValue("");
