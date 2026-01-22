@@ -328,3 +328,19 @@ function getDateMinusDays(dias) {
     result.setDate(result.getDate() - dias); // Subtract days
     return result;
 }
+
+/**
+ * Rounds a number to a specified number of decimal places.
+ * Handles floating-point precision issues.
+ * 
+ * @param {number} value - The number to round.
+ * @param {number} decimals - Number of decimal places (default: 2).
+ * @returns {number} Rounded number.
+ */
+function roundToDecimals(value, decimals = 2) {
+    if (typeof value !== 'number' || typeof decimals !== 'number' || decimals < 0) {
+        throw new Error('Invalid input: value must be a number and decimals must be a non-negative integer.');
+    }
+    const factor = Math.pow(10, decimals);
+    return Math.round((value + Number.EPSILON) * factor) / factor;
+}

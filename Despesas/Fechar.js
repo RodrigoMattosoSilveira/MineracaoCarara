@@ -49,11 +49,12 @@ function fecharGatilhoCompletar() {
       style: 'currency',
       currency: 'USD'
     }).format(saldoReal);
-    fecharDadosRangeVals[i][0] = 'A Mineração Carará pagou ao Colaboradorseu credito em Real, ' + formattedPrice;
+    fecharDadosRangeVals[i][0] = 'A Mineração Carará pagou ao Colaborador seu credito em Real, ' + formattedPrice;
     i++
   }
   if (saldoOuro > 0) {
-    fecharDadosRangeVals[i][0]  = 'A Mineração Carará pagou aoColaboradorseu credito em Ouro, ' + saldoOuro + 'g';
+    let roundedOuro = CararaLibrary.roundToDecimals(saldoOuro, 8)
+    fecharDadosRangeVals[i][0]  = 'A Mineração Carará pagou ao Colaborador seu credito em Ouro, ' + roundedOuro + 'g';
     i++
   }
   FecharDadosRange.setValues(fecharDadosRangeVals).setFontSize(14);
