@@ -1,6 +1,8 @@
 function cambioPrepare() {
 	// Navegue para o formulário Cambio e limpe o mesmo
  	switchToTab("Cambio");
+	SetupCambio();
+	
 	limparFormularioCambio();
 	GetSaldo();
 }
@@ -9,6 +11,7 @@ function cambioExecute() {
 	// SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
 	// 	.alert('You clicked CambioExecute');
 	switchToTab("Cambio");
+	SetupCambio();
 
 	if (CambioColaboradorRange.getValue() == "") {
 		SpreadsheetApp.getUi().alert("O Colaborador deve ser preenchido.");

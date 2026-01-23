@@ -215,32 +215,57 @@ function SetupFolga() {
 
 // *** Layout do formulário Cambio
 // 
-const despesasCambioTab = despesasSpreadSheet.getSheetByName("Cambio");
-
-const CambioDataRange        = despesasCambioTab.getRange("CambioData");
-const CambioColaboradorRange = despesasCambioTab.getRange("CambioColaborador");
-const CambioEstadiaRange     = despesasCambioTab.getRange("CambioEstadia");
-const CambioPagementoRange   = despesasCambioTab.getRange("CambioPagamento");
-const CambioComentarioRange  = despesasCambioTab.getRange("CambioComentario");
-
-const CambioDespesasRange         = despesasCambioTab.getRange("CambioDespesas");
-const CambioDespesaRealRange      = despesasCambioTab.getRange("CambioDespesaReal");
-const CambioDespesaOuroRange      = despesasCambioTab.getRange("CambioDespesaOuro");
-const CambioDespesaTotalRealRange = despesasCambioTab.getRange("CambioDespesaTotalReal");
-const CambioDespesaTotalOuroRange = despesasCambioTab.getRange("CambioDespesaTotalOuro");
-
-const CambioMoedaRange      = despesasCambioTab.getRange("CambioMoeda");
-const CambioSaldoOuroRange  = despesasCambioTab.getRange("CambioSaldoOuro");
-const CambioSaldoRealRange  = despesasCambioTab.getRange("CambioSaldoReal");
-const CambioFuturoOuroRange = despesasCambioTab.getRange("CambioFuturoOuro");
-const CambioFuturoRealRange = despesasCambioTab.getRange("CambioFuturoReal");
-
 const CambioDespesasItemCol        = 0;  
 const CambioDespesasRealCol        = 1;
 const CambioDespesasOuroCol        = 2;  
 const CambioDespesasQTDCol         = 3
 const CambioDespesasTotalRealCol   = 4;
 const CambioDespesasTotaOurolCol   = 5;
+
+let despesasCambioTab;
+
+let CambioDataRange;
+let CambioColaboradorRange;
+let CambioEstadiaRange;
+let CambioPagementoRange;
+let CambioComentarioRange;
+
+let CambioDespesasRange;
+let CambioDespesaRealRange;
+let CambioDespesaOuroRange;
+let CambioDespesaTotalRealRange;
+let CambioDespesaTotalOuroRange;
+
+let CambioMoedaRange;
+let CambioSaldoOuroRange;
+let CambioSaldoRealRange;
+let CambioFuturoOuroRange;
+let CambioFuturoRealRange;
+
+function SetupCambio() {  
+  if (typeof despesasCambioTab === "undefined") { 
+    despesasCambioTab = despesasSpreadSheet.getSheetByName("Cambio");
+
+    CambioDataRange        = despesasCambioTab.getRange("CambioData");
+    CambioColaboradorRange = despesasCambioTab.getRange("CambioColaborador");
+    CambioEstadiaRange     = despesasCambioTab.getRange("CambioEstadia");
+    CambioPagementoRange   = despesasCambioTab.getRange("CambioPagamento");
+    CambioComentarioRange  = despesasCambioTab.getRange("CambioComentario");
+
+    CambioDespesasRange         = despesasCambioTab.getRange("CambioDespesas");
+    CambioDespesaRealRange      = despesasCambioTab.getRange("CambioDespesaReal");
+    CambioDespesaOuroRange      = despesasCambioTab.getRange("CambioDespesaOuro");
+    CambioDespesaTotalRealRange = despesasCambioTab.getRange("CambioDespesaTotalReal");
+    CambioDespesaTotalOuroRange = despesasCambioTab.getRange("CambioDespesaTotalOuro");
+
+    CambioMoedaRange      = despesasCambioTab.getRange("CambioMoeda");
+    CambioSaldoOuroRange  = despesasCambioTab.getRange("CambioSaldoOuro");
+    CambioSaldoRealRange  = despesasCambioTab.getRange("CambioSaldoReal");
+    CambioFuturoOuroRange = despesasCambioTab.getRange("CambioFuturoOuro");
+    CambioFuturoRealRange = despesasCambioTab.getRange("CambioFuturoReal");
+  }
+}
+
 
 // *** Layout do formulário Fechar
 // 
