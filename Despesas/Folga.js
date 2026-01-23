@@ -1,6 +1,7 @@
 function folgaPrepare() {
 	// Navegue para o formulário Folga e limpe o mesmo
   	switchToTab("Folga");
+	SetupFolga();
 	limparFormularioFolga();
 	GetSaldo();
 }
@@ -9,6 +10,7 @@ function folgaExecute() {
 	// SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
 	// 	.alert('You clicked FolgaExecute');
 	switchToTab("Folga");
+	SetupFolga();
 
 	if (FolgaColaboradorRange.getValue() == "") {
 		SpreadsheetApp.getUi().alert("O Colaborador deve ser preenchido.");
@@ -47,11 +49,11 @@ function folgaExecute() {
   	var contasCorrentesRangeDados = [];
 	FolgaDespesasFiltrados.forEach(function(transaction) {
 		var item 		= transaction[FolgaDespesasItemCol];
-		var real 		= transaction[FolgaDespesasRealol];
+		var real 		= transaction[FolgaDespesasRealCol];
 		var ouro 		= transaction[FolgaDespesasOuroCol];
 		var qtd 		= transaction[FolgaDespesasQTDCol];
 		var totalReal 	= transaction[FolgaDespesasTotalRealCol];
-		var totalOuro 	= transaction[FolgaDespesasTotaOurolCol];
+		var totalOuro 	= transaction[FolgaDespesasTotalOuroCol];
 		      
 		contaCorrenteRegistro = [];
 		contaCorrenteRegistro[contasCorrentesDataCol]        		= FolgaData;
