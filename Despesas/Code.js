@@ -269,31 +269,49 @@ function SetupCambio() {
 
 // *** Layout do formulário Fechar
 // 
-const despesasFecharTab = despesasSpreadSheet.getSheetByName("Fechar");
-
-const FecharDataRange         = despesasFecharTab.getRange("FecharData");
-const FecharColaboradorRange  = despesasFecharTab.getRange("FecharColaborador");
-const FecharEstadiaRange      = despesasFecharTab.getRange("FecharEstadia");
-const FecharComentarioRange   = despesasFecharTab.getRange("FecharComentario");
-
-const FecharDadosRange               = despesasFecharTab.getRange("FecharDados");
-// const FecharDespesaRealRange      = despesasFecharTab.getRange("FecharDespesaReal");
-// const FecharDespesaOuroRange      = despesasFecharTab.getRange("FecharDespesaOuro");
-// const FecharDespesaTotalRealRange = despesasFecharTab.getRange("FecharDespesaTotalReal");
-// const FecharDespesaTotalOuroRange = despesasFecharTab.getRange("FecharDespesaTotalOuro");
-
-// const FecharMoedaRange         = despesasFecharTab.getRange("FecharMoeda");
-const FecharSaldoOuroRange    = despesasFecharTab.getRange("FecharSaldoOuro");
-const FecharSaldoRealRange    = despesasFecharTab.getRange("FecharSaldoReal");
-const FecharFuturoOuroRange   = despesasFecharTab.getRange("FecharFuturoOuro");
-const FecharFuturoRealRange   = despesasFecharTab.getRange("FecharFuturoReal");
-
 const FecharDespesasItemCol        = 0;  
 const FecharDespesasRealol         = 1;
 const FecharDespesasOuroCol        = 2;  
 const FecharDespesasQTDCol         = 3
 const FecharDespesasTotalRealCol   = 4;
 const FecharDespesasTotaOurolCol   = 5;
+
+let despesasFecharTab;
+
+let FecharDataRange;
+let FecharColaboradorRange;
+let FecharEstadiaRange;
+let FecharComentarioRange;
+
+let FecharDadosRange;
+
+let FecharSaldoOuroRange;
+let FecharSaldoRealRange;
+let FecharFuturoOuroRange;
+let FecharFuturoRealRange;
+
+function SetupFechar() {  
+  if (typeof despesasFecharTab === "undefined") { 
+    despesasFecharTab = despesasSpreadSheet.getSheetByName("Fechar");
+
+    FecharDataRange        = despesasFecharTab.getRange("FecharData");
+    FecharColaboradorRange = despesasFecharTab.getRange("FecharColaborador");
+    FecharEstadiaRange     = despesasFecharTab.getRange("FecharEstadia");
+    FecharComentarioRange  = despesasFecharTab.getRange("FecharComentario");
+
+    FecharDadosRange         = despesasFecharTab.getRange("FecharDados");
+    // FecharDespesaRealRange      = despesasFecharTab.getRange("FecharDespesaReal");
+    // FecharDespesaOuroRange      = despesasFecharTab.getRange("FecharDespesaOuro");
+    // FecharDespesaTotalRealRange = despesasFecharTab.getRange("FecharDespesaTotalReal");
+    // FecharDespesaTotalOuroRange = despesasFecharTab.getRange("FecharDespesaTotalOuro");
+
+    // FecharMoedaRange      = despesasFecharTab.getRange("FecharMoeda");
+    FecharSaldoOuroRange  = despesasFecharTab.getRange("FecharSaldoOuro");
+    FecharSaldoRealRange  = despesasFecharTab.getRange("FecharSaldoReal");
+    FecharFuturoOuroRange = despesasFecharTab.getRange("FecharFuturoOuro");
+    FecharFuturoRealRange = despesasFecharTab.getRange("FecharFuturoReal");
+  }
+}
 
 // *** Identificação da Sheet Contas Correntes
 // 
