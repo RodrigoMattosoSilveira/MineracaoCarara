@@ -108,30 +108,53 @@ function SetUpPix() {
 
 // *** Layout do formulário Diversos
 // 
-const despesasDiversosTab = despesasSpreadSheet.getSheetByName("Diversos");
-const DiversosDataRange = despesasDiversosTab.getRange("DiversosData");
-
-const DiversosColaboradorRange   = despesasDiversosTab.getRange("DiversosColaborador");
-const DiversosEstadiaRange       = despesasDiversosTab.getRange("DiversosEstadia");
-const DiversosPagementoRange     = despesasDiversosTab.getRange("DiversosPagamento");
-const DiversosMoedaRange         = despesasDiversosTab.getRange("DiversosMoeda");
-const DiversosDespesasRange      = despesasDiversosTab.getRange("DiversosDespesas");
-const DiversosComentarioRange    = despesasDiversosTab.getRange("DiversosComentario");
-const DiversosSaldoOuroRange     = despesasDiversosTab.getRange("DiversosSaldoOuro");
-const DiversosSaldoRealRange     = despesasDiversosTab.getRange("DiversosSaldoReal");
-const DiversosFuturoOuroRange   = despesasDiversosTab.getRange("DiversosFuturoOuro");
-const DiversosFuturoRealRange   = despesasDiversosTab.getRange("DiversosFuturoReal");
-
-const DiversosItemsRange = despesasDiversosTab.getRange("DiversosItems");
-const DiversosRealRange = despesasDiversosTab.getRange("DiversosReal");
-const DiversosQuantidadesRange = despesasDiversosTab.getRange("DiversosQuantidades");
-
 const DiversosDespesasItemCol        = 0;  
 const DiversosDespesasRealCol        = 1;
 const DiversosDespesasOuroCol        = 2;  
 const DiversosDespesasQTDCol         = 3
 const DiversosDespesasTotalRealCol   = 4;
-const DiversosDespesasTotaOurolCol   = 5;
+const DiversosDespesasTotalOuroCol   = 5;
+let despesasDiversosTab;
+
+let DiversosDataRange;
+let DiversosColaboradorRange;
+let DiversosEstadiaRange;
+let DiversosPagementoRange;
+let DiversosMoedaRange;
+let DiversosDespesasRange;
+let DiversosComentarioRange;
+let DiversosSaldoOuroRange;
+let DiversosSaldoRealRange;
+let DiversosFuturoOuroRange;
+let DiversosFuturoRealRange;
+
+let DiversosItemsRange;
+let DiversosRealRange;
+let DiversosQuantidadesRange;   
+
+function SetUpDiversos() {
+  if (typeof despesasDiversosTab === "undefined") { 
+    despesasDiversosTab       = despesasSpreadSheet.getSheetByName("Diversos");
+    DiversosDataRange         = despesasDiversosTab.getRange("DiversosData");
+
+    DiversosColaboradorRange   = despesasDiversosTab.getRange("DiversosColaborador");
+    DiversosEstadiaRange       = despesasDiversosTab.getRange("DiversosEstadia");
+    DiversosPagementoRange     = despesasDiversosTab.getRange("DiversosPagamento");
+    DiversosMoedaRange         = despesasDiversosTab.getRange("DiversosMoeda");
+    DiversosDespesasRange      = despesasDiversosTab.getRange("DiversosDespesas");
+    DiversosComentarioRange    = despesasDiversosTab.getRange("DiversosComentario");
+    DiversosSaldoOuroRange     = despesasDiversosTab.getRange("DiversosSaldoOuro");
+    DiversosSaldoRealRange     = despesasDiversosTab.getRange("DiversosSaldoReal");
+    DiversosFuturoOuroRange   = despesasDiversosTab.getRange("DiversosFuturoOuro");
+    DiversosFuturoRealRange   = despesasDiversosTab.getRange("DiversosFuturoReal");
+
+    DiversosItemsRange = despesasDiversosTab.getRange("DiversosItems");
+    DiversosRealRange = despesasDiversosTab.getRange("DiversosReal");
+    DiversosQuantidadesRange = despesasDiversosTab.getRange("DiversosQuantidades");
+  }
+}
+
+
 
 // *** Layout do formulário Folga
 // 
