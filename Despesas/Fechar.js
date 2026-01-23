@@ -1,7 +1,7 @@
 function fecharPrepare() {
   // Navegue para o formulário Diversos e limpe o mesmo
   CararaLibrary.activateSheet("Fechar");
-  SetupFechar
+  SetupFechar();
   limparFormularioFechar();
 
   // Prencha os saldos atuais do colaborador
