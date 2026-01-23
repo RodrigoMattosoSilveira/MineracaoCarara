@@ -1,6 +1,7 @@
 function cantinaPrepare() {
 	// Navegue para o formulário Cantina e limpe o mesmooooo
   	switchToTab("Cantina");
+	SetUpCantina();
 	clearCantinaForm();
 	GetSaldo();
 }
@@ -9,6 +10,7 @@ function cantinaExecute() {
 	// SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
 	// 	.alert('You clicked cantinaExecute');
 	switchToTab("Cantina");
+	SetUpCantina();
 
 	if (CantinaColaboradorRange.getValue() == "") {
 		SpreadsheetApp.getUi().alert("O Colaborador deve ser preenchido.");

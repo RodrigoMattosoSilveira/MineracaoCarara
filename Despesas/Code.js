@@ -1,29 +1,12 @@
 // *** Identificação da folhas das Despesas
 // 
 const despesasID          = "1XwjBUJYG4VLN0ZaG0EFzKljWk9VdGvePaDO9Nwd70G4";
-const despesasSpreadSheet = SpreadsheetApp.openById(despesasID);
-function despesasGetSpreaSheet() {
-    return SpreadsheetApp.openById(despesasID);
-} 
+let despesasSpreadSheet  = SpreadsheetApp.openById(despesasID);;
 
-// *** Layout do formulário Cantina
+// *** Formulário Cantina
 // 
-const despesasCantinaTab      = despesasSpreadSheet.getSheetByName("Cantina");
-const CantinaDataRange        = despesasCantinaTab.getRange("CantinaData");
-
-const CantinaColaboradorRange = despesasCantinaTab.getRange("CantinaColaborador");
-const CantinaEstadiaRange       = despesasCantinaTab.getRange("CantinaEstadia");
-const CantinaPagementoRange     = despesasCantinaTab.getRange("CantinaPagemento");
-const CantinaMoedaRange           = despesasCantinaTab.getRange("CantinaMoeda");
-const CantinaDespesasRange      = despesasCantinaTab.getRange("CantinaDespesas");
-const CantinaComentarioRange    = despesasCantinaTab.getRange("CantinaComentario");
-const CantinaSaldoOuroRange     = despesasCantinaTab.getRange("CantinaSaldoOuro");
-const CantinaSaldoRealRange     = despesasCantinaTab.getRange("CantinaSaldoReal");
-const CantinaFuturoOuroRange    = despesasCantinaTab.getRange("CantinaFuturoOuro");
-const CantinaFuturoRealRange    = despesasCantinaTab.getRange("CantinaFuturoReal");
-
-const CantinaItemsRange = despesasCantinaTab.getRange("CantinaItems");
-const CantinaQuantidadesRange = despesasCantinaTab.getRange("CantinaQuantidades");
+let despesasCantinaTab;
+let CantinaDataRange;
 
 const CantinaDespesasItemCol        = 0;    
 const CantinaDespesasRealol         = 1;
@@ -31,6 +14,45 @@ const CantinaDespesasOuroCol        = 2;
 const CantinaDespesasQTDCol         = 3
 const CantinaDespesasTotalRealCol   = 4;
 const CantinaDespesasTotaOurolCol   = 5;
+
+let CantinaColaboradorRange;
+let CantinaEstadiaRange;
+let CantinaPagementoRange;
+let CantinaMoedaRange;
+let CantinaDespesasRange;
+let CantinaComentarioRange;
+let CantinaSaldoOuroRange;
+let CantinaSaldoRealRange;
+let CantinaFuturoOuroRange;
+let CantinaFuturoRealRange;
+
+let CantinaItemsRange;
+let CantinaQuantidadesRange;
+
+const SetUpCantina = () => {
+
+  
+  if (typeof despesasCantinaTab === "undefined") {
+    despesasCantinaTab       = despesasSpreadSheet.getSheetByName("Cantina");
+    CantinaDataRange         = despesasCantinaTab.getRange("CantinaData");
+
+    CantinaColaboradorRange  = despesasCantinaTab.getRange("CantinaColaborador");
+    CantinaEstadiaRange      = despesasCantinaTab.getRange("CantinaEstadia");
+    CantinaPagementoRange    = despesasCantinaTab.getRange("CantinaPagemento");
+    CantinaMoedaRange        = despesasCantinaTab.getRange("CantinaMoeda");
+    CantinaDespesasRange     = despesasCantinaTab.getRange("CantinaDespesas");
+    CantinaComentarioRange   = despesasCantinaTab.getRange("CantinaComentario");
+    CantinaSaldoOuroRange    = despesasCantinaTab.getRange("CantinaSaldoOuro");
+    CantinaSaldoRealRange    = despesasCantinaTab.getRange("CantinaSaldoReal");
+    CantinaFuturoOuroRange   = despesasCantinaTab.getRange("CantinaFuturoOuro");
+    CantinaFuturoRealRange   = despesasCantinaTab.getRange("CantinaFuturoReal");
+
+    CantinaItemsRange = despesasCantinaTab.getRange("CantinaItems");
+    CantinaQuantidadesRange = despesasCantinaTab.getRange("CantinaQuantidades");
+  }
+
+};
+
 
 // *** Layout do formulário PIX
 // 
