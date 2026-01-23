@@ -56,32 +56,55 @@ const SetUpCantina = () => {
 
 // *** Layout do formulário PIX
 // 
-const despesasPixTab = despesasSpreadSheet.getSheetByName("Pix");
-
-const PixDataRange            = despesasPixTab.getRange("PixData");
-const PixColaboradorRange     = despesasPixTab.getRange("PixColaborador");
-const PixEstadiaRange         = despesasPixTab.getRange("PixEstadia");
-const PixPagementoRange       = despesasPixTab.getRange("PixPagamento");
-const PixComentarioRange      = despesasPixTab.getRange("PixComentario");
-
-const PixDespesasRange         = despesasPixTab.getRange("PixDespesas");
-const PixDespesaRealRange      = despesasPixTab.getRange("PixDespesaReal");
-const PixDespesaOuroRange      = despesasPixTab.getRange("PixDespesaOuro");
-const PixDespesaTotalRealRange = despesasPixTab.getRange("PixDespesaTotalReal");
-const PixDespesaTotalOuroRange = despesasPixTab.getRange("PixDespesaTotalOuro");
-
-const PixMoedaRange           = despesasPixTab.getRange("PixMoeda");
-const PixSaldoOuroRange       = despesasPixTab.getRange("PixSaldoOuro");
-const PixSaldoRealRange       = despesasPixTab.getRange("PixSaldoReal");
-const PixFuturoOuroRange      = despesasPixTab.getRange("PixFuturoOuro");
-const PixFuturoRealRange      = despesasPixTab.getRange("PixFuturoReal");
-
 const PixDespesasItemCol        = 0;  
 const PixDespesasRealol         = 1;
 const PixDespesasOuroCol        = 2;  
 const PixDespesasQTDCol         = 3
 const PixDespesasTotalRealCol   = 4;
 const PixDespesasTotaOurolCol   = 5;
+
+let despesasPixTab;
+
+let PixDataRange;
+let PixColaboradorRange;
+let PixEstadiaRange;
+let PixPagementoRange;
+let PixComentarioRange;
+
+let PixDespesasRange;
+let PixDespesaRealRange;
+let PixDespesaOuroRange;
+let PixDespesaTotalRealRange;
+let PixDespesaTotalOuroRange;
+
+let PixMoedaRange;
+let PixSaldoOuroRange;
+let PixSaldoRealRange;
+let PixFuturoOuroRange;
+let PixFuturoRealRange;
+
+function SetUpPix() {
+  if (typeof despesasPixTab === "undefined") { 
+    despesasPixTab          = despesasSpreadSheet.getSheetByName("Pix");
+    PixDataRange            = despesasPixTab.getRange("PixData");
+    PixColaboradorRange     = despesasPixTab.getRange("PixColaborador");
+    PixEstadiaRange         = despesasPixTab.getRange("PixEstadia");
+    PixPagementoRange       = despesasPixTab.getRange("PixPagamento");
+    PixComentarioRange      = despesasPixTab.getRange("PixComentario");
+
+    PixDespesasRange         = despesasPixTab.getRange("PixDespesas");
+    PixDespesaRealRange      = despesasPixTab.getRange("PixDespesaReal");
+    PixDespesaOuroRange      = despesasPixTab.getRange("PixDespesaOuro");
+    PixDespesaTotalRealRange = despesasPixTab.getRange("PixDespesaTotalReal");
+    PixDespesaTotalOuroRange = despesasPixTab.getRange("PixDespesaTotalOuro");
+
+    PixMoedaRange           = despesasPixTab.getRange("PixMoeda");
+    PixSaldoOuroRange       = despesasPixTab.getRange("PixSaldoOuro");
+    PixSaldoRealRange       = despesasPixTab.getRange("PixSaldoReal");
+    PixFuturoOuroRange      = despesasPixTab.getRange("PixFuturoOuro");
+    PixFuturoRealRange      = despesasPixTab.getRange("PixFuturoReal");
+  }
+}
 
 // *** Layout do formulário Diversos
 // 
