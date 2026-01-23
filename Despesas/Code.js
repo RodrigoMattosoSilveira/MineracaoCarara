@@ -158,32 +158,60 @@ function SetUpDiversos() {
 
 // *** Layout do formulário Folga
 // 
-despesasFolgaTab = despesasSpreadSheet.getSheetByName("Folga");
-const FolgaDataRange = despesasFolgaTab.getRange("FolgaData");
-
-const FolgaColaboradorRange        = despesasFolgaTab.getRange("FolgaColaborador");
-const FolgaEstadiaRange            = despesasFolgaTab.getRange("FolgaEstadia");
-const FolgaPagementoRange          = despesasFolgaTab.getRange("FolgaPagamento");
-const FolgaMoedaRange              = despesasFolgaTab.getRange("FolgaMoeda");
-const FolgaDespesasRange           = despesasFolgaTab.getRange("FolgaDespesas");
-const FolgaSubstituidoRange        = despesasFolgaTab.getRange("FolgaSubstituido");
-const FolgaSubstituidoDiariaRange  = despesasFolgaTab.getRange("FolgaSubstituidoDiaria");
-const FolgaComentarioRange         = despesasFolgaTab.getRange("FolgaComentario");
-const FolgaSaldoOuroRange          = despesasFolgaTab.getRange("FolgaSaldoOuro");
-const FolgaSaldoRealRange          = despesasFolgaTab.getRange("FolgaSaldoReal");
-const FolgaFuturoOuroRange         = despesasFolgaTab.getRange("FolgaFuturoOuro");
-const FolgaFuturoRealRange         = despesasFolgaTab.getRange("FolgaFuturoReal");
-
-const FolgaItemsRange = despesasFolgaTab.getRange("FolgaItems");
-const FolgaRealRange = despesasFolgaTab.getRange("FolgaReal");
-const FolgaQuantidadesRange = despesasFolgaTab.getRange("FolgaQuantidades");
 
 const FolgaDespesasItemCol        = 0;  
-const FolgaDespesasRealol         = 1;
+const FolgaDespesasRealCol        = 1;
 const FolgaDespesasOuroCol        = 2;  
 const FolgaDespesasQTDCol         = 3
 const FolgaDespesasTotalRealCol   = 4;
 const FolgaDespesasTotaOurolCol   = 5;
+
+let despesasFolgaTab;
+let FolgaDataRange;
+
+let FolgaColaboradorRange;
+let FolgaEstadiaRange;
+let FolgaPagementoRange;
+let FolgaMoedaRange;
+let FolgaDespesasRange;
+let FolgaSubstituidoRange;
+let FolgaSubstituidoDiariaRange;
+let FolgaComentarioRange;
+let FolgaSaldoOuroRange;
+let FolgaSaldoRealRange;
+let FolgaFuturoOuroRange;
+let FolgaFuturoRealRange;
+
+let FolgaItemsRange;
+let FolgaRealRange;
+let FolgaQuantidadesRange;
+;
+function SetupFolga() {
+  if (typeof despesasFolgaTab === "undefined") { 
+    despesasFolgaTab       = despesasSpreadSheet.getSheetByName("Folga");
+    FolgaDataRange         = despesasFolgaTab.getRange("FolgaData");
+
+    FolgaColaboradorRange        = despesasFolgaTab.getRange("FolgaColaborador");
+    FolgaEstadiaRange            = despesasFolgaTab.getRange("FolgaEstadia");
+    FolgaPagementoRange          = despesasFolgaTab.getRange("FolgaPagamento");
+    FolgaMoedaRange              = despesasFolgaTab.getRange("FolgaMoeda");
+    FolgaDespesasRange           = despesasFolgaTab.getRange("FolgaDespesas");
+    FolgaSubstituidoRange        = despesasFolgaTab.getRange("FolgaSubstituido");
+    FolgaSubstituidoDiariaRange  = despesasFolgaTab.getRange("FolgaSubstituidoDiaria"); 
+    FolgaComentarioRange         = despesasFolgaTab.getRange("FolgaComentario");
+
+    FolgaSaldoOuroRange          = despesasFolgaTab.getRange("FolgaSaldoOuro");
+    FolgaSaldoRealRange          = despesasFolgaTab.getRange("FolgaSaldoReal");
+    FolgaFuturoOuroRange         = despesasFolgaTab.getRange("FolgaFuturoOuro");
+    FolgaFuturoRealRange         = despesasFolgaTab.getRange("FolgaFuturoReal");
+
+    FolgaItemsRange = despesasFolgaTab.getRange("FolgaItems");
+    FolgaRealRange = despesasFolgaTab.getRange("FolgaReal");
+    FolgaQuantidadesRange = despesasFolgaTab.getRange("FolgaQuantidades");
+  }
+}
+
+
 
 // *** Layout do formulário Cambio
 // 
@@ -309,6 +337,14 @@ function GetSaldo() {
       saldoRealRange    = DiversosSaldoRealRange;
       futuroOuroRange   = DiversosFuturoOuroRange;
       futuroRealRange   = DiversosFuturoRealRange;
+      break;
+    case "Folga":
+      colaboradorNome   = FolgaColaboradorRange.getValue();
+      colaboradoEstadia = FolgaEstadiaRange.getValue();
+      saldoOuroRange    = FolgaSaldoOuroRange;
+      saldoRealRange    = FolgaSaldoRealRange;
+      futuroOuroRange   = FolgaFuturoOuroRange;
+      futuroRealRange   = FolgaFuturoRealRange;
       break;
     case "Cambio":
       colaboradorNome   = CambioColaboradorRange.getValue();
