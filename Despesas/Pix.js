@@ -1,6 +1,7 @@
 function pixPrepare() {
 	// Navegue para o formulário :IX e limpe o mesmo
   	switchToTab("Pix");
+	SetUpPix();
 	limparFormularioPix ();	
 	GetSaldo();
 }
@@ -9,6 +10,7 @@ function pixExecute() {
 	// SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
 	// 	.alert('You clicked PixExecute');
 	switchToTab("Pix");
+	SetUpPix();
 
 	if (PixColaboradorRange.getValue() == "") {
 		SpreadsheetApp.getUi().alert("O Colaborador deve ser preenchido.");
