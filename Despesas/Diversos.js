@@ -1,6 +1,7 @@
 function diversosPrepare() {
 	// Navegue para o formulário Diversos e limpe o mesmo
  	switchToTab("Diversos");
+	SetUpDiversos();
 	limparFormularioDiversos();
 	GetSaldo();
 }
@@ -10,6 +11,7 @@ function diversosExecute() {
 	// SpreadsheetApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
 	// 	.alert('You clicked DiversosExecute');
 	switchToTab("Diversos");
+	SetUpDiversos();
 
 	if (DiversosColaboradorRange.getValue() == "") {
 		SpreadsheetApp.getUi().alert("O Colaborador deve ser preenchido.");
@@ -40,11 +42,11 @@ function diversosExecute() {
   	var contasCorrentesRangeDados = [];
 	DiversosDespesasFiltrados.forEach(function(transaction) {
 		var item 		= transaction[DiversosDespesasItemCol];
-		var real 		= transaction[DiversosDespesasRealol];
+		var real 		= transaction[DiversosDespesasRealCol];
 		var ouro 		= transaction[DiversosDespesasOuroCol];
 		var qtd 		= transaction[DiversosDespesasQTDCol];
 		var totalReal 	= transaction[DiversosDespesasTotalRealCol];
-		var totalOuro 	= transaction[DiversosDespesasTotaOurolCol];
+		var totalOuro 	= transaction[DiversosDespesasTotalOuroCol];
 		      
 		contaCorrenteRegistro = [];
 		contaCorrenteRegistro[contasCorrentesDataCol]        		= DiversosData;
