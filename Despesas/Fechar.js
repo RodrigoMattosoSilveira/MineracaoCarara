@@ -1,6 +1,7 @@
 function fecharPrepare() {
   // Navegue para o formulário Diversos e limpe o mesmo
   CararaLibrary.activateSheet("Fechar");
+  SetupFechar();
   limparFormularioFechar();
 
   // Prencha os saldos atuais do colaborador
@@ -64,35 +65,40 @@ function fecharGatilhoCompletar() {
 
 function fecharExecute() {
   switchToTab("Fechar");
+  SetupFechar();
+
   if (FecharColaboradorRange.getValue() == "") {
     SpreadsheetApp.getUi().alert("O Colaboradordeve ser preenchido.");
     return null;
   }
 
-  let saldoOuro = saldoOuroRange.getValue();
-  let saldoReal = saldoRealRange.getValue();
+  let FecharData       = FecharDataRange.getValue();
+  let FecharColaborador= FecharColaboradorRange.getValue();
+  let FecharEstadia    = FecharEstadiaRange.getValue();
+  let FecharComentario = FecharComentarioRange.getValue();
+  let saldoOuro = FecharSaldoOuroRange.getValue();
+  let saldoReal = FecharSaldoRealRange.getValue();
 
+  if (saldoOuro < 0 || saldoReal < 0) {
+    SpreadsheetApp.getUi().alert("A conta não pode ser encerrada com saldos negativos " + FecharColaborador);
+    return null;
+  }
+  if (saldoOuro == 0 && saldoReal == 0) {
+    SpreadsheetApp.getUi().alert("Nao ha nehum saldo a ser fechado para o colaborador " + FecharColaborador);
+    return null;
+  }
   // Compute os registros de contas correntes
   var contaCorrente = [];
   var contaCorrenteRegistro;
   if (saldoReal > 0) {
     var item =  'A Mineração Carará pagou ao Colaboradorseu credito em Real';
-    contaCorrenteRegistro = fillUpRegister (FecharData, FecharColaborador, FecharEstadia, 'Real', 'Debito', item, creditoReal, FecharComentario);
-    contaCorrente.push(contaCorrenteRegistro)
-  }
-  else if (saldoReal < 0) {
-    var item =  'O Colaborador pagou a Mineração Carará seu debito em Real';
-    contaCorrenteRegistro = fillUpRegister (FecharData, FecharColaborador, FecharEstadia, 'Real', 'Credito', item, Math.abs(saldoReal), FecharComentario);
+    contaCorrenteRegistro = fillUpRegister (FecharData, FecharColaborador, FecharEstadia, 'Real', 'Debito', item, saldoReal, FecharComentario);
     contaCorrente.push(contaCorrenteRegistro)
   }
 
   if (saldoOuro > 0) {
     var item =  'A Mineração Carará pagou ao Colaboradorseu credito em Ouro';
-    var contaCorrenteRegistro = fillUpRegister (FecharData, FecharColaborador, FecharEstadia, 'Ouro', 'Debito', item, creditoOuro, FecharComentario);
-    contaCorrente.push(contaCorrenteRegistro)
-  } else if (saldoOuro < 0) {
-    var item =  'O Colaborador pagou a Mineração Carará seu debito em Ouro';
-    contaCorrenteRegistro = fillUpRegister (FecharData, FecharColaborador, FecharEstadia, 'Ouro', 'Credito', item, Math.abs(saldoOuro), FecharComentario);
+    var contaCorrenteRegistro = fillUpRegister (FecharData, FecharColaborador, FecharEstadia, 'Ouro', 'Debito', item, saldoOuro, FecharComentario);
     contaCorrente.push(contaCorrenteRegistro)
   }
 
