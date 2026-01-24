@@ -1,3 +1,9 @@
+
+function removerColaboradorTeste() {
+  nome = "Thomas Diogo Arthur Martins";
+   removerColaborador(nome);
+}
+
 function calcularRendasFuturasOuroTeste() {
 	let expectedRendas = {
 		auferidas: {
