@@ -344,3 +344,21 @@ function roundToDecimals(value, decimals = 2) {
     const factor = Math.pow(10, decimals);
     return Math.round((value + Number.EPSILON) * factor) / factor;
 }
+
+/**
+ *  Obter o array de duas dimensions com os valores de uma gama
+ * @param {string} spreadSheetId - Google Sheet ID
+ * @param {string} sheetName - sheet name
+ * @param {number} startRow - primeira linha de dados do intervalo desejado, ignorar cabeçalho;
+ * @param {number} startColumn - primeira coluna de dados do intervalo desejado; 
+ * @returns {Range} - array de duas dimensions com os valores da gama;
+ */
+function getRange(googleSheetID, sheetName, startRow, startColumn) {
+    const googleSheet = SpreadsheetApp.openById(googleSheetID);
+    const sheet       = googleSheet.getSheetByName(sheetName);
+    const numRows     = sheet.getLastRow() - 1;
+    const numCols     = sheet.getLastColumn();
+    
+    const dataRange   = sheet.getRange(startRow, startColumn, numRows, numCols)
+    return dataRange
+}
