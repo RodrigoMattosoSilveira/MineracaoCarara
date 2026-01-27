@@ -1,3 +1,6 @@
+const updateDolarParaRealTest = () => {
+  UpdateGoldPriceInUSD()
+}
 const obterProducaoPocoRecenteMediaTeste = () => {
   let poco = "Poço_1";
   let dias = 10;  
