@@ -1,5 +1,8 @@
-const updateDolarParaRealTest = () => {
-  UpdateGoldPriceInUSD()
+const UpdateGoldPriceInUSDTest = () => {
+  let precoOuro = UpdateGoldPriceInUSD()
+  precoOuro < 0 ?
+   	console.error(" ✖︎  precoOuro negative, Expected non negative, got " + precoOuro) :
+    console.info("  ✔︎ precoOuro non negative " + precoOuro );
 }
 const obterProducaoPocoRecenteMediaTeste = () => {
   let poco = "Poço_1";
