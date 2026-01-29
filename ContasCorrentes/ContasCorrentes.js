@@ -189,37 +189,6 @@ function resumirContaCorrenteColaborador (nome, estadia, transactions) {
   return creditsAndDebtsRealOuro;
 }
 
-
-// *********************************************************************************
-// valorDoOuroEmReais
-// 
-// Input
-//  ouroGramas (float) A quantia de ouro (gramas)
-//    
-// Output
-//  Range  (RendasPorcentagemReais A quantia em reais, equivalente a quantia de ouro, 
-//  em gramas, ainda em credito na conta corrente docolaborador
-// * ********************************************************************************
-// 
-function valorDoOuroEmReais(ouroGramas) {
-  var cotacaoOuroRegistro = [];
-  var cotacaoOuro = 0.00
-  var rendasPorcentagemReais = 0.00
-  var hoje = new Date();
-
-
-  // Obtenha cotacao do ouro, em gramas; 
-  // cotacaoOuroRegistro = obtenhaCotacaoOuro(hoje);
-  // cotacaoOuro = cotacaoOuroRegistro[ouro24KaratOncaCol];
-  cotacaoOuro = obtenhaCotacaoOuroSimples()
-
-  //  Calcule a renda em reais, equivalente a quantia de ouro, 
-  //  em gramas, ainda em credito na conta corrente docolaborador
-  rendasPorcentagemReais = ouroGramas * cotacaoOuro
-
-  return rendasPorcentagemReais;
-}
-
 // *********************************************************************************
 // calculeRendasGanhar
 // 
