@@ -1,4 +1,7 @@
 
+function getSaldoTeste() {
+	GetSaldo()
+}
 function removerColaboradorTeste() {
   nome = "Thomas Diogo Arthur Martins";
    removerColaborador(nome);

@@ -358,6 +358,7 @@ function GetSaldo() {
   let sheetName = ss.getActiveSheet().getName();
   switch (sheetName) {
     case "Cantina":
+      SetUpCantina();
       colaboradorNome   = CantinaColaboradorRange.getValue();
       colaboradoEstadia = CantinaEstadiaRange.getValue();
       saldoOuroRange    = CantinaSaldoOuroRange;
@@ -366,6 +367,7 @@ function GetSaldo() {
       futuroRealRange   = CantinaFuturoRealRange;
       break;
     case "Pix":
+      SetUpPix();
       colaboradorNome   = PixColaboradorRange.getValue();
       colaboradoEstadia = PixEstadiaRange.getValue();
       saldoOuroRange    = PixSaldoOuroRange;
@@ -374,6 +376,7 @@ function GetSaldo() {
       futuroRealRange   = PixFuturoRealRange;
       break;
     case "Diversos":
+      SetUpDiversos();
       colaboradorNome   = DiversosColaboradorRange.getValue();
       colaboradoEstadia = DiversosEstadiaRange.getValue();
       saldoOuroRange    = DiversosSaldoOuroRange;
@@ -382,6 +385,7 @@ function GetSaldo() {
       futuroRealRange   = DiversosFuturoRealRange;
       break;
     case "Folga":
+       SetupFolga();
       colaboradorNome   = FolgaColaboradorRange.getValue();
       colaboradoEstadia = FolgaEstadiaRange.getValue();
       saldoOuroRange    = FolgaSaldoOuroRange;
@@ -390,6 +394,7 @@ function GetSaldo() {
       futuroRealRange   = FolgaFuturoRealRange;
       break;
     case "Cambio":
+      SetupCambio();
       colaboradorNome   = CambioColaboradorRange.getValue();
       colaboradoEstadia = CambioEstadiaRange.getValue();
       saldoOuroRange    = CambioSaldoOuroRange;
@@ -397,7 +402,8 @@ function GetSaldo() {
       futuroOuroRange   = CambioFuturoOuroRange;
       futuroRealRange   = CambioFuturoRealRange;
       break;    
-     case "Fechar":
+    case "Fechar":
+      SetupFechar();
       colaboradorNome   = FecharColaboradorRange.getValue();
       colaboradoEstadia = FecharEstadiaRange.getValue();
       saldoOuroRange    = FecharSaldoOuroRange;
