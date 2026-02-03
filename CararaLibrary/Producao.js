@@ -1,13 +1,14 @@
-const PRODUCAO_GAMA_NOME     = 'Producao';
+const PRODUCAO_PLANILHA_NOME    = 'Producao';
+const PRODUCAO_GAMA_NOME        = 'Producao';
 const PRODUCAO_DATA_COL         = 0;
 const PRODUCAO_POCO_NOME_COL    = 1
 const PRODUCAO_PERIODO_NOME_COL = 2;
 const PRODUCAO_QUANTIDADE_COL   = 3;
 
-const _obterProducaoGoogleSheet = () =>  SpreadsheetApp.openById(PRODUCAO_ID);
-const _obterProducaoPlanilha    = () => _obterProducaoGoogleSheet().getSheetByName(PRODUCAO_PLANILHA_NOME);
-const _obterProducaoGama        = () => _obterProducaoGoogleSheet().getRangeByName(PRODUCAO_GAMA_NOME);
-const obterProducaoGamaVals     = () => {
+function _obterProducaoGoogleSheet () { return SpreadsheetApp.openById(PRODUCAO_ID); }
+function _obterProducaoPlanilha    () { return _obterProducaoGoogleSheet().getSheetByName(PRODUCAO_PLANILHA_NOME); }
+function _obterProducaoGama        () { return _obterProducaoGoogleSheet().getRangeByName(PRODUCAO_GAMA_NOME); }
+function obterProducaoGamaVals () {
 	let  gama = _obterProducaoGama();
 	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[PRODUCAO_DATA_COL] !== '' && elemento[PRODUCAO_DATA_COL] !== 'Data') : [];
 }
@@ -19,7 +20,7 @@ const obterProducaoGamaVals     = () => {
  * @returns {Array of Arrays} - os registros que representam produção 
  * diária do poço nos últimos 
  */
-const obterProducaoPoco = (poco) => {
+function obterProducaoPoco (poco) {
 	let  producaoPoco = obterProducaoGamaVals();
 	return  (producaoPoco !== null) ? producaoPoco.filter( elemento => elemento[PRODUCAO_POCO_NOME_COL] === poco) : [];
 }
@@ -31,7 +32,7 @@ const obterProducaoPoco = (poco) => {
  * @returns {Array of Arrays} - os registros que representam produção desejada
  * diária do poço nos últimos 
  */
-const obterProducaoPocoRecente = (poco, dias) => {
+function obterProducaoPocoRecente (poco, dias) {
 	let dataLimite    = getDateMinusDays(dias);
 	let producaoPoco = obterProducaoPoco(poco);
 	let dataHoje = new Date();
@@ -49,7 +50,7 @@ const obterProducaoPocoRecente = (poco, dias) => {
  * @param {number} turnos - Número de turnos
  * @returns {number} - a produção média diária do poço, por turno, nos últimos dias
  */
-const obterProducaoPocoRecenteMedia = (poco, dias) => {
+function obterProducaoPocoRecenteMedia (poco, dias) {
 	let producaoPoco = obterProducaoPocoRecente(poco, dias);
 	let totalProducao = 0;
 	producaoPoco.forEach( elemento => {
