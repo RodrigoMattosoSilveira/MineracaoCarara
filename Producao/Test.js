@@ -6,8 +6,8 @@ const obterProducaoDataPocoPeriodoChaveTest = () => {
 
 const producaoRegistrarProsseguirTeste = () => {
   matriz = [
-    ['13/09/2025', 'Poço_1', 'Diurno', '0.45'], 
-    ['', '', '', ''],
+    ['01/02/2026', 'Poço_1', 'Diurno', '13.278873946308300'], 
+    ['01/02/2026', 'Poço_1', 'Noturno', '14.044510227684000'],
     ['', '', '', '']
   ]
   producaoRegistrarProsseguir(matriz);

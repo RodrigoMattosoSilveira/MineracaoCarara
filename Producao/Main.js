@@ -35,12 +35,12 @@ function producaoRegistrar() {
 
 function producaoRegistrarProsseguir(matriz) {
 	let message = ''
-	matriz.length > 0 ? message = JSON.stringify(matriz) : message = 'Notning';
+	matriz.length > 0 ? message = JSON.stringify(matriz) : message = 'Nada';
 	SpreadsheetApp.getActiveSpreadsheet().toast(message, 'Result', 3);	
 
 	// Armazene os dados de produção, garantindo que não sobrescreva um registro 
 	// existente.
-	let producaoGamaVals = obterProducaoGamaVals();
+	let producaoGamaVals = CararaLibrary.obterProducaoGamaVals();
 	let producaoGamaValsChaves = producaoGamaVals.map(registro => {
 		let data	= new Date(registro[0]);
 		let dia 	= data.getDate() < 10 ? '0' + data.getDate() : data.getDate();
@@ -50,7 +50,7 @@ function producaoRegistrarProsseguir(matriz) {
 		let periodo = registro[2]
 		return '' + dia + mes + ano + poco + periodo;
 	})
-	let producaoPlanilha = _obterProducaoPlanilha();
+	let producaoPlanilha = CararaLibrary._obterProducaoPlanilha();
 	let lastRow = producaoPlanilha.getLastRow();
 	matriz.forEach( (registro) => {
 		let data 	= registro[0];
@@ -74,7 +74,7 @@ function producaoRegistrarProsseguir(matriz) {
 
 	// Classifique a gama Produção com as datas em ordem decrescente, depois 
 	// por bem e período. 
-	_obterProducaoGama().sort([{column: 1, ascending: false}, {column: 2, ascending: true}, {column: 3, ascending: true}])
+	CararaLibrary._obterProducaoGama().sort([{column: 1, ascending: false}, {column: 2, ascending: true}, {column: 3, ascending: true}])
 }
 
 /* *****************************************************************************
@@ -91,7 +91,7 @@ function obterProducaoDataPocoPeriodo(data, poco, periodo) {
 	return  obterProducaoDataPocoPeriodoChave(chave)
 }
 function obterProducaoDataPocoPeriodoChave(chave) {
-	let matrizProducao = obterProducaoGamaVals().filter((registro) => {
+	let matrizProducao = CararaLibrary.obterProducaoGamaVals().filter((registro) => {
 		let dataChave = CararaLibrary.dateToString(registro[PRODUCAO_DATA_COL]) + registro[PRODUCAO_POCO_NOME_COL] +  registro[PRODUCAO_PERIODO_NOME_COL];	
 		return chave === dataChave;		
 	});  
