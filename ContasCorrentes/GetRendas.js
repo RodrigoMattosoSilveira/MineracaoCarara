@@ -14,8 +14,8 @@ const FuturoRealRange	 = ContasCorrentesTab.getRange("AGanharReal");
 const FuturoOuroRange	 = ContasCorrentesTab.getRange("AGanharOuro");
 
 function getRendas() {
-	colaboradorNome   = ccColaboradorRange.getValue();
-  	colaboradoEstadia = ccEstadiaRange.getValue();
+	let colaboradorNome   = ccColaboradorRange.getValue();
+  	let colaboradoEstadia = ccEstadiaRange.getValue();
 	let rendas = CararaLibrary.calcularRendas(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia));
 	if (rendas != null) {
 		CreditoOuroRange.setValue(rendas.auferidas.Ouro.credito);
@@ -25,4 +25,100 @@ function getRendas() {
 		FuturoOuroRange.setValue(rendas.futuras.Ouro);
 		FuturoRealRange.setValue(rendas.futuras.Real);
   	}
-}	
+
+	// Preencha as transações
+	PreencherTransacoes (colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia))
+}
+
+/* Preencher as planilhas de transações--Ouro e Real
+ * @parm {string} - Nome do colaborador
+ * @parm {data}   - Data to inicio da estadia
+ * @returns       - None
+ */
+function PreencherTransacoes (nome, estadia) {
+	let transacoes_cc = CararaLibrary.cc_getTransacoesRendasDespesasRange()
+		.getValues().filter(transacao_cc => {
+			let estadiaDateStr = CararaLibrary.dateToString(transacao_cc[DADOS_ESTADIA_COL]);
+			return transacao_cc[DADOS_NOME_COL] === nome && estadiaDateStr === estadia;
+	});
+
+	// Configurar a planilha Ouro
+	obterOuroNomeGama().setValue(nome);
+	obterOuroEstadiaGama().setValue(estadia);
+	obterOuroGama().clearContent();
+	let moeda = "Ouro";
+	let planilhaAlvo  = obterOuroSheet()
+	PreencherPlanilha (moeda, transacoes_cc, DADOS_TOTAL_OURO_COL, planilhaAlvo)
+
+	// Configurar a planilha Real
+	obterRealGama().clearContent();
+	obterRealNomeGama().setValue(nome);
+	obterRealEstadiaGama().setValue(estadia);
+	moeda = "Real";
+	planilhaAlvo  = obterRealSheet()
+	PreencherPlanilha (moeda, transacoes_cc, DADOS_TOTAL_REAL_COL, planilhaAlvo)
+}
+
+/* Preencher a planilha com transacoes para apresentar ao colaborador
+ * @parm {string} - A moeda
+ * @parm {Array of Arrays} - transacoes do colaborador
+ * @parm {number} - A columna a ser usada
+ * @parm {Sheet} - a planilha alvo (Ouro ou Real)
+ * @returns {}
+ */
+function PreencherPlanilha (moeda, transacoes_cc, DADOS_TOTAL_COL, planilhaAlvo) {
+	let transacoes_cc_moeda = transacoes_cc.filter(transacao_cc => {
+		return transacao_cc[DADOS_MOEDA_COL] === moeda;
+	});
+	let transacoes = montarTransacoes(transacoes_cc_moeda, DADOS_TOTAL_COL);
+	copiarGama (transacoes, planilhaAlvo)
+}
+	
+/* Transacoes do colaborador formatadas de acordo com o layout das planinlhas Ouro/Real
+ * @parm {Array of Array} - Transacoes do colaborador, filtradas pela moeda
+ * @returns - {Array of Array} formatado de acordo com o layout das planinlhas Ouro/Real
+ */
+function montarTransacoes (transacoes_cc, DADOS_TOTAL_COL) {
+	let transacoes = [];
+	let balanco    = 0;
+	transacoes_cc.forEach (transacao_cc => {
+		let transacao = [];
+		transacao[TRANSACAO_DATA_COL]      = transacao_cc[DADOS_DATA_COL]
+		transacao[TRANSACAO_DESCRICAO_COL] = transacao_cc[DADOS_ITEM_COL]
+		if (transacao_cc[DADOS_CREDITO_DEBITO_COL] == "Debito") {
+			transacao[TRANSACAO_DEBITO] = transacao_cc[DADOS_TOTAL_COL];
+			transacao[TRANSACAO_CREDITO] = "";
+			balanco -= transacao[TRANSACAO_DEBITO] 
+		}
+		else {
+			if (transacao_cc[DADOS_CREDITO_DEBITO_COL] == "Credito") {
+				transacao[TRANSACAO_DEBITO] = "";
+				transacao[TRANSACAO_CREDITO] = transacao_cc[DADOS_TOTAL_COL];
+				balanco += transacao[TRANSACAO_CREDITO] 
+			}
+			else {
+				transacao[TRANSACAO_DEBITO] = "";
+				transacao[TRANSACAO_CREDITO] = "";
+			}
+		}
+		transacao[TRANSACAO_BALANCO] = balanco;
+		transacoes.push(transacao)
+	})
+	return transacoes;
+}
+
+/* Copiar um Array of Arrays a uma gama da planilha Ouro ou Real
+ * @parm {Sheet} a planilha Ouro ou Real
+ * @parm {Array of Arrays} o conteudo a ser copiado 
+ * @returns {}
+ */
+function copiarGama (transacoes, planilhaAlvo) {
+	let gamaPrimeiraLinha   = 8;
+ 	let gamePrimeiraColumna = 1;
+	let gamaUltimaLinha     = gamaPrimeiraLinha + transacoes.length - 1;
+	let gameUltimaColumna   = 5;
+    let r1c1 = "R" + gamaPrimeiraLinha + "C" + gamePrimeiraColumna
+	r1c1    += ":" 
+	r1c1    += "R" + gamaUltimaLinha   + "C" + gameUltimaColumna;
+    planilhaAlvo.getRange(r1c1).setValues(transacoes); 
+}
