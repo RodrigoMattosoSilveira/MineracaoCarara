@@ -2,6 +2,14 @@
 function cronogramaInformar() {
     SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Informar', 3);
 
+    // Build the Ativos Sheet
+    obterAtivosGama().clearContent();
+    let incluirRegistros = obterPlanejarGamaVals().filter(planejarRegistro => {
+        return planejarRegistro[PLANEJAR_ACAO] === 'Incluir';
+    });
+    let ativosSheet = obterAtivosPlanilha();
+    CararaLibrary.copiarGama (incluirRegistros, ativosSheet, 2, 1);
+
     // Navegue para a planilha PDF
     CararaLibrary.activateSheet(PDF_PLANILHA);
 
