@@ -1,4 +1,10 @@
 const EPSILON = 0.00001;
+const cronogramaOnOpenTeste = () => {
+  	onOpen();
+}
+const cronogramaContabilizarTeste = () => {
+  	cronogramaContabilizar();
+}
 const cronogramaModelarProsseguirTeste = () => {
 	let documentProperties = PropertiesService.getDocumentProperties();
 	documentProperties.setProperty('DATA', "01/02/2026");

@@ -1,12 +1,13 @@
 /*
  * O planejador inspeciona e, caso necessário, atualiza os registros em 
  * Estado[Inspecionar] na planilha Cronograma!Ativos. Uma vez que o planejador
- * esteja satisfeito com esses registros, ele usa o menu Contabilizar, acionarndo a 
- * lógica que contabiliza os registros na planiha Cronograma!Ativos em 
- * Estado[Inspecionar]. Uma vez contabilizados, esses registros são removidos da
- * planilha Cronograma!Ativos.
+ * esteja satisfeito com esses registros, ele usa o menu Contabilizar, acionarndo 
+ * a lógica que addiciona os registros em Cronograma!Ativos a 
+ * Cronograma!Contablizar e contabiliza os registros na planiha 
+ * Cronograma!Contablizar. Uma vez contabilizados, esses registros são removidos
+ * da planilha Cronograma!Contablizar.
  * 
- * Isso, com exceção decolaboradores que trabalharam em poços para os quais suas 
+ * Isso, com exceção de colaboradores que trabalharam em poços para os quais suas 
  * produções ainda não foram gravadas; nesse caso, o sistema preserva esses 
  * registros.
  * 
@@ -15,39 +16,38 @@
  * os resgistros a espera pela produção do poço.
  */
 function cronogramaContabilizar() {
-    SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Contabilizar', 3);
+  SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Contabilizar', 3);
 
-	// Selecionar todos os registros na planilha Cronograma!Ativos que estão no 
-	// estado 'Inspecionar'
-  const contaCorrentesIDSS = SpreadsheetApp.openById(contasCorrentesId);
-	let ativosGamaVals = obterAtivosGamaVals();
-	let informarAtivosGamaVals = ativosGamaVals.filter( elemento => 'Inspecionar' === elemento[ATIVOS_ESTADO]);
-	if (informarAtivosGamaVals.length === 0) {
-		SpreadsheetApp.getActiveSpreadsheet().toast('Não há registros para Inspecionar', 'Inspecionar', 3);
-		return;
-	}
+  // Copie os registros da planilha Cronograma!Ativos para a planilha 
+  // Cronograma!Contabilizar.
+  let contabilizarPlanilha = obterContabilizarPlanilha();
+  let ativosGamaVals = obterAtivosGamaVals();
+  if (ativosGamaVals.length  > 0) { 
+    // copiarGama (transacoes, planilhaAlvo, gamaAlvoLinha, gamaAlvoColumna)
+    let planilhaLinha = contabilizarPlanilha.getLastRow() + 1;
+    let planilhaColumna = 1;
+    CararaLibrary.copiarGama (ativosGamaVals, contabilizarPlanilha, planilhaLinha, planilhaColumna);
+  }
 
-	// Construa uma matrix com as datas dos registros a serem contabilizados. 				
-	let datasContabilizar = []
-	informarAtivosGamaVals.forEach( elemento => {
-		let dataStr = CararaLibrary.dateToString(elemento[ATIVOS_DATA]);
-		if (datasContabilizar.indexOf(dataStr) === -1) {
-			datasContabilizar.push(dataStr);
-		}
-	});
-	
 	// Processar os registros a serem contabilizados. Contabilizar todos os 
 	// registros com Método igual a Diária. Contabilizar registros com Método 
-	// igual a Salário caso seja o ultima dia do mês; caso contrário, 
-	// contabilizar o registro como zero. Contabilizar os registros, 
-	// Porcentagem, caso a producao do poço seja maior que zero. Remover os 
-	// registros que foram contabilizados. 
+	// igual a Salário; use zero para o total a menos que seja o ultima dia do
+  // mês; Contabilizar os registros, Porcentagem, caso a producao do poço seja 
+  // maior que zero. 
+  // 
+  // Remover os registros que foram contabilizados. 
 	// 
 	let contaCorrenteRegistro = [];
 	let contasCorrentesRangeDados = [];
   let registrosContabilizados = [];
   let registrosNaoContabilizados = [];
-	informarAtivosGamaVals.forEach( elemento => {
+  var ss = obterContabilizarPlanilha()
+  var names = ss.getNamedRanges();
+  names.forEach(function(n) {
+    Logger.log("Name: " + n.getName() + " → Range: " + n.getRange().getA1Notation());
+  });
+  let contabilizarGamaVals = obterContabilizarGamaVals();
+	contabilizarGamaVals.forEach( elemento => {
 	  const datastr           = CararaLibrary.dateToString(elemento[ATIVOS_DATA]);
     const metodo            = elemento[ATIVOS_METODO];
     const setor              = elemento[ATIVOS_SETOR];
@@ -124,11 +124,9 @@ function cronogramaContabilizar() {
             registrosContabilizados.push(elemento);
           }
           else {
-            // Nao contabilizar esse registro ainda, pois a producao do poco 
-            // ainda nao foi registrada
             elemento[ATIVOS_COMENTARIOS] = "Aguardando Produção do Poço";
-            registrosNaoContabilizados.push(chave);
-             contabilizeRegistro = false;
+            registrosNaoContabilizados.push(elemento);
+            contabilizeRegistro = false;
           }
           break;
         default:
@@ -144,47 +142,23 @@ function cronogramaContabilizar() {
     }
   })
 
-  // Append
-  if (contasCorrentesRangeDados.length > 0) {
-    var contaCorrentesDados = contaCorrentesIDSS.getSheetByName("Dados");
-    var lastRow = contaCorrentesDados.getLastRow();
-    contaCorrentesDados.getRange(lastRow + 1, 1, contasCorrentesRangeDados.length, contasCorrentesRangeDados[0].length).setValues(contasCorrentesRangeDados)
+  // Append os registros contabilizados na planilha ContasCorrentes!Dados
+   if (contasCorrentesRangeDados.length  > 0) { 
+    // copiarGama (transacoes, planilhaAlvo, gamaAlvoLinha, gamaAlvoColumna)
+    let contaCorrentesDadosPlanilha = obterContasCorrentesPlanilha();
+    let planilhaLinha = contaCorrentesDadosPlanilha.getLastRow() + 1;
+    let planilhaColumna = 1;
+    CararaLibrary.copiarGama (contasCorrentesRangeDados, contaCorrentesDadosPlanilha, planilhaLinha, planilhaColumna);
   }
 
   // Remover os registros contabilizados da planilha Cronograma!Ativos
-    let registrosContabilizadosChaves = registrosContabilizados.map( elemento => 
-    CararaLibrary.dateToString(elemento[ATIVOS_DATA]) + elemento[ATIVOS_PERIODO] + elemento[ATIVOS_NOME]
-  );
-	let ativosPlanilha = obterAtivosPlanilha();
-	obterAtivosGama().clear({contentsOnly:true, validationsOnly:true});
-  let newAtivosGamaVals = []   
-  ativosGamaVals.forEach( registroAtivo => {
-    let chaveAtivo = CararaLibrary.dateToString(registroAtivo[ATIVOS_DATA]) + registroAtivo[ATIVOS_PERIODO] + registroAtivo[ATIVOS_NOME];
-    registrosContabilizadosChaves.indexOf(chaveAtivo) === -1 ? newAtivosGamaVals.push([...registroAtivo]) : null;
-  });
-  if (newAtivosGamaVals.length > 0) {
-	  copiarGamaValsParaPlanilha(ativosPlanilha, newAtivosGamaVals);    
-		estabelederValidacaoDados(ativosPlanilha, ATIVOS_METODO+1, 	ATIVOS_METODOS_VALIDOS);
-		estabelederValidacaoDados(ativosPlanilha, ATIVOS_SETOR+1, 	ATIVOS_SETORES_VALIDOS);
-		estabelederValidacaoDados(ativosPlanilha, ATIVOS_LOCAL+1, 	ATIVOS_LOCAIS_VALIDOS);
-		estabelederValidacaoDados(ativosPlanilha, ATIVOS_TAREFA+1, 	ATIVOS_TAREFAS_VALIDAS);
-	  ativoGama = obterAtivosGama
-	  ativoGama().setBackground('#ffffff');
-
-	  // Destaque os resgisters que aguardam a produção do poço
-	  ativosGamaVals = obterAtivosGamaVals();
-	  let ativosSheet = obterAtivosPlanilha();
-	  let ultimaAtivoCol = obterAtivosGama().getLastColumn();
-	  registrosNaoContabilizados.forEach( chaveNaoContabilizada => {
-	    for (let i = 0; i < ativosGamaVals.length; i++) {
-	      let chaveAtivos = CararaLibrary.dateToString(ativosGamaVals[i][ATIVOS_DATA]) + ativosGamaVals[i][ATIVOS_PERIODO] + ativosGamaVals[i][ATIVOS_NOME];
-	      if (chaveAtivos === chaveNaoContabilizada) { 
-	        let row = ativosSheet.setActiveRange(ativosSheet.getRange(i + 2, 1, 1, ultimaAtivoCol));
-	        row.setBackground('#fde9e9'); 
-	      }
-	    }
-	  });
-  }
+  obterContabilizarGama().clear();
+  if (registrosNaoContabilizados.length > 0) {
+    // copiarGama (transacoes, planilhaAlvo, gamaAlvoLinha, gamaAlvoColumna)
+    let planilhaLinha = contabilizarPlanilha.getLastRow() + 1;
+    let planilhaColumna = 1;
+    CararaLibrary.copiarGama (registrosNaoContabilizados, contabilizarPlanilha, planilhaLinha, planilhaColumna);
+  } 
 
 	SpreadsheetApp.getActiveSpreadsheet().toast('O sistema contabilizou os ganhos doscolaboradores', 'Contabilizar', 3);
 }

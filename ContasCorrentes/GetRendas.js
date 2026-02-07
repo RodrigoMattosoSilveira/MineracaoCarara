@@ -108,8 +108,8 @@ function montarTransacoes (transacoes_cc, DADOS_TOTAL_COL) {
 }
 
 /* Copiar um Array of Arrays a uma gama da planilha Ouro ou Real
- * @parm {Sheet} a planilha Ouro ou Real
  * @parm {Array of Arrays} o conteudo a ser copiado 
+ * @parm {Sheet} a planilha Ouro ou Real
  * @returns {}
  */
 function copiarGama (transacoes, planilhaAlvo) {

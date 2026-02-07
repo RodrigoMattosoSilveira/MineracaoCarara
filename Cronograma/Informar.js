@@ -2,6 +2,15 @@
 function cronogramaInformar() {
     SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Informar', 3);
 
+    // Build the Ativos Sheet
+    obterAtivosGama().clearContent();
+    let incluirRegistros = obterPlanejarGamaVals().filter(planejarRegistro => {
+        return planejarRegistro[PLANEJAR_ACAO] === 'Incluir';
+    });
+    let ativosPlanilhaVals    = obterAtivosPlanilhaVals();
+    let contabilizarPlanilha = obterAtivosPlanilha();
+    CararaLibrary.copiarGama (incluirRegistros, contabilizarPlanilha, 2, 1);
+
     // Navegue para a planilha PDF
     CararaLibrary.activateSheet(PDF_PLANILHA);
 
@@ -48,6 +57,7 @@ function cronogramaInformar() {
             ativosGama.offset(index, ATIVOS_ESTADO, 1, 1).setValue('Inspecionar');
         }
     }); 
+
     SpreadsheetApp.getActiveSpreadsheet().toast('Fim', 'Informar', 1);
     return true
 }

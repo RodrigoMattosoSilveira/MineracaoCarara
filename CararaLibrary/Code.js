@@ -362,3 +362,18 @@ function getRange(googleSheetID, sheetName, startRow, startColumn) {
     const dataRange   = sheet.getRange(startRow, startColumn, numRows, numCols)
     return dataRange
 }
+/* Copiar um Array of Arrays a uma gama da planilha alvo
+ * @parm {Array of Arrays} o conteudo a ser copiado 
+ * @parm {Sheet} a planilha alvo
+ * @parm {number} a linha inicial da gama alvo
+ * @parm {number} a coluna inicial da gama alvo
+ * @returns {}
+ */
+function copiarGama (transacoes, planilhaAlvo, gamaAlvoLinha, gamaAlvoColumna) {
+  let gamaUltimaLinha     = gamaAlvoLinha + transacoes.length - 1;
+  let gamaUltimaColumna   = gamaAlvoColumna + transacoes[0].length - 1;
+  let r1c1 = "R" + gamaAlvoLinha + "C" + gamaAlvoColumna
+  r1c1    += ":" 
+  r1c1    += "R" + gamaUltimaLinha   + "C" + gamaUltimaColumna;
+  planilhaAlvo.getRange(r1c1).setValues(transacoes); 
+}

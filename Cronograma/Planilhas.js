@@ -187,6 +187,27 @@ const obterPeriodosGamaVals = () => {
   								.filter( elemento => elemento[PERIODOS_NOME] !== '' && elemento[PERIODOS_NOME] !== 'Nome') : [];
 }
 
+const CONTABILIZAR_PLANILHA     = "Contabilizar";
+const CONTABILIZAR_GAMA         = "Contabilizar";
+const CONTABILIZAR_ESTADO       = 0;
+const CONTABILIZAR_DATA         = 1;
+const CONTABILIZAR_PERIODO      = 2;
+const CONTABILIZAR_NOME         = 3;
+const CONTABILIZAR_INICIO       = 4;
+const CONTABILIZAR_METODO       = 5;
+const CONTABILIZAR_SETOR        = 6;
+const CONTABILIZAR_LOCAL        = 7;
+const CONTABILIZAR_TAREFA       = 8;
+const CONTABILIZAR_REMUNERACAO  = 9;
+const CONTABILIZAR_COMENTARIOS  = 10;
+const CONTABILIZAR_ORDEM        = 11;
+const obterContabilizarPlanilha = () => obterGoogleSheet().getSheetByName(CONTABILIZAR_PLANILHA);
+const obterContabilizarGama     = () => obterGoogleSheet().getRangeByName(CONTABILIZAR_GAMA);
+function obterContabilizarGamaVals () {
+  let  gama = obterContabilizarGama();
+  return  (gama !== null) ? gama.getValues().filter( elemento => elemento[CONTABILIZAR_NOME] !== '' && elemento[CONTABILIZAR_NOME] !== 'Nome') : [];
+}
+
 const PDF_PLANILHA = "PDF";
 const PDF_DATA= "PDFData";
 const PDF_PERIODO= "PDFPeriodo";

@@ -77,7 +77,7 @@
 		}
 
 		function enviarDados(acao) {
-			google.script.run.withSuccessHandler(feixarCaixa).cronogramaModelarProsseguir(acao);
+			google.script.run.withSuccessHandler(feixarCaixa).cronogramaPlanejarProsseguir(acao);
 		}
 		function feixarCaixa() {
 			google.script.host.close();
