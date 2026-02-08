@@ -45,33 +45,37 @@ function PreencherTransacoes (nome, estadia) {
 	// Configurar a planilha Ouro
 	obterOuroNomeGama().setValue(nome);
 	obterOuroEstadiaGama().setValue(estadia);
-	obterOuroGama().clearContent();
+	let ouroGama = obterOuroGama();
+	ouroGama.clearContent();
 	let moeda = "Ouro";
 	let planilhaAlvo  = obterOuroSheet()
-	PreencherPlanilha (moeda, transacoes_cc, DADOS_TOTAL_OURO_COL, planilhaAlvo)
-
+	PreencherPlanilha (moeda, transacoes_cc, DADOS_TOTAL_OURO_COL, ouroGama, planilhaAlvo)
 	// Configurar a planilha Real
-	obterRealGama().clearContent();
 	obterRealNomeGama().setValue(nome);
 	obterRealEstadiaGama().setValue(estadia);
+	let realGama = obterRealGama();
+	realGama.clearContent();
 	moeda = "Real";
 	planilhaAlvo  = obterRealSheet()
-	PreencherPlanilha (moeda, transacoes_cc, DADOS_TOTAL_REAL_COL, planilhaAlvo)
+	PreencherPlanilha (moeda, transacoes_cc, DADOS_TOTAL_REAL_COL, realGama, planilhaAlvo)
 }
 
 /* Preencher a planilha com transacoes para apresentar ao colaborador
  * @parm {string} - A moeda
  * @parm {Array of Arrays} - transacoes do colaborador
  * @parm {number} - A columna a ser usada
+ * @parm {Range} - A gama a ser preenchida
  * @parm {Sheet} - a planilha alvo (Ouro ou Real)
  * @returns {}
  */
-function PreencherPlanilha (moeda, transacoes_cc, DADOS_TOTAL_COL, planilhaAlvo) {
+function PreencherPlanilha (moeda, transacoes_cc, DADOS_TOTAL_COL, gamaAlvo, planilhaAlvo) {
 	let transacoes_cc_moeda = transacoes_cc.filter(transacao_cc => {
 		return transacao_cc[DADOS_MOEDA_COL] === moeda;
 	});
 	let transacoes = montarTransacoes(transacoes_cc_moeda, DADOS_TOTAL_COL);
-	copiarGama (transacoes, planilhaAlvo)
+	if (transacoes.length > 0) {
+		copiarGama (transacoes, gamaAlvo, planilhaAlvo)
+	}
 }
 	
 /* Transacoes do colaborador formatadas de acordo com o layout das planinlhas Ouro/Real
@@ -109,16 +113,12 @@ function montarTransacoes (transacoes_cc, DADOS_TOTAL_COL) {
 
 /* Copiar um Array of Arrays a uma gama da planilha Ouro ou Real
  * @parm {Array of Arrays} o conteudo a ser copiado 
+ * @parm {Range} - A gama a ser preenchida
  * @parm {Sheet} a planilha Ouro ou Real
  * @returns {}
  */
-function copiarGama (transacoes, planilhaAlvo) {
-	let gamaPrimeiraLinha   = 8;
- 	let gamePrimeiraColumna = 1;
-	let gamaUltimaLinha     = gamaPrimeiraLinha + transacoes.length - 1;
-	let gameUltimaColumna   = 5;
-    let r1c1 = "R" + gamaPrimeiraLinha + "C" + gamePrimeiraColumna
-	r1c1    += ":" 
-	r1c1    += "R" + gamaUltimaLinha   + "C" + gameUltimaColumna;
-    planilhaAlvo.getRange(r1c1).setValues(transacoes); 
+function copiarGama (transacoes, gamaAlvo, planilhaAlvo) {
+	let gamaPrimeiraLinha   = gamaAlvo.getRowIndex();
+ 	let gamePrimeiraColumna = gamaAlvo.getColumn(); 
+	CararaLibrary.copiarGama(transacoes, planilhaAlvo, gamaPrimeiraLinha, gamePrimeiraColumna)
 }
