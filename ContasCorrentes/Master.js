@@ -1,4 +1,11 @@
-// const masterId = "1CXo2aNn6bXqbMZTypgG6I9DTdVEy-8wly5AhOs0k8Zg";
+function onOpen() {
+  var ui = SpreadsheetApp.getUi();
+
+  // Or DocumentApp, SlidesApp or FormApp.
+	ui.createMenu('Constas Correntes')
+		.addItem('Reverter',     'RevertGeneralLedgerEntry')
+	.addToUi();
+}
 
 /* ********************************************************************************************************************* */
 //  Ler a cotacao do ouro, mantida em tempo real pela GOOGLEFINACE
