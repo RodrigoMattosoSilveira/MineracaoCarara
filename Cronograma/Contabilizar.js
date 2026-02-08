@@ -64,7 +64,7 @@ function cronogramaContabilizar() {
       contaCorrenteRegistro[contasCorrentesMetodoCol]      = elemento[ATIVOS_METODO];
       contaCorrenteRegistro[contasCorrentesCreditDebitCol] = "Credito"
       contaCorrenteRegistro[contasCorrentesComentariosCol] = elemento[ATIVOS_COMENTARIOS];
-      contaCorrenteRegistro[contasCorrentesItemCol]        = setor + "/" + local + "/" + tarefa
+      contaCorrenteRegistro[contasCorrentesItemCol]        = metodo + "/" + setor + "/" + local + "/" + tarefa
       switch (metodo) { 
         case "Diária":
           // Moeda Real
