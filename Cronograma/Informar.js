@@ -7,7 +7,6 @@ function cronogramaInformar() {
     let incluirRegistros = obterPlanejarGamaVals().filter(planejarRegistro => {
         return planejarRegistro[PLANEJAR_ACAO] === 'Incluir';
     });
-    let ativosPlanilhaVals    = obterAtivosPlanilhaVals();
     let contabilizarPlanilha = obterAtivosPlanilha();
     CararaLibrary.copiarGama (incluirRegistros, contabilizarPlanilha, 2, 1);
 
