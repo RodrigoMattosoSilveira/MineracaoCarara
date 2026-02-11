@@ -86,21 +86,22 @@ function cronogramaContabilizar() {
           contaCorrenteRegistro[contasCorrentesMoedaCol] = "Real";
           // Remuneracao em Reais
           contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] = elemento[ATIVOS_REMUNERACAO];
-          // Remuneracao em Gramas de Ouro
-          contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] = 0;
+          // Remuneracao em Gramas de Ouro  
+          contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] = 0
           // Quantidade de items
-          contaCorrenteRegistro[contasCorrentesItemQtdCol] = 0;
-          // Credito / Debito em Reais  
-          contaCorrenteRegistro[contasCorrentesTotalRealCol] = 0;
-          // Assalariados recebem o valor total do salário no final do mês  
-          if (isLastDayOfMonth(new Date(elemento[ATIVOS_DATA]))) {
-              // Quantidade de items
-              contaCorrenteRegistro[contasCorrentesItemQtdCol] = 1;
-              // Credito / Debito em Reais  
-              contaCorrenteRegistro[contasCorrentesTotalRealCol] = elemento[ATIVOS_REMUNERACAO];
+          contaCorrenteRegistro[contasCorrentesItemQtdCol] = 1;
+          // Credito / Debito em Reais
+          let dataRegistro = new Date(elemento[ATIVOS_DATA]);
+          try {
+            let numeroDeDiasNesseMes = ObterNumberoDeDiasNoMesDessaData(dataRegistro); //
+            contaCorrenteRegistro[contasCorrentesTotalRealCol] = elemento[ATIVOS_REMUNERACAO] / numeroDeDiasNesseMes;
+          } 
+          catch (err) {
+            contaCorrenteRegistro[contasCorrentesTotalRealCol] = 0;
+            contaCorrenteRegistro[contasCorrentesComentariosCol] = "Erro ao calcular o salário: número de dias no mês inválido";
           }
           // Credito / Debito em Gramas de Ouro
-          contaCorrenteRegistro[contasCorrentesTotalOuroCol] = 0; 
+          contaCorrenteRegistro[contasCorrentesTotalOuroCol] = 0;
           registrosContabilizados.push(elemento);
           break;
         case "Porcentagem":
@@ -180,4 +181,25 @@ function isLastDayOfMonth(transactionDate) {
     itIs = true;
   }
   return itIs
+}
+
+/**
+ * Obeter o número de dias no mês da data fornecida
+ * @param {Date} data - a data fornecida
+ * @returns {Number} -  o número de dias no mês da data fornecida
+ */
+function ObterNumberoDeDiasNoMesDessaData(data) {
+  // Check if it's a Date object
+  if (!(data instanceof Date)) {
+    throw new Error("Invalid date. Expected a Date object.");
+  }
+
+  // Step 2: Check if it's a valid date (not "Invalid Date")
+  if (isNaN(data.getTime())) {
+    throw new Error("Invalid date. The date is not a valid Date object.");
+  }
+
+  // (month + 1), JavaScript calculates the last day of the current month.
+  let numeroDeDiasNoMes = new Date(data.getFullYear(), data.getMonth() + 1, 0).getDate();
+  return numeroDeDiasNoMes;
 }

@@ -377,3 +377,32 @@ function copiarGama (transacoes, planilhaAlvo, gamaAlvoLinha, gamaAlvoColumna) {
   r1c1    += "R" + gamaUltimaLinha   + "C" + gamaUltimaColumna;
   planilhaAlvo.getRange(r1c1).setValues(transacoes); 
 }
+
+/**
+ * Obeter o número de dias no mês atual
+ * @returns {Number} - o número de dias no no mês atual
+ */
+function ObterNumeroDeDiasNesseMes() {
+    return ObterNumberoDeDiasNoMesDessaData(new Date())  
+}
+
+/**
+ * Obeter o número de dias no mês da data fornecida
+ * @param {Date} data - a data fornecida
+ * @returns {Number} -  o número de dias no mês da data fornecida
+ */
+function ObterNumberoDeDiasNoMesDessaData(data) {
+  // Check if it's a Date object
+  if (!(data instanceof Date)) {
+    throw new Error("Invalid date. Expected a Date object.");
+  }
+
+  // Step 2: Check if it's a valid date (not "Invalid Date")
+  if (isNaN(data.getTime())) {
+    throw new Error("Invalid date. The date is not a valid Date object.");
+  }
+
+  // (month + 1), JavaScript calculates the last day of the current month.
+  let numeroDeDiasNoMes = new Date(data.getFullYear(), data.getMonth() + 1, 0).getDate();
+  return numeroDeDiasNoMes;
+}
