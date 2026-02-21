@@ -12,7 +12,7 @@ const obterPublicadosGama     = ()  =>	obterGoogleSheet().getRangeByName(PUBLICA
 											.sort([
 												// Column numbers adjusted for A1C1 notation
 												{column: PUBLICADOS_DATA_COL  + 1, DESCENDING: true}, 
-												{column: PUBLICADOS_ORDEM_COL + 1, DESCENDING: truue}
+												{column: PUBLICADOS_ORDEM_COL + 1, DESCENDING: true}
 	                                 		 ]);
 const obterPublicadosGamaVals = ()  =>  obterPublicadosGama().getValues()
 											.filter( (elemento) => elemento[PUBLICADOS_DATA_COL] !== '' &&
