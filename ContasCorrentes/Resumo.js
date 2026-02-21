@@ -63,8 +63,8 @@ function CalcularSaldos() {
 
 		let auferidas   = CararaLibrary.calcularRendasAuferidas(colaborador, estadia);
 
-		record[ResumoSaldoAuferidoRealCol] = auferidas.Real.credito - auferidas.Real.debito;
-		record[ResumoSaldoAuferidoOuroCol] = auferidas.Ouro.credito - auferidas.Ouro.debito;
+		record[ResumoSaldoAuferidoRealCol] = auferidas.Real.Credito - auferidas.Real.Debito;
+		record[ResumoSaldoAuferidoOuroCol] = auferidas.Ouro.Credito - auferidas.Ouro.Debito;
 	});
 	resumoRange.setValues(resumoRangeVals);
 
