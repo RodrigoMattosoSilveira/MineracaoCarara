@@ -162,7 +162,7 @@ function calcularSaldoContasCorrentes(nome, estadia) {
  *  Calcula as rendas auferidas e futuras de um colaborador em uma determinada estadia
  * @param {string} nome - Nome do colaborador
  * @param {string} estadia - Data da estadia do colaborador
- * @returns {object} - um object com os saldos auferidos e futuros
+ * @return {object} - um object com os saldos auferidos e futuros
  * {
  *    auferidas: {
  *      Real: { credito: 0, debito: 0 },  

@@ -3,6 +3,7 @@ const obterGoogleSheet = () =>  SpreadsheetApp.openById(GOOGLE_SHEET_ID);
 
 const PUBLICADOS_PLANILHA     = "Publicados";
 const PUBLICADOS_GAMA         = "Publicados";
+const PUBLICADOS_FIRST_ROw    = 1;
 const PUBLICADOS_DATA_COL     = 0;
 const PUBLICADOS_NOME_COL     = 1;
 const PUBLICADOS_ORDEM_COL    = 2;
@@ -10,8 +11,8 @@ const obterPublicadosPlanilha = ()  =>  obterGoogleSheet().getSheetByName(PUBLIC
 const obterPublicadosGama     = ()  =>	obterGoogleSheet().getRangeByName(PUBLICADOS_GAMA)
 											.sort([
 												// Column numbers adjusted for A1C1 notation
-												{column: PUBLICADOS_DATA_COL  + 1, ascending: false}, 
-												{column: PUBLICADOS_ORDEM_COL + 1, ascending: false}
+												{column: PUBLICADOS_DATA_COL  + 1, DESCENDING: true}, 
+												{column: PUBLICADOS_ORDEM_COL + 1, DESCENDING: truue}
 	                                 		 ]);
 const obterPublicadosGamaVals = ()  =>  obterPublicadosGama().getValues()
 											.filter( (elemento) => elemento[PUBLICADOS_DATA_COL] !== '' &&

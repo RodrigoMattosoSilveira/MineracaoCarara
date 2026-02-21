@@ -35,7 +35,12 @@ const cronogramaPlanejarProsseguir = (acaoSelecionada) => {
 	let data = getData();
 	let dataStr =  CararaLibrary.dateToString(data);
   	let periodo = getPeriodo()
-	let ordem = Math.trunc(getOrdem());
+	let ordem = Math.trunc(getOrdem());	
+	// Helps write tests for cronogramaPlanejarProsseguir,
+	cronogramaPlanejarExecutar(acaoSelecionada, data, periodo, ordem);
+}
+
+const cronogramaPlanejarExecutar = (acaoSelecionada, data, periodo, ordem) => {
 	let menssagem = '';
 	let resultado = '';
 
@@ -91,6 +96,10 @@ const cronogramaPlanejarProsseguir = (acaoSelecionada) => {
 					usarModelo(estadiaRegistro, modeloRegistro, plano, linha, dataStr, periodo);
 				}
 			}
+
+			// Pintar a coluna ACAO de verde para Incluir, vermelho para Excluir
+			pintarAcao("Planejar");
+
 			// Ativar a planilha Planejar
 			CararaLibrary.activateSheet("Planejar");
 
@@ -105,9 +114,6 @@ const cronogramaPlanejarProsseguir = (acaoSelecionada) => {
 			menssagem = construirProsseguirMenssagem(acaoSelecionada, data, periodo, ordem) 
 			console.info(menssagem);
 
-			// Update the Publicados folha e termine a operacao
-			publicarCronograma(data, periodo, ordem);
-
 			// Navegue para a planilha Planejar
 			CararaLibrary.activateSheet("PUBLICADOS_PLANILHA");		
 
@@ -120,6 +126,10 @@ const cronogramaPlanejarProsseguir = (acaoSelecionada) => {
 		default:
 			break;
 	}
+
+	// Update the Publicados folha e termine a operacao
+	publicarCronograma(data, periodo, ordem);
+
 }
 
 // ****************************************************************************
@@ -255,6 +265,7 @@ function usarEstadia(estadiaRegistro, plano, linha, dataStr, periodo) {
 	// Inicio
 	plano.getCell(linha, PLANEJAR_INICIO+1).setValue(estadiaRegistro[ESTADIAS_INICIO]);
 
+
 	// METODO
 	plano.getCell(linha, PLANEJAR_METODO+1).setValue(estadiaRegistro[ESTADIAS_METODO]);
 
@@ -287,7 +298,7 @@ function usarModelo(estadiaRegistro, modeloRegistro, plano, linha, dataStr, peri
 	plano.getCell(linha, PLANEJAR_DATA+1).setValue(dataStr)
 
 	// PERIODO
-	plano.getCell(linha, PLANEJAR_PERIODO+1).setValue(modeloRegistro[MODELOS_PERIODO])
+	plano.getCell(linha, PLANEJAR_PERIODO+1).setValue(periodo)
 
 	// NOME
 	plano.getCell(linha, PLANEJAR_NOME+1).setValue(modeloRegistro[MODELOS_NOME]);

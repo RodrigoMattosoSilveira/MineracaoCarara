@@ -56,6 +56,9 @@ function cronogramaInformar() {
             ativosGama.offset(index, ATIVOS_ESTADO, 1, 1).setValue('Inspecionar');
         }
     }); 
+			
+    // Pintar a coluna ACAO de verde para Incluir, vermelho para Excluir
+    pintarAcao("Informar");
 
     SpreadsheetApp.getActiveSpreadsheet().toast('Fim', 'Informar', 1);
     return true

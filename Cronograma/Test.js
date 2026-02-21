@@ -1,4 +1,18 @@
 const EPSILON = 0.00001;
+
+const cronogramaPlanejarExecutarTestePlanejar = () => {
+	let data = new Date('8/1/2025');
+	let periodo = 'Diurno';
+	let ordem = 1;
+	cronogramaPlanejarExecutar("Planejar", data, periodo, ordem);	
+}
+
+const cronogramaPlanejarExecutarTesteIgnorar = () => {
+	let data = new Date('8/1/2025');
+	let periodo = 'Diurno';
+	let ordem = 1;
+	cronogramaPlanejarExecutar("Ignorar", data, periodo, ordem);	
+}
 const cronogramaOnOpenTeste = () => {
   	onOpen();
 }
