@@ -252,6 +252,9 @@ function usarEstadia(estadiaRegistro, plano, linha, dataStr, periodo) {
 	// NOME
 	plano.getCell(linha, PLANEJAR_NOME+1).setValue(estadiaRegistro[ESTADIAS_NOME]);
 
+	// Inicio
+	plano.getCell(linha, PLANEJAR_INICIO+1).setValue(estadiaRegistro[ESTADIAS_INICIO]);
+
 	// METODO
 	plano.getCell(linha, PLANEJAR_METODO+1).setValue(estadiaRegistro[ESTADIAS_METODO]);
 
