@@ -251,13 +251,13 @@ function construirProsseguirMenssagem(acao, data, periodo, ordem) {
 }
 function usarEstadia(estadiaRegistro, plano, linha, dataStr, periodo) {
 	// ACAO 
-	plano.getCell(linha, PLANEJAR_ACAO+1).setValue("Excluir").setBackground('#ff0000')
+	plano.getCell(linha, PLANEJAR_ACAO+1).setValue("Excluir");
 
 	// DATA
-	plano.getCell(linha, PLANEJAR_DATA+1).setValue(dataStr)
+	plano.getCell(linha, PLANEJAR_DATA+1).setValue(dataStr);
 
 	// PERIODO
-	plano.getCell(linha, PLANEJAR_PERIODO+1).setValue(periodo)
+	plano.getCell(linha, PLANEJAR_PERIODO+1).setValue(periodo);
 
 	// NOME
 	plano.getCell(linha, PLANEJAR_NOME+1).setValue(estadiaRegistro[ESTADIAS_NOME]);
@@ -288,17 +288,17 @@ function usarEstadia(estadiaRegistro, plano, linha, dataStr, periodo) {
 function usarModelo(estadiaRegistro, modeloRegistro, plano, linha, dataStr, periodo) {
 	// ACAO 
 	if (modeloRegistro[MODELOS_PERIODO] === periodo) {
-		plano.getCell(linha, PLANEJAR_ACAO+1).setValue("Incluir").setBackground('#00ff00')
+		plano.getCell(linha, PLANEJAR_ACAO+1).setValue("Incluir");
 	}
 	else {
-		plano.getCell(linha, PLANEJAR_ACAO+1).setValue( "Excluir").setBackground('#ff0000')
+		plano.getCell(linha, PLANEJAR_ACAO+1).setValue( "Excluir");
 	}
 
 	// DATA
-	plano.getCell(linha, PLANEJAR_DATA+1).setValue(dataStr)
+	plano.getCell(linha, PLANEJAR_DATA+1).setValue(dataStr);
 
 	// PERIODO
-	plano.getCell(linha, PLANEJAR_PERIODO+1).setValue(periodo)
+	plano.getCell(linha, PLANEJAR_PERIODO+1).setValue(periodo);
 
 	// NOME
 	plano.getCell(linha, PLANEJAR_NOME+1).setValue(modeloRegistro[MODELOS_NOME]);
