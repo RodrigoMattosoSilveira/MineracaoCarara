@@ -172,13 +172,13 @@ function calcularSaldoContasCorrentes(nome, estadia) {
  * }
  */
 function calcularRendas(nome, estadia) {
-  let rendas = {
-    auferidas: {
-      Real: { credito: 0, debito: 0 },
-      Ouro: { credito: 0, debito: 0 }
-    },
-    futuras: { Real: 0, Ouro: 0 }
-  };
+  // let rendas = {
+  //   auferidas: {
+  //     Real: { Credito: 0, Debito: 0 },
+  //     Ouro: { Credito: 0, Debito: 0 }
+  //   },
+  //   futuras: { Real: 0, Ouro: 0 }
+  // };
 
   let auferidas = {...calcularRendasAuferidas(nome, estadia)};
   let futuras = {...calcularRendasFuturas(nome, estadia)};
@@ -191,8 +191,8 @@ function calcularRendas(nome, estadia) {
 function calcularRendasAuferidas(nome, estadia) {
   //  Inicialize os valores de retorno  
   let auferidas = {
-    Real: { credito: 0, debito: 0 },
-    Ouro: { credito: 0, debito: 0 }
+    Real: { Credito: 0, Debito: 0 },
+    Ouro: { Credito: 0, Debito: 0 }
   };
 
   let contasCorrentesDadosRange = cc_getTransacoesRendasDespesasRange();
@@ -204,44 +204,23 @@ function calcularRendasAuferidas(nome, estadia) {
 
   for (var i=0; i < filteredTransactions.length; i++) {
     var creditoDebito = filteredTransactions[i][contasCorrentesCreditDebitCol]
-    switch (creditoDebito) {
-      case "Credito":
-        var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
-        switch (moeda) {
-          case "Real":
-            auferidas["Real"]["credito"] += filteredTransactions[i][contasCorrentesTotalRealCol];
-            break;
-          case "Ouro":
-            auferidas["Ouro"]["credito"] += filteredTransactions[i][contasCorrentesTotalOuroCol];
-            break;
-          default:
-            return null;
-        }
-        break;
-      case "Debito":
-        var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
-        switch (moeda) {
-          case "Real":
-            auferidas["Real"]["debito"] += filteredTransactions[i][contasCorrentesTotalRealCol];
-            break;
-         case "Ouro":
-            auferidas["Ouro"]["debito"] += filteredTransactions[i][contasCorrentesTotalOuroCol];
-            break;
-          default:
-            return null;
-        }
-        break;
-     default:
-        return null;
-    }
+    var moeda = filteredTransactions[i][contasCorrentesMoedaCol];
+    var valor = moeda === "Real" ? filteredTransactions[i][contasCorrentesTotalRealCol] : 
+                                   filteredTransactions[i][contasCorrentesTotalOuroCol];
+     auferidas[moeda][creditoDebito] += valor
   }
   return auferidas;
 }
 
 function calcularRendasFuturas(nome, estadia) {
+  let futuras = { 
+    Real: 0.00, 
+    Ouro: 0.00 
+  };
+  
   let metodo      = obterEstadiaGamaRegistroNome(nome)[ESTADIAS_METODO];
   let saldoGanhar = 0.00;
-  let futuras = { Real: 0.00, Ouro: 0.00 };
+
   switch (metodo) {
     case "Diária":
       saldoGanhar = calcularRendasFuturasDiaria(nome, estadia)

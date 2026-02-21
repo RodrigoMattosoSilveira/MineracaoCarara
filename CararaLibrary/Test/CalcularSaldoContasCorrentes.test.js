@@ -19,25 +19,37 @@ function calcularSaldoContasCorrentesTeste() {
 		console.error(" ✖︎  rendas indefinidas definidas"); 
 }
 function calcularRendasTeste() {
-	let expectedRendas = {
-    auferidas: {
-      Ouro: 0,
-      Real: 0
-    },
-    futuras: {
-      Ouro: 0,
-      Real: 0
-    }
-  };
+	// let expectedRendas = {
+	// auferidas: {
+	// 	Ouro: 0,
+	// 	Real: 0
+	// },
+	// futuras: {
+	// 	Ouro: 0,
+	// 	Real: 0
+	// }
+	// };
   
-  let nome = "Severino Severino Iago Rocha";
-	let estadia = dateToString("12/19/2025");
+	let nome = "Cabecinha - Thomas Elias Felipe Fernandes";
+	let estadia = dateToString("11/30/2025");
 	let rendas = calcularRendas(nome, estadia)
 
-  typeof rendas !== 'undefined' ? 
+	typeof rendas !== 'undefined' ? 
 		console.info(" ✔︎ rendas definidas") :
 		console.error(" ✖︎  rendas indefinidas definidas");  
 
+	if (typeof rendas.auferidas !== 'undefined') {
+		if (rendas['auferidas']['Real'] !== 1934.35) {
+			console.error(` ✖︎  renda auferida Real incorreta. Esperado: 1,934.35, Obtido: ${rendas.auferidas.Real}`);
+		} else {
+			console.info(" ✔︎ renda auferida Real correta");
+		}
+		if (rendas.auferidas.Ouro !== 1.79663616) {
+			console.error(` ✖︎  renda auferida Ouro incorreta. Esperado: 0, Obtido: ${rendas.auferidas.Ouro}`);
+		} else {
+			console.info(" ✔︎ renda auferida Ouro correta");	
+		}
+	}	
 }
 function calcularSaldoContasCorrentesTest1() {
 	let nome = "Enzo Marcos Vinicius Ferreira";

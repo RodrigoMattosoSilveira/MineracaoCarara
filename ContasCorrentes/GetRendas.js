@@ -18,10 +18,10 @@ function getRendas() {
   	let colaboradoEstadia = ccEstadiaRange.getValue();
 	let rendas = CararaLibrary.calcularRendas(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia));
 	if (rendas != null) {
-		CreditoOuroRange.setValue(rendas.auferidas.Ouro.credito);
-		CreditoRealRange.setValue(rendas.auferidas.Real.credito);
-		DebitoOuroRange.setValue(rendas.auferidas.Ouro.debito);
-		DebitoRealRange.setValue(rendas.auferidas.Real.debito);
+		CreditoOuroRange.setValue(rendas.auferidas.Ouro.Credito);
+		CreditoRealRange.setValue(rendas.auferidas.Real.Credito);
+		DebitoOuroRange.setValue(rendas.auferidas.Ouro.Debito);
+		DebitoRealRange.setValue(rendas.auferidas.Real.Debito);
 		FuturoOuroRange.setValue(rendas.futuras.Ouro);
 		FuturoRealRange.setValue(rendas.futuras.Real);
   	}

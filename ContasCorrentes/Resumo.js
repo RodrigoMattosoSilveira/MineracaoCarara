@@ -1,4 +1,3 @@
-
 const ContasCorrentesSpreasheetID = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
 function GetContasCorrentesSpreadSheet() {
     return SpreadsheetApp.openById(ContasCorrentesSpreasheetID);
@@ -22,10 +21,10 @@ function GetContasCorrentesGetResumoRange() {
 	const sheet    = GetContasCorrentesSpreadSheet();
 	const resumo   = sheet.getSheetByName(ResumoGuia);
 
-	const startRow = 3; 
-	const numRows  = resumo.getLastRow() - 2; // Subtract 1 because we start at row 3
+	const startRow = 2; 
+	const numRows  = resumo.getLastRow() - 1; // Subtract 1 because we start at row 2
 	const startCol = 1;
-	const numCols  = resumo.getLastColumn();
+	const numCols  = 5;
 
 	return resumo.getRange(startRow, startCol, numRows, numCols)
 }
@@ -39,8 +38,8 @@ function GetContasCorrentesGetSaldosRange() {
 	const sheet    = GetContasCorrentesSpreadSheet();
 	const resumo   = sheet.getSheetByName(ResumoGuia);
 
-	const startRow = 3; 
-	const numRows  = resumo.getLastRow() - 2; // Subtract 1 because we start at row 3
+	const startRow = 2; 
+	const numRows  = resumo.getLastRow() - 1; // Subtract 1 because we start at row 2
 	const startCol = 4;
 	const numCols  = resumo.getLastColumn();
 
@@ -64,8 +63,8 @@ function CalcularSaldos() {
 
 		let auferidas   = CararaLibrary.calcularRendasAuferidas(colaborador, estadia);
 
-		record[ResumoSaldoAuferidoRealCol] = auferidas.Real.credito - auferidas.Real.debito;
-		record[ResumoSaldoAuferidoOuroCol] = auferidas.Ouro.credito - auferidas.Ouro.debito;
+		record[ResumoSaldoAuferidoRealCol] = auferidas.Real.Credito - auferidas.Real.Debito;
+		record[ResumoSaldoAuferidoOuroCol] = auferidas.Ouro.Credito - auferidas.Ouro.Debito;
 	});
 	resumoRange.setValues(resumoRangeVals);
 
