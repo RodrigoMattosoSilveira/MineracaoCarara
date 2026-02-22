@@ -312,24 +312,20 @@ const vLookupPersonalizado = (chavePesquisa, matrizVals, colunaPesquisa, colunaR
   return null;
 }
 
-// ****************************************************************************
-// setDataValidation - Estabelecer validacao de dados
-// 
-// Input
-// 		planilha <Sheet> - a planilha com a columna a ser validada
-// 
-// 		rangeName <String> - O nome da coluna a ser validade
-// 
-// 		validChoicesRange <string> - O nome da gama com os valores
-// 
-// Output
-// 		Validacao estabelecida
-// ****************************************************************************
+/** ****************************************************************************
+ * setDataValidation - Estabelecer validacao de dados
+ * 
+ * @param {Sheet} planilha - a planilha com a columna a ser validada
+ * @param {String} rangeName - O nome da coluna a ser validade
+ * @param {String} validChoicesRangeName - O nome da gama com os valores validos
+ * @returns {none} O sistema estabelece a validacao de dados para a coluna especificada` 
+* **************************************************************************** */
 //
 function estabelederValidacaoDados(sheet, columnNumber, validChoicesRangeName) {
 	let lastRow = sheet.getLastRow();
 	let column = CararaLibrary.numeroParaLetra(columnNumber);
-	let a1C1Gama = obterA1C1(sheet.getName(), column, 2, column, lastRow)
+	let sheetName = sheet.getName();
+	let a1C1Gama = obterA1C1(sheetName, column, 2, column, lastRow)
 
 	var range = sheet.getRange(a1C1Gama); // Specify the range for validation
 
@@ -340,17 +336,16 @@ function estabelederValidacaoDados(sheet, columnNumber, validChoicesRangeName) {
 
 	range.setDataValidation(rule); // Apply the validation rule
 }
-// ****************************************************************************
-// getA1C1 - Converter linhas e colunma ao nome de uma gama
+/** ****************************************************************************
+// obterA1C1 - Converter linhas e colunma ao nome de uma gama
 // 
-// Input
-// 		planilha (string), O nome da planilha
-//      colI (int), a columa inicial
-//      rowI (int), a linha inicial
-//      colF (int), a columa final
-//      rowF (int), a linha final
-// Output
-// 		nomeGama (String), o nome da gama
-// ****************************************************************************
-//
+// @param   {string} planilha nome da planilha
+// @param   {string} colI     a columa inicial
+// @param   {int}    rowI     a linha inicial
+// @param   {string} colFa    a columa final
+// @param   {int}    rowF     a linha final
+// @returns {string}          O nome da gama no formato A1C1, por exemplo, 
+//                            "Planejar!C2:C10"
+ **************************************************************************** */
+
 const obterA1C1 = (planilha, colI, linI, colF, linF) => planilha + '!' + colI + linI + ':' +  colF + linF

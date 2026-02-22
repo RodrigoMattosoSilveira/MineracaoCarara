@@ -33,7 +33,6 @@ function cronogramaPlanejar() {
 const cronogramaPlanejarProsseguir = (acaoSelecionada) => {
 	// SpreadsheetApp.getUi().alert('Acao selecionada: ' + JSON.stringify(acaoSelecionada));
 	let data = getData();
-	let dataStr =  CararaLibrary.dateToString(data);
   	let periodo = getPeriodo()
 	let ordem = Math.trunc(getOrdem());	
 	// Helps write tests for cronogramaPlanejarProsseguir,
@@ -43,6 +42,7 @@ const cronogramaPlanejarProsseguir = (acaoSelecionada) => {
 const cronogramaPlanejarExecutar = (acaoSelecionada, data, periodo, ordem) => {
 	let menssagem = '';
 	let resultado = '';
+	let dataStr =  CararaLibrary.dateToString(data);
 
 	// I'll use the following data elements:
 	// - periodoEmPlanejamento: contém o nome do período que está sendo 
@@ -98,17 +98,18 @@ const cronogramaPlanejarExecutar = (acaoSelecionada, data, periodo, ordem) => {
 			}
 
 			// Add Data Validations:
-			estabelederValidacaoDados(Planejar, PLANEJAR_ACAO,   PLANEJAR_ACOES_VALIDAS);
-			estabelederValidacaoDados(Planejar, PLANEJAR_METODO, PLANEJAR_METODOS_VALIDOS);
-			estabelederValidacaoDados(Planejar, PLANEJAR_SETOR,  PLANEJAR_SETORES_VALIDOS);
-			estabelederValidacaoDados(Planejar, PLANEJAR_LOCAL,  PLANEJAR_LOCAIS_VALIDOS);
-			estabelederValidacaoDados(Planejar, PLANEJAR_TAREFA, PLANEJAR_TAREFAS_VALIDAS);
+			let planilhaPlanejar = obterPlanejarPlanilha();
+			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_ACAO+1,   PLANEJAR_ACOES_VALIDAS);
+			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_METODO+1, PLANEJAR_METODOS_VALIDOS);
+			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_SETOR+1,  PLANEJAR_SETORES_VALIDOS);
+			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_LOCAL+1,  PLANEJAR_LOCAIS_VALIDOS);
+			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_TAREFA+1, PLANEJAR_TAREFAS_VALIDAS);
 			
 			// Pintar o texto da coluna ACAO de verde para Incluir, vermelho para Excluir
-			pintarAcao("Planejar");
+			pintarAcao(planilhaPlanejar.getName());
 
 			// Ativar a planilha Planejar
-			CararaLibrary.activateSheet("Planejar");
+			CararaLibrary.activateSheet(planilhaPlanejar.getName());
 
 			// Informar ao usuário que o sistema concluiu a operação 
 			resultado = "Povoou a planilha Planejar com os registros do mais recente cronograma do mesmo período"

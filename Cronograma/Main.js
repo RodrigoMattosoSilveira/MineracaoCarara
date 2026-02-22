@@ -69,6 +69,7 @@ function publicarCronograma(data, periodo, ordem)  {
 	planilhaPublicados.getRange(PUBLICADOS_FIRST_ROw, 1, cronograma.length, cronograma[0].length).setValues(cronograma);
 }
 
+// TODO: Refatorar para ser mais generica;
 /** 
  * Pinte of texto da columna ACAO: Verde para Incluir, Vermelho para Excluir;
   * @param {string} sheetName, nome da sheet com o texto a ser pintado
@@ -80,26 +81,40 @@ function pintarAcao(sheetName) {
 
 	// Gama para pintar
 	const startRow    = 2;
-	const startColumn = 1;
-	const numRows     = spreadsheet.getLastRow() - 1;
-	const numCols     = 1
+	const numRows     = sheet.getLastRow() - 1;
+	sheet.getRange(startRow, 1, numRows).activate();
 
-	const acaoRange   = sheet.getRange(startRow, startColumn, numRows, numCols)
-
-	let conditionalFormatRules = spreadsheet.getConditionalFormatRules();
+	// Adicionar novas regras de formatação condicional
+	let conditionalFormatRules = sheet.getConditionalFormatRules();
 	conditionalFormatRules.push(SpreadsheetApp.newConditionalFormatRule()
-	.setRanges(acaoRange)
+	.setRanges([sheet.getRange(startRow, 1, numRows)])
 	.whenTextContains('Excluir')
 	.setFontColor('#FF0000')
 	.setBackground('#FFFFFF')
 	.build());
+	sheet.setConditionalFormatRules(conditionalFormatRules);
 
-	conditionalFormatRules = spreadsheet.getConditionalFormatRules();
+	conditionalFormatRules = sheet.getConditionalFormatRules();
 	conditionalFormatRules.push(SpreadsheetApp.newConditionalFormatRule()
-	.setRanges(acaoRange)
+	.setRanges([sheet.getRange(startRow, 1, numRows)])
 	.whenTextContains('Incluir')
-	.setFontColor('#00FF00')
+	.setFontColor('#00873E')
 	.setBackground('#FFFFFF')
 	.build());
+	sheet.setConditionalFormatRules(conditionalFormatRules);
+}
 
+/**
+ * Converts a number (1-26) to its uppercase letter equivalent.
+ * @param {number} num - The number to convert (1 = A, 26 = Z).
+ * @returns {string|null} - The uppercase letter or null if invalid.
+ */
+function numberToUppercaseLetter(num) {
+    // Validate input
+    if (typeof num !== "number" || !Number.isInteger(num) || num < 1 || num > 26) {
+        console.error("Invalid input: must be an integer between 1 and 26.");
+        return null;
+    }
+    // Convert number to uppercase letter
+    return String.fromCharCode(64 + num); // 65 is 'A', so 64 + num
 }
