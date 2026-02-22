@@ -73,7 +73,7 @@ const cronogramaPlanejarExecutar = (acaoSelecionada, data, periodo, ordem) => {
 	switch (acaoSelecionada) {
 		case 'Planejar':
 			let estadias = obterEstadiasGama();
-			let plano = obterPlanejarGama().clear();
+			let plano = obterPlanejarGama().clear().clearDataValidations();
 			for (let linha = 1; ; linha++) {
 				// Obter o nome do colaborador
 				let nome = estadias.getCell(linha, ESTADIAS_NOME+1).getValue().toString().trim();
@@ -97,7 +97,14 @@ const cronogramaPlanejarExecutar = (acaoSelecionada, data, periodo, ordem) => {
 				}
 			}
 
-			// Pintar a coluna ACAO de verde para Incluir, vermelho para Excluir
+			// Add Data Validations:
+			estabelederValidacaoDados(Planejar, PLANEJAR_ACAO,   PLANEJAR_ACOES_VALIDAS);
+			estabelederValidacaoDados(Planejar, PLANEJAR_METODO, PLANEJAR_METODOS_VALIDOS);
+			estabelederValidacaoDados(Planejar, PLANEJAR_SETOR,  PLANEJAR_SETORES_VALIDOS);
+			estabelederValidacaoDados(Planejar, PLANEJAR_LOCAL,  PLANEJAR_LOCAIS_VALIDOS);
+			estabelederValidacaoDados(Planejar, PLANEJAR_TAREFA, PLANEJAR_TAREFAS_VALIDAS);
+			
+			// Pintar o texto da coluna ACAO de verde para Incluir, vermelho para Excluir
 			pintarAcao("Planejar");
 
 			// Ativar a planilha Planejar
