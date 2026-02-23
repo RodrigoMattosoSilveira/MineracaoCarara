@@ -50,24 +50,73 @@ function onOpen() {
 		.addItem('Contabilizar', 'cronogramaContabilizar')
 	.addToUi();
 }
-// ****************************************************************************
-// publicarCronograma - O sistema executa essa lógica depois que o usuário opta 
-// por ignorar o planejamento do cronograma para essa data e período
-// Input
-// 		data (Date), A data a ser ignorada
-// 		periodo (Date), O periodo a ser ignorado
-// 		pordem (Date), A ordem a ser ignorada
-// Output
-// 		true, no caso de uma inserção bem-sucedida da data e do período 
-// 		ignorados na planilha Publicados; false otherwise
-// ****************************************************************************
-//
+/** ****************************************************************************
+ * publicarCronograma - O sistema executa essa lógica para incluir um resitro
+ * indicando a para futuros planejamentos para planejar para datas e periodos
+ * seguinte a essa data e periodo. 
+ * Input
+ * @param Date, data do ultimo cronograma planejado
+ * @param string, periodo do ultimo cronograma planejado
+ * @param ordem, ordem do ultimo cronograma planejado
+ * @return none
+ **************************************************************************** */
 function publicarCronograma(data, periodo, ordem)  {
 	let dataStr =  CararaLibrary.dateToString(data);
 	let cronograma = [[dataStr, periodo, ordem]];
 
 	// Insira esse cronograma na planilha Publicados
-	let planilhaPublicados = obterPlanilhaPublicados()
-	let lastRow = planilhaPublicados.getLastRow();
-	planilhaPublicados.getRange(lastRow + 1, 1, cronograma.length, cronograma[0].length).setValues(cronograma)
+	let planilhaPublicados = obterPublicadosPlanilha()
+	planilhaPublicados.insertRowBefore(PUBLICADOS_FIRST_ROw);
+	planilhaPublicados.getRange(PUBLICADOS_FIRST_ROw, 1, cronograma.length, cronograma[0].length).setValues(cronograma);
+}
+
+// TODO: Refatorar para ser mais generica;
+/** 
+ * Pinte of texto da columna ACAO: Verde para Incluir, Vermelho para Excluir;
+  * @param {string} sheetName, nome da sheet com o texto a ser pintado
+  * @param {string} redText,   texto a ser pintado de vermelho
+  * @param {string} greenText, texto a ser pintado de verde
+  * @return none
+ */
+//  TODO: Refatorar para ser mais generica, aceitando uma matriz de objetos com texto e cor;
+function pintarAcao(sheetName, redText, greenText) {
+	const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+
+	// Gama para pintar
+	const startRow    = 2;
+	const numRows     = sheet.getLastRow() - 1;
+	sheet.getRange(startRow, 1, numRows).activate();
+
+	// Adicionar novas regras de formatação condicional
+	let conditionalFormatRules = sheet.getConditionalFormatRules();
+	conditionalFormatRules.push(SpreadsheetApp.newConditionalFormatRule()
+	.setRanges([sheet.getRange(startRow, 1, numRows)])
+	.whenTextContains(redText)
+	.setFontColor('#FF0000')
+	.setBackground('#FFFFFF')
+	.build());
+	sheet.setConditionalFormatRules(conditionalFormatRules);
+
+	conditionalFormatRules = sheet.getConditionalFormatRules();
+	conditionalFormatRules.push(SpreadsheetApp.newConditionalFormatRule()
+	.setRanges([sheet.getRange(startRow, 1, numRows)])
+	.whenTextContains(greenText)
+	.setFontColor('#00873E')
+	.setBackground('#FFFFFF')
+	.build());
+	sheet.setConditionalFormatRules(conditionalFormatRules);
+}
+/**
+ * Converts a number (1-26) to its uppercase letter equivalent.
+ * @param {number} num - The number to convert (1 = A, 26 = Z).
+ * @returns {string|null} - The uppercase letter or null if invalid.
+ */
+function numberToUppercaseLetter(num) {
+    // Validate input
+    if (typeof num !== "number" || !Number.isInteger(num) || num < 1 || num > 26) {
+        console.error("Invalid input: must be an integer between 1 and 26.");
+        return null;
+    }
+    // Convert number to uppercase letter
+    return String.fromCharCode(64 + num); // 65 is 'A', so 64 + num
 }

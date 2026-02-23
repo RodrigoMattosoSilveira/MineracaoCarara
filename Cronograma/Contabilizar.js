@@ -1,9 +1,9 @@
 /*
  * O planejador inspeciona e, caso necessário, atualiza os registros em 
- * Estado[Inspecionar] na planilha Cronograma!Ativos. Uma vez que o planejador
+ * ACAO[Incluir] na planilha Cronograma!Ativos. Uma vez que o planejador
  * esteja satisfeito com esses registros, ele usa o menu Contabilizar, acionarndo 
- * a lógica que addiciona os registros em Cronograma!Ativos a 
- * Cronograma!Contablizar e contabiliza os registros na planiha 
+ * a lógica que addiciona os registros em Cronograma!Ativos com ACAO[Incluir] a 
+ * Cronograma!Contablizar e contabiliza os registros na planilha 
  * Cronograma!Contablizar. Uma vez contabilizados, esses registros são removidos
  * da planilha Cronograma!Contablizar.
  * 
@@ -21,7 +21,7 @@ function cronogramaContabilizar() {
   // Copie os registros da planilha Cronograma!Ativos para a planilha 
   // Cronograma!Contabilizar.
   let contabilizarPlanilha = obterContabilizarPlanilha();
-  let ativosGamaVals = obterAtivosGamaVals();
+  let ativosGamaVals = obterAtivosGamaVals().filter( elemento => elemento[ATIVOS_ACAO] === "Incluir" );
   if (ativosGamaVals.length  > 0) { 
     // copiarGama (transacoes, planilhaAlvo, gamaAlvoLinha, gamaAlvoColumna)
     let planilhaLinha = contabilizarPlanilha.getLastRow() + 1;
@@ -48,35 +48,34 @@ function cronogramaContabilizar() {
   });
   let contabilizarGamaVals = obterContabilizarGamaVals();
 	contabilizarGamaVals.forEach( elemento => {
-	  const datastr           = CararaLibrary.dateToString(elemento[ATIVOS_DATA]);
-    const metodo            = elemento[ATIVOS_METODO];
-    const setor              = elemento[ATIVOS_SETOR];
-    const local             = elemento[ATIVOS_LOCAL];
-    const tarefa            = elemento[ATIVOS_TAREFA];
-    const chave             = datastr + elemento[ATIVOS_PERIODO] + elemento[ATIVOS_NOME];
-    const chaveProducao     = datastr + elemento[ATIVOS_LOCAL] +  elemento[ATIVOS_PERIODO]
+	  const datastr           = CararaLibrary.dateToString(elemento[CONTABILIZAR_DATA]);
+    const metodo            = elemento[CONTABILIZAR_METODO];
+    const setor             = elemento[CONTABILIZAR_SETOR];
+    const local             = elemento[CONTABILIZAR_LOCAL];
+    const tarefa            = elemento[CONTABILIZAR_TAREFA];
+    const chaveProducao     = datastr + elemento[CONTABILIZAR_LOCAL] +  elemento[CONTABILIZAR_PERIODO]
     let contabilizeRegistro = true;
     if (metodo != "") {
       contaCorrenteRegistro = [];
-      contaCorrenteRegistro[contasCorrentesDataCol]        = elemento[ATIVOS_DATA];
-      contaCorrenteRegistro[contasCorrentesNomeCol]        = elemento[ATIVOS_NOME];
-      contaCorrenteRegistro[contasCorrentesEstadiaCol]     =  elemento[ATIVOS_INICIO];
-      contaCorrenteRegistro[contasCorrentesMetodoCol]      = elemento[ATIVOS_METODO];
+      contaCorrenteRegistro[contasCorrentesDataCol]        = elemento[CONTABILIZAR_DATA];
+      contaCorrenteRegistro[contasCorrentesNomeCol]        = elemento[CONTABILIZAR_NOME];
+      contaCorrenteRegistro[contasCorrentesEstadiaCol]     =  elemento[CONTABILIZAR_INICIO];
+      contaCorrenteRegistro[contasCorrentesMetodoCol]      = elemento[CONTABILIZAR_METODO];
       contaCorrenteRegistro[contasCorrentesCreditDebitCol] = "Credito"
-      contaCorrenteRegistro[contasCorrentesComentariosCol] = elemento[ATIVOS_COMENTARIOS];
+      contaCorrenteRegistro[contasCorrentesComentariosCol] = elemento[CONTABILIZAR_COMENTARIOS];
       contaCorrenteRegistro[contasCorrentesItemCol]        = metodo + "/" + setor + "/" + local + "/" + tarefa
       switch (metodo) { 
         case "Diária":
           // Moeda Real
           contaCorrenteRegistro[contasCorrentesMoedaCol] = "Real";
           // Remuneracao em Reais
-          contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] = elemento[ATIVOS_REMUNERACAO];
+          contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] = elemento[CONTABILIZAR_REMUNERACAO];
           // Remuneracao em Gramas de Ouro  
           contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] = 0
           // Quantidade de items
           contaCorrenteRegistro[contasCorrentesItemQtdCol] = 1;
           // Credito / Debito em Reais
-          contaCorrenteRegistro[contasCorrentesTotalRealCol] = elemento[ATIVOS_REMUNERACAO];
+          contaCorrenteRegistro[contasCorrentesTotalRealCol] = elemento[CONTABILIZAR_REMUNERACAO];
           // Credito / Debito em Gramas de Ouro
           contaCorrenteRegistro[contasCorrentesTotalOuroCol] = 0;
           registrosContabilizados.push(elemento);
@@ -85,16 +84,16 @@ function cronogramaContabilizar() {
           // Moeda Real
           contaCorrenteRegistro[contasCorrentesMoedaCol] = "Real";
           // Remuneracao em Reais
-          contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] = elemento[ATIVOS_REMUNERACAO];
+          contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] = elemento[CONTABILIZAR_REMUNERACAO];
           // Remuneracao em Gramas de Ouro  
           contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] = 0
           // Quantidade de items
           contaCorrenteRegistro[contasCorrentesItemQtdCol] = 1;
           // Credito / Debito em Reais
-          let dataRegistro = new Date(elemento[ATIVOS_DATA]);
+          let dataRegistro = new Date(elemento[CONTABILIZAR_DATA]);
           try {
             let numeroDeDiasNesseMes = ObterNumberoDeDiasNoMesDessaData(dataRegistro); //
-            contaCorrenteRegistro[contasCorrentesTotalRealCol] = elemento[ATIVOS_REMUNERACAO] / numeroDeDiasNesseMes;
+            contaCorrenteRegistro[contasCorrentesTotalRealCol] = elemento[CONTABILIZAR_REMUNERACAO] / numeroDeDiasNesseMes;
           } 
           catch (err) {
             contaCorrenteRegistro[contasCorrentesTotalRealCol] = 0;
@@ -106,7 +105,10 @@ function cronogramaContabilizar() {
           break;
         case "Porcentagem":
         case  "Meio_A_Meio":
-          let producaoDataPocoPeriodo = Producao.obterProducaoDataPocoPeriodoChave(chaveProducao)
+          let data    = elemento[CONTABILIZAR_DATA];
+          let poco    = elemento[CONTABILIZAR_LOCAL];
+          let periodo = elemento[CONTABILIZAR_PERIODO];
+          let producaoDataPocoPeriodo = Producao.obterProducaoDataPocoPeriodo(data, poco, periodo);
           if (producaoDataPocoPeriodo !== null) {
           // if (producaoDiaria[datastr][poco] !== undefined) {
             // Moeda Ouro
@@ -114,18 +116,19 @@ function cronogramaContabilizar() {
             // Remuneracao em Reais
             contaCorrenteRegistro[contasCorrentesPrecoUnidadeRealCol] = 0;
             // Remuneracao em Gramas de Ouro
-            contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] = elemento[ATIVOS_REMUNERACAO];
+            contaCorrenteRegistro[contasCorrentesPrecoUnidadeOuroCol] = elemento[CONTABILIZAR_REMUNERACAO];
             // Quantidade de items
             contaCorrenteRegistro[contasCorrentesItemQtdCol] = 1;
             // Credito / Debito em Reais
             contaCorrenteRegistro[contasCorrentesTotalRealCol] = 0;
             // Credito / Debito em Gramas de Ouro
-            // contaCorrenteRegistro[contasCorrentesTotalOuroCol] = producaoDiaria[datastr][poco] * elemento[ATIVOS_REMUNERACAO];
-            contaCorrenteRegistro[contasCorrentesTotalOuroCol] = producaoDataPocoPeriodo * elemento[ATIVOS_REMUNERACAO];
+            // contaCorrenteRegistro[contasCorrentesTotalOuroCol] = producaoDiaria[datastr][poco] * elemento[CONTABILIZAR_REMUNERACAO];
+            contaCorrenteRegistro[contasCorrentesTotalOuroCol] = producaoDataPocoPeriodo * elemento[CONTABILIZAR_REMUNERACAO];
+             elemento[CONTABILIZAR_COMENTARIOS] = "";
             registrosContabilizados.push(elemento);
           }
           else {
-            elemento[ATIVOS_COMENTARIOS] = "Aguardando Produção do Poço";
+            elemento[CONTABILIZAR_COMENTARIOS] = "Aguardando Produção do Poço";
             registrosNaoContabilizados.push(elemento);
             contabilizeRegistro = false;
           }
@@ -160,6 +163,8 @@ function cronogramaContabilizar() {
     let planilhaColumna = 1;
     CararaLibrary.copiarGama (registrosNaoContabilizados, contabilizarPlanilha, planilhaLinha, planilhaColumna);
   } 
+
+  limparContentDataValidations(obterAtivosGama());
 
 	SpreadsheetApp.getActiveSpreadsheet().toast('O sistema contabilizou os ganhos doscolaboradores', 'Contabilizar', 3);
 }

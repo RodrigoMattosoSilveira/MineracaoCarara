@@ -13,6 +13,11 @@ function cronogramaPlanejar() {
 	// Navegue para a planilha Planejar
 	CararaLibrary.activateSheet("Planejar");
 
+	let planejarGamaVals = obterPlanejarGamaVals();
+	if (planejarGamaVals.length > 0) {	
+		SpreadsheetApp.getUi().alert("Existem registros na planilha Planejar. Favor completar of plano em progresso our remover os registros mannualmente.");
+		return
+	}
 	// Recuperar o cronograma publicado mais recente. Usar hoje caso não haja nenhuma
 	let cronogramaPublicadoMaisRecente = [...obterCronogramaPublicadoMaisRecente()]
 
@@ -33,11 +38,17 @@ function cronogramaPlanejar() {
 const cronogramaPlanejarProsseguir = (acaoSelecionada) => {
 	// SpreadsheetApp.getUi().alert('Acao selecionada: ' + JSON.stringify(acaoSelecionada));
 	let data = getData();
-	let dataStr =  CararaLibrary.dateToString(data);
   	let periodo = getPeriodo()
-	let ordem = Math.trunc(getOrdem());
+	let ordem = Math.trunc(getOrdem());	
+	// Helps write tests for cronogramaPlanejarProsseguir,
+	cronogramaPlanejarExecutar(acaoSelecionada, data, periodo, ordem);
+}
+
+const cronogramaPlanejarExecutar = (acaoSelecionada, data, periodo, ordem) => {
 	let menssagem = '';
 	let resultado = '';
+	let dataStr =  CararaLibrary.dateToString(data);
+	let targetSheetName;
 
 	// I'll use the following data elements:
 	// - periodoEmPlanejamento: contém o nome do período que está sendo 
@@ -68,7 +79,7 @@ const cronogramaPlanejarProsseguir = (acaoSelecionada) => {
 	switch (acaoSelecionada) {
 		case 'Planejar':
 			let estadias = obterEstadiasGama();
-			let plano = obterPlanejarGama().clear();
+			let plano = obterPlanejarGama().clear().clearDataValidations();
 			for (let linha = 1; ; linha++) {
 				// Obter o nome do colaborador
 				let nome = estadias.getCell(linha, ESTADIAS_NOME+1).getValue().toString().trim();
@@ -91,35 +102,57 @@ const cronogramaPlanejarProsseguir = (acaoSelecionada) => {
 					usarModelo(estadiaRegistro, modeloRegistro, plano, linha, dataStr, periodo);
 				}
 			}
-			// Ativar a planilha Planejar
-			CararaLibrary.activateSheet("Planejar");
+            obterPlanejarGama().sort([
+                // Column numbers adjusted for A1C1 notation
+                {column: PLANEJAR_ACAO+1, DESCENDING: false}, 
+                {column: PLANEJAR_SETOR+1, DESCENDING: true}, 
+                {column: PLANEJAR_LOCAL+1, DESCENDING: true},
+                {column: PLANEJAR_TAREFA+1, DESCENDING: true}
+            ]);
+			// Add Data Validations:
+			CararaLibrary.activateSheet("Planear");
+			let planilhaPlanejar = obterPlanejarPlanilha();
+			targetSheetName = planilhaPlanejar.getName();
+			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_ACAO+1,   PLANEJAR_ACOES_VALIDAS);
+			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_METODO+1, PLANEJAR_METODOS_VALIDOS);
+			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_SETOR+1,  PLANEJAR_SETORES_VALIDOS);
+			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_LOCAL+1,  PLANEJAR_LOCAIS_VALIDOS);
+			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_TAREFA+1, PLANEJAR_TAREFAS_VALIDAS);
+			// Pintar o texto da coluna ACAO de verde para Incluir, vermelho para Excluir
+			// TODO: Refatorar colher os parametros de pintarAcao para serem mais genericos;
+			pintarAcao(targetSheetName, "Excluir", "Incluir");
+
+			// Update the Publicados folha e termine a operacao
+			publicarCronograma(data, periodo, ordem);
 
 			// Informar ao usuário que o sistema concluiu a operação 
 			resultado = "Povoou a planilha Planejar com os registros do mais recente cronograma do mesmo período"
 			resultado += '\n';
 			menssagem = construirProsseguirMenssagem(resultado, data, periodo, ordem) 
-			console.info(menssagem);
-			SpreadsheetApp.getUi().alert(menssagem);
 			break;
 		case 'Ignorar':
-			menssagem = construirProsseguirMenssagem(acaoSelecionada, data, periodo, ordem) 
-			console.info(menssagem);
-
 			// Update the Publicados folha e termine a operacao
 			publicarCronograma(data, periodo, ordem);
 
+			menssagem = construirProsseguirMenssagem(acaoSelecionada, data, periodo, ordem) 
+			console.info(menssagem);
+
 			// Navegue para a planilha Planejar
-			CararaLibrary.activateSheet("PUBLICADOS_PLANILHA");		
+			targetSheetName = "Publicados";	
 
 			// Informar ao usuário que o sistema concluiu a operação 
 			resultado = "Inseriu cronograma como publicado, sem o planejar"
 			menssagem = construirProsseguirMenssagem(resultado, data, periodo, ordem) 
-			console.info(menssagem);
-			SpreadsheetApp.getUi().alert(menssagem);
 			break;
 		default:
 			break;
 	}
+
+	CararaLibrary.activateSheet(targetSheetName);
+
+	console.info(menssagem);
+	SpreadsheetApp.getUi().alert(menssagem);
+
 }
 
 // ****************************************************************************
@@ -241,16 +274,20 @@ function construirProsseguirMenssagem(acao, data, periodo, ordem) {
 }
 function usarEstadia(estadiaRegistro, plano, linha, dataStr, periodo) {
 	// ACAO 
-	plano.getCell(linha, PLANEJAR_ACAO+1).setValue("Excluir").setBackground('#ff0000')
+	plano.getCell(linha, PLANEJAR_ACAO+1).setValue("Excluir");
 
 	// DATA
-	plano.getCell(linha, PLANEJAR_DATA+1).setValue(dataStr)
+	plano.getCell(linha, PLANEJAR_DATA+1).setValue(dataStr);
 
 	// PERIODO
-	plano.getCell(linha, PLANEJAR_PERIODO+1).setValue(periodo)
+	plano.getCell(linha, PLANEJAR_PERIODO+1).setValue(periodo);
 
 	// NOME
 	plano.getCell(linha, PLANEJAR_NOME+1).setValue(estadiaRegistro[ESTADIAS_NOME]);
+
+	// Inicio
+	plano.getCell(linha, PLANEJAR_INICIO+1).setValue(estadiaRegistro[ESTADIAS_INICIO]);
+
 
 	// METODO
 	plano.getCell(linha, PLANEJAR_METODO+1).setValue(estadiaRegistro[ESTADIAS_METODO]);
@@ -274,17 +311,17 @@ function usarEstadia(estadiaRegistro, plano, linha, dataStr, periodo) {
 function usarModelo(estadiaRegistro, modeloRegistro, plano, linha, dataStr, periodo) {
 	// ACAO 
 	if (modeloRegistro[MODELOS_PERIODO] === periodo) {
-		plano.getCell(linha, PLANEJAR_ACAO+1).setValue("Incluir").setBackground('#00ff00')
+		plano.getCell(linha, PLANEJAR_ACAO+1).setValue("Incluir");
 	}
 	else {
-		plano.getCell(linha, PLANEJAR_ACAO+1).setValue( "Excluir").setBackground('#ff0000')
+		plano.getCell(linha, PLANEJAR_ACAO+1).setValue( "Excluir");
 	}
 
 	// DATA
-	plano.getCell(linha, PLANEJAR_DATA+1).setValue(dataStr)
+	plano.getCell(linha, PLANEJAR_DATA+1).setValue(dataStr);
 
 	// PERIODO
-	plano.getCell(linha, PLANEJAR_PERIODO+1).setValue(modeloRegistro[MODELOS_PERIODO])
+	plano.getCell(linha, PLANEJAR_PERIODO+1).setValue(periodo);
 
 	// NOME
 	plano.getCell(linha, PLANEJAR_NOME+1).setValue(modeloRegistro[MODELOS_NOME]);

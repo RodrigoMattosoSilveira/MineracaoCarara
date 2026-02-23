@@ -1,4 +1,25 @@
 const EPSILON = 0.00001;
+
+const cronogramaPlanejarExecutarTestePlanejar = () => {
+	let dataStr = '21/2/2025'; 
+	let data = new Date(dataStr)
+	let periodo = 'Diurno';
+	let ordem = 1;
+	cronogramaPlanejarExecutar("Planejar", data, periodo, ordem);	
+}
+
+const cronogramaPlanejarExecutarTesteIgnorar = () => {
+	let dataStr = '21/2/2025'; 
+	let data = new Date(dataStr)
+	let periodo = 'Diurno';
+	let ordem = 1;
+	cronogramaPlanejarExecutar("Ignorar", data, periodo, ordem);	
+}
+
+const cronogramaPlanejarTeste = () => {
+	cronogramaPlanejar();
+}	
+
 const cronogramaOnOpenTeste = () => {
   	onOpen();
 }
@@ -94,12 +115,12 @@ const numeroParaLetraTeste = () => {
 		console.error(" ✖︎  numeroParaLetraTeste, A")
 }
 
-const getA1C1Teste = () => {
+const obterA1C1Teste = () => {
   let nomeGama = obterA1C1(PLANEJAR_PLANILHA, 'C', 2, 'C', 10)
   let valido = nomeGama.localeCompare('Planejar!C2:C10') === 0 ? true : false;
 	valido ? 
-		console.info(" ✔︎ getA1C1Teste, colI = 3, rowI = 2, colF = 3, rowI = 10") :
-		console.error(" ✖︎  getA1C1Teste, colI = 3, rowI = 2, colF = 3, rowI = 10")
+		console.info("  ✔︎  obterA1C1Teste, colI = 'C', rowI = 2, colF = 'C', rowF = 10") :
+		console.error(" ✖︎  obterA1C1Teste, colI = 'C', rowI = 2, colF = 'C', rowF = 10")
 
 }
 
