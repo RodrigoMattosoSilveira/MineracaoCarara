@@ -9,7 +9,7 @@ function cronogramaInformar() {
 	}
 
     // Build the Ativos Sheet
-    let transacoes      = obterPlanejarGamaVals();
+    let transacoes      = obterPlanejarGamaVals().filter( elemento => elemento[PLANEJAR_ACAO] === "Incluir" );
     let planilhaAlvo    = obterAtivosPlanilha();
     let planilhaLinha   = 2;
     let planilhaColumna = 1;

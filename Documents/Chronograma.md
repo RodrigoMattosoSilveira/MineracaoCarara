@@ -58,7 +58,7 @@ At this point the workflow, the planner can inform the Collaborators with ACAO e
    2. Sets the ACAO of records not to be accounted for to Excluir 
    3. Triggers the Contabilizar menu in the Cronogram Google Sheet;
 3. The System:
-   1. Copies all records in the Ativos Sheet with their ACAO column set to Incluir to the Contabilizar Sheet;
+   1. Add all records in the Ativos Sheet with their ACAO column set to Incluir to the Contabilizar Sheet;
    2. Process Contabilizar Sheet records, for each record:
       1. If the Collaborator's Methodo is Diaria or Salario:
          1. Add an Earning record;
