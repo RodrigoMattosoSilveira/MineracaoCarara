@@ -1,4 +1,23 @@
 const EPSILON = 0.00001;
+const obterProducaoDataPocoPeriodoTeste = () => {
+  let data = new Date('2/21/2026');
+  let poco = 'Poço_1';
+  let periodo = 'Diurno';
+  let producaoDataPocoPeriodo = obterProducaoDataPocoPeriodo(data, poco, periodo);
+  let producaoDataPocoPeriodoEsperada = 0.687111727092914;
+	Math.abs(producaoDataPocoPeriodo - producaoDataPocoPeriodoEsperada) < EPSILON ?
+		console.info(" ✔︎ obterProducaoDataPocoPeriodoTeste " + producaoDataPocoPeriodoEsperada) :
+		console.error(" ✖︎  obterProducaoDataPocoPeriodoTeste " + producaoDataPocoPeriodoEsperada);
+
+  data = new Date('2/21/2026');
+  poco = 'Poço_2';
+  periodo = 'Noturno';
+  producaoDataPocoPeriodo = obterProducaoDataPocoPeriodo(data, poco, periodo);
+  producaoDataPocoPeriodoEsperada = 5.70219178974288;
+	Math.abs(producaoDataPocoPeriodo - producaoDataPocoPeriodoEsperada) < EPSILON ?
+		console.info(" ✔︎ obterProducaoDataPocoPeriodoTeste " + producaoDataPocoPeriodoEsperada) :
+		console.error(" ✖︎  obterProducaoDataPocoPeriodoTeste " + producaoDataPocoPeriodoEsperada);
+}
 const obterProducaoDataPocoPeriodoChaveTest = () => {
   let chave = "01/03/2026Poço_2Diurno"
   obterProducaoDataPocoPeriodoChave(chave)
@@ -12,25 +31,7 @@ const producaoRegistrarProsseguirTeste = () => {
   ]
   producaoRegistrarProsseguir(matriz);
 }
-const obterProducaoDataPocoPeriodoTeste = () => {
-  let data = '09/06/2025';
-  let poco = 'Poço_1';
-  let periodo = 'Diurno';
-  let producaoDataPocoPeriodo = obterProducaoDataPocoPeriodo(data, poco, periodo);
-  let producaoDataPocoPeriodoEsperada = 21.9534838229411;
-	Math.abs(producaoDataPocoPeriodo - producaoDataPocoPeriodoEsperada) < EPSILON ?
-		console.info(" ✔︎ obterProducaoDataPocoPeriodoTeste " + producaoDataPocoPeriodoEsperada) :
-		console.error(" ✖︎  obterProducaoDataPocoPeriodoTeste " + producaoDataPocoPeriodoEsperada);
 
-  data = '09/05/2025';
-  poco = 'Poço_2';
-  periodo = 'Noturno';
-  producaoDataPocoPeriodo = obterProducaoDataPocoPeriodo(data, poco, periodo);
-  producaoDataPocoPeriodoEsperada = 23.209908415526;
-	Math.abs(producaoDataPocoPeriodo - producaoDataPocoPeriodoEsperada) < EPSILON ?
-		console.info(" ✔︎ obterProducaoDataPocoPeriodoTeste " + producaoDataPocoPeriodoEsperada) :
-		console.error(" ✖︎  obterProducaoDataPocoPeriodoTeste " + producaoDataPocoPeriodoEsperada);
-}
 const obterProducaoPocosTestes = () => {
   let dataProcurada = '9/5/2025'
 	let producao = obterProducaoPocos(dataProcurada);
