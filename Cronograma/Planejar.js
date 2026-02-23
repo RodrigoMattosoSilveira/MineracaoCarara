@@ -102,7 +102,13 @@ const cronogramaPlanejarExecutar = (acaoSelecionada, data, periodo, ordem) => {
 					usarModelo(estadiaRegistro, modeloRegistro, plano, linha, dataStr, periodo);
 				}
 			}
-
+            obterPlanejarGama().sort([
+                // Column numbers adjusted for A1C1 notation
+                {column: PLANEJAR_ACAO+1, DESCENDING: false}, 
+                {column: PLANEJAR_SETOR+1, DESCENDING: true}, 
+                {column: PLANEJAR_LOCAL+1, DESCENDING: true},
+                {column: PLANEJAR_TAREFA+1, DESCENDING: true}
+            ]);
 			// Add Data Validations:
 			CararaLibrary.activateSheet("Planear");
 			let planilhaPlanejar = obterPlanejarPlanilha();
