@@ -2,30 +2,27 @@
 function cronogramaInformar() {
     SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Informar', 3);
 
+	let ativoGamaVals = obterAtivosGamaVals();
+	if (ativoGamaVals.length > 0) {	
+		SpreadsheetApp.getUi().alert("Existem registros na planilha Ativos. Favor completar of plano em progresso our remover os registros mannualmente.");
+		return
+	}
+
     // Build the Ativos Sheet
-    obterAtivosGama().clearContent();
-    let incluirRegistros = obterPlanejarGamaVals().filter(planejarRegistro => {
-        return planejarRegistro[PLANEJAR_ACAO] === 'Incluir';
-    });
-    let contabilizarPlanilha = obterAtivosPlanilha();
-    CararaLibrary.copiarGama (incluirRegistros, contabilizarPlanilha, 2, 1);
+    let transacoes      = obterPlanejarGamaVals();
+    let planilhaAlvo    = obterAtivosPlanilha();
+    let planilhaLinha   = 2;
+    let planilhaColumna = 1;
+    CararaLibrary.copiarGama (transacoes, planilhaAlvo, planilhaLinha, planilhaColumna);
+ 	ativoGamaVals = obterAtivosGamaVals();
 
     // Navegue para a planilha PDF
     CararaLibrary.activateSheet(PDF_PLANILHA);
 
-    // Recuperar o cronograma ATIVADO mais ANTIGO. 
-    let cronogramaAtivatoMaisAntigoVals = [...addicioneOrdermAoCronograma( obterAtivosGamaVals())];
-    cronogramaAtivatoMaisAntigoVals = [...sortAtivosMaisAntigo(cronogramaAtivatoMaisAntigoVals)];
-    let dataControle = CararaLibrary.dateToString(cronogramaAtivatoMaisAntigoVals[0][ATIVOS_DATA]);
-    let periodoControle = cronogramaAtivatoMaisAntigoVals[0][ATIVOS_PERIODO];
-    let chaveControle = dataControle + periodoControle;
-    let ativosInformar = cronogramaAtivatoMaisAntigoVals.filter(elemento => chaveControle === ( CararaLibrary.dateToString(elemento[ATIVOS_DATA]) + elemento[ATIVOS_PERIODO]));
-
-    let pdfInformar = obterPdfInformar();
-    pdfInformar.clearContent();
+    let pdfInformar = obterPdfInformar().clearContent();
 
     let informarRegistros = [];
-    ativosInformar.forEach( elemento => {
+    ativoGamaVals.forEach( elemento => {
         let informarRegistro = [];
         informarRegistro[PDF_NOME] = elemento[ATIVOS_NOME];
         informarRegistro[PDF_SETOR] = elemento[ATIVOS_SETOR];
@@ -34,6 +31,8 @@ function cronogramaInformar() {
         informarRegistros.push(informarRegistro);
     });
 
+    let dataControle = ativoGamaVals[0][ATIVOS_DATA];
+    let periodoControle = ativoGamaVals[0][ATIVOS_PERIODO];
     obterPdfData().clearContent().setValue(dataControle);
     obterPdfPeriodo().clearContent().setValue(periodoControle);
 
@@ -49,17 +48,21 @@ function cronogramaInformar() {
     let c2 = pdfExportar.getLastColumn();
     exportRangeAsPDF(r1, r2, c1, c2);
 
-    let ativosGama = obterAtivosGama();
-    let ativosGamaVals = obterAtivosGamaVals();
-    ativosGamaVals.forEach( (elemento, index) => {
-        if (chaveControle === ( CararaLibrary.dateToString(elemento[ATIVOS_DATA]) + elemento[ATIVOS_PERIODO])) {
-            ativosGama.offset(index, ATIVOS_ESTADO, 1, 1).setValue('Inspecionar');
-        }
-    }); 
-			
-    // Pintar a coluna ACAO de verde para Incluir, vermelho para Excluir
-    pintarAcao("Informar");
+   // Add Data Validations:
+     CararaLibrary.activateSheet("Ativos");
+    let planilhaAtivos = obterAtivosPlanilha();
+    let planilhaAtivosName = planilhaAtivos.getName();
+     estabelederValidacaoDados(planilhaAtivos, ATIVOS_ACAO+1,   ATIVOS_ACOES_VALIDAS);
+    estabelederValidacaoDados(planilhaAtivos, ATIVOS_METODO+1, PLANEJAR_METODOS_VALIDOS);
+    estabelederValidacaoDados(planilhaAtivos, ATIVOS_SETOR+1,  PLANEJAR_SETORES_VALIDOS);
+    estabelederValidacaoDados(planilhaAtivos, ATIVOS_LOCAL+1,  PLANEJAR_LOCAIS_VALIDOS);
+    estabelederValidacaoDados(planilhaAtivos, ATIVOS_TAREFA+1, PLANEJAR_TAREFAS_VALIDAS);
+    // TODO: Refatorar colher os parametros de pintarAcao para serem mais genericos;
+    pintarAcao(planilhaAtivosName, "Excluir", "Incluir");
 
+    limparContentDataValidations(obterPlanejarGama());
+
+    CararaLibrary.activateSheet("PDF");
     SpreadsheetApp.getActiveSpreadsheet().toast('Fim', 'Informar', 1);
     return true
 }

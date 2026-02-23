@@ -65,6 +65,7 @@ function publicarCronograma(data, periodo, ordem)  {
 	let cronograma = [[dataStr, periodo, ordem]];
 
 	// Insira esse cronograma na planilha Publicados
+	let planilhaPublicados = obterPublicadosPlanilha()
 	planilhaPublicados.insertRowBefore(PUBLICADOS_FIRST_ROw);
 	planilhaPublicados.getRange(PUBLICADOS_FIRST_ROw, 1, cronograma.length, cronograma[0].length).setValues(cronograma);
 }
@@ -73,11 +74,13 @@ function publicarCronograma(data, periodo, ordem)  {
 /** 
  * Pinte of texto da columna ACAO: Verde para Incluir, Vermelho para Excluir;
   * @param {string} sheetName, nome da sheet com o texto a ser pintado
+  * @param {string} redText,   texto a ser pintado de vermelho
+  * @param {string} greenText, texto a ser pintado de verde
   * @return none
  */
-function pintarAcao(sheetName) {
-	const spreadsheet = obterGoogleSheet();
-	const sheet       = spreadsheet.getSheetByName(sheetName);
+//  TODO: Refatorar para ser mais generica, aceitando uma matriz de objetos com texto e cor;
+function pintarAcao(sheetName, redText, greenText) {
+	const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
 
 	// Gama para pintar
 	const startRow    = 2;
@@ -88,7 +91,7 @@ function pintarAcao(sheetName) {
 	let conditionalFormatRules = sheet.getConditionalFormatRules();
 	conditionalFormatRules.push(SpreadsheetApp.newConditionalFormatRule()
 	.setRanges([sheet.getRange(startRow, 1, numRows)])
-	.whenTextContains('Excluir')
+	.whenTextContains(redText)
 	.setFontColor('#FF0000')
 	.setBackground('#FFFFFF')
 	.build());
@@ -97,13 +100,12 @@ function pintarAcao(sheetName) {
 	conditionalFormatRules = sheet.getConditionalFormatRules();
 	conditionalFormatRules.push(SpreadsheetApp.newConditionalFormatRule()
 	.setRanges([sheet.getRange(startRow, 1, numRows)])
-	.whenTextContains('Incluir')
+	.whenTextContains(greenText)
 	.setFontColor('#00873E')
 	.setBackground('#FFFFFF')
 	.build());
 	sheet.setConditionalFormatRules(conditionalFormatRules);
 }
-
 /**
  * Converts a number (1-26) to its uppercase letter equivalent.
  * @param {number} num - The number to convert (1 = A, 26 = Z).

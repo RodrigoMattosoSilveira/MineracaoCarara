@@ -3,7 +3,7 @@ const obterGoogleSheet = () =>  SpreadsheetApp.openById(GOOGLE_SHEET_ID);
 
 const PUBLICADOS_PLANILHA     = "Publicados";
 const PUBLICADOS_GAMA         = "Publicados";
-const PUBLICADOS_FIRST_ROw    = 1;
+const PUBLICADOS_FIRST_ROw    = 2;
 const PUBLICADOS_DATA_COL     = 0;
 const PUBLICADOS_NOME_COL     = 1;
 const PUBLICADOS_ORDEM_COL    = 2;
@@ -87,30 +87,30 @@ const obterModelosGamaRegistroNome = (nome) => {
 	return obterModelosGamaVals().find((element) => element[MODELOS_NOME] == nome)
 }
 
-const PLANEJAR_PLANILHA = "Planejar";
-const PLANEJAR_GAMA = "Planejar";
-const PLANEJAR_ACAO_GAMA = "PlanejarAcao"
-const PLANEJAR_ACOES_VALIDAS = "AcoesValidas"
+const PLANEJAR_PLANILHA        = "Planejar";
+const PLANEJAR_GAMA            = "Planejar";
+const PLANEJAR_ACAO_GAMA       = "PlanejarAcao"
+const PLANEJAR_ACOES_VALIDAS   = "AcoesValidas"
 const PLANEJAR_METODOS_VALIDOS = "MetodosValidos"
 const PLANEJAR_SETORES_VALIDOS = "SetoresValidos"
-const PLANEJAR_LOCAIS_VALIDOS = "LocaisValidos"
+const PLANEJAR_LOCAIS_VALIDOS  = "LocaisValidos"
 const PLANEJAR_TAREFAS_VALIDAS = "TarefasValidas"
-const PLANEJAR_ACAO = 0;
-const PLANEJAR_DATA = 1;
-const PLANEJAR_PERIODO = 2;
-const PLANEJAR_NOME = 3;
-const PLANEJAR_INICIO = 4;
-const PLANEJAR_METODO = 5;
-const PLANEJAR_SETOR = 6;
-const PLANEJAR_LOCAL = 7;
-const PLANEJAR_TAREFA = 8;
+const PLANEJAR_ACAO        = 0;
+const PLANEJAR_DATA        = 1;
+const PLANEJAR_PERIODO     = 2;
+const PLANEJAR_NOME        = 3;
+const PLANEJAR_INICIO      = 4;
+const PLANEJAR_METODO      = 5;
+const PLANEJAR_SETOR       = 6;
+const PLANEJAR_LOCAL       = 7;
+const PLANEJAR_TAREFA      = 8;
 const PLANEJAR_REMUNERACAO = 9;
 const PLANEJAR_COMENTARIOS = 10;
 const obterPlanejarPlanilha = () => obterGoogleSheet().getSheetByName(PLANEJAR_PLANILHA);
 const obterPlanejarGama = () => obterGoogleSheet().getRangeByName(PLANEJAR_GAMA);
 const obterPlanejarGamaVals = () => {
 	let  gama = obterPlanejarGama();
-	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[PLANEJAR_NOME] !== '') : [];
+	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[PLANEJAR_NOME] !== '' && elemento[PLANEJAR_NOME] !== 'Nome') : [];
 }
 const obterPlanejarDataPeriodoKeys = () => {
 	const keys = [];
@@ -141,7 +141,8 @@ const obterPlanejarIncluir = () => {
 
 const ATIVOS_PLANILHA = "Ativos";
 const ATIVOS_GAMA = "Ativos";
-const ATIVOS_ESTADO = 0;
+const ATIVOS_ACOES_VALIDAS = "AtivosAcoesValidas"
+const ATIVOS_ACAO = 0;
 const ATIVOS_DATA = 1;
 const ATIVOS_PERIODO = 2;
 const ATIVOS_NOME = 3;
@@ -173,6 +174,11 @@ const obterAtivosKeys = () => {
 		}
 	});
 	return keys;
+}
+const obterAtivosAcoesValidas = () => {	
+	let gama = obterAtivosGama();
+	let acoesValidas = gama.getRange(ATIVOS_ACOES_VALIDAS + "1:" + ATIVOS_ACOES_VALIDAS + gama.getLastRow()).getValues();
+	return acoesValidas.filter( elemento => elemento[0] !== '' && elemento[0] !== 'AcoesValidas').map( elemento => elemento[0]);
 }
 
 const PERIODOS_PLANILHA = "Periodos";
@@ -262,16 +268,13 @@ const obterContasCorrentesGamaVals = () => {
   return  (gama !== null) ? gama.getValues().filter( elemento => elemento[contasCorrentesDataCol] !== '' && elemento[contasCorrentesDataCol] !== 'Data') : [];
 }
 
-// ****************************************************************************
-// copiarGamaValsParaPlanilha - Limpe o intervalo com o mesmo noje da planilha 
-// nomeada
-// 
-// Input
-// 		planilhaDestino <Sheet> - A planilha 
-// 		gamaVals <Array of Arrays> - Os valores a serem copiados
-// Output
-// 		TRUE, se o sistema executou a tarefa, FALSE caso contrario;
-// ****************************************************************************
+/** ****************************************************************************
+ * copiarGamaValsParaPlanilha - Limpe o intervalo com o mesmo noje da planilha 
+ * nomeada
+ * @param {sheet} planilhaDestino A planilha 
+ * @param {gamaVals} <Array of Arrays> - Os valores a serem copiados
+ * @returns {boolean} TRUE, se o sistema executou a tarefa, FALSE caso contrario;
+ **************************************************************************** */
 //
 const copiarGamaValsParaPlanilha = (planilhaDestino, gamaVals) => {
 	if (planilhaDestino === null) {
@@ -285,6 +288,16 @@ const copiarGamaValsParaPlanilha = (planilhaDestino, gamaVals) => {
 	let lastRow = planilhaDestino.getLastRow();
 	planilhaDestino.getRange(lastRow + 1, 1, gamaVals.length, gamaVals[0].length).setValues(gamaVals);
 	return true;
+}
+
+/** ****************************************************************************
+ * Limpe o conteudo e validacao de dados de uma gama
+ * @param {range} range A gama a ser limpa	
+ * @returns {range} A gama limpada
+ **************************************************************************** */
+//
+const limparContentDataValidations = (range) => {
+	return range.clearContent().clearDataValidations() ;
 }
 
 // ****************************************************************************

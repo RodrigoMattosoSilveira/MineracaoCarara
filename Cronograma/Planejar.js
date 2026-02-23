@@ -13,6 +13,11 @@ function cronogramaPlanejar() {
 	// Navegue para a planilha Planejar
 	CararaLibrary.activateSheet("Planejar");
 
+	let planejarGamaVals = obterPlanejarGamaVals();
+	if (planejarGamaVals.length > 0) {	
+		SpreadsheetApp.getUi().alert("Existem registros na planilha Planejar. Favor completar of plano em progresso our remover os registros mannualmente.");
+		return
+	}
 	// Recuperar o cronograma publicado mais recente. Usar hoje caso não haja nenhuma
 	let cronogramaPublicadoMaisRecente = [...obterCronogramaPublicadoMaisRecente()]
 
@@ -43,6 +48,7 @@ const cronogramaPlanejarExecutar = (acaoSelecionada, data, periodo, ordem) => {
 	let menssagem = '';
 	let resultado = '';
 	let dataStr =  CararaLibrary.dateToString(data);
+	let targetSheetName;
 
 	// I'll use the following data elements:
 	// - periodoEmPlanejamento: contém o nome do período que está sendo 
@@ -98,45 +104,48 @@ const cronogramaPlanejarExecutar = (acaoSelecionada, data, periodo, ordem) => {
 			}
 
 			// Add Data Validations:
+			CararaLibrary.activateSheet("Planear");
 			let planilhaPlanejar = obterPlanejarPlanilha();
+			targetSheetName = planilhaPlanejar.getName();
 			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_ACAO+1,   PLANEJAR_ACOES_VALIDAS);
 			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_METODO+1, PLANEJAR_METODOS_VALIDOS);
 			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_SETOR+1,  PLANEJAR_SETORES_VALIDOS);
 			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_LOCAL+1,  PLANEJAR_LOCAIS_VALIDOS);
 			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_TAREFA+1, PLANEJAR_TAREFAS_VALIDAS);
-			
 			// Pintar o texto da coluna ACAO de verde para Incluir, vermelho para Excluir
-			pintarAcao(planilhaPlanejar.getName());
+			// TODO: Refatorar colher os parametros de pintarAcao para serem mais genericos;
+			pintarAcao(targetSheetName, "Excluir", "Incluir");
 
-			// Ativar a planilha Planejar
-			CararaLibrary.activateSheet(planilhaPlanejar.getName());
+			// Update the Publicados folha e termine a operacao
+			publicarCronograma(data, periodo, ordem);
 
 			// Informar ao usuário que o sistema concluiu a operação 
 			resultado = "Povoou a planilha Planejar com os registros do mais recente cronograma do mesmo período"
 			resultado += '\n';
 			menssagem = construirProsseguirMenssagem(resultado, data, periodo, ordem) 
-			console.info(menssagem);
-			SpreadsheetApp.getUi().alert(menssagem);
 			break;
 		case 'Ignorar':
+			// Update the Publicados folha e termine a operacao
+			publicarCronograma(data, periodo, ordem);
+
 			menssagem = construirProsseguirMenssagem(acaoSelecionada, data, periodo, ordem) 
 			console.info(menssagem);
 
 			// Navegue para a planilha Planejar
-			CararaLibrary.activateSheet("PUBLICADOS_PLANILHA");		
+			targetSheetName = "Publicados";	
 
 			// Informar ao usuário que o sistema concluiu a operação 
 			resultado = "Inseriu cronograma como publicado, sem o planejar"
 			menssagem = construirProsseguirMenssagem(resultado, data, periodo, ordem) 
-			console.info(menssagem);
-			SpreadsheetApp.getUi().alert(menssagem);
 			break;
 		default:
 			break;
 	}
 
-	// Update the Publicados folha e termine a operacao
-	publicarCronograma(data, periodo, ordem);
+	CararaLibrary.activateSheet(targetSheetName);
+
+	console.info(menssagem);
+	SpreadsheetApp.getUi().alert(menssagem);
 
 }
 

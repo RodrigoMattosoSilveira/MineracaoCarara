@@ -1,14 +1,16 @@
 const EPSILON = 0.00001;
 
 const cronogramaPlanejarExecutarTestePlanejar = () => {
-	let data = '21/2/2025';
+	let dataStr = '21/2/2025'; 
+	let data = new Date(dataStr)
 	let periodo = 'Diurno';
 	let ordem = 1;
 	cronogramaPlanejarExecutar("Planejar", data, periodo, ordem);	
 }
 
 const cronogramaPlanejarExecutarTesteIgnorar = () => {
-	let data = '21/2/2025';
+	let dataStr = '21/2/2025'; 
+	let data = new Date(dataStr)
 	let periodo = 'Diurno';
 	let ordem = 1;
 	cronogramaPlanejarExecutar("Ignorar", data, periodo, ordem);	
