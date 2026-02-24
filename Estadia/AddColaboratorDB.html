@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    body { font-family: Arial, sans-serif; padding: 12px; }
+    input { width: 100%; padding: 8px; box-sizing: border-box; }
+    .list { margin-top: 10px; border: 1px solid #ddd; border-radius: 6px; height: 240px; overflow: auto; }
+    .item { padding: 8px 10px; cursor: pointer; border-bottom: 1px solid #f1f1f1; }
+    .item:last-child { border-bottom: 0; }
+    .item.active { outline: 1px solid #999; }
+    .row { margin-top: 12px; display: flex; gap: 8px; justify-content: flex-end; }
+    button { padding: 8px 12px; cursor: pointer; }
+    .meta { color: #666; font-size: 12px; margin-top: 6px; display:flex; justify-content: space-between; }
+  </style>
+</head>
+<body>
+  <label for="q">Search</label>
+  <input id="q" type="text" placeholder="Type to filter…" autocomplete="off" />
+
+  <div class="meta">
+    <div id="count"></div>
+    <div id="hint">↑↓ to move, Enter to select, Esc to cancel</div>
+  </div>
+
+  <div id="list" class="list" role="listbox" aria-label="Names"></div>
+
+  <div class="row">
+    <button type="button" onclick="onCancel()">Cancel</button>
+    <button type="button" onclick="onOk()">OK</button>
+  </div>
+
+  <!-- JSON payload (Option A) -->
+  <script id="namesJson" type="application/json">
+    <?!= namesJson ?>
+  </script>
+
+  <script>
+    function readNames() {
+      const el = document.getElementById("namesJson");
+      const raw = (el && el.textContent || "").trim();
+      if (!raw) return [];
+      try { return JSON.parse(raw); } catch { return []; }
+    }
+
+    // ---- Data + state ----
+    const allNames = readNames();
+    const q = document.getElementById("q");
+    const list = document.getElementById("list");
+    const count = document.getElementById("count");
+
+    let filtered = allNames;
+    let activeIdx = 0;
+    let selectedName = "";
+
+    // ---- Rendering (virtualized-ish: only render top N for performance) ----
+    const RENDER_LIMIT = 400; // keep DOM light even if you have 10k names
+
+    function render() {
+      list.innerHTML = "";
+      const n = filtered.length;
+      count.textContent = `${n.toLocaleString()} matches`;
+
+      if (n === 0) {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.textContent = "(No matches)";
+        div.style.cursor = "default";
+        list.appendChild(div);
+        selectedName = "";
+        return;
+      }
+
+      if (activeIdx < 0) activeIdx = 0;
+      if (activeIdx >= n) activeIdx = n - 1;
+
+      const toRender = filtered.slice(0, Math.min(n, RENDER_LIMIT));
+      toRender.forEach((name, i) => {
+        const div = document.createElement("div");
+        div.className = "item" + (i === activeIdx ? " active" : "");
+        div.textContent = name;
+        div.setAttribute("role", "option");
+        div.onclick = () => { activeIdx = i; selectedName = name; render(); };
+        div.ondblclick = () => { selectedName = name; onOk(); };
+        list.appendChild(div);
+      });
+
+      selectedName = filtered[activeIdx] || "";
+      // Ensure active is visible
+      const activeEl = list.children[activeIdx];
+      if (activeEl) activeEl.scrollIntoView({ block: "nearest" });
+    }
+
+    // ---- Filtering (debounced) ----
+    let t = null;
+    function applyFilter() {
+      const term = q.value.trim().toLowerCase();
+      if (!term) {
+        filtered = allNames;
+      } else {
+        // Fast contains match. For better ranking, you can prioritize startsWith.
+        filtered = allNames.filter(n => String(n).toLowerCase().includes(term));
+      }
+      activeIdx = 0;
+      render();
+    }
+
+    q.addEventListener("input", () => {
+      if (t) clearTimeout(t);
+      t = setTimeout(applyFilter, 120); // debounce to avoid work on every keystroke
+    });
+
+    // ---- Keyboard navigation ----
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") return onCancel();
+      if (e.key === "Enter") return onOk();
+      if (e.key === "ArrowDown") { activeIdx++; render(); e.preventDefault(); }
+      if (e.key === "ArrowUp") { activeIdx--; render(); e.preventDefault(); }
+      if (e.key === "PageDown") { activeIdx += 10; render(); e.preventDefault(); }
+      if (e.key === "PageUp") { activeIdx -= 10; render(); e.preventDefault(); }
+    });
+
+    function onOk() {
+      if (!selectedName) return;
+      google.script.run
+        .withSuccessHandler(() => google.script.host.close())
+        .serverReceivePickedName(selectedName);
+    }
+
+    function onCancel() { google.script.host.close(); }
+
+    // init
+    q.focus();
+    render();
+  </script>
+</body>
+</html>
