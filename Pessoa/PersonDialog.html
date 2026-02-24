@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root { color-scheme: light; }
+      body { font-family: Arial, Helvetica, sans-serif; margin: 16px; }
+      .row { margin-bottom: 12px; }
+      label { display: block; font-size: 12px; margin-bottom: 4px; color: #333; }
+      input, select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px; }
+      button {
+        padding: 10px 14px;
+        border: 0;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .primary { background: #1a73e8; color: white; }
+      .secondary { background: #f1f3f4; color: #222; }
+      .error { color: #b00020; font-size: 12px; margin-top: 8px; }
+      .hint { color: #666; font-size: 12px; margin-top: 4px; }
+      .busy { opacity: .65; pointer-events: none; }
+	  .success { color: #0b6b0b; font-size: 12px; margin-top: 8px; }
+	  ul.errlist { margin: 8px 0 0 18px; padding: 0; }
+    </style>
+  </head>
+
+  <body>
+    <h3 style="margin: 0 0 12px 0;">Cadastro</h3>
+
+    <div class="row" id="nameRow"></div>
+
+    <div class="grid">
+      <div class="row">
+        <label for="cpf">CPF</label>
+        <input id="cpf" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" />
+        <div class="hint">Somente números (vamos formatar automaticamente).</div>
+      </div>
+
+      <div class="row">
+        <label for="rg">RG</label>
+        <input id="rg" autocomplete="off" placeholder="Digite o RG" />
+      </div>
+
+      <div class="row">
+        <label for="cell">Celular</label>
+        <input id="cell" inputmode="numeric" autocomplete="off" placeholder="(11) 98765-4321" />
+      </div>
+
+      <div class="row">
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="off" placeholder="nome@exemplo.com" />
+      </div>
+    </div>
+
+    <div class="row">
+      <label for="pix">PIX (chave)</label>
+      <input id="pix" autocomplete="off" placeholder="CPF, email, telefone, EVP..." />
+    </div>
+
+	<div id="err" class="error" role="alert"></div>
+	<div id="ok" class="success" role="status"></div>
+
+    <div class="actions">
+		<button class="secondary" id="newBtn" type="button">Novo</button>
+		<button class="secondary" id="cancelBtn" type="button">Cancelar</button>
+		<button class="primary" id="saveBtn" type="button">Salvar</button>
+    </div>
+
+    <script>
+      // Data passed from server template
+      const NAMES = JSON.parse('<?= namesJson ?>' || '[]');
+
+      function $(id) { return document.getElementById(id); }
+
+	function safeSetValue(id, value) {
+	const el = $(id);
+	if (el) el.value = value;
+	}
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, (c) =>
+          ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+        );
+      }
+
+      function renderNameField() {
+        const container = $("nameRow");
+        if (Array.isArray(NAMES) && NAMES.length > 0) {
+          // Dropdown for names
+          container.innerHTML = `
+            <label for="nameSel">Nome</label>
+            <select id="nameSel"></select>
+          `;
+          const sel = $("nameSel");
+          sel.innerHTML = `<option value="">Selecione…</option>` + NAMES
+            .map(n => `<option value="${escapeHtml(n)}">${escapeHtml(n)}</option>`)
+            .join("");
+        } else {
+          // Free text
+          container.innerHTML = `
+            <label for="nameTxt">Nome</label>
+            <input id="nameTxt" autocomplete="off" placeholder="Digite o nome completo" />
+          `;
+        }
+      }
+
+      function getNameValue() {
+        const sel = $("nameSel");
+        if (sel) return sel.value.trim();
+        const txt = $("nameTxt");
+        return txt ? txt.value.trim() : "";
+      }
+
+      // ---- Formatting ----
+      function digitsOnly(v) { return String(v || "").replace(/\D/g, ""); }
+
+      function formatCpfLive(v) {
+        const d = digitsOnly(v).slice(0, 11);
+        const p1 = d.slice(0,3), p2 = d.slice(3,6), p3 = d.slice(6,9), p4 = d.slice(9,11);
+        let out = p1;
+        if (p2) out += "." + p2;
+        if (p3) out += "." + p3;
+        if (p4) out += "-" + p4;
+        return out;
+      }
+
+      function formatCellLive(v) {
+        const d = digitsOnly(v).slice(0, 11);
+        if (d.length <= 2) return d;
+        if (d.length <= 6) return `(${d.slice(0,2)}) ${d.slice(2)}`;
+        if (d.length <= 10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;
+        return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
+      }
+
+      // ---- Client validation (server also validates) ----
+      function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+      }
+
+      function isValidCpf(cpfDigits) {
+        if (!/^\d{11}$/.test(cpfDigits)) return false;
+        if (/^(\d)\1{10}$/.test(cpfDigits)) return false;
+
+        const calcDigit = (base, factorStart) => {
+          let sum = 0;
+          for (let i = 0; i < base.length; i++) sum += Number(base[i]) * (factorStart - i);
+          const mod = sum % 11;
+          return (mod < 2) ? 0 : (11 - mod);
+        };
+
+        const d1 = calcDigit(cpfDigits.slice(0, 9), 10);
+        const d2 = calcDigit(cpfDigits.slice(0, 9) + d1, 11);
+        return cpfDigits === (cpfDigits.slice(0, 9) + String(d1) + String(d2));
+      }
+
+      function isValidBrazilCell(cellDigits) {
+        if (!/^\d{10,11}$/.test(cellDigits)) return false;
+        if (cellDigits.length === 11 && cellDigits[2] !== "9") return false;
+        return true;
+      }
+
+      function setError(msg) { $("err").textContent = msg || ""; }
+      function setBusy(busy) {
+		document.body.classList.toggle("busy", !!busy);
+
+		const save = $("saveBtn");
+		const cancel = $("cancelBtn");
+		const nw = $("newBtn");
+
+		if (save) save.disabled = !!busy;
+		if (cancel) cancel.disabled = !!busy;
+		if (nw) nw.disabled = !!busy;
+      }
+
+      function gatherAndValidate() {
+        const name = getNameValue();
+        const cpfDigits = digitsOnly($("cpf").value);
+        const rg = $("rg").value.trim();
+        const cellDigits = digitsOnly($("cell").value);
+        const email = $("email").value.trim();
+        const pix = $("pix").value.trim();
+
+        if (!name) return { error: "Nome é obrigatório." };
+        if (!isValidCpf(cpfDigits)) return { error: "CPF inválido." };
+        if (!rg) return { error: "RG é obrigatório." };
+        if (!isValidBrazilCell(cellDigits)) return { error: "Celular inválido (DDD + número)." };
+        if (!isValidEmail(email)) return { error: "Email inválido." };
+        if (!pix) return { error: "PIX é obrigatório." };
+
+        return {
+          value: {
+            name,
+            cpf: cpfDigits,   // send digits only; server formats
+            rg,
+            cell: cellDigits, // send digits only; server formats
+            email,
+            pix
+          }
+        };
+      }
+
+      function submit() {
+        setError("");
+        const res = gatherAndValidate();
+        if (res.error) { setError(res.error); return; }
+
+        setBusy(true);
+        google.script.run
+          .withSuccessHandler((r) => {
+            setBusy(false);
+            if (r && r.ok) {
+              google.script.host.close();
+            } else {
+              setError((r && r.message) || "Falha ao salvar.");
+            }
+          })
+          .withFailureHandler((err) => {
+            setBusy(false);
+            setError(err && err.message ? err.message : String(err));
+          })
+          .submitPersonData(res.value);
+      }
+	function clearMessages() {
+	const err = $("err");
+	const ok = $("ok");
+	if (err) err.innerHTML = "";
+	if (ok) ok.textContent = "";
+	}
+
+  function showErrors(errors) {
+    $("ok").textContent = "";
+
+    if (!errors || !errors.length) {
+      $("err").textContent = "Falha ao salvar.";
+      return;
+    }
+
+    // Render as a bullet list
+    const items = errors.map(e => `<li><strong>${escapeHtml(e.field)}:</strong> ${escapeHtml(e.message)}</li>`).join("");
+    $("err").innerHTML = `
+      <div>Por favor corrija os campos abaixo:</div>
+      <ul class="errlist">${items}</ul>
+    `;
+
+    // Optional: focus first field with an error
+    focusFirstErrorField(errors[0]?.field);
+  }
+
+  function showSuccess(msg) {
+    $("err").innerHTML = "";
+    $("ok").textContent = msg || "Salvo com sucesso.";
+  }
+
+  function focusFirstErrorField(field) {
+    const map = {
+      name: "nameSel", // if dropdown exists
+      cpf: "cpf",
+      rg: "rg",
+      cell: "cell",
+      email: "email",
+      pix: "pix",
+    };
+
+    // Handle name input vs select
+    if (field === "name") {
+      const el = $("nameSel") || $("nameTxt");
+      if (el) el.focus();
+      return;
+    }
+
+    const id = map[field];
+    const el = id ? $(id) : null;
+    if (el) el.focus();
+  }
+
+	function submit() {
+	clearMessages();
+
+	// Keep client-side validation if you want,
+	// but now server returns full error list too.
+	const res = gatherAndValidate();
+	if (res.error) { $("err").textContent = res.error; return; }
+
+	setBusy(true);
+	google.script.run
+		.withSuccessHandler((r) => {
+		setBusy(false);
+
+		if (r && r.ok) {
+			showSuccess(r.message || "Dados salvos com sucesso.");
+
+			// Clear form so user can add another
+			setTimeout(() => {
+				clearForm();
+			}, 800);
+
+			// Optional: auto-close after 1.2s
+			// setTimeout(() => google.script.host.close(), 1200);
+
+		} else {
+			// Show structured errors if present
+			if (r && Array.isArray(r.errors)) showErrors(r.errors);
+			else $("err").textContent = (r && r.message) || "Falha ao salvar.";
+		}
+		})
+		.withFailureHandler((err) => {
+		setBusy(false);
+		$("ok").textContent = "";
+		$("err").textContent = err && err.message ? err.message : String(err);
+		})
+		.submitPersonData(res.value);
+	}
+
+      function cancel() {
+        google.script.host.close();
+      }
+
+      // Init
+      renderNameField();
+
+      $("cpf").addEventListener("input", (e) => {
+        const caret = e.target.selectionStart;
+        e.target.value = formatCpfLive(e.target.value);
+        // (Keeping caret perfect is messy; this is “good enough” for most.)
+      });
+	function clearForm() {
+		try {
+			// Name can be either a select or an input (created dynamically)
+			const nameSel = $("nameSel");
+			const nameTxt = $("nameTxt");
+			if (nameSel) nameSel.selectedIndex = 0;
+			if (nameTxt) nameTxt.value = "";
+
+			safeSetValue("cpf", "");
+			safeSetValue("rg", "");
+			safeSetValue("cell", "");
+			safeSetValue("email", "");
+			safeSetValue("pix", "");
+
+			clearMessages();
+
+			// Focus first field
+			if (nameSel) nameSel.focus();
+			else if (nameTxt) nameTxt.focus();
+			else if ($("cpf")) $("cpf").focus();
+
+		} catch (e) {
+			// If anything unexpected happens, show it in the dialog
+			const err = $("err");
+			if (err) err.textContent = "Erro ao limpar o formulário: " + (e && e.message ? e.message : String(e));
+		}
+	}
+      $("cell").addEventListener("input", (e) => {
+        e.target.value = formatCellLive(e.target.value);
+      });
+
+      $("saveBtn").addEventListener("click", submit);
+      $("cancelBtn").addEventListener("click", cancel);
+	  $("newBtn").addEventListener("click", clearForm);
+
+      // Keyboard UX
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") cancel();
+        if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) submit();
+      });
+		document.addEventListener("DOMContentLoaded", () => {
+		// If renderNameField() creates nameSel/nameTxt, do it before focusing/clearing.
+		if (typeof renderNameField === "function") renderNameField();
+
+		const newBtn = $("newBtn");
+		if (!newBtn) {
+			const err = $("err");
+			if (err) err.textContent = 'Botão "Novo" não encontrado (id="newBtn").';
+			return;
+		}
+
+		newBtn.addEventListener("click", clearForm);
+		});
+    </script>
+  </body>
+</html>
