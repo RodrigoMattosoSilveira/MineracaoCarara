@@ -4,9 +4,33 @@
 function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('Cadastro')
-    .addItem('Coletar Dados…', 'mostrarCaixaDialogoPessoa')
+    .addItem('Coletar Dados…', 'authorizeAndShowDialog')
     .addToUi();
 	CararaLibrary.activateSheet("Dados");
+}
+
+/**
+ * Forces authorization by calling a service that needs permissions
+ */
+function authorizeScript() {
+  // Accessing SpreadsheetApp triggers the authorization prompt
+  SpreadsheetApp.getActiveSpreadsheet();
+}
+
+/**
+ * Runs authorization first, then shows the dialog
+ */
+// TODO do it for all modal dialogs
+function authorizeAndShowDialog() {
+  try {
+    // Isto solicitará autorização se ainda não tiver sido concedida
+    authorizeScript();
+
+    // Se deu certo, prossiga
+    mostrarCaixaDialogoPessoa();
+  } catch (err) {
+    SpreadsheetApp.getUi().alert('Autorização falhou: ' + err);
+  }
 }
 
 /**
