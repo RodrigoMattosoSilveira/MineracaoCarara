@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body { font-family: Arial, sans-serif; padding: 14px; }
+      .row { margin: 10px 0; }
+      input { width: 100%; padding: 10px; font-size: 14px; box-sizing: border-box; }
+      .error { color: #b00020; margin-top: 8px; min-height: 18px; }
+      .buttons { display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px; }
+      button { padding: 8px 12px; cursor: pointer; }
+      .hint { color: #666; font-size: 12px; margin-top: 6px; }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+      <label for="val"><b>Value</b></label>
+      <input id="val" type="text" inputmode="decimal" placeholder="e.g., 12.34 or 12,34">
+      <div class="hint">Tip: You can use “,” or “.” as the decimal separator.</div>
+      <div id="err" class="error"></div>
+    </div>
+
+    <div class="buttons">
+      <button onclick="google.script.host.close()">Cancel</button>
+      <button id="okBtn" onclick="submit()">OK</button>
+    </div>
+
+    <script>
+      const valEl = document.getElementById('val');
+      const errEl = document.getElementById('err');
+      const okBtn = document.getElementById('okBtn');
+
+      // Submit on Enter
+      valEl.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') submit();
+      });
+
+      // Focus input on load
+      window.addEventListener('load', () => valEl.focus());
+
+      function setBusy(isBusy) {
+        okBtn.disabled = isBusy;
+        valEl.disabled = isBusy;
+        okBtn.textContent = isBusy ? "Saving..." : "OK";
+      }
+
+      function submit() {
+        errEl.textContent = "";
+        const raw = valEl.value;
+
+        setBusy(true);
+        google.script.run
+          .withSuccessHandler((res) => {
+            setBusy(false);
+            if (!res || !res.ok) {
+              errEl.textContent = (res && res.error) ? res.error : "Unknown error.";
+              return;
+            }
+            // If you want to show it to the user before closing:
+            // alert("Saved: " + res.value);
+            google.script.host.close();
+          })
+          .withFailureHandler((err) => {
+            setBusy(false);
+            errEl.textContent = (err && err.message) ? err.message : String(err);
+          })
+          .submitFloat(raw);
+      }
+    </script>
+  </body>
+</html>
