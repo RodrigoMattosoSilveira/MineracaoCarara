@@ -358,6 +358,7 @@ function GetSaldo() {
   let sheetName = ss.getActiveSheet().getName();
   switch (sheetName) {
     case "Cantina":
+      // TODO Refactor to use a function to set these generic attributes
       SetUpCantina();
       colaboradorNome   = CantinaColaboradorRange.getValue();
       colaboradoEstadia = CantinaEstadiaRange.getValue();
@@ -401,6 +402,15 @@ function GetSaldo() {
       saldoRealRange    = CambioSaldoRealRange;
       futuroOuroRange   = CambioFuturoOuroRange;
       futuroRealRange   = CambioFuturoRealRange;
+      break;    
+    case "Zerar":
+      SetupZerar();
+      colaboradorNome   = ZerarColaboradorRange.getValue();
+      colaboradoEstadia = ZerarEstadiaRange.getValue();
+      saldoOuroRange    = ZerarSaldoOuroRange;
+      saldoRealRange    = ZerarSaldoRealRange;
+      futuroOuroRange   = ZerarFuturoOuroRange;
+      futuroRealRange   = ZerarFuturoRealRange;
       break;    
     case "Fechar":
       SetupFechar();

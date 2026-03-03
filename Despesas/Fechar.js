@@ -1,5 +1,5 @@
 function fecharPrepare() {
-  // Navegue para o formulário Diversos e limpe o mesmo
+  // Navegue para o formulário Fechar e limpe o mesmo
   CararaLibrary.activateSheet("Fechar");
   SetupFechar();
   limparFormularioFechar();
