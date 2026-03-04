@@ -1,3 +1,11 @@
+const atualizeReferenciaOuroTeste= () => {
+  atualizeReferenciaOuro(42)
+}
+
+const submitFloatTeste = () => {
+  submitFloat(42)
+}
+
 const UpdateGoldPriceInUSDTest = () => {
   let precoOuro = UpdateGoldPriceInUSD()
   precoOuro < 0 ?
