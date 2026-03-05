@@ -385,3 +385,24 @@ function ObterNumberoDeDiasNoMesDessaData(data) {
   let numeroDeDiasNoMes = new Date(data.getFullYear(), data.getMonth() + 1, 0).getDate();
   return numeroDeDiasNoMes;
 }
+
+/**
+ * 
+ * @param {string} text to be parsed
+ * @returns {Array.<string>}, with key at index 0, and value 1
+ */
+function parseKeyValue(text) {
+  if (typeof text !== "string") {
+    return null
+  }
+
+  const idx = text.indexOf(":");
+  if (idx === -1) {
+    return null
+  }
+
+  const key = text.slice(0, idx).trim();
+  const value = text.slice(idx + 1).trim();
+
+  return [key, value];
+}
