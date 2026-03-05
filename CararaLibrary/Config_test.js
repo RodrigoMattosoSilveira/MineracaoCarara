@@ -1,3 +1,28 @@
+
+const  Get_Config_Folder_IdTest = () => {
+	// DEV
+	let id = Get_Config_Folder_Id("DEV");
+   	let expected = "1hi85uRXZZWUrmF-nnGcTn-bGB6Vz0HD8"		
+  	id === expected ?
+		console.info(" ✔︎ Get_Config_Folder_Id('DEV')") :
+		console.error(" ✖︎   Get_Config_Folder_Id('DEV'): " + id + " != " + expected);
+ 	// TEST
+	id = Get_Config_Folder_Id('TEST');
+   	expected = "TEST_FOLDER_ID"		
+  	id === expected ?
+		console.info(" ✔︎ Get_Contas_Correntes_Id('TEST')") :
+		console.error(" ✖︎  Get_Contas_Correntes_Id('TEST'): " + id + " != " + expected);
+}
+const  ReadConfigFileTest = () => {
+	const folderId = "1hi85uRXZZWUrmF-nnGcTn-bGB6Vz0HD8";
+	const fileName = "config.txt";
+  	let envLine = ReadConfigFile(folderId, fileName)
+	let expected = "env: DEV"		
+	envLine.localeCompare(expected) === 0 ?
+		console.info(" ✔︎ ReadConfigFile") :
+		console.error(" ✖︎  ReadConfigFile: " + envLine + " != " + expected);
+}
+
 const GetSpreadSheetIdTeste = () => {
 	// Dev CANTINA_PRECO
 	let id = Get_Cantina_Preco_Id("DEV")
