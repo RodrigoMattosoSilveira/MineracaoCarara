@@ -45,7 +45,7 @@ function Get_Contas_Correntes_Id(env) {
  * @returns 
  */
 function Get_Cronograma_Id(env) {
-	return getSpreadSheetId(env, SPREADSHEET_NAMES.CRONOGRAMA);
+	return get_SpreadSheet_Id(env, SPREADSHEET_NAMES.CRONOGRAMA);
 }
 /**
  * Retrives the spreadsheet id for Despesas
@@ -121,4 +121,49 @@ function get_SpreadSheet_Id(env, name) {
 		return null
   	}
 	return id;
+}
+
+/**
+ * Gets the environment's folder id
+ * @param {string} env 
+ * @returns {string} folder id
+ */
+function Get_Config_Folder_Id(env) {
+	let keys = Object.keys(ENV_NAMES);
+	let index = keys.indexOf(env);
+	if (index === -1) {
+		return null;
+	}
+	let _env = ENV_NAMES[env]
+	const props = PropertiesService.getScriptProperties();
+
+	const id  = props.getProperty(_env + "_FOLDER_ID");
+
+  	if (!id) {
+		return null
+  	}
+	return id;
+}
+/**
+ * 
+ * @param {string} folderId the folder hosting the config file
+ * @param {string} fileName the config file name
+ * @returns {string} the config file contents (it is a one liner now)
+ */
+function ReadConfigFile(folderId, fileName) {
+//   const folderId = "1uxHz6HVXnkkH4N1fRmkNT_vSwZRUi1dZ";     // Replace with your folder ID
+//   const fileName = "config.txt";        // Name of the text file
+
+  const folder = DriveApp.getFolderById(folderId);
+  const files = folder.getFilesByName(fileName);
+
+  if (!files.hasNext()) {
+    throw new Error("File not found: " + fileName);
+  }
+
+  const file = files.next();
+  const content = file.getBlob().getDataAsString();
+
+//   Logger.log(content);
+  return content;
 }

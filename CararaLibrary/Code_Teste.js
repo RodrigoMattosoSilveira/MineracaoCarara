@@ -5,11 +5,11 @@ const ParseKeyValueTest = () => {
 		console.info(" ✔︎ ParseKeyValue") :
 		console.error(" ✖︎  ParseKeyValue: " + keyValue + " != " + expected);
   let expectedKey = "env";	
-  keyValue[0] === expectedKey ?
+  keyValue[0].localeCompare(expectedKey) === 0 ?
 		console.info(" ✔︎ ParseKeyValue[0]") :
 		console.error(" ✖︎  ParseKeyValue[0[]]: " + keyValue[0] + " != " + expectedKey);
   let expectedValue = "DEV";	
-  keyValue[1] === expectedValue ?
+  keyValue[1].localeCompare(expectedValue) === 0 ?
 		console.info(" ✔︎ ParseKeyValue[1]") :
 		console.error(" ✖︎  ParseKeyValuek[1]: " + keyValue[1] + " != " + expectedValue);
 
@@ -19,11 +19,11 @@ const ParseKeyValueTest = () => {
 		console.info(" ✔︎ ParseKeyValue") :
 		console.error(" ✖︎  ParseKeyValue: " + keyValue + " != " + expected);
   expectedKey = "env";	
-  keyValue[0] === expectedKey ?
+  keyValue[0].localeCompare(expectedKey) === 0 ?
 		console.info(" ✔︎ ParseKeyValue[0]") :
 		console.error(" ✖︎  ParseKeyValue[0[]]: " + keyValue[0] + " != " + expectedKey);
   expectedValue = "DEV";	
-  keyValue[1] === expectedValue ?
+  keyValue[1].localeCompare(expectedValue) === 0 ?
 		console.info(" ✔︎ ParseKeyValue[1]") :
 		console.error(" ✖︎  ParseKeyValuek[1]: " + keyValue[1] + " != " + expectedValue);
 
