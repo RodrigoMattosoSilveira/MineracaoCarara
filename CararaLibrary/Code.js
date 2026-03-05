@@ -389,9 +389,9 @@ function ObterNumberoDeDiasNoMesDessaData(data) {
 /**
  * 
  * @param {string} text to be parsed
- * @returns {Array.<string>}, with key at index 0, and value 1
+ * @returns {Array.<string>}, with key at index 0, and value 1; null if error
  */
-function parseKeyValue(text) {
+function ParseKeyValue(text) {
   if (typeof text !== "string") {
     return null
   }
