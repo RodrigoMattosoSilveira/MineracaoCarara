@@ -2,91 +2,111 @@
  * Central config: map environments to spreadsheet IDs.
  * Store these IDs in Script Properties in real usage; kept inline here for clarity.
  */
-const ENV_NAMES = {
-	DEV:  "DEV",
-	TEST: "TEST",
-	PROD: "PROD",
-};
+const ENV_NAMES = ["DEV",  "TEST", "PROD"]
 
 /**
  * Central config: map environments to spreadsheet IDs.
  * Store these IDs in Script Properties in real usage; kept inline here for clarity.
  */
-const SPREADSHEET_NAMES = {
-	CANTINA_PRECO:		"CANTINA_PRECO",
-	CONTAS_CORRENTES:	"CONTAS_CORRENTES",
-	CRONOGRAMA:			"CRONOGRAMA",
-	DESPESAS:			"DESPESAS",
-	ESTADIA:			"ESTADIA",
-	PESSOA:				"PESSOA",
-	PRODUCAO:			"PRODUCAO",
-	REFERENCIA:			"REFERENCIA",
-};
+const SPREADSHEET_NAMES = [
+	"CANTINA_PRECO",
+	"CONTAS_CORRENTES",
+	"CRONOGRAMA",
+	"DESPESAS",
+	"ESTADIA",
+	"PESSOA",
+	"PRODUCAO",
+	"REFERENCIA",
+];
+
+function GetSpreadsheetId(activeSpreadsheet, spreadSheetName) {
+	/**
+	1. Gets the environment, env = getEnvironment(activeSpreadsheet)
+		1. Gets the folderId = getParentFolderId(activeSpreadsheet)
+		2. Reads and Parses the config file, config = readParsesConfigFile(folderId)
+		3. Get the environment, env = config["ENV"]
+	2. Get the spreadsheet id = getSpreadSheetPropId(env, spreadsheetName)
+	3. Returns the spreasheet id, id
+	 */
+	env = getEnvironment(activeSpreadsheet)
+	if (env === null) throw new Error("Não foi possível recuperar o ambiente " + env + ".");
+	id  = getSpreadSheetPropId(env, spreadSheetName);
+	return id
+}
+
+function getEnvironment(activeSpreadsheet) {
+	/**
+	1. Gets the folderId = getParentFolderId(activeSpreadsheet)
+	2. Reads and Parses the config file, config = readParsesConfigFile(folderId)
+	3. Get the environment, env = config["ENV"]
+	 */
+	folderId = getParentFolderId(activeSpreadsheet);
+	if (folderId == null) throw new Error("Não foi possível recuperar o folderId.");
+	config = readConfigFile(folderId)
+	if (config == null) throw new Error("Não foi possível recuperar a configuracao.");	
+	env = config["ENV"]
+	if (ENV_NAMES.indexOf(env) === -1) throw new Error("Nome do ambiente invalido: " + env + ".");	
+	return env;
+}
 
 /**
- * Retrives the spreadsheet id for Cantina_Preco
- * @param {string} env the environment for which to select the spreadsheet id
- * @returns 
+ * Retrieves the active spreadsheet's folder id
+ * @param {spreasheet} activeSpreadsheet 
+ * @returns {string} the active spreadsheet's folder id
  */
-function Get_Cantina_Preco_Id(env) {
-	return get_SpreadSheet_Id(env, SPREADSHEET_NAMES.CANTINA_PRECO);
-}
-/**
- * Retrives the spreadsheet id for Contas_Correntes
- * @param {string} env the environment for which to select the spreadsheet id
- * @returns 
+function getParentFolderId(activeSpreadsheet) {
+	let folderId = null;
+
+	var file = DriveApp.getFileById(activeSpreadsheet.getId());
+	var folders = file.getParents();
+	while (folders.hasNext()){
+		let folder = folders.next()
+		folderId = folder.getId();
+	}
+
+	return folderId
+  }	
+
+  /**
+ * Reads a configuration file on the same folder as the current spreasheet;
+ * parses the ":" separated key values, ignoring lines starting with a "#";
+ *
+ * @param {string} folderId the folder hosting the config file
+ * @param {string} fileName the config file name
+ * @returns {Object} the key/value pairs in the config file
  */
-function Get_Contas_Correntes_Id(env) {
-	return get_SpreadSheet_Id(env, SPREADSHEET_NAMES.CONTAS_CORRENTES);
+function readConfigFile(folderId) {
+//   const folderId = "1uxHz6HVXnkkH4N1fRmkNT_vSwZRUi1dZ";     // Replace with your folder ID
+//   const fileName = "config.txt";        // Name of the text file
+	const folder = DriveApp.getFolderById(folderId);
+	const files = folder.getFilesByName("config.txt");
+	if (!files.hasNext()) {
+		throw new Error("O arquivo de configuração não foi encontrado: config.txt");
+	}
+
+	const file = files.next();
+	const content = file.getBlob().getDataAsString();
+
+	// Parse the file into an object
+	const config = {};
+	const lines = content.split(/\r?\n/);
+
+	lines.forEach(line => {
+	const trimmed = line.trim();
+	if (trimmed && !trimmed.startsWith("#")) { // Ignore empty lines and comments
+		const parts = trimmed.split(":");
+		if (parts.length === 2) {
+		const key = parts[0].trim();
+		const value = parts[1].trim();
+		config[key] = value;
+		}
+	}
+	});
+
+	Logger.log("Parsed Config: %s", JSON.stringify(config, null, 2));
+	return config;
 }
-/**
- * Retrives the spreadsheet id for Cronograma
- * @param {string} env the environment for which to select the spreadsheet id
- * @returns 
- */
-function Get_Cronograma_Id(env) {
-	return get_SpreadSheet_Id(env, SPREADSHEET_NAMES.CRONOGRAMA);
-}
-/**
- * Retrives the spreadsheet id for Despesas
- * @param {string} env the environment for which to select the spreadsheet id
- * @returns 
- */
-function Get_Despesas_Id(env) {
-	return get_SpreadSheet_Id(env, SPREADSHEET_NAMES.DESPESAS);
-}
-/**
- * Retrives the spreadsheet id for Estadia
- * @param {string} env the environment for which to select the spreadsheet id
- * @returns 
- */
-function Get_etEstadia_Id(env) {
-	return get_SpreadSheet_Id(env, SPREADSHEET_NAMES.ESTADIA);
-}
-/**
- * Retrives the spreadsheet id for Pessoa
- * @param {string} env the environment for which to select the spreadsheet id
- * @returns 
- */
-function Get_getPessoa_Id(env) {
-	return get_SpreadSheet_Id(env, SPREADSHEET_NAMES.PESSOA);
-}
-/**
- * Retrives the spreadsheet id for Producao
- * @param {string} env the environment for which to select the spreadsheet id
- * @returns 
- */
-function Get_getProducao_Id(env) {
-	return get_SpreadSheet_Id(env, SPREADSHEET_NAMES.PRODUCAO);
-}
-/**
- * Retrives the spreadsheet id for Referencia
- * @param {string} env the environment for which to select the spreadsheet id
- * @returns 
- */
-function Get_Referencia_Id(env) {
-	return get_SpreadSheet_Id(env, SPREADSHEET_NAMES.REFERENCIA);
-}
+
 /**
  * Retrives a spreasheet id from the script's properties
  * Best practice: store IDs in Script Properties so you don’t hardcode them in 
@@ -98,72 +118,21 @@ function Get_Referencia_Id(env) {
  * @param {string} name of the spreadsheet of interest
  * @returns 
  */
-function get_SpreadSheet_Id(env, name) {
-	let keys = Object.keys(ENV_NAMES);
-	let index = keys.indexOf(env);
-	if (index === -1) {
-		return null;
+function getSpreadSheetPropId(env, name) {
+	if (ENV_NAMES.indexOf(env)) {
+		throw new Error("Invalido nome de ambiente: " + env + ".");
 	}
-	let _env = ENV_NAMES[env]
 
-	keys = Object.keys(SPREADSHEET_NAMES);
-	index = keys.indexOf(name);
-	if (index === -1) {
-		return null;
+	if (SPREADSHEET_NAMES.indexOf(name) === -1) {
+		throw new Error("Invalido nome de planilha: " + name + ".");
 	}
-	let _name = SPREADSHEET_NAMES[name]
 
 	const props = PropertiesService.getScriptProperties();
-
-	const id  = props.getProperty(_env + "_"  + _name + "_ID");
-
-  	if (!id) {
-		return null
-  	}
-	return id;
-}
-
-/**
- * Gets the environment's folder id
- * @param {string} env 
- * @returns {string} folder id
- */
-function Get_Config_Folder_Id(env) {
-	let keys = Object.keys(ENV_NAMES);
-	let index = keys.indexOf(env);
-	if (index === -1) {
-		return null;
-	}
-	let _env = ENV_NAMES[env]
-	const props = PropertiesService.getScriptProperties();
-
-	const id  = props.getProperty(_env + "_FOLDER_ID");
+	const propName = env + "_"  + name + "_ID"
+	const id  = props.getProperty(propName);
 
   	if (!id) {
-		return null
+		throw new Error("A Biblioteca Carara não possui a propriedade " + propName + ".");
   	}
 	return id;
-}
-/**
- * 
- * @param {string} folderId the folder hosting the config file
- * @param {string} fileName the config file name
- * @returns {string} the config file contents (it is a one liner now)
- */
-function ReadConfigFile(folderId, fileName) {
-//   const folderId = "1uxHz6HVXnkkH4N1fRmkNT_vSwZRUi1dZ";     // Replace with your folder ID
-//   const fileName = "config.txt";        // Name of the text file
-
-  const folder = DriveApp.getFolderById(folderId);
-  const files = folder.getFilesByName(fileName);
-
-  if (!files.hasNext()) {
-    throw new Error("File not found: " + fileName);
-  }
-
-  const file = files.next();
-  const content = file.getBlob().getDataAsString();
-
-//   Logger.log(content);
-  return content;
 }
