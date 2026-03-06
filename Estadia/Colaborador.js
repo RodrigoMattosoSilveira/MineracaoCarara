@@ -7,9 +7,9 @@ function estadiaAdicionarColaborador() {
     // SpreadsheetApp.getUi().alert("You selected: " + selectedName);
     // Insert the name and today's date at the top of the file, then sort it
     let noneInicio = [[selectedName, new Date()]];
-    let estadiasPlanilha = obterEstadiasPlanilha()
-    obterEstadiasPlanilha.insertRowBefore(ESTADIAS_FIRST_ROw )
-    obterEstadiasPlanilha.getRange(ESTADIAS_FIRST_ROw, 1, noneInicio.length, noneInicio[0].length).setValues(noneInicio);
+    let estadiasPlanilha = obterEstadiasPlanilha() // TODO Refactor to use CararaLibrary
+    estadiasPlanilha.insertRowBefore(ESTADIAS_FIRST_ROw )
+    estadiasPlanilha.getRange(ESTADIAS_FIRST_ROw, 1, noneInicio.length, noneInicio[0].length).setValues(noneInicio);
   });
 }
 
@@ -49,7 +49,7 @@ function serverReceivePickedName(selectedName) {
 
 function estadiaAdicionarColaboradorAdicione(selectedName) {
   let noneInicio = [[selectedName, new Date(),"", "Ativo"]];
-  let estadiasPlanilha = obterEstadiasPlanilha();
+  let estadiasPlanilha = obterEstadiasPlanilha(); // TODO Refactor to use CararaLibrary
   estadiasPlanilha.insertRowBefore(ESTADIAS_FIRST_ROw )
   estadiasPlanilha.getRange(ESTADIAS_FIRST_ROw, 1, noneInicio.length, noneInicio[0].length).setValues(noneInicio);
   Logger.log("Inserted : " + selectedName)

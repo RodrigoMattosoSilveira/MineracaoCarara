@@ -60,3 +60,10 @@ function getSpreadSheetPropId(env, name) {
 	return id;
 }
 ```
+## Implementation Notes
+This [link](https://stackoverflow.com/questions/62175748/driveapp-error-were-sorry-a-server-error-occurred-please-wait-a-bit-and-try) was instrumental in solving the `"We're sorry, a server error occurred. Please wait a bit and try again." ` error.
+
+## Replacing hard coded spreadsheetIds in Google Sheets
+They are use in `IMPORTRANGE(spreadsheet, range)`, which are executed when the actor opens the speadsheet. Thus, I'll have to hook up the logic to replace the `IMPORTRANGE(spreadsheet, range)` statements on the spreadsheet's `onOpen` event. The use cases are:
+1. To inform a `data validation` range of the acceptable values. In this case, I'll read the reference data and add it to the `data validation` without the intermediary step of storing it in a working sheet;
+2. ?
