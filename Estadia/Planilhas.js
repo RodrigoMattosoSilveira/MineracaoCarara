@@ -1,5 +1,12 @@
-const ESTADIA_GOOGLE_SHEET_ID = "1cBWZwZ8JPJARGNFmjFAFzKIaPApeO5kN8jencYUVki4";
-const PESSOA_GOOGLE_SHEET_ID  = "1d3XkRXMeOO6Zzn6oxPoK86GU99V-yPa-7e77SrMxoIM";
+const activeSheet             = SpreadsheetApp.getActiveSpreadsheet();
+
+// https://stackoverflow.com/questions/62175748/driveapp-error-were-sorry-a-server-error-occurred-please-wait-a-bit-and-try
+// const ESTADIA_GOOGLE_SHEET_ID = "1cBWZwZ8JPJARGNFmjFAFzKIaPApeO5kN8jencYUVki4";
+const ESTADIA_GOOGLE_SHEET_ID = CararaLibrary.GetSpreadsheetId(activeSheet, "ESTADIA")
+
+// const PESSOA_GOOGLE_SHEET_ID  = "1d3XkRXMeOO6Zzn6oxPoK86GU99V-yPa-7e77SrMxoIM";
+const PESSOA_GOOGLE_SHEET_ID  = CararaLibrary.GetSpreadsheetId(activeSheet, "PESSOA")
+
 const obterGoogleSheet        = (PlanilhaGoggleIdD) =>  SpreadsheetApp.openById(PlanilhaGoggleIdD);
 
 const ESTADIAS_PLANILHA    = "Dados";

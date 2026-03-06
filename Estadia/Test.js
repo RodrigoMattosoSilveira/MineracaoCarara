@@ -1,3 +1,8 @@
+const GetSpreadsheetIdTest = () => {
+	const activeSheet = SpreadsheetApp.getActiveSpreadsheet()
+	const ESTADIA_GOOGLE_SHEET_ID = CararaLibrary.GetSpreadsheetId(activeSheet, "ESTADIA")
+}
+
 const estadiaAdicionarColaboradorAdicioneTest = () => {
 	let selectedName = 'Melindroso - Cláudio de Souza Oliveira'
 	estadiaAdicionarColaboradorAdicione(selectedName);
