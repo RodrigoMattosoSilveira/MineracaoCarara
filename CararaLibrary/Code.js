@@ -406,3 +406,18 @@ function ParseKeyValue(text) {
 
   return [key, value];
 }
+
+
+/** ****************************************************************************
+// obterA1C1 - Converter linhas e colunma ao nome de uma gama
+// 
+// @param   {string} planilha nome da planilha
+// @param   {string} colI     a columa inicial
+// @param   {int}    rowI     a linha inicial
+// @param   {string} colFa    a columa final
+// @param   {int}    rowF     a linha final
+// @returns {string}          O nome da gama no formato A1C1, por exemplo, 
+//                            "Planejar!C2:C10"
+ **************************************************************************** */
+
+const obterA1C1 = (planilha, colI, linI, colF, linF) => planilha + '!' + colI + linI + ':' +  colF + linF
