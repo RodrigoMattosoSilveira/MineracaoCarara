@@ -1,123 +1,83 @@
 /** 
  * The function to configure validation
- * @param {Object} dRange The range with data to be validated
- * @param {Object} oRange The original validation range
- * @param {Object} lRange The local validation range
+ * @param {Object} dConfig The data Validation Configuration
+ * @param {Object} oConfig The original Acceptable Entries Configuration
+ * @param {Object} lConfig The local Acceptable Entries Configuration
  */
-function ConfigureDataValidationColumn (dRange, oRange, lRange) {
-  // Clear the validations on the range with data to be validated
-  clearDataRangeValidations (dRange)
+function ConfigureDataValidationColumn (dConfig, oConfig, lConfig) {
+	// Clear the current data validations
+	clearDestinationDataValidations (dConfig)
 
-  // Clear the local range
-  clearRangeColumn(lRange)
+	// Clear the local Acceptable Entries
+	clearRangeColumn(lConfig)
 
-  // Copy the original validation to the local validation range
-  copyOriginalToLocalRange(oRange, lRange);
+	// Copy the original validation to the local validation Acceptable Entries
+	copyOriginalToLocalAcceptableEntries(oConfig, lConfig);
 
-  // Update the range to reflect the data
-  const spreadSheet = dRange.spreadsheet;
-  const sheetName   = dRange.sheet.getName();
-  const sheet       = dRange.sheet;
-  const colI        = numeroParaLetra(dRange.columnNumber)
-  const linI        = 2
-  const colF        = numeroParaLetra(dRange.columnNumber)
-  const linF        = getLastRowInColumn(sheet, numeroParaLetra(dRange.columnNumber)); 
-  const rangeA1     = obterA1C1(sheetName, colI, linI,  colF, linF)
-  const rangeName   = dRange.rangeName;
-  updateRange(spreadSheet, sheet, rangeA1, rangeName)
-
-  // Configure the validations
-  let targetSheet    = dRange.sheet;
-  let column         = dRange.columnNumber;
-  let localRangeName = lRange.rangeName;
-  configureRangeValidation(targetSheet, column, localRangeName);
+	// Configure the validations
+	let targetSheet    = dConfig.sheet;
+	let column         = dConfig.columnNumber;
+	let localAccetableEntriesRange = getAcceptableEntriesRange(lConfig)
+	configureDataValidation(targetSheet, column, localAccetableEntriesRange);
 }
 
 /** 
- * Removes validatons for the column where we will configure the new validations
- * @param {Object} dRange The range with data to be validated
+ * Removes data validation for the column where we will configure the new data
+ * validation
+ * @param {Object} dConfig The data Validation Configuration
  * @returns {Range} the range we cleared validations
  */
-function clearDataRangeValidations (dRange) {
-  const columnLeft  = numeroParaLetra(dRange.columnNumber);
+function clearDestinationDataValidations (dConfig) {
+  const columnLeft  = numeroParaLetra(dConfig.columnNumber);
+  const firstRow    = dConfig.startRow
   const columnRight = columnLeft;
-  const lastRow     = dRange.sheet.getLastRow(); // ok to clear empty cells
-  const sheetName   = dRange.sheet.getName();
-  let a1C1Gama      = obterA1C1(sheetName, columnLeft, firstRow, columnRight, lastRow)
-  const range       = dRange.sheet.getRange(a1C1Gama);
+  const lastRow     = dConfig.sheet.getLastRow(); // ok to clear empty cells
+  const sheetName   = dConfig.sheet.getName();
+  const a1C1Gama    = obterA1C1(sheetName, columnLeft, firstRow, columnRight, lastRow)
+  const range       = dConfig.sheet.getRange(a1C1Gama);
   range.clear({validationsOnly: true});
   return range
-}  
+}   
 
 /** 
- * Removes validatons for the column where we will configure the new validations
- * @param {Object} dRange The range with data to be validated
- */
-function clearDataRangeValidations (dRange) {
-  const columnLeft  = numeroParaLetra(dRange.columnNumber);
-  const columnRight = columnLeft
-  const firstRow    = dRange.startRow
-  const lastRow     = dRange.sheet.getLastRow(); 
-  const sheetName   = dRange.sheet.getName();
-  let a1C1Gama      = obterA1C1(sheetName, columnLeft, firstRow, columnRight, lastRow)
-  const range       = dRange.sheet.getRange(a1C1Gama);
-  range.clear({validationsOnly: true});
-  return range
-}  
-
-/** 
- * Clears the lRange
- * @param {Object} lRange The local validation range
+ * Clears the local acceptable entries range
+ * @param {Object} lConfig The local acceptable entries configuration
  */ 
-function  clearRangeColumn(lRange) {
-  let sheet = lRange.sheet;
-  let numRows = sheet.getLastRow() - lRange.startRow + 1; // The number of row to clear
-  let range = sheet.getRange(lRange.startRow, lRange.columnNumber, numRows);
+function  clearRangeColumn(lConfig) {
+  let sheet = lConfig.sheet;
+  let numRows = sheet.getLastRow() - lConfig.startRow + 1; // The number of row to clear
+  let range = sheet.getRange(lConfig.startRow, lConfig.columnNumber, numRows);
   range.clear();
 }
 
 /** 
  * Copies the original data validation to the new data validation range
- * @param {Object} oRange The original validation range
- * @param {Object} lRange The local validation range
+ * @param {Object} oConfig The original acceptable entries configuration
+ * @param {Object} lConfig The local acceptable entries configuration
  */
-function copyOriginalToLocalRange(oRange, lRange) {
-  let oSpreadsheet           = oRange.spreadsheet;
-  let rangeVals              = oSpreadsheet.getRangeByName(oRange.rangeName).getValues();
-  let targetSheet            = lRange.sheet;
-  let targetRangeFirstLine   = lRange.startRow;
-  let targetRangeFirstColumn = lRange.columnNumber;
+function copyOriginalToLocalAcceptableEntries(oConfig, lConfig) {
+  let oSpreadsheet           = oConfig.spreadsheet;
+  let range					 = getAcceptableEntriesRange(oConfig);
+  let rangeVals              = range.getValues();
+  let targetSheet            = lConfig.sheet;
+  let targetRangeFirstLine   = lConfig.startRow;
+  let targetRangeFirstColumn = lConfig.columnNumber;
   copiarGama (rangeVals, targetSheet, targetRangeFirstLine, targetRangeFirstColumn)
 }
 
-/**
- * Update a range to fit data changes
- * @param {SpreadSheet} spreadSheet 
- * @param {Sheet} sheet 
- * @param {String} rangeA1, e.g. Teste!A2:A9
- * @param {String} rangeName, e.g. MetodoTeste
+/** 
+ * Builds an A1 description of the local acceptable values range
+ * @param {Object} config The acceptable entries configuration (original or local)
+ * @returns {string} The acceptable entries range
  */
-function updateRange(spreadSheet, sheet, rangeA1, rangeName) {
-  try {
-    let sheetName = sheet.getName()
-    
-    // Get the range
-    const range = sheet.getRange(rangeA1);
-
-    // Check if a named range with this name already exists
-    const existing = spreadSheet.getNamedRanges().find(nr => nr.getName() === rangeName);
-    if (existing) {
-      // Update the existing named range
-      existing.setRange(range);
-      Logger.log(`Updated named range "${rangeName}" to ${sheetName}!${rangeA1}`);
-    } else {
-      // Create a new named range
-      spreadSheet.setNamedRange(rangeName, range);
-      Logger.log(`Created named range "${rangeName}" for ${sheetName}!${rangeA1}`);
-    }
-  } catch (err) {
-    Logger.log("Error: " + err.message);
-  }
+function getAcceptableEntriesRange(config) {
+	let sheetName    = config.sheet.getName();
+	let columnLetter =  numeroParaLetra(config.columnNumber);
+	let firstRow     = config.startRow;
+	let lastRow      =  getLastRowInColumn(config.sheet, columnLetter);
+	let a1C1Gama     = obterA1C1(sheetName, columnLetter, firstRow, columnLetter, lastRow);
+	let range        = config.sheet.getRange(a1C1Gama)
+	return range;
 }
 
 /**
@@ -145,12 +105,12 @@ function getLastRowInColumn(sheet, columnLetter) {
 }
 /** 
  * Configures data validation
- * @param {Sheet} planilha - The sheet with the column to be validated
+ * @param {Sheet} sheet - The sheet with the column to be validated
  * @param {Number} columnNumber - The number of the column to be validaded, 1-based
- * @param {String} validChoicesRangeName - O nome da gama com os valores validos
+ * @param {String} localAcceptableEntriesRange - A gama com os valores aceitaveir
  * @returns {none} The system configures the validation
  */
-function configureRangeValidation(sheet, columnNumber, validChoicesRangeName) {
+function configureDataValidation(sheet, columnNumber, localAcceptableEntriesRange) {
   let columnLetter = numeroParaLetra(columnNumber);
   let lastRow      = sheet.getLastRow();
   let sheetName    = sheet.getName();
@@ -159,7 +119,7 @@ function configureRangeValidation(sheet, columnNumber, validChoicesRangeName) {
   let range        = sheet.getRange(a1C1Gama); // Specify the range for validation
 
   let rule         = SpreadsheetApp.newDataValidation()
-  .requireValueInRange(sheet.getRange(validChoicesRangeName), true) // Reference range for valid values
+  .requireValueInRange(localAcceptableEntriesRange, true) // Reference range for valid values
   .setAllowInvalid(false) // Prevent invalid entries
   .build();
 
