@@ -18,7 +18,7 @@ const ConfigurarValidacaoDadosColumnaTest = () => {
 
 const GetSpreadsheetIdTest = () => {
 	const activeSheet = SpreadsheetApp.getActiveSpreadsheet();
-	const ESTADIA_GOOGLE_SHEET_ID = CararaLibrary.GetSpreadsheetId(activeSheet, "ESTADIA");
+	const ESTADIA_SPREADSHEET_ID = CararaLibrary.GetSpreadsheetId(activeSheet, "ESTADIA");
 }
 
 const estadiaAdicionarColaboradorAdicioneTest = () => {

@@ -1,13 +1,19 @@
-The Google Sheet validation engine requires the validation range to be in the same sheet as the range for which to be validaded; since our validation ranges reside on their own spreadsheet, we must copy them to the same sheet as the range to be validaded. This entails to:
-- Clean up existing validations for the column at hand, since the new validaton data might differ;
-- Clean up the validation range, again, since the new validaton data might differ;
-- Copy the validations in Referencia to the target Google Sheet
-- Set up the new validations in the target Google Sheet
+# Introduction
+
+Data validation is a feature in Google Sheets that sets rules for `acceptable data entries` in a cell or range. It helps prevent errors, maintain data integrity, and streamline data entry by restricting inputs to specific types such as numbers, text, dates, or predefined lists. Invalid entries can trigger a warning or be rejected entirely, depending on your settings.
+
+The Google Sheet validation engine requires the acceptable data entries to be in the same `local spreadsheet` as the range being validaded; since our  acceptable data entries reside on their own `original spreadsheets`, we must copy the acceptable data entries to a work sheet in the `local spreadsheet`. I'll use the worksheet `Trabalho` in the local spreadsheets to host the acceptable entries in the `local spreadsheet`.
+
+## Single column data validation
+This entails to:
+- Clean up existing validations for the column being validated, since the new acceptable data entries might differ;
+- Clean up the acceptable data entries in the local spreadsheet, again, since the new acceptable data entries might differ;
+- Copy the new acceptable data entries from their original spreadsheet to the local spreadsheet;
+- Set up the new acceptable data entries in the local spreadsheet's sheet / column;
 
 Therefore, there are three object involved in configuring validation:
-- The range with data to be validated - In our case a column in a sheet, such as methods of payment in the Estadia.Dados sheet;
-- The original validation range - In our case column A in a sheet, such as Metodos, in the Referencia.Metodos sheet; 
-- The local validation range - In our case column in a sheet, Trabalho, in the same spreadsheet as the data being validaded.
+- The local spreadsheet, sheet, column - For example, the Metods column in the Estadia.Dados sheet;
+- The original acceptable data entries - For example,  column A in the Referencia.Metodos sheet; 
 
 Note that for testing purposes I'll use the Referencia.MetodosTest, Estadia.DadosTest, and Estadia.TrabalhoTest sheets.
 
@@ -76,3 +82,54 @@ const buildLocalRangeDestinationTest = () => {
   return dRange;
 }
 ```
+
+## Multiple sheets and column data validations
+I'll write one `JSON` configuration file per local spresheet with data validations; this file will describe the each and all data confirations for each and all local spresheet's sheets. I'll process this configuration file on the `onOpen` event. 
+
+### The following configuration file:
+This [JSON schema valildator](https://www.jsongenerator.io/schema) is very helpfull:
+```json
+{
+  "acceptableEntries": {
+      "acceptableEntriesName": {
+        "spreadsheetName": "spreadsheetName",
+        "sheetName": "sheetName",
+        "columnNumber": 1,
+        "rowNumber": 2
+    }
+  },
+  "dataValidation": {
+    "spreadsheetName": {
+      "columnName": {
+        "targetColumn": 1,
+        "targetRow": 1,
+        "acceptableEntriesName": "acceptableEntriesName"
+      }
+    }
+  }
+}
+```
+Notes:
+- `acceptableEntries`:
+  - The `acceptableEntriesName` object name is unique to its function, as for instance Metodo; it can be used for multiple sheets in the same local spreadsheet;
+  - I'll derive the orinal spreadsheet ID, and its data using the existing machinery in place;
+  - The `sheetName` r
+- `dataValidation`:
+  - `spreadsheetName` the local spreadsheet name;
+    - `sheetName` unique sheeet name identifying the sheets with data validation;
+      - `columnName` unique column name for the sheetName, identifying the columnswith data validation;
+        - `acceptableEntriesName` the name of the data validation object described in acceptableEntries;
+
+### Parsing the JSON file
+I did this:
+- Add an HTML file each of the local spreadsheets with data validation;
+- Remove all the content of the HTML file and insert the local spreadsheets' JSON configuration files;
+- Include a local spreadsheet script function that reads and parses configuration file:
+  
+```javascript
+// Assuming the data validation configuration file I used in the local spreadsheets is `DataValidation.html':
+const jsonString = HtmlService.createHtmlOutputFromFile("DataValidation.html").getContent();
+const jsonObject = JSON.parse(jsonString);
+```
+
+### Processing the JSON file
