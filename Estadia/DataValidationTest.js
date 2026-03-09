@@ -99,72 +99,83 @@ const ReadDataValidationFileTest = () => {
 	actualValue === expectedValue ?
 		console.info(" ✔︎  acceptableEntriesMetodo.rowNumber === " + actualValue) :
 		console.error(" ✖︎ acceptableEntriesMetodo.rowNumber !== " + expectedValue + ", " + actualValue);
-	validationCfg.hasOwnProperty("dataValidation") ?
-		console.info(" ✔︎ validationCfg.hasOwnProperty('dataValidation'") :
-		console.error(" ✖︎ validationCfg.hasOwnProperty('dataValidation'");	
-	let dataValidaton = validationCfg.dataValidation
-	dataValidaton.hasOwnProperty('Estadia') ?
-		console.info(" ✔︎ dataValidaton.hasOwnProperty('Estadia')") :
-		console.error(" ✖︎ dataValidaton.hasOwnProperty('Estadia')");	
-	let dataValidatonEstadia = dataValidaton.Estadia
-	dataValidatonEstadia.hasOwnProperty('DadosTeste') ?
-		console.info(" ✔︎ dataValidatonEstadia.hasOwnProperty('DadosTeste')") :
-		console.error(" ✖︎ dataValidatonEstadia.hasOwnProperty('DadosTeste')");	
-	let dataValidatonEstadiaDados = dataValidaton.Estadia.DadosTeste
-	dataValidatonEstadiaDados.hasOwnProperty('Disponibilidade') ?
-		console.info(" ✔︎ dataValidatonEstadiaDados.hasOwnProperty('Disponibilidade')") :
-		console.error(" ✖︎ dataValidatonEstadiaDados.hasOwnProperty('Disponibilidade')");	
-	let dataValidatonEstadiaDadosDisponibilidade = dataValidatonEstadiaDados.Disponibilidade
-	dataValidatonEstadiaDadosDisponibilidade.hasOwnProperty('targetColumn') ?
-		console.info(" ✔︎ dataValidatonEstadiaDadosDisponibilidade.hasOwnProperty('targetColumn') ") :
-		console.error(" ✖︎ dataValidatonEstadiaDadosDisponibilidade.hasOwnProperty('targetColumn') ");	
+	// dataValidations
+	validationCfg.hasOwnProperty("dataValidations") ?
+		console.info(" ✔︎ validationCfg.hasOwnProperty('dataValidations'") :
+		console.error(" ✖︎ validationCfg.hasOwnProperty('dataValidations'");	
+	let dataValidations = validationCfg.dataValidations
+	// dataValidations.Estadia
+	dataValidations.hasOwnProperty('Estadia') ?
+		console.info(" ✔︎ dataValidations.hasOwnProperty('Estadia')") :
+		console.error(" ✖︎ datadataValidationsalidaton.hasOwnProperty('Estadia')");	
+	let dataValidationsEstadia = dataValidations.Estadia
+	// dataValidations.Estadia.DadosTeste
+	dataValidationsEstadia.hasOwnProperty('DadosTeste') ?
+		console.info(" ✔︎ dataValidationsEstadia.hasOwnProperty('DadosTeste')") :
+		console.error(" ✖︎ dataValidationsEstadia.hasOwnProperty('DadosTeste')");	
+	let dataValidationsEstadiaDados = dataValidations.Estadia.DadosTeste
+	// dataValidations.Estadia.DadosTeste.Disponibilidade
+	dataValidationsEstadiaDados.hasOwnProperty('Disponibilidade') ?
+		console.info(" ✔︎ dataValidationsEstadiaDados.hasOwnProperty('Disponibilidade')") :
+		console.error(" ✖︎ dataValidationsEstadiaDados.hasOwnProperty('Disponibilidade')");	
+	// dataValidations.Estadia.DadosTeste.Disponibilidade.targetColumn
+	let dataValidationsEstadiaDadosDisponibilidade = dataValidationsEstadiaDados.Disponibilidade
+	dataValidationsEstadiaDadosDisponibilidade.hasOwnProperty('targetColumn') ?
+		console.info(" ✔︎ dataValidationsEstadiaDadosDisponibilidade.hasOwnProperty('targetColumn') ") :
+		console.error(" ✖︎ dataValidationsEstadiaDadosDisponibilidade.hasOwnProperty('targetColumn') ");	
 	expectedValue = 3;
-	actualValue = dataValidatonEstadiaDadosDisponibilidade.targetColumn;
+	actualValue = dataValidationsEstadiaDadosDisponibilidade.targetColumn;
 	actualValue === expectedValue ?
-		console.info(" ✔︎  dataValidatonEstadiaDadosDisponibilidade.targetColumn === " + actualValue) :
-		console.error(" ✖︎ dataValidatonEstadiaDadosDisponibilidade.targetColumn !== " + expectedValue + ", " + actualValue);
-	dataValidatonEstadiaDadosDisponibilidade.hasOwnProperty('targetRow') ?
-		console.info(" ✔︎ dataValidatonEstadiaDadosDisponibilidade.hasOwnProperty('targetRow')") :
-		console.error(" ✖︎ dataValidatonEstadiaDadosDisponibilidade.hasOwnProperty('targetRow')");	
+		console.info(" ✔︎  dataValidationsEstadiaDadosDisponibilidade.targetColumn === " + actualValue) :
+		console.error(" ✖︎ dataValidationsEstadiaDadosDisponibilidade.targetColumn !== " + expectedValue + ", " + actualValue);
+	// dataValidations.Estadia.DadosTeste.Disponibilidade.targetRow
+	dataValidationsEstadiaDadosDisponibilidade.hasOwnProperty('targetRow') ?
+		console.info(" ✔︎ dataValidationsEstadiaDadosDisponibilidade.hasOwnProperty('targetRow')") :
+		console.error(" ✖︎ dataValidationsEstadiaDadosDisponibilidade.hasOwnProperty('targetRow')");	
 	expectedValue = 2;
-	actualValue = dataValidatonEstadiaDadosDisponibilidade.targetRow;
+	actualValue = dataValidationsEstadiaDadosDisponibilidade.targetRow;
 	actualValue === expectedValue ?
-		console.info(" ✔︎  dataValidatonEstadiaDadosDisponibilidade.targetRow === " + actualValue) :
-		console.error(" ✖︎ dataValidatonEstadiaDadosDisponibilidade.targetRow !== " + expectedValue + ", " + actualValue);
-	dataValidatonEstadiaDadosDisponibilidade.hasOwnProperty('acceptableEntriesName') ?
-		console.info(" ✔︎ dataValidatonEstadiaDadosDisponibilidade.hasOwnProperty('acceptableEntriesName')") :
-		console.error(" ✖︎ dataValidatonEstadiaDadosDisponibilidade.hasOwnProperty('acceptableEntriesName')");	
+		console.info(" ✔︎  dataValidationsEstadiaDadosDisponibilidade.targetRow === " + actualValue) :
+		console.error(" ✖︎ dataValidationsEstadiaDadosDisponibilidade.targetRow !== " + expectedValue + ", " + actualValue);
+	// dataValidations.Estadia.DadosTeste.Disponibilidade.acceptableEntriesName
+	dataValidationsEstadiaDadosDisponibilidade.hasOwnProperty('acceptableEntriesName') ?
+		console.info(" ✔︎ dataValidationsEstadiaDadosDisponibilidade.hasOwnProperty('acceptableEntriesName')") :
+		console.error(" ✖︎ dataValidationsEstadiaDadosDisponibilidade.hasOwnProperty('acceptableEntriesName')");	
 	expectedValue = "Disponibilidade";
-	actualValue = dataValidatonEstadiaDadosDisponibilidade.acceptableEntriesName;
+	actualValue = dataValidationsEstadiaDadosDisponibilidade.acceptableEntriesName;
 	actualValue === expectedValue ?
-		console.info(" ✔︎  dataValidatonEstadiaDadosDisponibilidade.acceptableEntriesName === " + actualValue) :
-		console.error(" ✖︎ dataValidatonEstadiaDadosDisponibilidade.acceptableEntriesName !== " + expectedValue + ", " + actualValue);
-	dataValidatonEstadiaDados.hasOwnProperty('Metodo') ?
-		console.info(" ✔︎ dataValidatonEstadiaDados.hasOwnProperty('Metodo')") :
-		console.error(" ✖︎ dataValidatonEstadiaDados.hasOwnProperty('Metodo')");	
-	let dataValidatonEstadiaDadosMetodo = dataValidatonEstadiaDados.Metodo
-	dataValidatonEstadiaDadosMetodo.hasOwnProperty('targetColumn') ?
-		console.info(" ✔︎ dataValidatonEstadiaDadosMetodo.hasOwnProperty('targetColumn') ") :
-		console.error(" ✖︎ dataValidatonEstadiaDadosMetodo.hasOwnProperty('targetColumn') ");	
+		console.info(" ✔︎  dataValidationsEstadiaDadosDisponibilidade.acceptableEntriesName === " + actualValue) :
+		console.error(" ✖︎ dataValidationsEstadiaDadosDisponibilidade.acceptableEntriesName !== " + expectedValue + ", " + actualValue);
+	// dataValidations.Estadia.DadosTeste.Metodo
+	dataValidationsEstadiaDados.hasOwnProperty('Metodo') ?
+		console.info(" ✔︎ dataValidationsEstadiaDados.hasOwnProperty('Metodo')") :
+		console.error(" ✖︎ dataValidationsEstadiaDados.hasOwnProperty('Metodo')");	
+	// dataValidations.Estadia.DadosTeste.Metodo.targetColumn
+	let dataValidationsEstadiaDadosMetodo = dataValidationsEstadiaDados.Metodo
+	dataValidationsEstadiaDadosMetodo.hasOwnProperty('targetColumn') ?
+		console.info(" ✔︎ dataValidationsEstadiaDadosMetodo.hasOwnProperty('targetColumn') ") :
+		console.error(" ✖︎ dataValidationsEstadiaDadosMetodo.hasOwnProperty('targetColumn') ");	
 	expectedValue = 4;
-	actualValue = dataValidatonEstadiaDadosMetodo.targetColumn;
+	actualValue = dataValidationsEstadiaDadosMetodo.targetColumn;
 	actualValue === expectedValue ?
-		console.info(" ✔︎  dataValidatonEstadiaDadosMetodo.targetColumn === " + actualValue) :
-		console.error(" ✖︎ dataValidatonEstadiaDadosMetodo.targetColumn !== " + expectedValue + ", " + actualValue);
-	dataValidatonEstadiaDadosMetodo.hasOwnProperty('targetRow') ?
-		console.info(" ✔︎ dataValidatonEstadiaDadosMetodo.hasOwnProperty('targetRow')") :
-		console.error(" ✖︎ dataValidatonEstadiaDadosMetodo.hasOwnProperty('targetRow')");	
+		console.info(" ✔︎  dataValidationsEstadiaDadosMetodo.targetColumn === " + actualValue) :
+		console.error(" ✖︎ dataValidationsEstadiaDadosMetodo.targetColumn !== " + expectedValue + ", " + actualValue);
+	// dataValidations.Estadia.DadosTeste.Metodo.targetRow
+	dataValidationsEstadiaDadosMetodo.hasOwnProperty('targetRow') ?
+		console.info(" ✔︎ dataValidationsEstadiaDadosMetodo.hasOwnProperty('targetRow')") :
+		console.error(" ✖︎ dataValidationsEstadiaDadosMetodo.hasOwnProperty('targetRow')");	
 	expectedValue = 2;
-	actualValue = dataValidatonEstadiaDadosMetodo.targetRow
+	actualValue = dataValidationsEstadiaDadosMetodo.targetRow
 	actualValue === expectedValue ?
-		console.info(" ✔︎  dataValidatonEstadiaDadosMetodo.targetRow === " + actualValue) :
-		console.error(" ✖︎ dataValidatonEstadiaDadosMetodo.targetRow !== " + expectedValue + ", " + actualValue);
-	dataValidatonEstadiaDadosMetodo.hasOwnProperty('acceptableEntriesName') ?
-		console.info(" ✔︎ dataValidatonEstadiaDadosMetodo.hasOwnProperty('acceptableEntriesName')") :
-		console.error(" ✖︎ dataValidatonEstadiaDadosMetodo.hasOwnProperty('acceptableEntriesName')");	
+		console.info(" ✔︎  dataValidationsEstadiaDadosMetodo.targetRow === " + actualValue) :
+		console.error(" ✖︎ dataValidationsEstadiaDadosMetodo.targetRow !== " + expectedValue + ", " + actualValue);
+	// dataValidations.Estadia.DadosTeste.Metodo.acceptableEntriesName
+	dataValidationsEstadiaDadosMetodo.hasOwnProperty('acceptableEntriesName') ?
+		console.info(" ✔︎ dataValidationsEstadiaDadosMetodo.hasOwnProperty('acceptableEntriesName')") :
+		console.error(" ✖︎ dataValidationsEstadiaDadosMetodo.hasOwnProperty('acceptableEntriesName')");	
 	expectedValue = "Metodo";
-	actualValue = dataValidatonEstadiaDadosMetodo.acceptableEntriesName;
+	actualValue = dataValidationsEstadiaDadosMetodo.acceptableEntriesName;
 	actualValue === expectedValue ?
-		console.info(" ✔︎  dataValidatonEstadiaDadosMetodo.acceptableEntriesName === " + actualValue) :
-		console.error(" ✖︎ dataValidatonEstadiaDadosMetodo.acceptableEntriesName !== " + expectedValue + ", " + actualValue);
+		console.info(" ✔︎  dataValidationsEstadiaDadosMetodo.acceptableEntriesName === " + actualValue) :
+		console.error(" ✖︎ dataValidationsEstadiaDadosMetodo.acceptableEntriesName !== " + expectedValue + ", " + actualValue);
 }

@@ -133,3 +133,29 @@ const jsonObject = JSON.parse(jsonString);
 ```
 
 ### Processing the JSON file
+Our Data Validation Configuration files are spreasheet-centric and have two halves, i. the configuration of the acceptable entries, hosted in their own spreadsheets, used by all the spreasheet's sheets, ii. the data validation configurations, consisting of the spreadshet's sheets, their columns, staring rows, and acceptable entries.
+
+We will build an object with all the acceptable entries configuratons:
+```javascript
+acceptableEntries = {
+  "EntryName": {
+    ...acceptableEntriesConfiguraton
+  }
+  ...
+}
+```
+We will build an object with all the data Validations:
+```javascript
+ data Validations = {
+  "dataValidation": {
+    ...dataValidationConfiguraton
+  }
+ }
+```
+ Note that one of the keys in the dataValidationConfiguraton is its acceptableEntriesConfiguraton.
+
+Then we will process the data Validations. For each entry we will:
+1. Build the Original Acceptable Entries configuration object, which is the data Validation's acceptableEntriesConfiguratio object, `oConfig`;
+2. Build the Local Acceptable Entries configuration object, `lConfig`;
+3. Build the Data Validation Configuration, where data validation is applied to, `dConfig`;
+4. Call the well tested `ConfigureDataValidationColumn(dConfig, oConfig, lConfig)`;
