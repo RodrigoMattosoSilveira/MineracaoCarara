@@ -4,7 +4,7 @@
 			"spreadsheetName": "Referencia",
 			"sheetName": "DisponibilidadeTeste",
 			"columnNumber": 1,
-			"rowNumber": 2			
+			"rowNumber": 2		
 		},
 		"Metodo": {
 			"spreadsheetName": "Referencia",
@@ -13,20 +13,31 @@
 			"rowNumber": 2
 		}
 	},	
-	"dataValidations": {
-		"Estadia": {
+	"Estadia": {
+		"acceptableEntries": {
+			"Disponibilidade": {
+				"sheetName": "TrabalhoTeste",
+				"columnNumber": 2,
+				"rowNumber": 2		
+			},
+			"Metodo": {
+				"sheetName": "TrabalhoTeste",
+				"columnNumber": 3,
+				"rowNumber": 2
+			}		
+		},
+		"dataValidations": {
 			"DadosTeste": {
 				"Disponibilidade": {
-					"targetColumn": 3,
-					"targetRow": 2,		
-					"acceptableEntriesName": "Disponibilidade"
+					"columnNumber": 4,
+					"rowNumber": 2
 				},
 				"Metodo": {
-					"targetColumn": 4,
-					"targetRow": 2,		
-					"acceptableEntriesName": "Metodo"
+					"columnNumber": 5,
+					"rowNumber": 2
 				}
-			}
-		}	
-	}
+			}			
+		}
+
+	}	
 }

@@ -99,6 +99,7 @@ const ReadDataValidationFileTest = () => {
 	actualValue === expectedValue ?
 		console.info(" ✔︎  acceptableEntriesMetodo.rowNumber === " + actualValue) :
 		console.error(" ✖︎ acceptableEntriesMetodo.rowNumber !== " + expectedValue + ", " + actualValue);
+
 	// dataValidations
 	validationCfg.hasOwnProperty("dataValidations") ?
 		console.info(" ✔︎ validationCfg.hasOwnProperty('dataValidations'") :
@@ -178,4 +179,133 @@ const ReadDataValidationFileTest = () => {
 	actualValue === expectedValue ?
 		console.info(" ✔︎  dataValidationsEstadiaDadosMetodo.acceptableEntriesName === " + actualValue) :
 		console.error(" ✖︎ dataValidationsEstadiaDadosMetodo.acceptableEntriesName !== " + expectedValue + ", " + actualValue);
+
+	// localAcceptableEntries
+	validationCfg.hasOwnProperty("localAcceptableEntries")?
+		console.info(" ✔︎ validationCfg.hasOwnProperty('localAcceptableEntries'") :
+		console.error(" ✖︎ validationCfg.hasOwnProperty('localAcceptableEntries'");	
+	let localAcceptableEntries = validationCfg.localAcceptableEntries;
+	localAcceptableEntries !== null ? 
+		console.info(" ✔︎ localAcceptableEntries !== null ") :
+		console.error(" ✖︎  localAcceptableEntries !== null");
+	// localAcceptableEntries.Disponibilidade
+		localAcceptableEntries.hasOwnProperty("Disponibilidade") ?
+		console.info(" ✔︎ alocalAcceptableEntries.hasOwnProperty('Disponibilidade')") :
+		console.error(" ✖︎  localAcceptableEntries.hasOwnProperty('Disponibilidade')");
+	let localAcceptableEntriesDisponibilidade = localAcceptableEntries.Disponibilidade
+	localAcceptableEntriesDisponibilidade !== null ? 
+		console.info(" ✔︎ localAcceptableEntriesDisponibilidade !== null ") :
+		console.error(" ✖︎  localAcceptableEntriesDisponibilidade !== null");
+	// localAcceptableEntries.Disponibilidade.spreadsheetName
+	localAcceptableEntriesDisponibilidade.hasOwnProperty("spreadsheetName") ?
+		console.info(" ✔︎ localAcceptableEntriesDisponibilidade.hasOwnProperty('spreadsheetName')") :
+		console.error(" ✖︎  localAcceptableEntriesDisponibilidade.hasOwnProperty('spreadsheetName')");
+	expectedValue = "Estadia";
+	actualValue = localAcceptableEntriesDisponibilidade.spreadsheetName;
+	actualValue === expectedValue ?
+		console.info(" ✔︎  localAcceptableEntriesDisponibilidade.spreadsheetName === " + actualValue) :
+		console.error(" ✖︎ localAcceptableEntriesDisponibilidade.spreadsheetName !== " + expectedValue + ", " + actualValue);
+	// localAcceptableEntries.Disponibilidade.sheetName
+	localAcceptableEntriesDisponibilidade.hasOwnProperty("sheetName") ?
+		console.info(" ✔︎ localAcceptableEntriesDisponibilidade.hasOwnProperty('sheetName')") :
+		console.error(" ✖︎  localAcceptableEntriesDisponibilidade.hasOwnProperty('sheetName')");
+	expectedValue = "TrabalhoTeste";
+	actualValue = localAcceptableEntriesDisponibilidade.sheetName;
+	actualValue === expectedValue ?
+		console.info(" ✔︎  localAcceptableEntriesDisponibilidade.sheetName === " + actualValue) :
+		console.error(" ✖︎ localAcceptableEntriesDisponibilidade.sheetName !== " + expectedValue + ", " + actualValue);
+	// localAcceptableEntries.Disponibilidade.columnNumber
+	localAcceptableEntriesDisponibilidade.hasOwnProperty("columnNumber") ?
+		console.info(" ✔︎ localAcceptableEntriesDisponibilidade.hasOwnProperty('columnNumber')") :
+		console.error(" ✖︎  localAcceptableEntriesDisponibilidade.hasOwnProperty('columnNumber')");
+	expectedValue = 2;
+	actualValue = localAcceptableEntriesDisponibilidade.columnNumber;
+	actualValue === expectedValue ?
+		console.info(" ✔︎  localAcceptableEntriesDisponibilidade.columnNumber === " + actualValue) :
+		console.error(" ✖︎ localAcceptableEntriesDisponibilidade.columnNumber !== " + expectedValue + ", " + actualValue);
+	// localAcceptableEntries.Disponibilidade.rowNumber
+	localAcceptableEntriesDisponibilidade.hasOwnProperty("rowNumber") ?
+		console.info(" ✔︎ localAcceptableEntriesDisponibilidade.hasOwnProperty('rowNumber')") :
+		console.error(" ✖︎  localAcceptableEntriesDisponibilidade.hasOwnProperty('rowNumber')");
+	expectedValue = 2;
+	actualValue = localAcceptableEntriesDisponibilidade.rowNumber;
+	actualValue === expectedValue ?
+		console.info(" ✔︎  localAcceptableEntriesDisponibilidade.rowNumber === " + actualValue) :
+		console.error(" ✖︎ localAcceptableEntriesDisponibilidade.rowNumber !== " + expectedValue + ", " + actualValue);
+	// localAcceptableEntries.Metodo
+	localAcceptableEntries.hasOwnProperty("Metodo") ?
+		console.info(" ✔︎ localAcceptableEntries.hasOwnProperty('Metodo')") :
+		console.error(" ✖︎  localAcceptableEntries.hasOwnProperty('Metodo')");
+	let localAcceptableEntriesMetodo = localAcceptableEntries.Metodo
+	localAcceptableEntriesMetodo !== null ? 
+		console.info(" ✔︎ localAcceptableEntriesMetodo !== null ") :
+		console.error(" ✖︎  localAcceptableEntriesMetodo !== null");
+	// localAcceptableEntries.Metodo.spreadsheetName
+	localAcceptableEntriesMetodo.hasOwnProperty("spreadsheetName") ?
+		console.info(" ✔︎ localAcceptableEntriesMetodo.hasOwnProperty('spreadsheetName')") :
+		console.error(" ✖︎  localAcceptableEntriesMetodo.hasOwnProperty('spreadsheetName')");
+	expectedValue = "Estadia";
+	actualValue = localAcceptableEntriesMetodo.spreadsheetName;
+	actualValue === expectedValue ?
+		console.info(" ✔︎  localAcceptableEntriesMetodo.spreadsheetName === " + actualValue) :
+		console.error(" ✖︎ localAcceptableEntriesMetodo.spreadsheetName !== " + expectedValue + ", " + actualValue);
+	// localAcceptableEntries.Disponibilidade.sheetName
+	localAcceptableEntriesMetodo.hasOwnProperty("sheetName") ?
+		console.info(" ✔︎ localAcceptableEntriesMetodo.hasOwnProperty('sheetName')") :
+		console.error(" ✖︎  localAcceptableEntriesMetodo.hasOwnProperty('sheetName')");
+	expectedValue = "TrabalhoTeste";
+	actualValue = localAcceptableEntriesMetodo.sheetName;
+	actualValue === expectedValue ?
+		console.info(" ✔︎  localAcceptableEntriesMetodo.sheetName === " + actualValue) :
+		console.error(" ✖︎ localAcceptableEntriesMetodo.sheetName !== " + expectedValue + ", " + actualValue);
+	// localAcceptableEntries.Disponibilidade.columnNumber
+	localAcceptableEntriesMetodo.hasOwnProperty("columnNumber") ?
+		console.info(" ✔︎ localAcceptableEntriesMetodo.hasOwnProperty('columnNumber')") :
+		console.error(" ✖︎  localAcceptableEntriesMetodo.hasOwnProperty('columnNumber')");
+	expectedValue = 3;
+	actualValue = localAcceptableEntriesMetodo.columnNumber;
+	actualValue === expectedValue ?
+		console.info(" ✔︎  localAcceptableEntriesMetodo.columnNumber === " + actualValue) :
+		console.error(" ✖︎ localAcceptableEntriesMetodo.columnNumber !== " + expectedValue + ", " + actualValue);
+	// localAcceptableEntries.Disponibilidade.rowNumber
+	localAcceptableEntriesMetodo.hasOwnProperty("rowNumber") ?
+		console.info(" ✔︎ localAcceptableEntriesMetodo.hasOwnProperty('rowNumber')") :
+		console.error(" ✖︎  localAcceptableEntriesMetodo.hasOwnProperty('rowNumber')");
+	expectedValue = 2;
+	actualValue = localAcceptableEntriesMetodo.rowNumber;
+	actualValue === expectedValue ?
+		console.info(" ✔︎  localAcceptableEntriesMetodo.rowNumber === " + actualValue) :
+		console.error(" ✖︎ localAcceptableEntriesMetodo.rowNumber !== " + expectedValue + ", " + actualValue);
+
+	/* CROSS VALIDATIONS */
+	
+	// originalAcceptableEntries and localAcceptableEntries must have the same keys
+	const originalAcceptableEntriesKeys = Object.keys(validationCfg.acceptableEntries);
+	let localAcceptableEntriesSpreasheetKeys = Object.keys(validationCfg.localAcceptableEntries);
+	expectedValue = originalAcceptableEntriesKeys.length;
+	actualValue = localAcceptableEntriesSpreasheetKeys.length;
+	actualValue === expectedValue ?
+		console.info(" ✔︎  originalAcceptableEntriesKeys.length === localAcceptableEntriesKeys.length") :
+		console.error(" ✖︎  originalAcceptableEntriesKeys.length !== localAcceptableEntriesKeys.length" + expectedValue + ", " + actualValue);
+	
+	// Data validations in dataValidations must have a localAcceptableEntry 
+	let spreadSheetNames = Object.keys(validationCfg.dataValidations);
+	expectedValue = 1;
+	actualValue = spreadSheetNames.length;
+	actualValue === expectedValue ?
+		console.info(" ✔︎  Object(keys(validationCfg.dataValidations).length === 1") :
+		console.error(" ✖︎  Object(keys(validationCfg.dataValidations).length !== 1" + expectedValue + ", " + actualValue);
+	const spreasheetName = spreadSheetNames[0];
+	const sheets = Object.keys(validationCfg.dataValidations[spreasheetName]);
+	sheets.forEach(sheetName => {
+		const validations = Object.keys(validationCfg.dataValidations[spreasheetName][sheetName])
+		validations.forEach(validation => {
+			const acceptableEntriesName = validationCfg.dataValidations[spreasheetName][sheetName][validation].acceptableEntriesName;
+			expectedValue = true;
+			actualValue = localAcceptableEntriesSpreasheetKeys.indexOf(acceptableEntriesName)
+			actualValue > -1?
+				console.info(" ✔︎  localAcceptableEntriesKeys.indexOf(" + acceptableEntriesName + ") > -1") :
+				console.error(" ✖︎  localAcceptableEntriesKeys.indexOf(" + acceptableEntriesName + ") === -1" + expectedValue + ", " + actualValue);
+		})
+	})
 }

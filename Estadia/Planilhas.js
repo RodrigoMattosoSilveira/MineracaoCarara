@@ -23,6 +23,13 @@ const ESTADIAS_TAREFA          = 7;
 const ESTADIAS_REMUNERACAO     = 8;
 const ESTADIAS_COMENTARIOS     = 9;
 
+const ESTADIAS_PLANILHA_TRABALHO_NOME                       = "Tabalho";
+const ESTADIAS_PLANILHA_TRABALHO_METODO_NOME_COL            = 0
+const ESTADIAS_PLANILHA_TRABALHO_METODO_DISPONIBILIDADE_COL = 1
+const ESTADIAS_PLANILHA_TRABALHO_METODO_COL                 = 2
+const ESTADIAS_PLANILHA_TRABALHO_SETOR_COL                  = 3
+const ESTADIAS_PLANILHA_TRABALHO_TAREFA_COL                 = 4
+
 const obterEstadiasPlanilha = () => obterSpreadsheet(ESTADIA_SPREADSHEET_ID).getSheetByName(ESTADIAS_PLANILHA);
 const obterEstadiasGama     = () => obterSpreadsheet(ESTADIA_SPREADSHEET_ID).getRangeByName(ESTADIAS_GAMA);
 const obterEstadiasGamaVals = () => {

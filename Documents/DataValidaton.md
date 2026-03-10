@@ -90,35 +90,66 @@ I'll write one `JSON` configuration file per local spresheet with data validatio
 This [JSON schema valildator](https://www.jsongenerator.io/schema) is very helpfull:
 ```json
 {
-  "acceptableEntries": {
-      "acceptableEntriesName": {
-        "spreadsheetName": "spreadsheetName",
-        "sheetName": "sheetName",
-        "columnNumber": 1,
-        "rowNumber": 2
-    }
-  },
-  "dataValidation": {
-    "spreadsheetName": {
-      "columnName": {
-        "targetColumn": 1,
-        "targetRow": 1,
-        "acceptableEntriesName": "acceptableEntriesName"
-      }
-    }
-  }
+	"acceptableEntries": {
+		"Disponibilidade": {
+			"spreadsheetName": "Referencia",
+			"sheetName": "Disponibilidade",
+			"columnNumber": 1,
+			"rowNumber": 2		
+		},
+		"Metodo": {
+			"spreadsheetName": "Referencia",
+			"sheetName": "Metodo",
+			"columnNumber": 1,
+			"rowNumber": 2
+		}
+	},	
+	"Estadia": {
+		"acceptableEntries": {
+			"Disponibilidade": {
+				"sheetName": "TrabalhoTeste",
+				"columnNumber": 2,
+				"rowNumber": 2		
+			},
+			"Metodo": {
+				"sheetName": "TrabalhoTeste",
+				"columnNumber": 3,
+				"rowNumber": 2
+			}		
+		},
+		"dataValidations": {
+			"DadosTeste": {
+				"Disponibilidade": {
+					"targetColumn": 3,
+					"targetRow": 2,		
+					"acceptableEntriesName": "Disponibilidade"
+				},
+				"Metodo": {
+					"targetColumn": 4,
+					"targetRow": 2,		
+					"acceptableEntriesName": "Metodo"
+				}
+			}			
+		}
+
+	}	
 }
 ```
 Notes:
 - `acceptableEntries`:
-  - The `acceptableEntriesName` object name is unique to its function, as for instance Metodo; it can be used for multiple sheets in the same local spreadsheet;
-  - I'll derive the orinal spreadsheet ID, and its data using the existing machinery in place;
-  - The `sheetName` r
-- `dataValidation`:
-  - `spreadsheetName` the local spreadsheet name;
-    - `sheetName` unique sheeet name identifying the sheets with data validation;
-      - `columnName` unique column name for the sheetName, identifying the columnswith data validation;
-        - `acceptableEntriesName` the name of the data validation object described in acceptableEntries;
+  - Configurations describing each of the data entries used for validation in the spreadsheet;
+  - There is one configuration per data set entry; see the `Disponibilidade` and `Metdo` keys; 
+- `Estadia`
+  - The name of the spreadsheet whose sheets are the target of the data validation;
+  - There must one and only one spreadsheet name in this configuration file;
+  - `acceptableEntries`
+    - This section must mirror the `acceptableEntries` entries;
+  - `dataValidations`:
+    - This session consists of one entry per sheet, with validations for one or more of its columns;
+    - `DadosTest`
+      - A section describing the configurations for one or more columns in the _DadosTest_ sheet;
+      - `Disponibilidade`
+        - A section describing the name of an acceptable data entry and the column/row where it starts
 
 ### Parsing the JSON file
 I did this:
@@ -133,26 +164,14 @@ const jsonObject = JSON.parse(jsonString);
 ```
 
 ### Processing the JSON file
-Our Data Validation Configuration files are spreasheet-centric and have two halves, i. the configuration of the acceptable entries, hosted in their own spreadsheets, used by all the spreasheet's sheets, ii. the data validation configurations, consisting of the spreadshet's sheets, their columns, staring rows, and acceptable entries.
+Our Data Validation Configuration files are spreasheet-centric and have two parts:
+- `acceptableEntries` - The source for all the accetable entries;
+- `Estadia` - The spreadsheet name for which we are describing data configurations;
 
-We will build an object with all the acceptable entries configuratons:
-```javascript
-acceptableEntries = {
-  "EntryName": {
-    ...acceptableEntriesConfiguraton
-  }
-  ...
-}
-```
-We will build an object with all the data Validations:
-```javascript
- data Validations = {
-  "dataValidation": {
-    ...dataValidationConfiguraton
-  }
- }
-```
- Note that one of the keys in the dataValidationConfiguraton is its acceptableEntriesConfiguraton.
+The _Estadia_ section has two parts:
+- `acceptableEntries` - The local source for all the accetable entries;
+- `dataValidations` - The target sheets and their columns
+- Note that each dataValidation includes a key, `acceptableEntriesName`, describing the local acceptable entries to be used for its configuraton;
 
 Then we will process the data Validations. For each entry we will:
 1. Build the Original Acceptable Entries configuration object, which is the data Validation's acceptableEntriesConfiguratio object, `oConfig`;
