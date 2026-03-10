@@ -14,7 +14,9 @@ function buildConfigObjects () {
 		dSheetName: "",
 		validationName: ""
 	}
-
+	ConfigureDataValidations(configurationObj, environment)
+}
+function ConfigureDataValidations(configurationObj, environment) {
 	// Process each data validation
 	try {
 		// acceptableEntries
@@ -115,6 +117,7 @@ function buildConfigObjects () {
     	return false;
 	}
 }
+
 /**
  * 
  * @param {Object} configurationObj 
