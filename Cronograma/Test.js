@@ -1,5 +1,19 @@
 const EPSILON = 0.00001;
 
+const copySheetToAnotherSpreadsheetTeste = () => {
+	// Copy Estadia.Dados to Cronograma.Estadias
+	CararaLibrary.CopySheetToAnotherSpreadsheet(ESTADIAS_SPREADSHEET_ID, 
+                                  "Dados",
+                                  CRONOGRAMA_SPREADSHEET_ID, 
+                                  "Estadias" 
+								 );
+	// Copy Referencia.Periodo to Cronograma.Periodos
+	CararaLibrary.CopySheetToAnotherSpreadsheet(REFERENCIA_SPREADSHEET_ID, 
+                                  "Periodo",
+                                  CRONOGRAMA_SPREADSHEET_ID, 
+                                  "Periodos" 
+								 );
+}
 const cronogramaPlanejarExecutarTestePlanejar = () => {
 	let dataStr = '21/2/2025'; 
 	let data = new Date(dataStr)

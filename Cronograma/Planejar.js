@@ -13,6 +13,18 @@ function cronogramaPlanejar() {
 	// Navegue para a planilha Planejar
 	CararaLibrary.activateSheet("Planejar");
 
+	// Copy Estadia.Dados to Cronograma.Estadias
+	CararaLibrary.CopySheetToAnotherSpreadsheet(ESTADIAS_SPREADSHEET_ID, 
+                                  "Dados",
+                                  CRONOGRAMA_SPREADSHEET_ID, 
+                                  "Estadias" 
+								 );
+	CararaLibrary.CopySheetToAnotherSpreadsheet(REFERENCIA_SPREADSHEET_ID, 
+                                  "Periodo",
+                                  CRONOGRAMA_SPREADSHEET_ID, 
+                                  "Periodos" 
+								 );
+
 	let planejarGamaVals = obterPlanejarGamaVals();
 	if (planejarGamaVals.length > 0) {	
 		SpreadsheetApp.getUi().alert("Existem registros na planilha Planejar. Favor completar of plano em progresso our remover os registros mannualmente.");

@@ -1,5 +1,7 @@
-const GOOGLE_SHEET_ID = "1OCwl3tVukD6nhGYqGvcVrGP_NjGFLJ7NYL-5vkdZTOg";
-const obterGoogleSheet = () =>  SpreadsheetApp.openById(GOOGLE_SHEET_ID);
+// https://stackoverflow.com/questions/62175748/driveapp-error-were-sorry-a-server-error-occurred-please-wait-a-bit-and-try
+// const ESTADIA_SPREADSHEET_ID = "1cBWZwZ8JPJARGNFmjFAFzKIaPApeO5kN8jencYUVki4";
+const CRONOGRAMA_SPREADSHEET_ID  = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActiveSpreadsheet(), "CRONOGRAMA")
+const obterGoogleSheet = () =>  SpreadsheetApp.openById(CRONOGRAMA_SPREADSHEET_ID);
 
 const PUBLICADOS_PLANILHA     = "Publicados";
 const PUBLICADOS_GAMA         = "Publicados";
@@ -30,6 +32,7 @@ const obterPublicadosDataPeriodoKeys = () => {
 }
 const gamaPublicadosTemChaveDataPeriodo = (chave) => obterPublicadosDataPeriodoKeys().indexOf(chave) !== -1 ? true : false;
 
+const ESTADIAS_SPREADSHEET_ID  = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActiveSpreadsheet(), "ESTADIA")
 const ESTADIAS_PLANILHA = "Estadias";
 const ESTADIAS_GAMA = "Estadias";
 const ESTADIAS_NOME = 0;
@@ -181,6 +184,7 @@ const obterAtivosAcoesValidas = () => {
 	return acoesValidas.filter( elemento => elemento[0] !== '' && elemento[0] !== 'AcoesValidas').map( elemento => elemento[0]);
 }
 
+const REFERENCIA_SPREADSHEET_ID = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActiveSpreadsheet(), "REFERENCIA")
 const PERIODOS_PLANILHA = "Periodos";
 const PERIODOS_GAMA = "Periodos";
 const PERIODOS_NOME = 0;

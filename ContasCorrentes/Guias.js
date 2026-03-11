@@ -51,25 +51,3 @@ const obterEstadiaSS           = () =>  SpreadsheetApp.openById(ESTADIAS_SPREADS
 const obterEstadiaDadosS       = () =>  obterEstadiaSS.getSheetByName("Dados");
 
 const PESSOA_SPREADSHEET_ID  = CararaLibrary.GetSpreadsheetId(activeSheet, "PESSOA")
-
-
-/**
- * Copies one spreadsheet's sheet content to another spreadsheet's sheet
- * @param {string} sourceSS_ID 
- * @param {string} sourceSheetName 
- * @param {string} targetSS_ID 
- * @param {string*} targetSheetName 
- * @returns none
- */
-function copySheetToAnotherSpreadsheet(sourceSS_ID, sourceSheetName, targetSS_ID, targetSheetName) {
-  const source = SpreadsheetApp.openById(sourceSS_ID)
-                .getSheetByName(sourceSheetName);
-
-  const target = SpreadsheetApp.openById(targetSS_ID)
-                .getSheetByName(targetSheetName);
-
-  const data = source.getDataRange().getValues();
-
-  target.clearContents();
-  target.getRange(1,1,data.length,data[0].length).setValues(data);
-}
