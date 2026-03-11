@@ -10,7 +10,7 @@ function ConfigureSpreadsheetDataValidationsPlanejar () {
 	CararaLibrary.ConfigureDataValidations(configurationObj, environment)
 }
 function ConfigureSpreadsheetDataValidationsInformar () {
-	const fileName = "DataValidationInformatHtml.html";
+	const fileName = "DataValidationInformarHtml.html";
 	const configurationObj = ReadDataValidationFile(fileName)
 	
 	// Environment

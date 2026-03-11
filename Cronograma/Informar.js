@@ -66,6 +66,8 @@ function cronogramaInformar() {
     limparContentDataValidations(obterPlanejarGama());
 
     CararaLibrary.activateSheet("PDF");
+	// Configure data validation
+	ConfigureSpreadsheetDataValidationsPlanejar();
     SpreadsheetApp.getActiveSpreadsheet().toast('Fim', 'Informar', 1);
     return true
 }
