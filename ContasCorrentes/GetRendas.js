@@ -15,7 +15,16 @@ const FuturoOuroRange	 = ContasCorrentesTab.getRange("AGanharOuro");
 
 function getRendas() {
 	// Copy Estadia.Dados to Contas.Correntes.Estadia
-	copySheetToAnotherSpreadsheet(ESTADIAS_SPREADSHEET_ID, "Estadia", CONTAS_CORRENTES_SPREADSHEET_ID, "Dados");
+	copySheetToAnotherSpreadsheet(ESTADIAS_SPREADSHEET_ID, 
+                                  "Dados",
+                                  CONTAS_CORRENTES_SPREADSHEET_ID, 
+                                  "Estadia" 
+								 );
+	copySheetToAnotherSpreadsheet(PESSOA_SPREADSHEET_ID, 
+                                  "Dados",
+                                  CONTAS_CORRENTES_SPREADSHEET_ID, 
+                                  "Pessoa" 
+								 );
 
 	let colaboradorNome   = ccColaboradorRange.getValue();
   	let colaboradoEstadia = ccEstadiaRange.getValue();

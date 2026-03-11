@@ -50,6 +50,8 @@ const ESTADIAS_SPREADSHEET_ID  = CararaLibrary.GetSpreadsheetId(activeSheet, "ES
 const obterEstadiaSS           = () =>  SpreadsheetApp.openById(ESTADIAS_SPREADSHEET_ID);
 const obterEstadiaDadosS       = () =>  obterEstadiaSS.getSheetByName("Dados");
 
+const PESSOA_SPREADSHEET_ID  = CararaLibrary.GetSpreadsheetId(activeSheet, "PESSOA")
+
 
 /**
  * Copies one spreadsheet's sheet content to another spreadsheet's sheet
@@ -60,21 +62,14 @@ const obterEstadiaDadosS       = () =>  obterEstadiaSS.getSheetByName("Dados");
  * @returns none
  */
 function copySheetToAnotherSpreadsheet(sourceSS_ID, sourceSheetName, targetSS_ID, targetSheetName) {
-  const sourceSS    = SpreadsheetApp.openById(sourceSS_ID);
-  const sourceSheet = sourceSS.getSheetByName(sourceSheetName);
+  const source = SpreadsheetApp.openById(sourceSS_ID)
+                .getSheetByName(sourceSheetName);
 
-  const targetSS  = SpreadsheetApp.openById(targetSS_ID);
-  let targetSheet = targetSS.getSheetByName(targetSheetName);
+  const target = SpreadsheetApp.openById(targetSS_ID)
+                .getSheetByName(targetSheetName);
 
-  // Remove existing target sheet
-  if (targetSheet) {
-    targetSS.deleteSheet(targetSheet);
-  }
+  const data = source.getDataRange().getValues();
 
-  // Copy the sheet and clear validations
-  const newSheet = sourceSheet.copyTo(targetSS);
-  newSheet.getDataRange().clearDataValidations();
-
-  // Rename it to desired name
-  newSheet.setName(targetSheetName);
+  target.clearContents();
+  target.getRange(1,1,data.length,data[0].length).setValues(data);
 }
