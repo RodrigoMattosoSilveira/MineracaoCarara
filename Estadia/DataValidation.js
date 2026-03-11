@@ -1,18 +1,11 @@
-function buildConfigObjects () {
+function ConfigureSpreadsheetDataValidations () {
 	const fileName = "DataValidationHtml.html";
 	const configurationObj = ReadDataValidationFile(fileName)
 	
 	// Environment
 	let environment = {
 		activeSpreadsheet: SpreadsheetApp.getActiveSpreadsheet(),
-		oSpreadsheetName: "",
-		oSpreadsheetId: "",
-		oSheetName: "",
-		spreadsheetName: "Estadia",
-		spreadsheetId: "",
-		lSheetName: "",
-		dSheetName: "",
-		validationName: ""
+		spreadsheetName: "Estadia"
 	}
 	CararaLibrary.ConfigureDataValidations(configurationObj, environment)
 }

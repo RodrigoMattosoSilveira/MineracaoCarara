@@ -1,4 +1,10 @@
-const obterGoogleSheet     = () =>  SpreadsheetApp.openById("10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA");
+const activeSheet             = SpreadsheetApp.getActiveSpreadsheet();
+
+// https://stackoverflow.com/questions/62175748/driveapp-error-were-sorry-a-server-error-occurred-please-wait-a-bit-and-try
+// const ESTADIA_SPREADSHEET_ID = "1cBWZwZ8JPJARGNFmjFAFzKIaPApeO5kN8jencYUVki4";
+const CONTAS_CORRENTES_SPREADSHEET_ID  = CararaLibrary.GetSpreadsheetId(activeSheet, "CONTAS_CORRENTES")
+
+const obterGoogleSheet     = () =>  SpreadsheetApp.openById(CONTAS_CORRENTES_SPREADSHEET_ID);
 
 // Planilha Dados
 const DADOS_DATA_COL              	= 0;
@@ -39,3 +45,36 @@ const obterRealSheet             = () => obterGoogleSheet().getSheetByName(REAL_
 const obterRealNomeGama          = () => obterGoogleSheet().getRangeByName(REAL_PLANILHA_NOME_GAMA);
 const obterRealEstadiaGama       = () => obterGoogleSheet().getRangeByName(REAL_PLANILHA_ESTADIA_GAMA);
 const obterRealGama              = () => obterGoogleSheet().getRangeByName(REAL_TRANSACOES_GAMA);
+
+const ESTADIAS_SPREADSHEET_ID  = CararaLibrary.GetSpreadsheetId(activeSheet, "ESTADIA")
+const obterEstadiaSS           = () =>  SpreadsheetApp.openById(ESTADIAS_SPREADSHEET_ID);
+const obterEstadiaDadosS       = () =>  obterEstadiaSS.getSheetByName("Dados");
+
+
+/**
+ * Copies one spreadsheet's sheet content to another spreadsheet's sheet
+ * @param {string} sourceSS_ID 
+ * @param {string} sourceSheetName 
+ * @param {string} targetSS_ID 
+ * @param {string*} targetSheetName 
+ * @returns none
+ */
+function copySheetToAnotherSpreadsheet(sourceSS_ID, sourceSheetName, targetSS_ID, targetSheetName) {
+  const sourceSS    = SpreadsheetApp.openById(sourceSS_ID);
+  const sourceSheet = sourceSS.getSheetByName(sourceSheetName);
+
+  const targetSS  = SpreadsheetApp.openById(targetSS_ID);
+  let targetSheet = targetSS.getSheetByName(targetSheetName);
+
+  // Remove existing target sheet
+  if (targetSheet) {
+    targetSS.deleteSheet(targetSheet);
+  }
+
+  // Copy the sheet and clear validations
+  const newSheet = sourceSheet.copyTo(targetSS);
+  newSheet.getDataRange().clearDataValidations();
+
+  // Rename it to desired name
+  newSheet.setName(targetSheetName);
+}

@@ -14,6 +14,9 @@ const FuturoRealRange	 = ContasCorrentesTab.getRange("AGanharReal");
 const FuturoOuroRange	 = ContasCorrentesTab.getRange("AGanharOuro");
 
 function getRendas() {
+	// Copy Estadia.Dados to Contas.Correntes.Estadia
+	copySheetToAnotherSpreadsheet(ESTADIAS_SPREADSHEET_ID, "Estadia", CONTAS_CORRENTES_SPREADSHEET_ID, "Dados");
+
 	let colaboradorNome   = ccColaboradorRange.getValue();
   	let colaboradoEstadia = ccEstadiaRange.getValue();
 	let rendas = CararaLibrary.calcularRendas(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia));

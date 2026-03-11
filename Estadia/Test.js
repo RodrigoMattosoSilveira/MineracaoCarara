@@ -1,3 +1,5 @@
+const onOpenTest = () => { onOpen() }
+
 const ConfigurarValidacaoDadosColumnaTest = () => {
 
 	// Data validations

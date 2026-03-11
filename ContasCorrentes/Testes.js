@@ -1,3 +1,11 @@
+const copySheetToAnotherSpreadsheetTeste = () => {
+  copySheetToAnotherSpreadsheet(ESTADIAS_SPREADSHEET_ID, 
+                                "Dados",
+                                CONTAS_CORRENTES_SPREADSHEET_ID, 
+                                "Estadia"  
+                                );
+}
+
 function getRendasTeste() {
   getRendas();
 }
