@@ -1,5 +1,22 @@
 const EPSILON = 0.00001;
 
+const ConfigurarValidacaoDadosColumnaTest = () => {
+
+	// Data validations
+	let planilhaAlvo = SpreadsheetApp.getActiveSpreadsheet();
+	let planilhaFonteNome = "REFERENCIA";
+	let planilhaFonteId = CararaLibrary.GetSpreadsheetId(planilhaAlvo, planilhaFonteNome);
+
+	// Nome
+   CararaLibrary.ConfigurarValidacaoDadosColumna(
+		planilhaAlvo,    // Obter planilhaAlvo
+	    "Dados",         // abaAlvoNome
+		2,               // primeiraLinha, da abaAlvo
+		ESTADIAS_METODO, // columnaNumero, da abaAlvo
+		planilhaFonteId, // planilhaFonteId
+		"Metodo"         // gamaFonteNome
+	)
+}
 const copySheetToAnotherSpreadsheetTeste = () => {
 	// Copy Estadia.Dados to Cronograma.Estadias
 	CararaLibrary.CopySheetToAnotherSpreadsheet(ESTADIAS_SPREADSHEET_ID, 

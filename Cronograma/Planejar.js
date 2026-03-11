@@ -10,20 +10,7 @@ const getOrdem = ()        => documentProperties.getProperty('ORDEM');
 
 //  Usar um cronograma recente, um modelo, para agilizar o planejamento;
 function cronogramaPlanejar() {
-	// Navegue para a planilha Planejar
 	CararaLibrary.activateSheet("Planejar");
-
-	// Copy Estadia.Dados to Cronograma.Estadias
-	CararaLibrary.CopySheetToAnotherSpreadsheet(ESTADIAS_SPREADSHEET_ID, 
-                                  "Dados",
-                                  CRONOGRAMA_SPREADSHEET_ID, 
-                                  "Estadias" 
-								 );
-	CararaLibrary.CopySheetToAnotherSpreadsheet(REFERENCIA_SPREADSHEET_ID, 
-                                  "Periodo",
-                                  CRONOGRAMA_SPREADSHEET_ID, 
-                                  "Periodos" 
-								 );
 
 	let planejarGamaVals = obterPlanejarGamaVals();
 	if (planejarGamaVals.length > 0) {	
@@ -90,6 +77,19 @@ const cronogramaPlanejarExecutar = (acaoSelecionada, data, periodo, ordem) => {
 	// fim
 	switch (acaoSelecionada) {
 		case 'Planejar':
+	// Navegue para a planilha Planejar
+			// Copy Estadia.Dados to Cronograma.Estadias
+			CararaLibrary.CopySheetToAnotherSpreadsheet(ESTADIAS_SPREADSHEET_ID, 
+										"Dados",
+										CRONOGRAMA_SPREADSHEET_ID, 
+										"Estadias" 
+										);
+			// Copy Referencia.Periodo to Cronograma.Periodos
+			CararaLibrary.CopySheetToAnotherSpreadsheet(REFERENCIA_SPREADSHEET_ID, 
+										"Periodo",
+										CRONOGRAMA_SPREADSHEET_ID, 
+										"Periodos" 
+										);
 			let estadias = obterEstadiasGama();
 			let plano = obterPlanejarGama().clear().clearDataValidations();
 			for (let linha = 1; ; linha++) {
@@ -163,6 +163,8 @@ const cronogramaPlanejarExecutar = (acaoSelecionada, data, periodo, ordem) => {
 	CararaLibrary.activateSheet(targetSheetName);
 
 	console.info(menssagem);
+	// Configure data validation
+	ConfigureSpreadsheetDataValidationsPlanejar();
 	SpreadsheetApp.getUi().alert(menssagem);
 
 }
