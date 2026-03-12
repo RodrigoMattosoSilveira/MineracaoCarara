@@ -8,7 +8,7 @@ const PRODUCAO_QUANTIDADE_COL   = 3;
 function _obterProducaoGoogleSheet () { return SpreadsheetApp.openById(PRODUCAO_ID); }
 function _obterProducaoPlanilha    () { return _obterProducaoGoogleSheet().getSheetByName(PRODUCAO_PLANILHA_NOME); }
 function _obterProducaoGama        () { return _obterProducaoGoogleSheet().getRangeByName(PRODUCAO_GAMA_NOME); }
-function obterProducaoGamaVals () {
+function obterProducaoGamaVals     () {
 	let  gama = _obterProducaoGama();
 	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[PRODUCAO_DATA_COL] !== '' && elemento[PRODUCAO_DATA_COL] !== 'Data') : [];
 }
