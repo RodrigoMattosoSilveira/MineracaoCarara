@@ -250,7 +250,7 @@ const obterProducaoGamaVals = gamaName => {
 	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[PRODUCAO_DATA] !== '') : [];
 }
 
-const contasCorrentesId = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
+const contasCorrentesId = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActiveSpreadsheet(), "CONTAS_CORRENTES")
 const contasCorrentesRange = "Dados";
 const contasCorrentesDataCol              = 0;
 const contasCorrentesNomeCol              = 1;
