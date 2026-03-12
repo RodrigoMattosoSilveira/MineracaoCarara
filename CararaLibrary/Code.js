@@ -161,11 +161,13 @@ function calcularSaldoContasCorrentesActiveSS(nome, estadia, activeSS) {
 // 
 function calcularSaldoContasCorrentes(nome, estadia) {
 
-  rendas = {...calcularRendas(nome, estadia)};
+  let rendas = {...calcularRendas(nome, estadia)};
+  let auferidasReal = rendas.auferidas.Real.Credito - rendas.auferidas.Real.Debito;
+  let auferidasOuro = rendas.auferidas.Ouro.Credito - rendas.auferidas.Ouro.Debito;
   return {
     auferidas: {  
-      Real: rendas.auferidas.Real.credito - rendas.auferidas.Real.debito, 
-      Ouro: rendas.auferidas.Ouro.credito - rendas.auferidas.Ouro.debito
+      Real: auferidasReal, 
+      Ouro: auferidasOuro
     },
     futuras: {...rendas.futuras},
   }
