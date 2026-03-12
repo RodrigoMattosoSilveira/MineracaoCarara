@@ -433,8 +433,9 @@ function GetSaldo() {
         }
       };
   }
-    let rendas = CararaLibrary.calcularSaldoContasCorrentes(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia));
-    if (rendas != null) {
+  let activeSS = SpreadsheetApp.getActive();
+  let rendas = CararaLibrary.calcularSaldoContasCorrentesActiveSS(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia), activeSS);
+  if (rendas != null) {
     saldoOuroRange.setValue(rendas.auferidas.Ouro );
     saldoRealRange.setValue(rendas.auferidas.Real);
     futuroOuroRange.setValue(rendas.futuras.Ouro);

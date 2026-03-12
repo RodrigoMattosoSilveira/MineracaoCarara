@@ -30,8 +30,8 @@ function calcularRendasTeste() {
 	// }
 	// };
   
-	let nome = "Cabecinha - Thomas Elias Felipe Fernandes";
-	let estadia = dateToString("11/30/2025");
+	let nome = "Barbosa - Valdinei Barbosa";
+	let estadia = dateToString("11/03/2026");
 	let rendas = calcularRendas(nome, estadia)
 
 	typeof rendas !== 'undefined' ? 

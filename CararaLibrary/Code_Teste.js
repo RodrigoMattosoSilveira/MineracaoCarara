@@ -1,3 +1,17 @@
+const calcularRendasActiveSSTest = () => {
+  let nome = "Barbosa - Valdinei Barbosa";
+  let estadia = dateToString(new Date("03/11/2026"));
+  // This is DEV and we need it!
+  let activeSS = SpreadsheetApp.openById("1XwjBUJYG4VLN0ZaG0EFzKljWk9VdGvePaDO9Nwd70G4");
+  calcularRendasActiveSS(nome, estadia, activeSS)
+}
+const calcularSaldoContasCorrentesCCTest = () => {
+  let nome = "Barbosa - Valdinei Barbosa";
+  let estadia = new Date("3/11/2026");
+  // This is DEV and we need it!
+  let activeSS = "1XwjBUJYG4VLN0ZaG0EFzKljWk9VdGvePaDO9Nwd70G4"
+  calcularSaldoContasCorrentesCC(nome, estadia, activeSS)
+}
 const ParseKeyValueTest = () => {
   let keyValue = ParseKeyValue("env: DEV")
   let expected = ["env", "DEV"]		

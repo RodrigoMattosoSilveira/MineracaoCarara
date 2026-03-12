@@ -1,11 +1,13 @@
 // @ts-nocheck
-const contasCorrentesId = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "CONTAS_CORRENTES");
+const test = tl.myFunction(4)
+const activeSpreadsheet = SpreadsheetApp.getActive();
+const contasCorrentesId = CararaLibrary.GetSpreadsheetId(activeSpreadsheet, "CONTAS_CORRENTES");
 const contasCorrentesSheet = SpreadsheetApp.openById(contasCorrentesId);
 const contasCorrentesSSName = "ContasCorrentes"
-const contasCorentesRange          = "Dados";
-const contasCorrentesNome           = "ContasCorrentesNome";
-const contasCorrentesEstadia        = "ContasCorrentesEstadia";
-const contasCorrentesRendasDepesas      = "TransacoesRendasDepesas";  
+const contasCorentesRange                 = "Dados";
+const contasCorrentesNome                 = "ContasCorrentesNome";
+const contasCorrentesEstadia              = "ContasCorrentesEstadia";
+const contasCorrentesRendasDepesas        = "TransacoesRendasDepesas";  
 const contasCorrentesCreditoReal          = "CreditoReal";
 const contasCorrentesCreditoOuro          = "CreditoOuro";
 const contasCorrentesDebitoReal           = "DebitoReal"; 

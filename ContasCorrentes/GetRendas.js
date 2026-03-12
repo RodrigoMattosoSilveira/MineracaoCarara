@@ -28,7 +28,8 @@ function getRendas() {
 
 	let colaboradorNome   = ccColaboradorRange.getValue();
   	let colaboradoEstadia = ccEstadiaRange.getValue();
-	let rendas = CararaLibrary.calcularRendas(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia));
+	let activeSS = SpreadsheetApp.getActive()
+	let rendas = CararaLibrary.calcularRendasActiveSS(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia), activeSS);
 	if (rendas != null) {
 		CreditoOuroRange.setValue(rendas.auferidas.Ouro.Credito);
 		CreditoRealRange.setValue(rendas.auferidas.Real.Credito);

@@ -130,6 +130,19 @@ if (typeof module !== 'undefined') module.exports = {
     numeroParaLetra,
 }
 
+/**
+ * Wrapper to pass the active spreadsheet and calculate the Contas Coreentes 
+ * spreadsheet id
+ * @param {*} nome 
+ * @param {*} estadia 
+ * @param {*} activeSS 
+ * @returns 
+ */
+function calcularSaldoContasCorrentesActiveSS(nome, estadia, activeSS) {
+  CC_SHEET_ID	= GetSpreadsheetId(activeSS, "CONTAS_CORRENTES");
+  ESTADIAS_ID	= GetSpreadsheetId(activeSS, "ESTADIA");
+  return calcularSaldoContasCorrentes(nome, estadia)
+}
 /* ********************************************************************************************************************* */
 // CalcularSaldoContasCorrentes
 //    Calcula o saldo de um Colaborador em uma determinada estadia
@@ -158,6 +171,23 @@ function calcularSaldoContasCorrentes(nome, estadia) {
   }
 }
 
+/**
+ *  Wrapper to calcularRendas that includs the active spreadsheet 
+ * when requiring an active spreadsheet
+ * @param {string} nome - Nome do colaborador
+ * @param {string} estadia - Data da estadia do colaborador
+ * @param {Spreadsheet} activeSS - spreadsheet
+ * @return {object} - um object com os saldos auferidos e futuros
+ */
+function calcularRendasActiveSS(nome, estadia, activeSS) {
+  CC_SHEET_ID	= GetSpreadsheetId(activeSS, "CONTAS_CORRENTES");
+  ESTADIAS_ID	= GetSpreadsheetId(activeSS, "ESTADIA");
+  Logger.log(" calcularRendasActiveSS nome: " + nome);
+  Logger.log(" calcularRendasActiveSS estadia: " + estadia);
+  Logger.log(" calcularRendasActiveSS Active CONTAS_CORRENTES ID: " + CC_SHEET_ID);
+  Logger.log(" calcularRendasActiveSS Active ESTADIAS_ID: " + ESTADIAS_ID);
+  return calcularRendas(nome, estadia)
+}
 /**
  *  Calcula as rendas auferidas e futuras de um colaborador em uma determinada estadia
  * @param {string} nome - Nome do colaborador

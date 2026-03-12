@@ -21,7 +21,7 @@ const  readConfigFileTest = () => {
    	let expected = "DEV"	
 	let env = config["ENV"]
 	env.localeCompare(expected) === 0 ?
-		console.info(" ✔︎ config['ENV'] == 'DEV") :
+		console.info(" ✔︎ config['ENV'] ==  'DEV") :
 		console.error(" ✖︎ config['ENV'] == 'DEV: " + config["ENV"] + " != " + expected);
 }
 
