@@ -1,5 +1,5 @@
 // @ts-nocheck
-const contasCorrentesId = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
+const contasCorrentesId = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "CONTAS_CORRENTES");
 const contasCorrentesSheet = SpreadsheetApp.openById(contasCorrentesId);
 const contasCorrentesSSName = "ContasCorrentes"
 const contasCorentesRange          = "Dados";

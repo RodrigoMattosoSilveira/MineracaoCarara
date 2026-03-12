@@ -1,6 +1,6 @@
 // *** Identificação da folha de constas correntes
 // 
-const contasCorrentesID 		 = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
+const contasCorrentesID = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "CONTAS_CORRENTES");
 const contasCorrentesSpreadSheet = SpreadsheetApp.openById(contasCorrentesID);
 const ccColaboradorRange	     = contasCorrentesSpreadSheet.getRangeByName("ContasCorrentesNome");
 const ccEstadiaRange		     = contasCorrentesSpreadSheet.getRangeByName("ContasCorrentesEstadia");

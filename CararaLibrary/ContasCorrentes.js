@@ -3,7 +3,7 @@
 
 // Contas Correntes - CC_SHEET_ID
 // 
-const CC_SHEET_ID								            = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
+const CC_SHEET_ID								            = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "CONTAS_CORRENTES");
 const CC_TAB_NAME			    				          = "ContasCorrentes"
 const contasCorentesDadosRange						  = "Dados";
 const contasCorrentesNome          				  = "ContasCorrentesNome";

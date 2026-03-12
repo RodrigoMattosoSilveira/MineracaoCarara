@@ -315,7 +315,7 @@ function SetupFechar() {
 
 // *** Identificação da Sheet Contas Correntes
 // 
-const contasCorrentesId                     = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
+const contasCorrentesId                     = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "CONTAS_CORRENTES");
 const contasCorrentesSheet                  = SpreadsheetApp.openById(contasCorrentesId);
 const contasCorrentesTab                    = contasCorrentesSheet.getSheetByName("ContasCorrentes");
 const contasCorrentesDadosTab               = contasCorrentesSheet.getSheetByName("Dados");

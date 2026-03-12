@@ -1,4 +1,4 @@
-const ContasCorrentesSpreasheetID = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
+const ContasCorrentesSpreasheetID = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "CONTAS_CORRENTES");
 function GetContasCorrentesSpreadSheet() {
     return SpreadsheetApp.openById(ContasCorrentesSpreasheetID);
 }
