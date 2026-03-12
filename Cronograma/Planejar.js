@@ -10,7 +10,6 @@ const getOrdem = ()        => documentProperties.getProperty('ORDEM');
 
 //  Usar um cronograma recente, um modelo, para agilizar o planejamento;
 function cronogramaPlanejar() {
-	// Navegue para a planilha Planejar
 	CararaLibrary.activateSheet("Planejar");
 
 	let planejarGamaVals = obterPlanejarGamaVals();
@@ -78,6 +77,19 @@ const cronogramaPlanejarExecutar = (acaoSelecionada, data, periodo, ordem) => {
 	// fim
 	switch (acaoSelecionada) {
 		case 'Planejar':
+	// Navegue para a planilha Planejar
+			// Copy Estadia.Dados to Cronograma.Estadias
+			CararaLibrary.CopySheetToAnotherSpreadsheet(ESTADIAS_SPREADSHEET_ID, 
+										"Dados",
+										CRONOGRAMA_SPREADSHEET_ID, 
+										"Estadias" 
+										);
+			// Copy Referencia.Periodo to Cronograma.Periodos
+			CararaLibrary.CopySheetToAnotherSpreadsheet(REFERENCIA_SPREADSHEET_ID, 
+										"Periodo",
+										CRONOGRAMA_SPREADSHEET_ID, 
+										"Periodos" 
+										);
 			let estadias = obterEstadiasGama();
 			let plano = obterPlanejarGama().clear().clearDataValidations();
 			for (let linha = 1; ; linha++) {
@@ -113,11 +125,11 @@ const cronogramaPlanejarExecutar = (acaoSelecionada, data, periodo, ordem) => {
 			CararaLibrary.activateSheet("Planear");
 			let planilhaPlanejar = obterPlanejarPlanilha();
 			targetSheetName = planilhaPlanejar.getName();
-			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_ACAO+1,   PLANEJAR_ACOES_VALIDAS);
-			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_METODO+1, PLANEJAR_METODOS_VALIDOS);
-			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_SETOR+1,  PLANEJAR_SETORES_VALIDOS);
-			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_LOCAL+1,  PLANEJAR_LOCAIS_VALIDOS);
-			estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_TAREFA+1, PLANEJAR_TAREFAS_VALIDAS);
+			// estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_ACAO+1,   PLANEJAR_ACOES_VALIDAS);
+			// estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_METODO+1, PLANEJAR_METODOS_VALIDOS);
+			// estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_SETOR+1,  PLANEJAR_SETORES_VALIDOS);
+			// estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_LOCAL+1,  PLANEJAR_LOCAIS_VALIDOS);
+			// estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_TAREFA+1, PLANEJAR_TAREFAS_VALIDAS);
 			// Pintar o texto da coluna ACAO de verde para Incluir, vermelho para Excluir
 			// TODO: Refatorar colher os parametros de pintarAcao para serem mais genericos;
 			pintarAcao(targetSheetName, "Excluir", "Incluir");
@@ -151,6 +163,8 @@ const cronogramaPlanejarExecutar = (acaoSelecionada, data, periodo, ordem) => {
 	CararaLibrary.activateSheet(targetSheetName);
 
 	console.info(menssagem);
+	// Configure data validation
+	ConfigureSpreadsheetDataValidationsPlanejar();
 	SpreadsheetApp.getUi().alert(menssagem);
 
 }
@@ -348,11 +362,22 @@ function usarModelo(estadiaRegistro, modeloRegistro, plano, linha, dataStr, peri
 	definirPlanoAjudante (plano, linha, PLANEJAR_COMENTARIOS, modeloRegistro, MODELOS_COMENTARIOS, estadiaRegistro, ESTADIAS_COMENTARIOS)
 }
 
-
-function definirPlanoAjudante (pGama, planoLinha, planoColumna, mRegistro, mColuna, eRegistro, eColuna) {
+/**
+ * Highlight cells that differ from their Estadia or Modelo sheets;
+ * @param {*} pGama 
+ * @param {*} planoLinha 
+ * @param {*} planoColumna 
+ * @param {*} mRegistro 
+ * @param {*} mColuna 
+ * @param {*} eRegistro 
+ * @param {*} eColuna 
+ */
+// TODO the background setting is not working
+function definirPlanoAjudante (pGama, planoLinha, planoColumna, mRegistro, mColuna) {
     let cell = pGama.getCell(planoLinha, planoColumna+1);
 	cell.setValue(mRegistro[mColuna]);
-	if (eRegistro[eColuna] !== mRegistro[mColuna]) {
-		cell.setBackground('#FFFF00')
-	}
+	// if (eRegistro[eColuna] !== mRegistro[mColuna]) {
+	// 	cell.setBackground('#FFFF00')
+	// }
+	return null
 }

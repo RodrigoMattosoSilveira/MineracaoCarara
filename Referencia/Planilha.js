@@ -1,4 +1,4 @@
-const REFERENCIA_GOOGLE_SHEET_ID = "1LJqg-R3ZNB-fC44QKKxjx8ubhHYzbPWEDCmPykHn-y8";
+const REFERENCIA_GOOGLE_SHEET_ID = CararaLibrary.GetSpreadsheetId(activeSheet, "REFERENCIA");
 const CURRENCY_FREAKS_API_KEY = '50d10488069441ee9bcb078a6239e5c7'
 
 const REFERENCIA_METODOS_PLANILHA_NOME   = "Metodo";
@@ -11,7 +11,7 @@ const REFERENCIA_METODOS_GAMA_NOME        = "Metodo";
 const REFERENCIA_SETORES_GAMA_NOME        = "Setor";
 const REFERENCIA_LOCAIS_GAMA_NOME         = "Local";
 const REFERENCIA_TAREFAS_GAMA_NOME        = "Tarefa";	
-const REFERENCIA_PERIODO_GAMA_NOME        = "Periodo";	
+const REFERENCIA_PERIODO_GAMA_NOME        = "PeriodosValidos";	
 const REFERENCIA_OURO_USD_ONCA_GAMA_NOME  = 'OuroUsdOnca'
 const REFERENCIA_OURO_BRL_GRAMA_GAMA_NOME = 'OuroBrlGrama'
 const REFERENCIA_OURO_BRL_GRAMA_GAMA_OURO_MINAS = 'OuroBrlGramaOuroMinas'
@@ -56,6 +56,10 @@ function obterReferenciaPocos() {
   obterReferenciaGamaVals(REFERENCIA_LOCAIS_GAMA_NOME).forEach( elemento => elemento[0].startsWith('Poço_') ? pocos.push(elemento[0]) : null);
   return  pocos;
 }
+/**
+ * 
+ * @returns {Array} periodos
+ */
 function obterReferenciaPeriodos() {
   let periodos = []
   obterReferenciaGamaVals(REFERENCIA_PERIODO_GAMA_NOME).forEach( elemento => periodos.push(elemento[0]));

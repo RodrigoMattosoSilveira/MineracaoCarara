@@ -1,21 +1,32 @@
-const ESTADIA_GOOGLE_SHEET_ID = "1cBWZwZ8JPJARGNFmjFAFzKIaPApeO5kN8jencYUVki4";
-const PESSOA_GOOGLE_SHEET_ID  = "1d3XkRXMeOO6Zzn6oxPoK86GU99V-yPa-7e77SrMxoIM";
-const obterGoogleSheet        = (PlanilhaGoggleIdD) =>  SpreadsheetApp.openById(PlanilhaGoggleIdD);
+// https://stackoverflow.com/questions/62175748/driveapp-error-were-sorry-a-server-error-occurred-please-wait-a-bit-and-try
+const ESTADIA_SPREADSHEET_ID  = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "ESTADIA")
+const PESSOA_GOOGLE_SHEET_ID  = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "PESSOA")
 
-const ESTADIAS_PLANILHA    = "Dados";
-const ESTADIAS_GAMA        = "EstadiaGama";
-const ESTADIAS_FIRST_ROw   = 2;
-const ESTADIAS_NOME        = 0;
-const ESTADIAS_INICIO      = 1;
-const ESTADIAS_METODO      = 2;
-const ESTADIAS_SETOR       = 3;
-const ESTADIAS_LOCAL       = 4;
-const ESTADIAS_TAREFA      = 5;
-const ESTADIAS_REMUNERACAO = 6;
-const ESTADIAS_COMENTARIOS = 7;
+const obterSpreadsheet         = (PlanilhaGoggleIdD) =>  SpreadsheetApp.openById(PlanilhaGoggleIdD);
 
-const obterEstadiasPlanilha = () => obterGoogleSheet(ESTADIA_GOOGLE_SHEET_ID).getSheetByName(ESTADIAS_PLANILHA);
-const obterEstadiasGama     = () => obterGoogleSheet(ESTADIA_GOOGLE_SHEET_ID).getRangeByName(ESTADIAS_GAMA);
+const ESTADIAS_PLANILHA        = "Dados";
+const ESTADIAS_GAMA            = "EstadiaGama";
+const ESTADIAS_FIRST_ROw       = 2;
+const ESTADIAS_NOME            = 0;
+const ESTADIAS_INICIO          = 1;
+const ESTADIAS_FIM             = 2;
+const ESTADIAS_DISPONIBILIDADE = 3;
+const ESTADIAS_METODO          = 4;
+const ESTADIAS_SETOR           = 5;
+const ESTADIAS_LOCAL           = 6;
+const ESTADIAS_TAREFA          = 7;
+const ESTADIAS_REMUNERACAO     = 8;
+const ESTADIAS_COMENTARIOS     = 9;
+
+const ESTADIAS_PLANILHA_TRABALHO_NOME                       = "Tabalho";
+const ESTADIAS_PLANILHA_TRABALHO_METODO_NOME_COL            = 0
+const ESTADIAS_PLANILHA_TRABALHO_METODO_DISPONIBILIDADE_COL = 1
+const ESTADIAS_PLANILHA_TRABALHO_METODO_COL                 = 2
+const ESTADIAS_PLANILHA_TRABALHO_SETOR_COL                  = 3
+const ESTADIAS_PLANILHA_TRABALHO_TAREFA_COL                 = 4
+
+const obterEstadiasPlanilha = () => obterSpreadsheet(ESTADIA_SPREADSHEET_ID).getSheetByName(ESTADIAS_PLANILHA);
+const obterEstadiasGama     = () => obterSpreadsheet(ESTADIA_SPREADSHEET_ID).getRangeByName(ESTADIAS_GAMA);
 const obterEstadiasGamaVals = () => {
 	let  gama = obterEstadiasGama();
 	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[ESTADIAS_NOME] !== '' && elemento[ESTADIAS_NOME] !== 'Nome') : [];
@@ -41,8 +52,8 @@ const PESSOA_RG           = 2;
 const PESSOA_CELULAR      = 3;
 const PESSOA_EMAIL        = 4;
 
-const obterPessoaPlanilha = () => obterGoogleSheet(PESSOA_GOOGLE_SHEET_ID).getSheetByName(PESSOA_PLANILHA);
-const obterPessoaGama     = () => obterGoogleSheet(PESSOA_GOOGLE_SHEET_ID).getRangeByName(PESSOA_GAMA);
+const obterPessoaPlanilha = () => obterSpreadsheet(PESSOA_GOOGLE_SHEET_ID).getSheetByName(PESSOA_PLANILHA);
+const obterPessoaGama     = () => obterSpreadsheet(PESSOA_GOOGLE_SHEET_ID).getRangeByName(PESSOA_GAMA);
 const obterPessoaGamaVals = () => {
     let  gama = obterPessoaGama();
     return  (gama !== null) ? gama.getValues().filter( elemento => 

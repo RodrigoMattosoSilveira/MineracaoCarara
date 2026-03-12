@@ -1,4 +1,7 @@
-const obterGoogleSheet     = () =>  SpreadsheetApp.openById("10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA");
+// https://stackoverflow.com/questions/62175748/driveapp-error-were-sorry-a-server-error-occurred-please-wait-a-bit-and-try
+const CONTAS_CORRENTES_SPREADSHEET_ID  = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "CONTAS_CORRENTES")
+
+const obterGoogleSheet     = () =>  SpreadsheetApp.openById(CONTAS_CORRENTES_SPREADSHEET_ID);
 
 // Planilha Dados
 const DADOS_DATA_COL              	= 0;
@@ -39,3 +42,9 @@ const obterRealSheet             = () => obterGoogleSheet().getSheetByName(REAL_
 const obterRealNomeGama          = () => obterGoogleSheet().getRangeByName(REAL_PLANILHA_NOME_GAMA);
 const obterRealEstadiaGama       = () => obterGoogleSheet().getRangeByName(REAL_PLANILHA_ESTADIA_GAMA);
 const obterRealGama              = () => obterGoogleSheet().getRangeByName(REAL_TRANSACOES_GAMA);
+
+const ESTADIAS_SPREADSHEET_ID  = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "ESTADIA")
+const obterEstadiaSS           = () =>  SpreadsheetApp.openById(ESTADIAS_SPREADSHEET_ID);
+const obterEstadiaDadosS       = () =>  obterEstadiaSS.getSheetByName("Dados");
+
+const PESSOA_SPREADSHEET_ID  = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "PESSOA")

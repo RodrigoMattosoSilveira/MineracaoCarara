@@ -1,5 +1,6 @@
-const GOOGLE_SHEET_ID = "1OCwl3tVukD6nhGYqGvcVrGP_NjGFLJ7NYL-5vkdZTOg";
-const obterGoogleSheet = () =>  SpreadsheetApp.openById(GOOGLE_SHEET_ID);
+// https://stackoverflow.com/questions/62175748/driveapp-error-were-sorry-a-server-error-occurred-please-wait-a-bit-and-try
+const CRONOGRAMA_SPREADSHEET_ID  = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "CRONOGRAMA")
+const obterGoogleSheet = () =>  SpreadsheetApp.openById(CRONOGRAMA_SPREADSHEET_ID);
 
 const PUBLICADOS_PLANILHA     = "Publicados";
 const PUBLICADOS_GAMA         = "Publicados";
@@ -30,6 +31,7 @@ const obterPublicadosDataPeriodoKeys = () => {
 }
 const gamaPublicadosTemChaveDataPeriodo = (chave) => obterPublicadosDataPeriodoKeys().indexOf(chave) !== -1 ? true : false;
 
+const ESTADIAS_SPREADSHEET_ID  = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "ESTADIA")
 const ESTADIAS_PLANILHA = "Estadias";
 const ESTADIAS_GAMA = "Estadias";
 const ESTADIAS_NOME = 0;
@@ -181,6 +183,7 @@ const obterAtivosAcoesValidas = () => {
 	return acoesValidas.filter( elemento => elemento[0] !== '' && elemento[0] !== 'AcoesValidas').map( elemento => elemento[0]);
 }
 
+const REFERENCIA_SPREADSHEET_ID = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "REFERENCIA")
 const PERIODOS_PLANILHA = "Periodos";
 const PERIODOS_GAMA = "Periodos";
 const PERIODOS_NOME = 0;
@@ -246,7 +249,7 @@ const obterProducaoGamaVals = gamaName => {
 	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[PRODUCAO_DATA] !== '') : [];
 }
 
-const contasCorrentesId = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
+const contasCorrentesId = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "CONTAS_CORRENTES")
 const contasCorrentesRange = "Dados";
 const contasCorrentesDataCol              = 0;
 const contasCorrentesNomeCol              = 1;

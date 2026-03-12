@@ -93,7 +93,8 @@ function atualizeReferenciaOuro(valor) {
 // 
 function obterPeriodos() {
   let periodos = new Map();
-  obterReferenciaPeriodosGamaVals().forEach(element => { 
+  let periodosGamaVals = obterReferenciaPeriodosGamaVals();
+  periodosGamaVals.forEach(element => { 
     periodos.set(element[REFERENCIA_PERIODO_NOME_COL], {'ID': element[REFERENCIA_PERIODO_ID_COL], 'Hora': element[REFERENCIA_PERIODO_HORA_COL],});
   });
   return periodos;

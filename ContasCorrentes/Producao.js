@@ -1,4 +1,4 @@
-const producaoId = "1XJQmUb-1W2egXWj000Uer8QS6FZd7lUgqppoehjxwj4";
+const producaoId = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "PRODUCAO")
 const producaoRange = "Dados!A:I";
 const producaoDataCol = 0;
 const producaoMinaCol  = 1;

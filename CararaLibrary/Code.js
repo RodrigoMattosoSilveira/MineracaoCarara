@@ -130,6 +130,19 @@ if (typeof module !== 'undefined') module.exports = {
     numeroParaLetra,
 }
 
+/**
+ * Wrapper to pass the active spreadsheet and calculate the Contas Coreentes 
+ * spreadsheet id
+ * @param {*} nome 
+ * @param {*} estadia 
+ * @param {*} activeSS 
+ * @returns 
+ */
+function calcularSaldoContasCorrentesActiveSS(nome, estadia, activeSS) {
+  CC_SHEET_ID	= GetSpreadsheetId(activeSS, "CONTAS_CORRENTES");
+  ESTADIAS_ID	= GetSpreadsheetId(activeSS, "ESTADIA");
+  return calcularSaldoContasCorrentes(nome, estadia)
+}
 /* ********************************************************************************************************************* */
 // CalcularSaldoContasCorrentes
 //    Calcula o saldo de um Colaborador em uma determinada estadia
@@ -158,6 +171,23 @@ function calcularSaldoContasCorrentes(nome, estadia) {
   }
 }
 
+/**
+ *  Wrapper to calcularRendas that includs the active spreadsheet 
+ * when requiring an active spreadsheet
+ * @param {string} nome - Nome do colaborador
+ * @param {string} estadia - Data da estadia do colaborador
+ * @param {Spreadsheet} activeSS - spreadsheet
+ * @return {object} - um object com os saldos auferidos e futuros
+ */
+function calcularRendasActiveSS(nome, estadia, activeSS) {
+  CC_SHEET_ID	= GetSpreadsheetId(activeSS, "CONTAS_CORRENTES");
+  ESTADIAS_ID	= GetSpreadsheetId(activeSS, "ESTADIA");
+  Logger.log(" calcularRendasActiveSS nome: " + nome);
+  Logger.log(" calcularRendasActiveSS estadia: " + estadia);
+  Logger.log(" calcularRendasActiveSS Active CONTAS_CORRENTES ID: " + CC_SHEET_ID);
+  Logger.log(" calcularRendasActiveSS Active ESTADIAS_ID: " + ESTADIAS_ID);
+  return calcularRendas(nome, estadia)
+}
 /**
  *  Calcula as rendas auferidas e futuras de um colaborador em uma determinada estadia
  * @param {string} nome - Nome do colaborador
@@ -384,4 +414,61 @@ function ObterNumberoDeDiasNoMesDessaData(data) {
   // (month + 1), JavaScript calculates the last day of the current month.
   let numeroDeDiasNoMes = new Date(data.getFullYear(), data.getMonth() + 1, 0).getDate();
   return numeroDeDiasNoMes;
+}
+
+/**
+ * 
+ * @param {string} text to be parsed
+ * @returns {Array.<string>}, with key at index 0, and value 1; null if error
+ */
+function ParseKeyValue(text) {
+  if (typeof text !== "string") {
+    return null
+  }
+
+  const idx = text.indexOf(":");
+  if (idx === -1) {
+    return null
+  }
+
+  const key = text.slice(0, idx).trim();
+  const value = text.slice(idx + 1).trim();
+
+  return [key, value];
+}
+
+
+/** ****************************************************************************
+// obterA1C1 - Converter linhas e colunma ao nome de uma gama
+// 
+// @param   {string} planilha nome da planilha
+// @param   {string} colI     a columa inicial
+// @param   {int}    rowI     a linha inicial
+// @param   {string} colFa    a columa final
+// @param   {int}    rowF     a linha final
+// @returns {string}          O nome da gama no formato A1C1, por exemplo, 
+//                            "Planejar!C2:C10"
+ **************************************************************************** */
+
+const obterA1C1 = (planilha, colI, linI, colF, linF) => planilha + '!' + colI + linI + ':' +  colF + linF
+
+/**
+ * Copies one spreadsheet's sheet content to another spreadsheet's sheet
+ * @param {string} sourceSS_ID 
+ * @param {string} sourceSheetName 
+ * @param {string} targetSS_ID 
+ * @param {string*} targetSheetName 
+ * @returns none
+ */
+function CopySheetToAnotherSpreadsheet(sourceSS_ID, sourceSheetName, targetSS_ID, targetSheetName) {
+  const source = SpreadsheetApp.openById(sourceSS_ID)
+                .getSheetByName(sourceSheetName);
+
+  const target = SpreadsheetApp.openById(targetSS_ID)
+                .getSheetByName(targetSheetName);
+
+  const data = source.getDataRange().getValues();
+
+  target.clearContents();
+  target.getRange(1,1,data.length,data[0].length).setValues(data);
 }

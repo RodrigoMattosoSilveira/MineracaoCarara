@@ -2,6 +2,9 @@
 function cronogramaInformar() {
     SpreadsheetApp.getActiveSpreadsheet().toast('Inicio', 'Informar', 3);
 
+	// Configure data validation
+	ConfigureSpreadsheetDataValidationsInformar();
+    
 	let ativoGamaVals = obterAtivosGamaVals();
 	if (ativoGamaVals.length > 0) {	
 		SpreadsheetApp.getUi().alert("Existem registros na planilha Ativos. Favor completar of plano em progresso our remover os registros mannualmente.");
@@ -63,6 +66,8 @@ function cronogramaInformar() {
     limparContentDataValidations(obterPlanejarGama());
 
     CararaLibrary.activateSheet("PDF");
+	// Configure data validation
+	ConfigureSpreadsheetDataValidationsPlanejar();
     SpreadsheetApp.getActiveSpreadsheet().toast('Fim', 'Informar', 1);
     return true
 }

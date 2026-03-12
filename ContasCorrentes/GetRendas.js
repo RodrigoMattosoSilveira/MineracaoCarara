@@ -1,6 +1,6 @@
 // *** Identificação da folha de constas correntes
 // 
-const contasCorrentesID 		 = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
+const contasCorrentesID = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "CONTAS_CORRENTES");
 const contasCorrentesSpreadSheet = SpreadsheetApp.openById(contasCorrentesID);
 const ccColaboradorRange	     = contasCorrentesSpreadSheet.getRangeByName("ContasCorrentesNome");
 const ccEstadiaRange		     = contasCorrentesSpreadSheet.getRangeByName("ContasCorrentesEstadia");
@@ -14,9 +14,22 @@ const FuturoRealRange	 = ContasCorrentesTab.getRange("AGanharReal");
 const FuturoOuroRange	 = ContasCorrentesTab.getRange("AGanharOuro");
 
 function getRendas() {
+	// Copy Estadia.Dados to Contas.Correntes.Estadia
+	CararaLibrary.CopySheetToAnotherSpreadsheet(ESTADIAS_SPREADSHEET_ID, 
+                                  "Dados",
+                                  CONTAS_CORRENTES_SPREADSHEET_ID, 
+                                  "Estadia" 
+								 );
+	CararaLibrary.CopySheetToAnotherSpreadsheet(PESSOA_SPREADSHEET_ID, 
+                                  "Dados",
+                                  CONTAS_CORRENTES_SPREADSHEET_ID, 
+                                  "Pessoa" 
+								 );
+
 	let colaboradorNome   = ccColaboradorRange.getValue();
   	let colaboradoEstadia = ccEstadiaRange.getValue();
-	let rendas = CararaLibrary.calcularRendas(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia));
+	let activeSS = SpreadsheetApp.getActive()
+	let rendas = CararaLibrary.calcularRendasActiveSS(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia), activeSS);
 	if (rendas != null) {
 		CreditoOuroRange.setValue(rendas.auferidas.Ouro.Credito);
 		CreditoRealRange.setValue(rendas.auferidas.Real.Credito);

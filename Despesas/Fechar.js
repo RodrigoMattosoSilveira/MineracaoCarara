@@ -170,12 +170,12 @@ function limparFormularioFechar() {
  */
 function removerColaborador(nome) {
     const sheetName    = "Dados";
-    let googleSheet    = CararaLibrary.obterEstadiasPlanilha()
-    let sheet          = googleSheet.getSheetByName(sheetName)
+    let googleSheet    = obterEstadiasPlanilha();  // TODO Refactor to use CararaLibrary
+    let sheet          = googleSheet.getSheetByName(sheetName);
     let startRow       = 2; // Assuming data starts from row 2 (after header)
     let startColumn    = 1; // Assuming data starts from column 1 (A)
-    // let googleSheetID  = "1cBWZwZ8JPJARGNFmjFAFzKIaPApeO5kN8jencYUVki4";
-    let googleSheetID  = CararaLibrary.obterEstadiasID();
+    const activeSheet  = SpreadsheetApp.getActiveSpreadsheet();
+    let googleSheetID  = CararaLibrary.GetSpreadsheetId(activeSheet, "ESTADIA");
     let gamaVals       = CararaLibrary.getRange(googleSheetID, sheetName, startRow, startColumn).getValues();
     const nomes        = gamaVals.map((estadia) => estadia[ESTADIAS_NOME]);
     let row            = nomes.indexOf(nome);

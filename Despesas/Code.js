@@ -1,6 +1,6 @@
 // *** Identificação da folhas das Despesas
 // 
-const despesasID          = "1XwjBUJYG4VLN0ZaG0EFzKljWk9VdGvePaDO9Nwd70G4";
+const despesasID         = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "DESPESAS");
 let despesasSpreadSheet  = SpreadsheetApp.openById(despesasID);;
 
 // *** Formulário Cantina
@@ -315,7 +315,7 @@ function SetupFechar() {
 
 // *** Identificação da Sheet Contas Correntes
 // 
-const contasCorrentesId                     = "10QXCS1QspqKH8owJQiazFc1dSumWy94mgHIVhZargcA";
+const contasCorrentesId                     = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "CONTAS_CORRENTES");
 const contasCorrentesSheet                  = SpreadsheetApp.openById(contasCorrentesId);
 const contasCorrentesTab                    = contasCorrentesSheet.getSheetByName("ContasCorrentes");
 const contasCorrentesDadosTab               = contasCorrentesSheet.getSheetByName("Dados");
@@ -433,8 +433,9 @@ function GetSaldo() {
         }
       };
   }
-    let rendas = CararaLibrary.calcularSaldoContasCorrentes(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia));
-    if (rendas != null) {
+  let activeSS = SpreadsheetApp.getActive();
+  let rendas = CararaLibrary.calcularSaldoContasCorrentesActiveSS(colaboradorNome, CararaLibrary.dateToString(colaboradoEstadia), activeSS);
+  if (rendas != null) {
     saldoOuroRange.setValue(rendas.auferidas.Ouro );
     saldoRealRange.setValue(rendas.auferidas.Real);
     futuroOuroRange.setValue(rendas.futuras.Ouro);

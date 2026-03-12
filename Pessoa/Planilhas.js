@@ -1,5 +1,6 @@
-const PESSOAS_GOOGLE_SHEET_ID = "1d3XkRXMeOO6Zzn6oxPoK86GU99V-yPa-7e77SrMxoIM";
-const obterPessoasGoogleSheet = () =>  SpreadsheetApp.openById(PESSOAS_GOOGLE_SHEET_ID);
+const PESSOA_GOOGLE_SHEET_ID = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "PESSOA")
+const obterGoogleSheet = () =>  SpreadsheetApp.openById(PESSOA_GOOGLE_SHEET_ID);
+const obterPessoasGoogleSheet = () =>  SpreadsheetApp.openById(PESSOA_GOOGLE_SHEET_ID);
 
 const PESSOAS_PLANILHA    = "Dados";
 const PESSOAS_GAMA        = "Pessoas";

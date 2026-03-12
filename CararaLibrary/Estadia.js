@@ -1,3 +1,4 @@
+let   ESTADIAS_ID           = null;
 const ESTADIAS_PLANILHA     = "Estadias";
 const ESTADIAS_GAMA         = "EstadiaGama";
 const ESTADIAS_NOME         = 0;
