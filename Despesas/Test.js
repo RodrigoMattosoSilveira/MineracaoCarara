@@ -1,4 +1,14 @@
 
+const setEstadiasSansCurrentTest = () => {
+	const nome = "Edinilza dos Santos";
+	setEstadiasSansCurrent(nome)
+}
+const setPeopleTest = () => {
+	setPeople();
+}
+const setGoldPriceTest = () => {
+	setGoldPrice();
+}
 function getSaldoTeste() {
 	GetSaldo()
 }

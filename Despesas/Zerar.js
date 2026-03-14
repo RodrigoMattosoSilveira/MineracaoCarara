@@ -41,6 +41,8 @@ function SetupZerar() {
     ZerarSaldoRealRange  = despesasZerarTab.getRange("ZerarSaldoReal");
     ZerarFuturoOuroRange = despesasZerarTab.getRange("ZerarFuturoOuro");
     ZerarFuturoRealRange = despesasZerarTab.getRange("ZerarFuturoReal");
+    const colaborador = ZerarColaboradorRange.getValue();
+    setupWorkSheets(colaborador); 
   }
 }
 
