@@ -1,3 +1,6 @@
+const obterReferenciaOuroBrlGramaValTeste = () => {
+  let valor = obterReferenciaOuroBrlGramaVal()
+}
 const atualizeReferenciaOuroTeste= () => {
   atualizeReferenciaOuro(42)
 }
@@ -41,9 +44,6 @@ const obterProducaoPocoTest = () => {
 }
 const obterPeriodosTeste = () => {
   let myMap = obterPeriodos()
-}
-const obterReferenciaOuroBrlGramaValTeste = () => {
-  let valor = obterReferenciaOuroBrlGramaVal()
 }
 function obterReferenciaPocosTeste () {
 	let pocos = obterReferenciaPocos()

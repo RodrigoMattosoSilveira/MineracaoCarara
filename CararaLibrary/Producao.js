@@ -1,11 +1,13 @@
-const PRODUCAO_PLANILHA_NOME    = 'Producao';
 const PRODUCAO_GAMA_NOME        = 'Producao';
 const PRODUCAO_DATA_COL         = 0;
 const PRODUCAO_POCO_NOME_COL    = 1
 const PRODUCAO_PERIODO_NOME_COL = 2;
 const PRODUCAO_QUANTIDADE_COL   = 3;
 
-function _obterProducaoGoogleSheet () { return SpreadsheetApp.openById(PRODUCAO_ID); }
+function obterProductionSpreadsheetId () { return  GetSpreadsheetId(SpreadsheetApp.getActive(), "PRODUCAO");}
+function _obterProducaoGoogleSheet () { 
+	const PRODUCAO_ID = GetSpreadsheetId(SpreadsheetApp.getActive(), "PRODUCAO");
+	return SpreadsheetApp.openById(PRODUCAO_ID); }
 function _obterProducaoPlanilha    () { return _obterProducaoGoogleSheet().getSheetByName(PRODUCAO_PLANILHA_NOME); }
 function _obterProducaoGama        () { return _obterProducaoGoogleSheet().getRangeByName(PRODUCAO_GAMA_NOME); }
 function obterProducaoGamaVals     () {

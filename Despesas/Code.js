@@ -1,7 +1,7 @@
 // *** Identificação da folhas das Despesas
 // 
 const despesasID         = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "DESPESAS");
-let despesasSpreadSheet  = SpreadsheetApp.openById(despesasID);;
+let despesasSpreadSheet  = SpreadsheetApp.openById(despesasID);
 
 // *** Formulário Cantina
 // 
@@ -335,15 +335,15 @@ const contasCorrentesTotalRealCol           = 10; // Real
 const contasCorrentesTotalOuroCol           = 11; // Gramas de Ouro
 const contasCorrentesComentariosCol         = 12
 
-const ESTADIAS_GAMA        = "EstadiaGamaLocal";
-const ESTADIAS_NOME        = 0;
-const ESTADIAS_INICIO      = 1;
-const ESTADIAS_METODO      = 2;
-const ESTADIAS_SETOR       = 3;
-const ESTADIAS_LOCAL       = 4;
-const ESTADIAS_TAREFA      = 5;
-const ESTADIAS_REMUNERACAO = 6;
-const ESTADIAS_COMENTARIOS = 7;
+// const ESTADIAS_GAMA        = "EstadiaGamaLocal";
+// const ESTADIAS_NOME        = 0;
+// const ESTADIAS_INICIO      = 1;
+// const ESTADIAS_METODO      = 2;
+// const ESTADIAS_SETOR       = 3;
+// const ESTADIAS_LOCAL       = 4;
+// const ESTADIAS_TAREFA      = 5;
+// const ESTADIAS_REMUNERACAO = 6;
+// const ESTADIAS_COMENTARIOS = 7;
 
 function GetSaldo() {
   // sheetName = "Cantina"
@@ -452,3 +452,143 @@ function switchToTab(sheetName) {
   }
 }
 
+/**
+ * Copies the columns from Estadia.Dados to Despesas.Trabalho
+ * @param {Array} srcColumns 
+ * @param {Array} tgtColumns 
+ */
+function setupEstadiaTrabalho () {
+  const columnsToCopy = {
+    "NOME": {
+      "from": 0,
+      "to": 0
+    },
+    "INICIO": {
+      "from": 1,
+      "to": 1
+    },
+    "METODO": {
+      "from": 4,
+      "to": 2
+    }
+  }
+  const srcID    = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "ESTADIA");
+  const srcSS    = SpreadsheetApp.openById(srcID);
+  const srcSheet = srcSS.getSheetByName("Dados")
+
+  const tgtID    = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "DESPESAS");
+  const tgtSS    = SpreadsheetApp.openById(tgtID);
+  const tgtSheet = tgtSS.getSheetByName("Trabalho")
+
+  // For each column
+  const columnsToCopyKeys = Object.keys(columnsToCopy)
+  columnsToCopyKeys.forEach(key => {
+
+    // Clear the target; notice that, in this case, I might clear more rows than
+    // required, since some other column in the sheet might have more rows; this
+    // ensures that the target column is cleared regardless;
+    let columnLeft  = CararaLibrary.numeroParaLetra(columnsToCopy[key].to + 1);
+    let firstRow    = 2;
+    let columnRight = columnLeft;
+    let lastRow     = tgtSheet.getLastRow(); // ok to clear empty cells
+    let sheetName   = tgtSheet.getName();
+    let a1C1Gama    = CararaLibrary.obterA1C1(sheetName, columnLeft, firstRow, columnRight, lastRow)
+    let tgtRange    = tgtSheet.getRange(a1C1Gama);
+    tgtRange.clear();
+
+    // Get the source range
+    columnLeft  = CararaLibrary.numeroParaLetra(columnsToCopy[key].from + 1);
+    firstRow    = 2;
+    columnRight = columnLeft;
+    lastRow     = srcSheet.getLastRow(); // ok to clear empty cells
+    sheetName   = srcSheet.getName();
+    a1C1Gama    = CararaLibrary.obterA1C1(sheetName, columnLeft, firstRow, columnRight, lastRow)
+    let srcRange     = srcSheet.getRange(a1C1Gama);
+    let srcRangeVals = srcRange.getValues();
+
+    // get the target range; notice that, in this case, I'm getting the exact
+    // number of target range rows, which is required by the ensuing setValues
+    // call;
+    columnLeft  = CararaLibrary.numeroParaLetra(columnsToCopy[key].to + 1);
+    firstRow    = 2;
+    columnRight = columnLeft;
+    lastRow     = srcSheet.getLastRow();
+    sheetName   = tgtSheet.getName();
+    a1C1Gama    = CararaLibrary.obterA1C1(sheetName, columnLeft, firstRow, columnRight, lastRow)
+    tgtRange    = tgtSheet.getRange(a1C1Gama);
+  
+    // copy the source to the target range
+    tgtRange.setValues(srcRangeVals)
+  }) 
+}
+
+
+/**
+ * Copies the columns from Estadia.Dados to Despesas.Trabalho
+ * @param {Array} srcColumns 
+ * @param {Array} tgtColumns 
+ */
+function setupCantinaTrabalho () {
+  const columnsToCopy = {
+    "Item": {
+      "from": 0,
+      "to": 5
+    },
+    "Real": {
+      "from": 1,
+      "to": 6
+    },
+    "Ouro": {
+      "from": 2,
+      "to": 7
+    }
+  }
+  const srcID    = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "CANTINA_PRECO");
+  const srcSS    = SpreadsheetApp.openById(srcID);
+  const srcSheet = srcSS.getSheetByName("Dados")
+
+  const tgtID    = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "DESPESAS");
+  const tgtSS    = SpreadsheetApp.openById(tgtID);
+  const tgtSheet = tgtSS.getSheetByName("Trabalho")
+
+  // For each column
+  const columnsToCopyKeys = Object.keys(columnsToCopy)
+  columnsToCopyKeys.forEach(key => {
+
+    // Clear the target; notice that, in this case, I might clear more rows than
+    // required, since some other column in the sheet might have more rows; this
+    // ensures that the target column is cleared regardless;
+    let columnLeft  = CararaLibrary.numeroParaLetra(columnsToCopy[key].to + 1);
+    let firstRow    = 2;
+    let columnRight = columnLeft;
+    let lastRow     = tgtSheet.getLastRow(); // ok to clear empty cells
+    let sheetName   = tgtSheet.getName();
+    let a1C1Gama    = CararaLibrary.obterA1C1(sheetName, columnLeft, firstRow, columnRight, lastRow)
+    let tgtRange    = tgtSheet.getRange(a1C1Gama);
+    tgtRange.clear();
+
+    // Get the source range
+    columnLeft  = CararaLibrary.numeroParaLetra(columnsToCopy[key].from + 1);
+    firstRow    = 2;
+    columnRight = columnLeft;
+    lastRow     = srcSheet.getLastRow(); // ok to clear empty cells
+    sheetName   = srcSheet.getName();
+    a1C1Gama    = CararaLibrary.obterA1C1(sheetName, columnLeft, firstRow, columnRight, lastRow)
+    let srcRange     = srcSheet.getRange(a1C1Gama);
+    let srcRangeVals = srcRange.getValues();
+
+    // get the target range; notice that, in this case, I'm getting the exact
+    // number of target range rows, which is required by the ensuing setValues
+    // call;
+    columnLeft  = CararaLibrary.numeroParaLetra(columnsToCopy[key].to + 1);
+    firstRow    = 2;
+    columnRight = columnLeft;
+    lastRow     = srcSheet.getLastRow();
+    sheetName   = tgtSheet.getName();
+    a1C1Gama    = CararaLibrary.obterA1C1(sheetName, columnLeft, firstRow, columnRight, lastRow)
+    tgtRange    = tgtSheet.getRange(a1C1Gama);
+  
+    // copy the source to the target range
+    tgtRange.setValues(srcRangeVals)
+  }) 
+}

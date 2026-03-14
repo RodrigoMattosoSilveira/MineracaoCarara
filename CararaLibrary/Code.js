@@ -452,7 +452,9 @@ function ParseKeyValue(text) {
 //                            "Planejar!C2:C10"
  **************************************************************************** */
 
-const obterA1C1 = (planilha, colI, linI, colF, linF) => planilha + '!' + colI + linI + ':' +  colF + linF
+function obterA1C1 (planilha, colI, linI, colF, linF) {
+  return planilha + '!' + colI + linI + ':' +  colF + linF;
+}
 
 /**
  * Copies one spreadsheet's sheet content to another spreadsheet's sheet
