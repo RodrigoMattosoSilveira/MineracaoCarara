@@ -1,4 +1,4 @@
-const REFERENCIA_GOOGLE_SHEET_ID = CararaLibrary.GetSpreadsheetId(activeSheet, "REFERENCIA");
+const REFERENCIA_GOOGLE_SHEET_ID = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "REFERENCIA");
 const CURRENCY_FREAKS_API_KEY = '50d10488069441ee9bcb078a6239e5c7'
 
 const REFERENCIA_METODOS_PLANILHA_NOME   = "Metodo";
@@ -39,16 +39,23 @@ const obterReferenciaPeriodosGama = () => obterReferenciaGama(REFERENCIA_PERIODO
 const obterReferenciaOuroBrlGama  = () => obterReferenciaGama(REFERENCIA_OURO_BRL_GRAMA_GAMA_NOME);
 const obterReferenciaOuroBrlOuroMinasGama  = () => obterReferenciaGama(REFERENCIA_OURO_BRL_GRAMA_GAMA_OURO_MINAS);
 
-function obterReferenciaGamaVals(sheetName) {
-  const gama = obterReferenciaGama(sheetName);
-  return (gama !== null) ? gama.getValues().filter( elemento => elemento[0] !== '' && elemento[0] !== 'Nome') : [];
+function obterReferenciaGamaVals(rangeName) {
+  const gama = obterReferenciaGama(rangeName);
+  const vals = gama.getValues();
+  return (gama !== null) ? vals.filter( elemento => elemento[0] !== '' && elemento[0] !== 'Nome') : [];
+}
+function obterReferenciaGamaVal(rangeName) {
+  const gama = obterReferenciaGama(rangeName);
+  const val = gama.getValue();
+  return val;
+;
 }
 const obterReferenciaMetodosGamaVals  = () => obterReferenciaGamaVals(REFERENCIA_METODOS_GAMA_NOME);
 const obterReferenciaSetoresGamaVals  = () => obterReferenciaGamaVals(REFERENCIA_SETORES_GAMA_NOME);
 const obterReferenciaLocaisGamaVals   = () => obterReferenciaGamaVals(REFERENCIA_LOCAIS_GAMA_NOME);
 const obterReferenciaTarefasGamaVals  = () => obterReferenciaGamaVals(REFERENCIA_TAREFAS_GAMA_NOME);
 const obterReferenciaPeriodosGamaVals = () => obterReferenciaGamaVals(REFERENCIA_PERIODO_GAMA_NOME);
-function obterReferenciaOuroBrlGramaVal () { obterReferenciaGamaVals(REFERENCIA_OURO_BRL_GRAMA_GAMA_NOME)[0][0]; }
+function obterReferenciaOuroBrlGramaVal () { return obterReferenciaGamaVal(REFERENCIA_OURO_BRL_GRAMA_GAMA_NOME)};
 
 
 function obterReferenciaPocos() {

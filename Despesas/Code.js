@@ -1,7 +1,10 @@
 // *** Identificação da folhas das Despesas
 // 
 const despesasID         = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "DESPESAS");
-let despesasSpreadSheet  = SpreadsheetApp.openById(despesasID);;
+const DESPESAS_TABALHO_SHEET_NAME     = "Trabalho"
+const DESPESAS_TABALHO_SANS_NAME_COL  = 13
+let despesasSpreadSheet  = SpreadsheetApp.openById(despesasID);
+obterDespesasOuroBrlGramaGama = () => despesasSpreadSheet.getRange("OuroBrlGrama");
 
 // *** Formulário Cantina
 // 
@@ -49,6 +52,9 @@ const SetUpCantina = () => {
 
     CantinaItemsRange = despesasCantinaTab.getRange("CantinaItems");
     CantinaQuantidadesRange = despesasCantinaTab.getRange("CantinaQuantidades");
+
+    const colaborador = CantinaColaboradorRange.getValue();
+    setupWorkSheets(colaborador);
   }
 
 };
@@ -103,6 +109,8 @@ function SetUpPix() {
     PixSaldoRealRange       = despesasPixTab.getRange("PixSaldoReal");
     PixFuturoOuroRange      = despesasPixTab.getRange("PixFuturoOuro");
     PixFuturoRealRange      = despesasPixTab.getRange("PixFuturoReal");
+    const colaborador = CantinaColaboradorRange.getValue();
+    setupWorkSheets(colaborador);
   }
 }
 
@@ -151,6 +159,8 @@ function SetUpDiversos() {
     DiversosItemsRange = despesasDiversosTab.getRange("DiversosItems");
     DiversosRealRange = despesasDiversosTab.getRange("DiversosReal");
     DiversosQuantidadesRange = despesasDiversosTab.getRange("DiversosQuantidades");
+    const colaborador = DiversosColaboradorRange.getValue();
+    setupWorkSheets(colaborador);
   }
 }
 
@@ -188,8 +198,8 @@ let FolgaQuantidadesRange;
 ;
 function SetupFolga() {
   if (typeof despesasFolgaTab === "undefined") { 
-    despesasFolgaTab       = despesasSpreadSheet.getSheetByName("Folga");
-    FolgaDataRange         = despesasFolgaTab.getRange("FolgaData");
+    despesasFolgaTab = despesasSpreadSheet.getSheetByName("Folga");
+    FolgaDataRange   = despesasFolgaTab.getRange("FolgaData");
 
     FolgaColaboradorRange        = despesasFolgaTab.getRange("FolgaColaborador");
     FolgaEstadiaRange            = despesasFolgaTab.getRange("FolgaEstadia");
@@ -205,9 +215,11 @@ function SetupFolga() {
     FolgaFuturoOuroRange         = despesasFolgaTab.getRange("FolgaFuturoOuro");
     FolgaFuturoRealRange         = despesasFolgaTab.getRange("FolgaFuturoReal");
 
-    FolgaItemsRange = despesasFolgaTab.getRange("FolgaItems");
-    FolgaRealRange = despesasFolgaTab.getRange("FolgaReal");
+    FolgaItemsRange       = despesasFolgaTab.getRange("FolgaItems");
+    FolgaRealRange        = despesasFolgaTab.getRange("FolgaReal");
     FolgaQuantidadesRange = despesasFolgaTab.getRange("FolgaQuantidades");
+    const colaborador = FolgaColaboradorRange.getValue();
+    setupWorkSheets(colaborador);
   }
 }
 
@@ -263,6 +275,8 @@ function SetupCambio() {
     CambioSaldoRealRange  = despesasCambioTab.getRange("CambioSaldoReal");
     CambioFuturoOuroRange = despesasCambioTab.getRange("CambioFuturoOuro");
     CambioFuturoRealRange = despesasCambioTab.getRange("CambioFuturoReal");
+    const colaborador = CantinaColaboradorRange.getValue();
+    setupWorkSheets(colaborador);
   }
 }
 
@@ -310,6 +324,8 @@ function SetupFechar() {
     FecharSaldoRealRange  = despesasFecharTab.getRange("FecharSaldoReal");
     FecharFuturoOuroRange = despesasFecharTab.getRange("FecharFuturoOuro");
     FecharFuturoRealRange = despesasFecharTab.getRange("FecharFuturoReal");
+    const colaborador = CantinaColaboradorRange.getValue();
+    setupWorkSheets(colaborador);
   }
 }
 
@@ -335,15 +351,7 @@ const contasCorrentesTotalRealCol           = 10; // Real
 const contasCorrentesTotalOuroCol           = 11; // Gramas de Ouro
 const contasCorrentesComentariosCol         = 12
 
-const ESTADIAS_GAMA        = "EstadiaGamaLocal";
-const ESTADIAS_NOME        = 0;
-const ESTADIAS_INICIO      = 1;
-const ESTADIAS_METODO      = 2;
-const ESTADIAS_SETOR       = 3;
-const ESTADIAS_LOCAL       = 4;
-const ESTADIAS_TAREFA      = 5;
-const ESTADIAS_REMUNERACAO = 6;
-const ESTADIAS_COMENTARIOS = 7;
+
 
 function GetSaldo() {
   // sheetName = "Cantina"
@@ -452,3 +460,190 @@ function switchToTab(sheetName) {
   }
 }
 
+/**
+ * Copies the columns from Estadia.Dados to Despesas.Trabalho
+ * @param {Array} srcColumns 
+ * @param {Array} tgtColumns 
+ */
+function setupEstadiaTrabalho () {
+  const columnsToCopy = {
+    "NOME": {
+      "from": ESTADIAS_NOME,
+      "to": DESPESAS_TRABALHO_NOME
+    },
+    "INICIO": {
+      "from": ESTADIAS_INICIO,
+      "to": DESPESAS_TRABALHO_INICIO
+    },
+    "METODO": {
+      "from": ESTADIAS_METODO,
+      "to": DESPESAS_TRABALHO_METODO
+    }
+  }
+  const srcID    = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "ESTADIA");
+  const srcSS    = SpreadsheetApp.openById(srcID);
+  const srcSheet = srcSS.getSheetByName("Dados")
+
+  const tgtID    = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "DESPESAS");
+  const tgtSS    = SpreadsheetApp.openById(tgtID);
+  const tgtSheet = tgtSS.getSheetByName("Trabalho")
+
+  // For each column
+  const columnsToCopyKeys = Object.keys(columnsToCopy)
+  columnsToCopyKeys.forEach(key => {
+
+    // Clear the target; notice that, in this case, I might clear more rows than
+    // required, since some other column in the sheet might have more rows; this
+    // ensures that the target column is cleared regardless;
+    let columnLeft  = CararaLibrary.numeroParaLetra(columnsToCopy[key].to + 1);
+    let firstRow    = 2;
+    let columnRight = columnLeft;
+    let lastRow     = tgtSheet.getLastRow(); // ok to clear empty cells
+    let sheetName   = tgtSheet.getName();
+    let a1C1Gama    = CararaLibrary.obterA1C1(sheetName, columnLeft, firstRow, columnRight, lastRow)
+    let tgtRange    = tgtSheet.getRange(a1C1Gama);
+    tgtRange.clear();
+
+    // Get the source range
+    columnLeft  = CararaLibrary.numeroParaLetra(columnsToCopy[key].from + 1);
+    firstRow    = 2;
+    columnRight = columnLeft;
+    lastRow     = srcSheet.getLastRow(); // ok to clear empty cells
+    sheetName   = srcSheet.getName();
+    a1C1Gama    = CararaLibrary.obterA1C1(sheetName, columnLeft, firstRow, columnRight, lastRow)
+    let srcRange     = srcSheet.getRange(a1C1Gama);
+    let srcRangeVals = srcRange.getValues();
+
+    // get the target range; notice that, in this case, I'm getting the exact
+    // number of target range rows, which is required by the ensuing setValues
+    // call;
+    columnLeft  = CararaLibrary.numeroParaLetra(columnsToCopy[key].to + 1);
+    firstRow    = 2;
+    columnRight = columnLeft;
+    lastRow     = srcSheet.getLastRow();
+    sheetName   = tgtSheet.getName();
+    a1C1Gama    = CararaLibrary.obterA1C1(sheetName, columnLeft, firstRow, columnRight, lastRow)
+    tgtRange    = tgtSheet.getRange(a1C1Gama);
+  
+    // copy the source to the target range
+    tgtRange.setValues(srcRangeVals)
+  }) 
+}
+
+/**
+ * Copies the columns from Cantina.Dados to Despesas.Trabalho
+ * @param {Array} srcColumns 
+ * @param {Array} tgtColumns 
+ */
+function setupCantinaTrabalho () {
+  const columnsToCopy = {
+    "Item": {
+      "from": CANTINA_ITEM,
+      "to": DESPESAS_TRABALHO_ITEM
+    },
+    "Real": {
+      "from": CANTINA_OURO,
+      "to": DESPESAS_TRABALHO_REAL
+    },
+    "Ouro": {
+      "from": CANTINA_REAL,
+      "to": DESPESAS_TRABALHO_OURO
+    }
+  }
+  const srcID    = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "CANTINA_PRECO");
+  const srcSS    = SpreadsheetApp.openById(srcID);
+  const srcSheet = srcSS.getSheetByName("Dados")
+
+  const tgtID    = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "DESPESAS");
+  const tgtSS    = SpreadsheetApp.openById(tgtID);
+  const tgtSheet = tgtSS.getSheetByName("Trabalho")
+
+  // For each column
+  const columnsToCopyKeys = Object.keys(columnsToCopy)
+  columnsToCopyKeys.forEach(key => {
+
+    // Clear the target; notice that, in this case, I might clear more rows than
+    // required, since some other column in the sheet might have more rows; this
+    // ensures that the target column is cleared regardless;
+    let columnLeft  = CararaLibrary.numeroParaLetra(columnsToCopy[key].to + 1);
+    let firstRow    = 2;
+    let columnRight = columnLeft;
+    let lastRow     = tgtSheet.getLastRow(); // ok to clear empty cells
+    let sheetName   = tgtSheet.getName();
+    let a1C1Gama    = CararaLibrary.obterA1C1(sheetName, columnLeft, firstRow, columnRight, lastRow)
+    let tgtRange    = tgtSheet.getRange(a1C1Gama);
+    tgtRange.clear();
+
+    // Get the source range
+    columnLeft  = CararaLibrary.numeroParaLetra(columnsToCopy[key].from + 1);
+    firstRow    = 2;
+    columnRight = columnLeft;
+    lastRow     = srcSheet.getLastRow(); // ok to clear empty cells
+    sheetName   = srcSheet.getName();
+    a1C1Gama    = CararaLibrary.obterA1C1(sheetName, columnLeft, firstRow, columnRight, lastRow)
+    let srcRange     = srcSheet.getRange(a1C1Gama);
+    let srcRangeVals = srcRange.getValues();
+
+    // get the target range; notice that, in this case, I'm getting the exact
+    // number of target range rows, which is required by the ensuing setValues
+    // call;
+    columnLeft  = CararaLibrary.numeroParaLetra(columnsToCopy[key].to + 1);
+    firstRow    = 2;
+    columnRight = columnLeft;
+    lastRow     = srcSheet.getLastRow();
+    sheetName   = tgtSheet.getName();
+    a1C1Gama    = CararaLibrary.obterA1C1(sheetName, columnLeft, firstRow, columnRight, lastRow)
+    tgtRange    = tgtSheet.getRange(a1C1Gama);
+  
+    // copy the source to the target range
+    tgtRange.setValues(srcRangeVals)
+  }) 
+}
+
+/**
+ * Copies Referencia "OuroBrlGrama" range to Despesas "OuroBrlGrama" range
+ */
+function setGoldPrice() {
+  const goldPrice = Referencia.obterReferenciaOuroBrlGramaVal();
+  const despesasGoldPriceRange = obterDespesasOuroBrlGramaGama()
+  despesasGoldPriceRange.setValue(goldPrice)
+}
+
+/**
+ * Copies Pessoa.Dados to Despesas.Pessoa
+ */
+function setPeople() {
+  // TODO consider copying only Active records
+  CararaLibrary.CopySheetToAnotherSpreadsheet(
+    PESSOA_SPREADSHEET_ID, 
+    "Dados",
+    despesasID, 
+    "Pessoa" 
+  );	
+}
+
+/**
+ * Copies the names collaborators, except the one in the argument to 
+ * Despesas.Trabalho/MinusOne column
+ * @param {string} nome 
+ */
+function setEstadiasSansCurrent(nome) {
+  let nomes = obterEstadiasGamaNomeValsSansNome(nome)
+  const tabalhoSheet = despesasSpreadSheet.getSheetByName(DESPESAS_TABALHO_SHEET_NAME)
+  const lastRow = tabalhoSheet.getLastRow();
+  const a1c1 =  CararaLibrary.obterA1C1 (
+    tabalhoSheet.getName(), 
+    CararaLibrary.numeroParaLetra(DESPESAS_TABALHO_SANS_NAME_COL+1), 
+    2, 
+    CararaLibrary.numeroParaLetra(DESPESAS_TABALHO_SANS_NAME_COL+1), 
+    lastRow)
+  tabalhoSheet.getRange(a1c1).clear();
+  CararaLibrary.copiarGama (nomes, tabalhoSheet, 2, DESPESAS_TABALHO_SANS_NAME_COL+1)
+}
+function setupWorkSheets(colaborador) {
+  setupEstadiaTrabalho()
+  setupCantinaTrabalho()
+  setGoldPrice();
+  setPeople();
+  setEstadiasSansCurrent(colaborador);
+}
