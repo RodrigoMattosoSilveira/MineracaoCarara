@@ -61,3 +61,30 @@ const CANTINA_OURO = 2;
 const DESPESAS_TRABALHO_ITEM = 5;
 const DESPESAS_TRABALHO_REAL = 6;
 const DESPESAS_TRABALHO_OURO = 7;
+
+/**
+ * Referencia
+ */
+const REFERENCIA_SS_ID = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "REFERENCIA");
+
+const REFERENCIA_OURO_BRL_GRAMA_GAMA_NOME = 'OuroBrlGrama'
+
+function obterReferenciaGama(nomeGama) {
+  const referenciaSS = SpreadsheetApp.openById(REFERENCIA_SS_ID);
+  return referenciaSS.getRangeByName(nomeGama);
+}
+
+function obterReferenciaGamaVals(rangeName) {
+  const gama = obterReferenciaGama(rangeName);
+  const vals = gama.getValues();
+  return (gama !== null) ? vals.filter( elemento => elemento[0] !== '' && elemento[0] !== 'Nome') : [];
+}
+function obterReferenciaGamaVal(rangeName) {
+  const gama = obterReferenciaGama(rangeName);
+  const val = gama.getValue();
+  return val;
+}
+
+function obterReferenciaOuroBrlGramaVal () { 
+	return obterReferenciaGamaVal(REFERENCIA_OURO_BRL_GRAMA_GAMA_NOME)
+};

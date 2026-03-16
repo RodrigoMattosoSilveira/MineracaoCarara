@@ -604,7 +604,7 @@ function setupCantinaTrabalho () {
  * Copies Referencia "OuroBrlGrama" range to Despesas "OuroBrlGrama" range
  */
 function setGoldPrice() {
-  const goldPrice = Referencia.obterReferenciaOuroBrlGramaVal();
+  const goldPrice = obterReferenciaOuroBrlGramaVal();
   const despesasGoldPriceRange = obterDespesasOuroBrlGramaGama()
   despesasGoldPriceRange.setValue(goldPrice)
 }
