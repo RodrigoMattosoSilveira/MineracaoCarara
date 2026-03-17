@@ -24,8 +24,8 @@ function producaoRegistrar() {
 
 	// Construir e salvar o objetoFormulario
 	let objetoFormulario = {}
-	objetoFormulario['pocos'] = JSON.stringify([...Referencia.obterReferenciaPocos()]);
-    objetoFormulario['periodos'] =  JSON.stringify([...Referencia.obterReferenciaPeriodos()]);
+	objetoFormulario['pocos'] = JSON.stringify([...obterReferenciaPocos()]);
+    objetoFormulario['periodos'] =  JSON.stringify([...obterReferenciaPeriodos()]);
 	putObjetoFormulario(JSON.stringify(objetoFormulario));
 
 	// Apresentar dialogo modal; coletar a producao dos pocos
