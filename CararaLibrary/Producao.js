@@ -60,3 +60,24 @@ function obterProducaoPocoRecenteMedia (poco, dias) {
 	});	
 	return (producaoPoco.length > 0) ? totalProducao / producaoPoco.length : 0;
 }
+
+/* *****************************************************************************
+ * Retorna a produção do poço para em uma data e período
+ * @parm {Date}, data - O dia de interesse
+ * @parm {String}, poco - O nome to poco de interessse
+ * @parm {String}, periodo - O periodo de interesse
+ * @returns (float | null) a producao produção do poço na data e periodo de 
+ * interesse; null caso contrário
+ * ************************************************************************** */
+// 
+function obterProducaoDataPocoPeriodo(data, poco, periodo) {
+	let chave = dateToString(data) + poco + periodo;
+	return  obterProducaoDataPocoPeriodoChave(chave)
+}
+function obterProducaoDataPocoPeriodoChave(chave) {
+	let matrizProducao = obterProducaoGamaVals().filter((registro) => {
+		let dataChave = dateToString(registro[PRODUCAO_DATA_COL]) + registro[PRODUCAO_POCO_NOME_COL] +  registro[PRODUCAO_PERIODO_NOME_COL];	
+		return chave === dataChave;		
+	});  
+	return  matrizProducao.length === 1 ? matrizProducao[0][PRODUCAO_QUANTIDADE_COL] : null;
+}

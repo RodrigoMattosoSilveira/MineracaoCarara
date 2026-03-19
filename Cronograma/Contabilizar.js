@@ -108,7 +108,7 @@ function cronogramaContabilizar() {
           let data    = elemento[CONTABILIZAR_DATA];
           let poco    = elemento[CONTABILIZAR_LOCAL];
           let periodo = elemento[CONTABILIZAR_PERIODO];
-          let producaoDataPocoPeriodo = Producao.obterProducaoDataPocoPeriodo(data, poco, periodo);
+          let producaoDataPocoPeriodo = CararaLibrary.obterProducaoDataPocoPeriodo(data, poco, periodo);
           if (producaoDataPocoPeriodo !== null) {
           // if (producaoDiaria[datastr][poco] !== undefined) {
             // Moeda Ouro

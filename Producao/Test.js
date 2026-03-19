@@ -70,7 +70,7 @@ const obterProducaoPocosTestes = () => {
 		console.error(" ✖︎  obterProducaoPocos, " + dataProcurada + " length === 0");
 }
 const obterProducaoPocoTeste = () => {
-  let pocoProducao = Producao.obterProducaoPoco("Poço_1", "9/6/2025");
+  let pocoProducao = obterProducaoPoco("Poço_1", "9/6/2025");
   Math.abs(pocoProducao[PRODUCAO_QTD] - 15.97807122947792) < EPSILON ?
    	console.info(" ✔︎ obterProducaoPoco, Poço_1 9/6/2025  15.97807122947792") :
 	console.error(" ✖︎  obterProducaoPoco, Poço_1 9/6/2025  15.97807122947792")

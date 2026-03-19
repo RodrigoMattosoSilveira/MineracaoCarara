@@ -66,7 +66,7 @@ const cronogramaModelarProsseguirTeste = () => {
 }
 const obterProducaoPocosTestes = () => {
   let dataProcurada = '9/5/2025'
-	let producao = Producao.obterProducaoPocos("9/5/2025");
+	let producao = CararaLibraryobterProducaoPocos("9/5/2025");
 	let producaoKeys = Object.keys(producao);
 	producaoKeys.length === 2 ?
 		console.info(" ✔︎ obterProducaoPocos, " + dataProcurada + " length === 2") :
@@ -79,7 +79,7 @@ const obterProducaoPocosTestes = () => {
 		console.error(" ✖︎  obterProducaoPocos, Poço_2 " + dataProcurada + " 7.98903561473896")	
 
     dataProcurada = '1/1/2025'
-    producao = Producao.obterProducaoPocos("1/1/2025");
+    producao = CararaLibraryobterProducaoPocos("1/1/2025");
 	producaoKeys = Object.keys(producao);
 	producaoKeys.length === 1 ?
 		console.info(" ✔︎ obterProducaoPocos, " + dataProcurada + " length === 1") :
@@ -95,13 +95,13 @@ const obterProducaoPocosTestes = () => {
 		console.error(" ✖︎  obterProducaoPocos, Poço_1 " + dataProcurada + " 21.9534838229411")	
 }
 const obterProducaoPocoTeste = () => {
-  let pocoProducao = Producao.obterProducaoPoco("Poço_1", "9/6/2025");
+  let pocoProducao = CararaLibraryobterProducaoPoco("Poço_1", "9/6/2025");
   Math.abs(pocoProducao[PRODUCAO_QTD] - 15.97807122947792) < EPSILON ?
    	console.info(" ✔︎ obterProducaoPoco, Poço_1 9/6/2025  15.97807122947792") :
 	console.error(" ✖︎  obterProducaoPoco, Poço_1 9/6/2025  15.97807122947792")
 }
 const obterProducaoPocosTeste = () => {
-  let pocos = Producao.obterProducaoPocosNomes();
+  let pocos = CararaLibraryobterProducaoPocosNomes();
   pocos.length === 2 ?
   	console.info(" ✔︎ obterProducaoPocosTeste, length === 2") :
 		console.error(" ✖︎  obterProducaoPocosTeste, length === 2")
