@@ -238,12 +238,19 @@ const obterPdfPeriodoVals = () 	=> obterPdfPeriodo() !== null ? obterPdfPeriodo.
 const obterPdfExportar = () 	=> obterGoogleSheet().getRangeByName(PDF_EXPORTAR);
 const obterPdfHeader = () 	    => obterGoogleSheet().getRangeByName(PDF_HEADER);
 
-const PRODUCAO_PLANILHA = "Modelos";
-const PRODUCAO_DATA = 0;
-const PRODUCAO_QTD = 1;
-const PRODUCAO_MEDIA = 2;
-const obterProducaoPlanilha = () => obterGoogleSheet().getSheetByName(PRODUCAO_PLANILHA);
-const obterProducaoGama = (gamaName) => obterGoogleSheet().getRangeByName(gamaName);
+/**
+ * Producao
+ */
+const PRODUCAO_SPREADSHEET_ID  = CararaLibrary.GetSpreadsheetId(SpreadsheetApp.getActive(), "PRODUCAO")
+const PRODUCAO_PLANILHA = "Producao";
+const PRODUCAO_GAMA     = "Producao"	
+const PRODUCAO_DATA     = 0;
+const PRODUCAO_POCO     = 1;
+const PRODUCAO_PERIODO  = 2;
+const PRODUCAO_QTD      = 3;
+const obterProducaoGoogleSheet = () =>  SpreadsheetApp.openById(PRODUCAO_SPREADSHEET_ID);
+const obterProducaoPlanilha = () => obterProducaoGoogleSheet().getSheetByName(PRODUCAO_PLANILHA);
+const obterProducaoGama = (gamaName) => obterProducaoGoogleSheet().getRangeByName(gamaName);
 const obterProducaoGamaVals = gamaName => {
 	let  gama = obterProducaoGama(gamaName);
 	return  (gama !== null) ? gama.getValues().filter( elemento => elemento[PRODUCAO_DATA] !== '') : [];

@@ -24,8 +24,8 @@ function producaoRegistrar() {
 
 	// Construir e salvar o objetoFormulario
 	let objetoFormulario = {}
-	objetoFormulario['pocos'] = JSON.stringify([...Referencia.obterReferenciaPocos()]);
-    objetoFormulario['periodos'] =  JSON.stringify([...Referencia.obterReferenciaPeriodos()]);
+	objetoFormulario['pocos'] = JSON.stringify([...obterReferenciaPocos()]);
+    objetoFormulario['periodos'] =  JSON.stringify([...obterReferenciaPeriodos()]);
 	putObjetoFormulario(JSON.stringify(objetoFormulario));
 
 	// Apresentar dialogo modal; coletar a producao dos pocos
@@ -75,27 +75,6 @@ function producaoRegistrarProsseguir(matriz) {
 	// Classifique a gama Produção com as datas em ordem decrescente, depois 
 	// por bem e período. 
 	CararaLibrary._obterProducaoGama().sort([{column: 1, ascending: false}, {column: 2, ascending: true}, {column: 3, ascending: true}])
-}
-
-/* *****************************************************************************
- * Retorna a produção do poço para em uma data e período
- * @parm {Date}, data - O dia de interesse
- * @parm {String}, poco - O nome to poco de interessse
- * @parm {String}, periodo - O periodo de interesse
- * @returns (float | null) a producao produção do poço na data e periodo de 
- * interesse; null caso contrário
- * ************************************************************************** */
-// 
-function obterProducaoDataPocoPeriodo(data, poco, periodo) {
-	let chave = CararaLibrary.dateToString(data) + poco + periodo;
-	return  obterProducaoDataPocoPeriodoChave(chave)
-}
-function obterProducaoDataPocoPeriodoChave(chave) {
-	let matrizProducao = CararaLibrary.obterProducaoGamaVals().filter((registro) => {
-		let dataChave = CararaLibrary.dateToString(registro[PRODUCAO_DATA_COL]) + registro[PRODUCAO_POCO_NOME_COL] +  registro[PRODUCAO_PERIODO_NOME_COL];	
-		return chave === dataChave;		
-	});  
-	return  matrizProducao.length === 1 ? matrizProducao[0][PRODUCAO_QUANTIDADE_COL] : null;
 }
 
 if (typeof module !== 'undefined') module.exports = {

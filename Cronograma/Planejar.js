@@ -21,7 +21,7 @@ function cronogramaPlanejar() {
 	let cronogramaPublicadoMaisRecente = [...obterCronogramaPublicadoMaisRecente()]
 
 	// Recuperar os períodos válidos. Usar "Diurno" caso não haja nenhum 
-	let periodosMap = Referencia.obterPeriodos();
+	let periodosMap = CararaLibrary.obterPeriodos();
 
 	// Calcular o candidato ao proximo cronograma
 	let proximoCronogramaCandidato = [...obterProximoCronograma(cronogramaPublicadoMaisRecente, periodosMap)]
