@@ -7,7 +7,6 @@ function onOpen() {
  	var ui = SpreadsheetApp.getUi();
 	ui.createMenu('Estadia')
 		.addItem('Adicionar Colaborador', 'estadiaAdicionarColaborador')
-		.addItem('Adicionar Validacoes', 'ConfigureSpreadsheetDataValidations')
 	.addToUi();
 
 	// Data validations
