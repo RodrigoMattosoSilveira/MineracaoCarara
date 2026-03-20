@@ -125,14 +125,12 @@ const cronogramaPlanejarExecutar = (acaoSelecionada, data, periodo, ordem) => {
 			CararaLibrary.activateSheet("Planear");
 			let planilhaPlanejar = obterPlanejarPlanilha();
 			targetSheetName = planilhaPlanejar.getName();
-			// estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_ACAO+1,   PLANEJAR_ACOES_VALIDAS);
-			// estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_METODO+1, PLANEJAR_METODOS_VALIDOS);
-			// estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_SETOR+1,  PLANEJAR_SETORES_VALIDOS);
-			// estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_LOCAL+1,  PLANEJAR_LOCAIS_VALIDOS);
-			// estabelederValidacaoDados(planilhaPlanejar, PLANEJAR_TAREFA+1, PLANEJAR_TAREFAS_VALIDAS);
-			// Pintar o texto da coluna ACAO de verde para Incluir, vermelho para Excluir
+			
+			// Configure data validation, render Acao according to its content
 			// TODO: Refatorar colher os parametros de pintarAcao para serem mais genericos;
 			pintarAcao(targetSheetName, "Excluir", "Incluir");
+			CararaLibrary.activateSheet(targetSheetName);
+			ConfigureSpreadsheetDataValidationsPlanejar();
 
 			// Update the Publicados folha e termine a operacao
 			publicarCronograma(data, periodo, ordem);
@@ -163,8 +161,6 @@ const cronogramaPlanejarExecutar = (acaoSelecionada, data, periodo, ordem) => {
 	CararaLibrary.activateSheet(targetSheetName);
 
 	console.info(menssagem);
-	// Configure data validation
-	ConfigureSpreadsheetDataValidationsPlanejar();
 	SpreadsheetApp.getUi().alert(menssagem);
 
 }

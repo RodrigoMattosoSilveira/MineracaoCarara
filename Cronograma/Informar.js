@@ -50,24 +50,27 @@ function cronogramaInformar() {
     let c1 = pdfExportar.getColumn();
     let c2 = pdfExportar.getLastColumn();
     exportRangeAsPDF(r1, r2, c1, c2);
+ 
+    // Clean up the Planejar sheet
+    limparContentDataValidations(obterPlanejarGama());
 
-   // Add Data Validations:
-     CararaLibrary.activateSheet("Ativos");
+    // Add Data Validations and conditional formating
+    CararaLibrary.activateSheet(ATIVOS_PLANILHA);
     let planilhaAtivos = obterAtivosPlanilha();
     let planilhaAtivosName = planilhaAtivos.getName();
-     estabelederValidacaoDados(planilhaAtivos, ATIVOS_ACAO+1,   ATIVOS_ACOES_VALIDAS);
-    estabelederValidacaoDados(planilhaAtivos, ATIVOS_METODO+1, PLANEJAR_METODOS_VALIDOS);
-    estabelederValidacaoDados(planilhaAtivos, ATIVOS_SETOR+1,  PLANEJAR_SETORES_VALIDOS);
-    estabelederValidacaoDados(planilhaAtivos, ATIVOS_LOCAL+1,  PLANEJAR_LOCAIS_VALIDOS);
-    estabelederValidacaoDados(planilhaAtivos, ATIVOS_TAREFA+1, PLANEJAR_TAREFAS_VALIDAS);
+
     // TODO: Refatorar colher os parametros de pintarAcao para serem mais genericos;
     pintarAcao(planilhaAtivosName, "Excluir", "Incluir");
 
-    limparContentDataValidations(obterPlanejarGama());
+ 	// Configure Ativos data validation
+	CararaLibrary.activateSheet(planilhaAtivosName);
+	ConfigureSpreadsheetDataValidationsInformar();
 
-    CararaLibrary.activateSheet("PDF");
-	// Configure data validation
-	ConfigureSpreadsheetDataValidationsPlanejar();
+    // Show the PDF ready to print
+    let targetSheetName = "PDF";
+    CararaLibrary.activateSheet(targetSheetName);
+
+    // Say we are done
     SpreadsheetApp.getActiveSpreadsheet().toast('Fim', 'Informar', 1);
     return true
 }
